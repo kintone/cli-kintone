@@ -1,4 +1,4 @@
-import { RecordForImport } from "../../../../types/data-loader";
+import { RecordForImport } from "../../../../types/cli-kintone";
 import { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 import path from "path";
 import { KintoneRecordForParameter } from "../../../../types/kintone";

@@ -1,7 +1,7 @@
 import { encloseInDoubleQuotes } from "./encloseInDoubleQuotes";
 import { escapeDoubleQuotes } from "./escapeDoubleQuotes";
 import { LINE_BREAK } from "./constants";
-import { FieldsForExport } from "../../types/data-loader";
+import { FieldsForExport } from "../../types/cli-kintone";
 
 export const extractFieldValue: (
   field: FieldsForExport.OneOf,

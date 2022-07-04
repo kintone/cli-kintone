@@ -2,7 +2,7 @@ import {
   KintoneFormFieldProperty,
   KintoneRestAPIClient,
 } from "@kintone/rest-api-client";
-import { RecordForImport } from "../types/data-loader/import/record";
+import { RecordForImport } from "../types/cli-kintone/import/record";
 import { KintoneRecordForParameter } from "../types/kintone";
 import { fieldProcessor, recordReducer } from "./add/record";
 

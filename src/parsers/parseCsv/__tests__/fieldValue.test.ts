@@ -1,6 +1,6 @@
 import { convertFieldValue } from "../fieldValue";
 import { FieldProperties } from "../../../types/kintone";
-import { FieldsForImport } from "../../../types/data-loader";
+import { FieldsForImport } from "../../../types/cli-kintone";
 
 const patterns: Array<{
   input: { type: FieldProperties[string]["type"]; value: string };

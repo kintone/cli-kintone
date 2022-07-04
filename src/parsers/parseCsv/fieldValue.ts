@@ -1,5 +1,5 @@
 import { LINE_BREAK } from "../../printers/printAsCsv/constants";
-import { FieldsForImport } from "../../types/data-loader";
+import { FieldsForImport } from "../../types/cli-kintone";
 import { FieldProperties } from "../../types/kintone";
 
 export const convertFieldValue = ({

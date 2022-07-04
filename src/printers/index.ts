@@ -1,4 +1,4 @@
-import { RecordForExport } from "../types/data-loader";
+import { RecordForExport } from "../types/cli-kintone";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { printAsJson } from "./printAsJson";
 import { printAsCsv } from "./printAsCsv";

@@ -1,4 +1,4 @@
-import { RecordForExport } from "../../../../types/data-loader";
+import { RecordForExport } from "../../../../types/cli-kintone";
 import { KintoneRecordForResponse } from "../../../../types/kintone";
 
 export const input: KintoneRecordForResponse[] = [

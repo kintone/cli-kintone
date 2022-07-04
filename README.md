@@ -1,8 +1,6 @@
-# kintone-data-loader
+# cli-kintone
 
-[![npm version](https://badge.fury.io/js/%40kintone%2Fdata-loader.svg)](https://badge.fury.io/js/%40kintone%2Fdata-loader)
-![Node.js version](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/kintone/js-sdk/master/packages/data-loader/package.json&label=node&query=$.engines.node&colorB=blue)
-![License](https://img.shields.io/npm/l/@kintone/data-loader.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A kintone record importer and exporter.
 
@@ -27,11 +25,7 @@ We plan to support them in the future release.
 
 ## Installation
 
-```
-$ npm install -g @kintone/data-loader
-```
-
-You can use also npx instead of installing @kintone/data-loader as global.
+// TODO: Write installation guide
 
 ## Usage
 
@@ -40,7 +34,7 @@ You can use also npx instead of installing @kintone/data-loader as global.
 `import` command allows you to import record data into a specified kintone app.
 
 ```
-$ kintone-data-loader \
+$ cli-kintone \
 import \
 --base-url https://${yourDomain} \
 --username ${yourLoginName} \
@@ -106,7 +100,7 @@ The field specified as "Key to Bulk Update" should meet the following requiremen
 `export` command allows you to export record data from a specified kintone app.
 
 ```
-$ kintone-data-loader \
+$ cli-kintone \
 export \
 --base-url https://${yourDomain} \
 --username ${yourLoginName} \
@@ -156,7 +150,7 @@ If set `--attachments-dir` option, attachment files will be downloaded to local 
 
 ## Supported file formats
 
-data-loader supports CSV and JSON for both import/export commands.  
+cli-kintone supports CSV and JSON for both import/export commands.  
 When import, it determines the format automatically by the extension of the file (specified by `--file-path` option).  
 When export, you can specify the format by specifying `--format` option.
 

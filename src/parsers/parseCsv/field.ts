@@ -1,5 +1,5 @@
 import { CsvRow, FieldProperties, FieldsJson } from "../../types/kintone";
-import { FieldsForImport } from "../../types/data-loader";
+import { FieldsForImport } from "../../types/cli-kintone";
 import { importSupportedFieldTypes } from "./constants";
 import { convertFieldValue } from "./fieldValue";
 

@@ -1,5 +1,5 @@
 import { CsvRow, FieldsJson } from "../../types/kintone";
-import { FieldsForImport } from "../../types/data-loader";
+import { FieldsForImport } from "../../types/cli-kintone";
 import { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 import { importSupportedFieldTypesInSubtable } from "./constants";
 import { convertFieldValue } from "./fieldValue";

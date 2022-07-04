@@ -4,7 +4,7 @@ import { extractFieldValue } from "./extractFieldValue";
 import { buildHeaderFields } from "./buildHeaderFields";
 import { hasSubtable } from "./hasSubtable";
 import { FieldProperties } from "../../types/kintone";
-import { RecordForExport } from "../../types/data-loader";
+import { RecordForExport } from "../../types/cli-kintone";
 
 type RowObject = {
   [fieldCode: string]: string | Array<{ [fieldCode: string]: string }>;

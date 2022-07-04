@@ -2,8 +2,14 @@ import {
   KintoneFormFieldProperty,
   KintoneRecordField,
 } from "@kintone/rest-api-client";
-import { UpdateKey } from "@kintone/rest-api-client/src/client/types/record";
-import { RecordID, Revision } from "@kintone/rest-api-client/src/client/types";
+
+export type RecordID = string | number;
+export type Revision = string | number;
+
+export type UpdateKey = {
+  field: string;
+  value: string | number;
+};
 
 export type CsvRow = Record<string, string>;
 export type KintoneRecordForParameter = {

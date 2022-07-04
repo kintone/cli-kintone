@@ -1,3 +1,29 @@
+# dependencies
+node_modules/
+.node_modules/
+
+# npm/yarn log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# testing
+coverage/
+
+# artifacts
 lib
 bin
+
+# misc
+**/.DS_Store
+*.tsbuildinfo
 attachments
+
+# editor
+**/.vs
+**/.vscode
+.idea
+
+# secrets
+.env
+.envrc

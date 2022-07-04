@@ -1,0 +1,34 @@
+name: yamory
+
+on:
+  push:
+    branches:
+      - main
+      - yamory-*
+jobs:
+  yamory:
+    name: Yamory
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: yarn
+      - name: download and validate Yamory script
+        env:
+          # https://cli.yamory.io/yamory-app-library-scan-scripts/yamory-yarn-sha512sum.txt
+          YAMORY_YARN_SCRIPT_SHA512: "940f8755e77a9a19e7bbbb673936d8779bfd9f9871994e6f86855907917965e3ac732a39d761be4b384fefed696b9c72cfd6752a14fc417ebde4126a75b5f40e"
+        working-directory: /tmp
+        run: |
+          curl -sSf -L -o ./yamory-yarn.sh \
+          https://localscanner.yamory.io/script/yarn
+          echo "${YAMORY_YARN_SCRIPT_SHA512} yamory-yarn.sh" | sha512sum --check -
+          chmod +x ./yamory-yarn.sh
+      - name: run Yamory
+        run: /tmp/yamory-yarn.sh
+        env:
+          CI: true
+          PROJECT_GROUP_KEY: cli-kintone
+          YAMORY_API_KEY: ${{ secrets.YAMORY_API_KEY }}

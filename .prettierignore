@@ -1,0 +1,9 @@
+# Ignore artifacts:
+lib
+coverage
+
+# Ignore all HTML files:
+*.html
+
+# Ignore CHANGELOG.md (because it is auto generated)
+CHANGELOG.md

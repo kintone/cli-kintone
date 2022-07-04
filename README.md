@@ -326,4 +326,4 @@ If set `--attachments-dir` option, the format of Attachment field will be change
 
 ## LICENSE
 
-- [MIT](https://github.com/kintone/js-sdk/blob/master/packages/data-loader/LICENSE)
+- [MIT](https://github.com/kintone/cli-kintone/blob/main/LICENSE)

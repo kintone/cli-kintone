@@ -1,6 +1,6 @@
 import { CsvRow, FieldsJson } from "../../types/kintone";
 import { PRIMARY_MARK } from "../../printers/printAsCsv/constants";
-import { RecordForImport } from "../../types/data-loader";
+import { RecordForImport } from "../../types/cli-kintone";
 import { convertField, fieldReader } from "./field";
 import { convertSubtableField, subtableFieldReader } from "./subtable";
 

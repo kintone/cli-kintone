@@ -3,7 +3,7 @@ import {
   KintoneFormFieldProperty,
   KintoneRestAPIClient,
 } from "@kintone/rest-api-client";
-import { RecordForImport, FieldsForImport } from "../../types/data-loader";
+import { RecordForImport, FieldsForImport } from "../../types/cli-kintone";
 import path from "path";
 
 export const recordReducer: (

@@ -12,7 +12,7 @@ assignees: ""
 
 <!-- Which version do you want to report a bug for? -->
 
-- @kintone/data-loader 0.0.0
+- @kintone/cli-kintone 0.0.0
 
 ## Environment
 

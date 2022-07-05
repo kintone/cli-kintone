@@ -1,6 +1,6 @@
 import csvParse from "csv-parse/lib/sync";
 import { CsvRow, FieldsJson } from "../../types/kintone";
-import { RecordForImport } from "../../types/data-loader";
+import { RecordForImport } from "../../types/cli-kintone";
 import { convertRecord, recordReader } from "./record";
 
 export const parseCsv: (

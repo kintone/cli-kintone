@@ -1,6 +1,6 @@
 import { csv } from "./input";
 import { FieldsJson } from "../../../../../types/kintone";
-import { RecordForImport } from "../../../../../types/data-loader/import/record";
+import { RecordForImport } from "../../../../../types/cli-kintone/import/record";
 
 export const pattern: {
   description: string;

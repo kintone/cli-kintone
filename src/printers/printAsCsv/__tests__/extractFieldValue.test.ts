@@ -1,5 +1,5 @@
 import { extractFieldValue } from "../extractFieldValue";
-import { RecordForExport } from "../../../types/data-loader";
+import { RecordForExport } from "../../../types/cli-kintone";
 
 const subtableRecords: RecordForExport[] = require("./fixtures/subtable_input.json");
 const fileRecords: RecordForExport[] = require("./fixtures/file_input.json");

@@ -1,5 +1,5 @@
 {
-  "name": "@kintone/data-loader",
+  "name": "@kintone/cli-kintone",
   "version": "0.11.1",
   "publishConfig": {
     "access": "public"
@@ -8,9 +8,9 @@
     "name": "Cybozu, Inc.",
     "url": "https://cybozu.co.jp"
   },
-  "description": "A data loader",
+  "description": "A cli-kintone",
   "bin": {
-    "kintone-data-loader": "cli.js"
+    "cli-kintone": "cli.js"
   },
   "types": "lib/index.d.ts",
   "scripts": {
@@ -18,7 +18,7 @@
     "prebuild": "yarn clean",
     "build": "tsc --build --force",
     "postbuild": "yarn pkg",
-    "pkg": "pkg . -o bin/kintone-data-loader -t linux,macos,win",
+    "pkg": "pkg . -o bin/cli-kintone -t linux,macos,win",
     "test": "jest",
     "test:ci": "jest --runInBand",
     "lint": "run-p -l lint:*",

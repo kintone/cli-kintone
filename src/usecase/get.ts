@@ -1,5 +1,5 @@
 import { KintoneRecordForResponse } from "../types/kintone";
-import { FieldsForExport, RecordForExport } from "../types/data-loader";
+import { FieldsForExport, RecordForExport } from "../types/cli-kintone";
 import path from "path";
 import {
   KintoneRecordField,

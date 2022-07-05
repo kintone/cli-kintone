@@ -4,7 +4,7 @@ import { promises as fs } from "fs";
 import os from "os";
 import path from "path";
 import { getRecords } from "../../get";
-import { FieldsForExport } from "../../../types/data-loader";
+import { FieldsForExport } from "../../../types/cli-kintone";
 
 import * as caseCanGetRecords from "./fixtures/can_get_records";
 import * as caseCanDownloadFiles from "./fixtures/can_download_files";
@@ -59,9 +59,7 @@ describe("getRecords", () => {
     const expectedRecords = caseCanDownloadFiles.expected;
 
     const testFileData = "test data";
-    const tempDir = await fs.mkdtemp(
-      path.join(os.tmpdir(), "kintone-data-loader-")
-    );
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
     apiClient.record.getAllRecords = jest
       .fn()
       .mockResolvedValue(kintoneRecords);
@@ -87,9 +85,7 @@ describe("getRecords", () => {
     const expectedRecords = caseCanDownloadFilesInSubtable.expected;
 
     const testFileData = "test data";
-    const tempDir = await fs.mkdtemp(
-      path.join(os.tmpdir(), "kintone-data-loader-")
-    );
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
     apiClient.record.getAllRecords = jest
       .fn()
       .mockResolvedValue(kintoneRecords);

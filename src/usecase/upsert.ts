@@ -3,7 +3,7 @@ import {
   KintoneRecordField,
   KintoneRestAPIClient,
 } from "@kintone/rest-api-client";
-import { RecordForImport } from "../types/data-loader/import/record";
+import { RecordForImport } from "../types/cli-kintone/import/record";
 import {
   KintoneRecordForParameter,
   KintoneRecordForUpdateParameter,

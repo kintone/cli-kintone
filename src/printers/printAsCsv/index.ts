@@ -1,6 +1,6 @@
 import { convertRecordsToCsv } from "./convertKintoneRecordsToCsv";
 import { FieldsJson } from "../../types/kintone";
-import { RecordForExport } from "../../types/data-loader";
+import { RecordForExport } from "../../types/cli-kintone";
 
 export const printAsCsv: (options: {
   records: RecordForExport[];

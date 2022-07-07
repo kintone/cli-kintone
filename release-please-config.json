@@ -1,0 +1,15 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "draft": true,
+      "prerelease": false,
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": false,
+      "changelog-path": "CHANGELOG.md",
+      "versioning": "default",
+      "include-component-in-tag": false,
+      "include-v-in-tag": true
+    }
+  }
+}

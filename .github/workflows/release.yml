@@ -1,0 +1,74 @@
+name: release
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Create draft release
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          command: manifest
+
+  rename:
+    name: Rename release title
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ needs.release.outputs.release_created }}
+    env:
+      GH_REPO: ${{ github.repository }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - run: |
+          gh release edit ${{ needs.release.outputs.tag_name }} \
+          --title "Release cli-kintone ${{ needs.release.outputs.tag_name }}"
+
+  upload:
+    name: Upload executables
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ needs.release.outputs.release_created }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: yarn
+      - run: yarn install --immutable
+      - run: yarn build
+      - name: Archive executables to zip
+        working-directory: /tmp
+        run: |
+          mkdir -p /tmp/cli-kintone-{linux,macos,win}
+          cp ${GITHUB_WORKSPACE}/bin/cli-kintone-linux cli-kintone-linux/cli-kintone
+          cp ${GITHUB_WORKSPACE}/bin/cli-kintone-macos cli-kintone-macos/cli-kintone
+          cp ${GITHUB_WORKSPACE}/bin/cli-kintone-win.exe cli-kintone-win/cli-kintone.exe
+          zip -r cli-kintone-linux.zip cli-kintone-linux
+          zip -r cli-kintone-macos.zip cli-kintone-macos
+          zip -r cli-kintone-win.zip cli-kintone-win
+      - name: Upload executables
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ needs.release.outputs.tag_name }} \
+            /tmp/cli-kintone-linux.zip \
+            /tmp/cli-kintone-macos.zip \
+            /tmp/cli-kintone-win.zip
+
+  publish:
+    name: Publish release
+    runs-on: ubuntu-latest
+    needs: [release, rename, upload]
+    env:
+      GH_REPO: ${{ github.repository }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - run: gh release edit ${{ needs.release.outputs.tag_name }} --draft=false

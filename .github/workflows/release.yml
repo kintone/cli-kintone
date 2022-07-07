@@ -44,14 +44,24 @@ jobs:
           cache: yarn
       - run: yarn install --immutable
       - run: yarn build
+      - name: Archive executables to zip
+        working-directory: /tmp
+        run: |
+          mkdir -p /tmp/cli-kintone-{linux,macos,win}
+          cp ${GITHUB_WORKSPACE}/bin/cli-kintone-linux cli-kintone-linux/cli-kintone
+          cp ${GITHUB_WORKSPACE}/bin/cli-kintone-macos cli-kintone-macos/cli-kintone
+          cp ${GITHUB_WORKSPACE}/bin/cli-kintone-win.exe cli-kintone-win/cli-kintone.exe
+          zip -r cli-kintone-linux.zip cli-kintone-linux
+          zip -r cli-kintone-macos.zip cli-kintone-macos
+          zip -r cli-kintone-win.zip cli-kintone-win
       - name: Upload executables
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release upload ${{ needs.release.outputs.tag_name }} \
-            ./bin/cli-kintone-macos \
-            ./bin/cli-kintone-linux \
-            ./bin/cli-kintone-win.exe
+            /tmp/cli-kintone-linux.zip \
+            /tmp/cli-kintone-macos.zip \
+            /tmp/cli-kintone-win.zip
 
   publish:
     name: Publish release

@@ -1,6 +1,6 @@
 import { KintoneRecordForResponse } from "../../../kintone/types";
 import { KintoneRecord } from "../types/record";
-import * as FieldsForExport from "../types/field";
+import * as Fields from "../types/field";
 import path from "path";
 import {
   KintoneRecordField,
@@ -34,7 +34,7 @@ const recordsReducer: (
     recordId: string,
     fieldCode: string,
     field: KintoneRecordField.OneOf
-  ) => Promise<FieldsForExport.OneOf>
+  ) => Promise<Fields.OneOf>
 ) => Promise<KintoneRecord[]> = async (kintoneRecords, task) => {
   const records: KintoneRecord[] = [];
   for (const kintoneRecord of kintoneRecords) {
@@ -51,7 +51,7 @@ const recordReducer: (
   task: (
     fieldCode: string,
     field: KintoneRecordField.OneOf
-  ) => Promise<FieldsForExport.OneOf>
+  ) => Promise<Fields.OneOf>
 ) => Promise<KintoneRecord> = async (record, task) => {
   const newRecord: KintoneRecord = {};
   for (const [fieldCode, field] of Object.entries(record)) {
@@ -65,12 +65,7 @@ const fieldProcessor: (
   fieldCode: string,
   field: KintoneRecordField.OneOf,
   options: { apiClient: KintoneRestAPIClient; attachmentsDir?: string }
-) => Promise<FieldsForExport.OneOf> = async (
-  recordId,
-  fieldCode,
-  field,
-  options
-) => {
+) => Promise<Fields.OneOf> = async (recordId, fieldCode, field, options) => {
   const { attachmentsDir, apiClient } = options;
 
   // TODO: filter fields
@@ -78,7 +73,7 @@ const fieldProcessor: (
   switch (field.type) {
     case "FILE":
       if (attachmentsDir) {
-        const downloadedList: FieldsForExport.File["value"] = [];
+        const downloadedList: Fields.File["value"] = [];
         for (const fileInfo of field.value) {
           const localFilePath = path.join(
             attachmentsDir,
@@ -106,8 +101,7 @@ const fieldProcessor: (
     case "SUBTABLE": {
       const newRows = [];
       for (const [rowIndex, row] of field.value.entries()) {
-        const fieldsInRow: FieldsForExport.Subtable["value"][number]["value"] =
-          {};
+        const fieldsInRow: Fields.Subtable["value"][number]["value"] = {};
         for (const [fieldCodeInSubtable, fieldInSubtable] of Object.entries(
           row.value
         )) {
@@ -139,7 +133,7 @@ const fieldProcessorInSubtable: (
   fieldCode: string,
   field: KintoneRecordField.InSubtable,
   options: { apiClient: KintoneRestAPIClient; attachmentsDir?: string }
-) => Promise<FieldsForExport.InSubtable> = async (
+) => Promise<Fields.InSubtable> = async (
   recordId,
   rowId,
   rowIndex,
@@ -151,7 +145,7 @@ const fieldProcessorInSubtable: (
   switch (field.type) {
     case "FILE":
       if (attachmentsDir) {
-        const downloadedList: FieldsForExport.File["value"] = [];
+        const downloadedList: Fields.File["value"] = [];
         for (const fileInfo of field.value) {
           const localFilePath = path.join(
             attachmentsDir,

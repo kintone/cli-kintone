@@ -1,4 +1,4 @@
-import { buildRestAPIClient } from "../api";
+import { buildRestAPIClient } from "../kintone/client";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 const packageJson = require("../../package.json");

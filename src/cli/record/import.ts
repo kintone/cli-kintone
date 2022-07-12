@@ -18,6 +18,7 @@ const builder = (args: yargs.Argv) =>
       defaultDescription: "KINTONE_BASE_URL",
       type: "string",
       demandOption: true,
+      requiresArg: true,
     })
     .option("username", {
       alias: "u",
@@ -25,6 +26,7 @@ const builder = (args: yargs.Argv) =>
       default: process.env.KINTONE_USERNAME,
       defaultDescription: "KINTONE_USERNAME",
       type: "string",
+      requiresArg: true,
     })
     .option("password", {
       alias: "p",
@@ -32,62 +34,74 @@ const builder = (args: yargs.Argv) =>
       default: process.env.KINTONE_PASSWORD,
       defaultDescription: "KINTONE_PASSWORD",
       type: "string",
+      requiresArg: true,
     })
     .option("api-token", {
       describe: "App's API token",
       default: process.env.KINTONE_API_TOKEN,
       defaultDescription: "KINTONE_API_TOKEN",
       type: "array",
+      requiresArg: true,
     })
     .option("basic-auth-username", {
       describe: "Kintone Basic Auth Username",
       default: process.env.KINTONE_BASIC_AUTH_USERNAME,
       defaultDescription: "KINTONE_BASIC_AUTH_USERNAME",
       type: "string",
+      requiresArg: true,
     })
     .option("basic-auth-password", {
       describe: "Kintone Basic Auth Password",
       default: process.env.KINTONE_BASIC_AUTH_PASSWORD,
       defaultDescription: "KINTONE_BASIC_AUTH_PASSWORD",
       type: "string",
+      requiresArg: true,
     })
     .option("app", {
       describe: "The ID of the app",
       type: "string",
       demandOption: true,
+      requiresArg: true,
     })
     .option("guest-space-id", {
       describe: "The ID of guest space",
       default: process.env.KINTONE_GUEST_SPACE_ID,
       defaultDescription: "KINTONE_GUEST_SPACE_ID",
       type: "string",
+      requiresArg: true,
     })
     .option("attachments-dir", {
       describe: "Attachment file directory",
       type: "string",
+      requiresArg: true,
     })
     .option("file-path", {
       describe: 'The path to source file. ".csv" or ".json"',
       type: "string",
       demandOption: true,
+      requiresArg: true,
     })
     .option("encoding", {
       describe:
         "Character encoding\n(available only if the source file format is CSV)",
       default: "utf8" as SupportedImportEncoding,
       choices: encoding,
+      requiresArg: true,
     })
     .option("update-key", {
       describe: "The key to Bulk Update",
       type: "string",
+      requiresArg: true,
     })
     .option("pfx-file-path", {
       describe: "The path to client certificate file",
       type: "string",
+      requiresArg: true,
     })
     .option("pfx-file-password", {
       describe: "The password of client certificate file",
       type: "string",
+      requiresArg: true,
     });
 
 type Args = yargs.Arguments<

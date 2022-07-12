@@ -7,12 +7,7 @@ const command = "record";
 const describe = "import/export the records of the specified app";
 
 const builder = (args: yargs.Argv) =>
-  args
-    .command(exportCommand)
-    .command(importCommand)
-    .demandCommand()
-    .strict()
-    .help();
+  args.command(exportCommand).command(importCommand).demandCommand();
 
 const handler = () => {
   /** noop **/

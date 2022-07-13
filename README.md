@@ -34,8 +34,7 @@ We plan to support them in the future release.
 `import` command allows you to import record data into a specified kintone app.
 
 ```
-$ cli-kintone \
-import \
+$ cli-kintone record import \
 --base-url https://${yourDomain} \
 --username ${yourLoginName} \
 --password ${yourPassword} \
@@ -100,8 +99,7 @@ The field specified as "Key to Bulk Update" should meet the following requiremen
 `export` command allows you to export record data from a specified kintone app.
 
 ```
-$ cli-kintone \
-export \
+$ cli-kintone record export \
 --base-url https://${yourDomain} \
 --username ${yourLoginName} \
 --password ${yourPassword} \

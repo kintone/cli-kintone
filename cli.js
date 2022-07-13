@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require("./lib/main.js");
+require("./lib/cli/main.js");

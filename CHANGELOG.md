@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.11.2](https://github.com/kintone/cli-kintone/compare/v0.11.1...v0.11.2) (2022-07-13)
+
+
+### Bug Fixes
+
+* wrap import/export in the record command ([#8](https://github.com/kintone/cli-kintone/issues/8)) ([3ac5236](https://github.com/kintone/cli-kintone/commit/3ac52364ae13114eac8ef4f35960ccfb1e1b44bd))
+
 ## [0.11.1](https://github.com/kintone/js-sdk/compare/@kintone/data-loader@0.11.0...@kintone/data-loader@0.11.1) (2022-06-29)
 
 **Note:** Version bump only for package @kintone/data-loader

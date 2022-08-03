@@ -1,5 +1,8 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 const packageJson = require("../../package.json");
+import HttpsProxyAgent from "https-proxy-agent";
+import * as https from "https";
+import fs from "fs";
 
 export type RestAPIClientOptions = {
   baseUrl: string;
@@ -40,24 +43,70 @@ const buildBasicAuthParam = (options: RestAPIClientOptions) => {
     : {};
 };
 
-const buildClientCertAuth = (options: RestAPIClientOptions) => {
-  return options.pfxFilePath && options.pfxFilePassword
-    ? {
-        clientCertAuth: {
-          pfxFilePath: options.pfxFilePath,
-          password: options.pfxFilePassword,
-        },
-      }
-    : {};
+type ProxyConfig = {
+  protocol: string;
+  host: string;
+  port: number;
+  auth?: {
+    username: string;
+    password: string;
+  };
+};
+
+const buildProxyConfig = (proxy: string): ProxyConfig | undefined => {
+  const { protocol, hostname: host, port, username, password } = new URL(proxy);
+  let auth;
+  if (username.length > 0 && password.length > 0) {
+    auth = { username, password };
+  }
+  return {
+    protocol,
+    host,
+    port: Number(port),
+    auth,
+  };
+};
+
+const buildHttpsAgent = (options: {
+  proxy?: string;
+  pfxFilePath?: string;
+  pfxFilePassword?: string;
+}): https.Agent => {
+  let pfx: string | Buffer | undefined;
+  if (options.pfxFilePath !== undefined) {
+    pfx = fs.readFileSync(options.pfxFilePath);
+  }
+  const clientAuth =
+    pfx && options.pfxFilePassword
+      ? { pfx, passphrase: options.pfxFilePassword }
+      : {};
+  if (!options.proxy) {
+    return new https.Agent({ ...clientAuth });
+  }
+
+  const { protocol, hostname, port } = new URL(options.proxy);
+  return HttpsProxyAgent({
+    protocol: protocol,
+    host: hostname,
+    port: port,
+    ...clientAuth,
+  });
 };
 
 export const buildRestAPIClient = (options: RestAPIClientOptions) => {
+  const httpsProxy =
+    process.env.HTTPS_PROXY ?? process.env.https_proxy ?? undefined;
   return new KintoneRestAPIClient({
     baseUrl: options.baseUrl,
     auth: buildAuthParam(options),
     ...buildBasicAuthParam(options),
-    ...buildClientCertAuth(options),
     ...(options.guestSpaceId ? { guestSpaceId: options.guestSpaceId } : {}),
     userAgent: `${packageJson.name}@${packageJson.version}`,
+    ...(httpsProxy ? { proxy: buildProxyConfig(httpsProxy) } : {}),
+    httpsAgent: buildHttpsAgent({
+      proxy: httpsProxy,
+      pfxFilePath: options.pfxFilePath,
+      pfxFilePassword: options.pfxFilePassword,
+    }),
   });
 };

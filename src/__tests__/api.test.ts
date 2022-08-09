@@ -3,6 +3,7 @@ import { buildRestAPIClient } from "../kintone/client";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import * as https from "https";
 import fs from "fs";
+import HttpsProxyAgent from "https-proxy-agent";
 const packageJson = require("../../package.json");
 const expectedUa = `${packageJson.name}@${packageJson.version}`;
 
@@ -34,44 +35,42 @@ jest.mock("https", () => {
 });
 
 jest.mock("https-proxy-agent", () => {
-  return {
-    Agent: jest
-      .fn()
-      .mockImplementation(
-        (opts: {
+  return jest
+    .fn()
+    .mockImplementation(
+      (opts: {
+        protocol?: string;
+        host?: string;
+        port?: string;
+        pfx?: Buffer | string;
+        passphrase?: string;
+      }) => {
+        const agentInstance: {
           protocol?: string;
           host?: string;
           port?: string;
           pfx?: Buffer | string;
           passphrase?: string;
-        }) => {
-          const agentInstance: {
-            protocol?: string;
-            host?: string;
-            port?: string;
-            pfx?: Buffer | string;
-            passphrase?: string;
-          } = {};
+        } = {};
 
-          if (opts.protocol) {
-            agentInstance.protocol = opts.protocol;
-          }
-          if (opts.host) {
-            agentInstance.host = opts.host;
-          }
-          if (opts.port) {
-            agentInstance.port = opts.port;
-          }
-          if (opts.pfx) {
-            agentInstance.pfx = opts.pfx;
-          }
-          if (opts.passphrase) {
-            agentInstance.passphrase = opts.passphrase;
-          }
-          return agentInstance;
+        if (opts.protocol) {
+          agentInstance.protocol = opts.protocol;
         }
-      ),
-  };
+        if (opts.host) {
+          agentInstance.host = opts.host;
+        }
+        if (opts.port) {
+          agentInstance.port = opts.port;
+        }
+        if (opts.pfx) {
+          agentInstance.pfx = opts.pfx;
+        }
+        if (opts.passphrase) {
+          agentInstance.passphrase = opts.passphrase;
+        }
+        return agentInstance;
+      }
+    );
 });
 
 describe("api", () => {
@@ -81,6 +80,7 @@ describe("api", () => {
   const API_TOKEN = "api_token";
   const PFX_FILE_PATH = "./dummy.pfx";
   const PFX_FILE_PASSWORD = "pfx_password";
+  const HTTPS_PROXY = "http://proxy.example.com:3128";
 
   it("should pass username and password to the apiClient correctly", () => {
     const apiClient = buildRestAPIClient({
@@ -200,6 +200,64 @@ describe("api", () => {
         pfx: "dummy",
         passphrase: PFX_FILE_PASSWORD,
       }),
+    });
+  });
+  it("should pass information of proxy server to the apiClient correctly", () => {
+    const apiClient = buildRestAPIClient({
+      baseUrl: BASE_URL,
+      username: USERNAME,
+      password: PASSWORD,
+      httpsProxy: HTTPS_PROXY,
+    });
+    expect(apiClient).toBeInstanceOf(KintoneRestAPIClient);
+    expect(KintoneRestAPIClient).toHaveBeenCalledWith({
+      baseUrl: BASE_URL,
+      auth: {
+        username: USERNAME,
+        password: PASSWORD,
+      },
+      userAgent: expectedUa,
+      httpsAgent: HttpsProxyAgent({
+        protocol: "http:",
+        host: "proxy.example.com",
+        port: "3128",
+      }),
+      proxy: {
+        protocol: "http:",
+        host: "proxy.example.com",
+        port: 3128,
+      },
+    });
+  });
+  it("should pass information of client certificate and proxy server to the apiClient correctly", () => {
+    const apiClient = buildRestAPIClient({
+      baseUrl: BASE_URL,
+      username: USERNAME,
+      password: PASSWORD,
+      pfxFilePath: PFX_FILE_PATH,
+      pfxFilePassword: PFX_FILE_PASSWORD,
+      httpsProxy: HTTPS_PROXY,
+    });
+    expect(apiClient).toBeInstanceOf(KintoneRestAPIClient);
+    expect(KintoneRestAPIClient).toHaveBeenCalledWith({
+      baseUrl: BASE_URL,
+      auth: {
+        username: USERNAME,
+        password: PASSWORD,
+      },
+      userAgent: expectedUa,
+      httpsAgent: HttpsProxyAgent({
+        protocol: "http:",
+        host: "proxy.example.com",
+        port: "3128",
+        pfx: "dummy",
+        passphrase: PFX_FILE_PASSWORD,
+      }),
+      proxy: {
+        protocol: "http:",
+        host: "proxy.example.com",
+        port: 3128,
+      },
     });
   });
 });

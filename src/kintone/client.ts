@@ -45,7 +45,7 @@ const buildBasicAuthParam = (options: RestAPIClientOptions) => {
 };
 
 type ProxyConfig = {
-  protocol: string;
+  protocol?: string;
   host: string;
   port: number;
   auth?: {
@@ -56,16 +56,15 @@ type ProxyConfig = {
 
 const buildProxyConfig = (proxy: string): ProxyConfig | undefined => {
   const { protocol, hostname: host, port, username, password } = new URL(proxy);
-  let auth;
-  if (username.length > 0 && password.length > 0) {
-    auth = { username, password };
+  const proxyConfig: ProxyConfig = { host, port: Number(port) };
+
+  if (protocol.length > 0) {
+    proxyConfig.protocol = protocol;
   }
-  return {
-    protocol,
-    host,
-    port: Number(port),
-    auth,
-  };
+  if (username.length > 0 && password.length > 0) {
+    proxyConfig.auth = { username, password };
+  }
+  return proxyConfig;
 };
 
 const buildHttpsAgent = (options: {

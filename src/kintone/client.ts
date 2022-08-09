@@ -15,6 +15,7 @@ export type RestAPIClientOptions = {
   pfxFilePath?: string;
   pfxFilePassword?: string;
   userAgent?: string;
+  httpsProxy?: string;
 };
 
 const buildAuthParam = (options: RestAPIClientOptions) => {
@@ -94,17 +95,17 @@ const buildHttpsAgent = (options: {
 };
 
 export const buildRestAPIClient = (options: RestAPIClientOptions) => {
-  const httpsProxy =
-    process.env.HTTPS_PROXY ?? process.env.https_proxy ?? undefined;
   return new KintoneRestAPIClient({
     baseUrl: options.baseUrl,
     auth: buildAuthParam(options),
     ...buildBasicAuthParam(options),
     ...(options.guestSpaceId ? { guestSpaceId: options.guestSpaceId } : {}),
     userAgent: `${packageJson.name}@${packageJson.version}`,
-    ...(httpsProxy ? { proxy: buildProxyConfig(httpsProxy) } : {}),
+    ...(options.httpsProxy
+      ? { proxy: buildProxyConfig(options.httpsProxy) }
+      : {}),
     httpsAgent: buildHttpsAgent({
-      proxy: httpsProxy,
+      proxy: options.httpsProxy,
       pfxFilePath: options.pfxFilePath,
       pfxFilePassword: options.pfxFilePassword,
     }),

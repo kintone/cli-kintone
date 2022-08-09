@@ -1,10 +1,78 @@
 import { buildRestAPIClient } from "../kintone/client";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
+import * as https from "https";
+import fs from "fs";
 const packageJson = require("../../package.json");
 const expectedUa = `${packageJson.name}@${packageJson.version}`;
 
 jest.mock("@kintone/rest-api-client");
+
+jest.mock("fs");
+jest.spyOn(fs, "readFileSync").mockReturnValue("dummy");
+
+jest.mock("https", () => {
+  return {
+    Agent: jest
+      .fn()
+      .mockImplementation(
+        (opts?: { pfx?: Buffer | string; passphrase?: string }) => {
+          const agentInstance: {
+            pfx?: Buffer | string;
+            passphrase?: string;
+          } = {};
+          if (opts?.pfx) {
+            agentInstance.pfx = opts.pfx;
+          }
+          if (opts?.passphrase) {
+            agentInstance.passphrase = opts.passphrase;
+          }
+          return agentInstance;
+        }
+      ),
+  };
+});
+
+jest.mock("https-proxy-agent", () => {
+  return {
+    Agent: jest
+      .fn()
+      .mockImplementation(
+        (opts: {
+          protocol?: string;
+          host?: string;
+          port?: string;
+          pfx?: Buffer | string;
+          passphrase?: string;
+        }) => {
+          const agentInstance: {
+            protocol?: string;
+            host?: string;
+            port?: string;
+            pfx?: Buffer | string;
+            passphrase?: string;
+          } = {};
+
+          if (opts.protocol) {
+            agentInstance.protocol = opts.protocol;
+          }
+          if (opts.host) {
+            agentInstance.host = opts.host;
+          }
+          if (opts.port) {
+            agentInstance.port = opts.port;
+          }
+          if (opts.pfx) {
+            agentInstance.pfx = opts.pfx;
+          }
+          if (opts.passphrase) {
+            agentInstance.passphrase = opts.passphrase;
+          }
+          return agentInstance;
+        }
+      ),
+  };
+});
 
 describe("api", () => {
   const USERNAME = "username";
@@ -28,6 +96,7 @@ describe("api", () => {
         password: PASSWORD,
       },
       userAgent: expectedUa,
+      httpsAgent: new https.Agent(),
     });
   });
 
@@ -49,6 +118,7 @@ describe("api", () => {
       },
       guestSpaceId: GUEST_SPACE_ID,
       userAgent: expectedUa,
+      httpsAgent: new https.Agent(),
     });
   });
 
@@ -62,6 +132,7 @@ describe("api", () => {
       baseUrl: BASE_URL,
       auth: { apiToken: API_TOKEN },
       userAgent: expectedUa,
+      httpsAgent: new https.Agent(),
     });
   });
 
@@ -80,6 +151,7 @@ describe("api", () => {
         password: PASSWORD,
       },
       userAgent: expectedUa,
+      httpsAgent: new https.Agent(),
     });
   });
 
@@ -105,6 +177,7 @@ describe("api", () => {
         password: BASIC_AUTH_PASSWORD,
       },
       userAgent: expectedUa,
+      httpsAgent: new https.Agent(),
     });
   });
   it("should pass information of client certificate to the apiClient correctly", () => {
@@ -122,11 +195,11 @@ describe("api", () => {
         username: USERNAME,
         password: PASSWORD,
       },
-      clientCertAuth: {
-        pfxFilePath: PFX_FILE_PATH,
-        password: PFX_FILE_PASSWORD,
-      },
       userAgent: expectedUa,
+      httpsAgent: new https.Agent({
+        pfx: "dummy",
+        passphrase: PFX_FILE_PASSWORD,
+      }),
     });
   });
 });

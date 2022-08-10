@@ -104,7 +104,7 @@ const builder = (args: yargs.Argv) =>
       requiresArg: true,
     })
     .option("proxy", {
-      describe: "The URL of an proxy server",
+      describe: "The URL of a proxy server",
       default: process.env.HTTPS_PROXY ?? process.env.https_proxy,
       defaultDescription: "HTTPS_PROXY",
       type: "string",

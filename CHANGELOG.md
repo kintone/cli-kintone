@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.0](https://github.com/kintone/cli-kintone/compare/v0.11.2...v0.12.0) (2022-08-10)
+
+
+### Features
+
+* support request over proxy ([#25](https://github.com/kintone/cli-kintone/issues/25)) ([a810d6d](https://github.com/kintone/cli-kintone/commit/a810d6d235ed3f55fbd7ebc20420c7710513ef56))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.1.5 ([#15](https://github.com/kintone/cli-kintone/issues/15)) ([aeb0a10](https://github.com/kintone/cli-kintone/commit/aeb0a10c98eb30b182aff8c3782fa5ebb917d408))
+
 ## [0.11.2](https://github.com/kintone/cli-kintone/compare/v0.11.1...v0.11.2) (2022-07-13)
 
 

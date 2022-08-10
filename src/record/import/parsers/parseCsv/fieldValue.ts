@@ -1,4 +1,4 @@
-import { LINE_BREAK } from "../../../export/printers/printAsCsv/constants";
+import { LINE_BREAK } from "../../../export/printers/printAsCsvOld/constants";
 import * as Fields from "../../types/field";
 import { FieldProperties } from "../../../../kintone/types";
 

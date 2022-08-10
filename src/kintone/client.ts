@@ -1,5 +1,8 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 const packageJson = require("../../package.json");
+import HttpsProxyAgent from "https-proxy-agent";
+import * as https from "https";
+import fs from "fs";
 
 export type RestAPIClientOptions = {
   baseUrl: string;
@@ -12,6 +15,7 @@ export type RestAPIClientOptions = {
   pfxFilePath?: string;
   pfxFilePassword?: string;
   userAgent?: string;
+  httpsProxy?: string;
 };
 
 const buildAuthParam = (options: RestAPIClientOptions) => {
@@ -40,15 +44,53 @@ const buildBasicAuthParam = (options: RestAPIClientOptions) => {
     : {};
 };
 
-const buildClientCertAuth = (options: RestAPIClientOptions) => {
-  return options.pfxFilePath && options.pfxFilePassword
-    ? {
-        clientCertAuth: {
-          pfxFilePath: options.pfxFilePath,
-          password: options.pfxFilePassword,
-        },
-      }
-    : {};
+type ProxyConfig = {
+  protocol?: string;
+  host: string;
+  port: number;
+  auth?: {
+    username: string;
+    password: string;
+  };
+};
+
+const buildProxyConfig = (proxy: string): ProxyConfig | undefined => {
+  const { protocol, hostname: host, port, username, password } = new URL(proxy);
+  const proxyConfig: ProxyConfig = { host, port: Number(port) };
+
+  if (protocol.length > 0) {
+    proxyConfig.protocol = protocol;
+  }
+  if (username.length > 0 && password.length > 0) {
+    proxyConfig.auth = { username, password };
+  }
+  return proxyConfig;
+};
+
+const buildHttpsAgent = (options: {
+  proxy?: string;
+  pfxFilePath?: string;
+  pfxFilePassword?: string;
+}): https.Agent => {
+  let pfx: string | Buffer | undefined;
+  if (options.pfxFilePath !== undefined) {
+    pfx = fs.readFileSync(options.pfxFilePath);
+  }
+  const clientAuth =
+    pfx && options.pfxFilePassword
+      ? { pfx, passphrase: options.pfxFilePassword }
+      : {};
+  if (!options.proxy) {
+    return new https.Agent({ ...clientAuth });
+  }
+
+  const { protocol, hostname, port } = new URL(options.proxy);
+  return HttpsProxyAgent({
+    protocol: protocol,
+    host: hostname,
+    port: port,
+    ...clientAuth,
+  });
 };
 
 export const buildRestAPIClient = (options: RestAPIClientOptions) => {
@@ -56,8 +98,15 @@ export const buildRestAPIClient = (options: RestAPIClientOptions) => {
     baseUrl: options.baseUrl,
     auth: buildAuthParam(options),
     ...buildBasicAuthParam(options),
-    ...buildClientCertAuth(options),
     ...(options.guestSpaceId ? { guestSpaceId: options.guestSpaceId } : {}),
     userAgent: `${packageJson.name}@${packageJson.version}`,
+    ...(options.httpsProxy
+      ? { proxy: buildProxyConfig(options.httpsProxy) }
+      : {}),
+    httpsAgent: buildHttpsAgent({
+      proxy: options.httpsProxy,
+      pfxFilePath: options.pfxFilePath,
+      pfxFilePassword: options.pfxFilePassword,
+    }),
   });
 };

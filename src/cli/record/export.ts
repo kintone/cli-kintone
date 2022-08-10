@@ -101,6 +101,12 @@ const builder = (args: yargs.Argv) =>
       describe: "The password of client certificate file",
       type: "string",
       requiresArg: true,
+    })
+    .option("proxy", {
+      describe: "The URL of a proxy server",
+      default: process.env.HTTPS_PROXY ?? process.env.https_proxy,
+      defaultDescription: "HTTPS_PROXY",
+      type: "string",
     });
 
 type Args = yargs.Arguments<
@@ -123,6 +129,7 @@ const handler = (args: Args) => {
     orderBy: args["order-by"],
     pfxFilePath: args["pfx-file-path"],
     pfxFilePassword: args["pfx-file-password"],
+    httpsProxy: args.proxy,
   });
 };
 

@@ -73,6 +73,8 @@ Options:
       --update-key           The key to Bulk Update                     [string]
       --pfx-file-path        The path to client certificate file        [string]
       --pfx-file-password    The password of client certificate file    [string]
+      --proxy                The URL of a proxy server
+                                                 [string] [default: HTTPS_PROXY]
 ```
 
 #### Import Attachment field
@@ -136,6 +138,8 @@ Options:
       --order-by             The sort order as a query                  [string]
       --pfx-file-path        The path to client certificate file        [string]
       --pfx-file-password    The password of client certificate file    [string]
+      --proxy                The URL of a proxy server
+                                                 [string] [default: HTTPS_PROXY]
 ```
 
 #### Download attachment files

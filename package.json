@@ -67,7 +67,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@kintone/rest-api-client": "^3.1.5",
+    "@kintone/rest-api-client": "^3.1.7",
     "csv-parse": "^4.16.3",
     "https-proxy-agent": "^5.0.1",
     "iconv-lite": "^0.6.3",

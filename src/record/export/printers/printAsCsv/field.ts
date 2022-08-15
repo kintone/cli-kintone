@@ -28,7 +28,7 @@ export function* fieldReader(
     }
 
     if (!(code in record)) {
-      continue; // TODO: error
+      throw new Error(`The record is missing a field (${code})`);
     }
     yield { code, value: record[code] };
   }

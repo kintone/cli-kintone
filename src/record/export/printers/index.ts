@@ -19,7 +19,6 @@ export const printRecords: (options: {
       break;
     }
     case "csv": {
-      // TODO: pass the schema as arguments
       printAsCsv(
         records,
         await apiClient.app.getFormFields({ app }),

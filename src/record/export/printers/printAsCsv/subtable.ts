@@ -39,7 +39,7 @@ export function* subtableFieldReader(
     }
 
     if (!(code in record)) {
-      continue; // TODO: error
+      throw new Error(`The record is missing a field (${code})`);
     }
     yield { code, value: record[code] as Fields.Subtable };
   }
@@ -96,7 +96,7 @@ function* fieldsInSubtableReader(
 ): Generator<FieldInSubtable, void, undefined> {
   const subtableFieldProperty = fieldsJson.properties[subtableFieldCode];
   if (subtableFieldProperty.type !== "SUBTABLE") {
-    throw new Error("Illegal state"); // TODO: error message
+    throw new Error("Illegal state");
   }
 
   for (const [fieldCodeInSubtable, fieldPropertyInSubtable] of Object.entries(

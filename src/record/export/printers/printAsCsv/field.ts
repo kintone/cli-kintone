@@ -1,8 +1,9 @@
-import { KintoneRecord } from "../../types/record";
-import * as Fields from "../../types/field";
-import { convertFieldValue } from "./fieldValue";
-import { FieldsJson } from "../../../../kintone/types";
+import type { KintoneRecord } from "../../types/record";
+import type * as Fields from "../../types/field";
+import type { FieldsJson } from "../../../../kintone/types";
+
 import { supportedFieldTypes } from "./constants";
+import { convertFieldValue } from "./fieldValue";
 
 type Field = {
   code: string;

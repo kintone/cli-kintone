@@ -1,5 +1,6 @@
+import type * as Fields from "../../../types/field";
+
 import { convertFieldValue } from "../fieldValue";
-import * as Fields from "../../../types/field";
 
 const patterns: Array<{
   input: Fields.OneOf;

@@ -1,6 +1,7 @@
+import type { FieldsJson } from "../../../../../kintone/types";
+import type { KintoneRecord } from "../../../types/record";
+
 import { stringifyAsCsv } from "../index";
-import { FieldsJson } from "../../../../../kintone/types";
-import { KintoneRecord } from "../../../types/record";
 
 import { pattern as common } from "./fixtures/index/common";
 import { pattern as withFileAndAttachmentsDir } from "./fixtures/index/withFileAndAttachmentsDir";

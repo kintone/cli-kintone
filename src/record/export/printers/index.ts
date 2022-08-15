@@ -1,7 +1,8 @@
+import type { KintoneRecord } from "../types/record";
+
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { printAsJson } from "./printAsJson";
 import { printAsCsv } from "./printAsCsv";
-import { KintoneRecord } from "../types/record";
 
 export type ExportFileFormat = "csv" | "json";
 

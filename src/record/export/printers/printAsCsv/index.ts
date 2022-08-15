@@ -1,6 +1,8 @@
+import type { KintoneRecord } from "../../types/record";
+import type { CsvRow, FieldsJson } from "../../../../kintone/types";
+
 import stringify from "csv-stringify/lib/sync";
-import { KintoneRecord } from "../../types/record";
-import { CsvRow, FieldsJson } from "../../../../kintone/types";
+
 import { convertRecord, recordReader } from "./record";
 import { LINE_BREAK, SEPARATOR } from "./constants";
 import { buildHeaderFields } from "./header";

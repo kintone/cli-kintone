@@ -1,6 +1,7 @@
+import type { FieldsJson } from "../../../../../kintone/types";
+
 import { buildHeaderFields } from "../header";
 import { PRIMARY_MARK } from "../constants";
-import { FieldsJson } from "../../../../../kintone/types";
 
 const fieldsJson: FieldsJson = require("./fixtures/header/fields.json");
 const fileFieldsJson: FieldsJson = require("./fixtures/header/file_fields.json");

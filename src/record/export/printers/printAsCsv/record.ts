@@ -1,5 +1,6 @@
-import { CsvRow, FieldsJson } from "../../../../kintone/types";
-import { KintoneRecord } from "../../types/record";
+import type { CsvRow, FieldsJson } from "../../../../kintone/types";
+import type { KintoneRecord } from "../../types/record";
+
 import { convertField, fieldReader } from "./field";
 import {
   convertSubtableField,

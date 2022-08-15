@@ -1,4 +1,4 @@
-import { KintoneFormFieldProperty } from "@kintone/rest-api-client";
+import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 
 export const LINE_BREAK = "\n";
 export const SEPARATOR = ",";

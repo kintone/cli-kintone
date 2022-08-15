@@ -5,6 +5,8 @@ import { convertRecord, recordReader } from "./record";
 import { hasSubtable } from "../printAsCsvOld/hasSubtable";
 import { PRIMARY_MARK } from "../printAsCsvOld/constants";
 import {
+  LINE_BREAK,
+  SEPARATOR,
   supportedFieldTypes,
   supportedFieldTypesInSubtable,
 } from "./constants";
@@ -14,6 +16,14 @@ export const printAsCsv = (
   fieldsJson: FieldsJson,
   attachmentsDir?: string
 ): void => {
+  console.log(stringifyAsCsv(records, fieldsJson, attachmentsDir));
+};
+
+export const stringifyAsCsv = (
+  records: KintoneRecord[],
+  fieldsJson: FieldsJson,
+  attachmentsDir?: string
+): string => {
   const headerFields = buildHeaderFields(fieldsJson);
 
   const csvRows: CsvRow[] = [];
@@ -21,13 +31,14 @@ export const printAsCsv = (
     csvRows.push(...convertRecord(record, fieldsJson, attachmentsDir));
   }
 
-  const stream = stringify(csvRows, {
+  return stringify(csvRows, {
     columns: headerFields,
     header: true,
+    delimiter: SEPARATOR,
+    record_delimiter: LINE_BREAK,
     quoted_match: /^(?!\*$).*$/,
     quoted_empty: false,
   });
-  console.log(stream);
 };
 
 // TODO: refactor

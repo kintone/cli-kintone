@@ -40,10 +40,3 @@ export const convertFieldValue: (
       return "";
   }
 };
-
-export const encloseInDoubleQuotes: (fieldValue: string) => string = (
-  fieldValue
-) => `"${fieldValue ? fieldValue : ""}"`;
-
-export const escapeDoubleQuotes = (fieldValue?: string | null) =>
-  fieldValue ? fieldValue.replace(/"/g, '""') : "";

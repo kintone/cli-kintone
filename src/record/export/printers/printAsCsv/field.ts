@@ -22,12 +22,12 @@ export function* fieldReader(
   record: KintoneRecord,
   fieldsJson: FieldsJson
 ): Generator<Field, void, undefined> {
-  for (const [code, properties] of Object.entries(fieldsJson.properties)) {
-    if (!supportedFieldTypes.includes(properties.type)) {
+  for (const [code, property] of Object.entries(fieldsJson.properties)) {
+    if (!supportedFieldTypes.includes(property.type)) {
       continue;
     }
 
-    if (properties.type === "SUBTABLE") {
+    if (property.type === "SUBTABLE") {
       continue;
     }
 

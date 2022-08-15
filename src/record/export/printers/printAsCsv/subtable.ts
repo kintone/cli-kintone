@@ -1,6 +1,7 @@
 import type * as Fields from "../../types/field";
 import type { KintoneRecord } from "../../types/record";
 import type { CsvRow, FieldsJson } from "../../../../kintone/types";
+import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 
 import { convertFieldValue } from "./fieldValue";
 import { supportedFieldTypesInSubtable } from "./constants";
@@ -8,6 +9,9 @@ import { supportedFieldTypesInSubtable } from "./constants";
 type SubtableField = {
   code: string;
   value: Fields.Subtable;
+  fields: {
+    [fieldCode: string]: KintoneFormFieldProperty.InSubtable;
+  };
 };
 
 export const hasSubtable = (fieldsJson: FieldsJson) =>
@@ -17,13 +21,12 @@ export const hasSubtable = (fieldsJson: FieldsJson) =>
 
 export const convertSubtableField = (
   field: SubtableField,
-  fieldsJson: FieldsJson,
   useLocalFilePath: boolean
 ): CsvRow[] => {
   const subtableRows: CsvRow[] = [];
   for (const row of subtableRowReader(field)) {
     subtableRows.push(
-      convertSubtableRow(row, field.code, fieldsJson, useLocalFilePath)
+      convertSubtableRow(row, field.code, field.fields, useLocalFilePath)
     );
   }
   return subtableRows;
@@ -42,7 +45,11 @@ export function* subtableFieldReader(
     if (!(code in record)) {
       throw new Error(`The record is missing a field (${code})`);
     }
-    yield { code, value: record[code] as Fields.Subtable };
+    yield {
+      code,
+      value: record[code] as Fields.Subtable,
+      fields: properties.fields,
+    };
   }
 }
 
@@ -51,7 +58,7 @@ type SubtableRow = Fields.Subtable["value"][number];
 const convertSubtableRow = (
   subtableRow: SubtableRow,
   subtableFieldCode: string,
-  fieldsJson: FieldsJson,
+  subtableFields: SubtableField["fields"],
   useLocalFilePath: boolean
 ): CsvRow => {
   const newRow: CsvRow = {
@@ -60,7 +67,7 @@ const convertSubtableRow = (
   for (const fieldsInSubtable of fieldsInSubtableReader(
     subtableRow,
     subtableFieldCode,
-    fieldsJson
+    subtableFields
   )) {
     newRow[fieldsInSubtable.code] = convertFieldInSubtable(
       fieldsInSubtable,
@@ -93,15 +100,10 @@ const convertFieldInSubtable = (
 function* fieldsInSubtableReader(
   subtableRow: SubtableRow,
   subtableFieldCode: string,
-  fieldsJson: FieldsJson
+  subtableFields: SubtableField["fields"]
 ): Generator<FieldInSubtable, void, undefined> {
-  const subtableFieldProperty = fieldsJson.properties[subtableFieldCode];
-  if (subtableFieldProperty.type !== "SUBTABLE") {
-    throw new Error("Illegal state");
-  }
-
   for (const [fieldCodeInSubtable, fieldPropertyInSubtable] of Object.entries(
-    subtableFieldProperty.fields
+    subtableFields
   )) {
     if (!supportedFieldTypesInSubtable.includes(fieldPropertyInSubtable.type)) {
       continue;

@@ -29,9 +29,7 @@ export const convertRecord = (
 
   const subtableRows: CsvRow[] = [];
   for (const subtableField of subtableFieldReader(record, fieldsJson)) {
-    subtableRows.push(
-      ...convertSubtableField(subtableField, fieldsJson, useLocalFilePath)
-    );
+    subtableRows.push(...convertSubtableField(subtableField, useLocalFilePath));
   }
 
   if (subtableRows.length === 0) {

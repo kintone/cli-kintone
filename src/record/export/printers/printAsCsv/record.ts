@@ -11,7 +11,7 @@ export const convertRecord = (
   fieldsJson: FieldsJson,
   attachmentsDir?: string
 ): RecordAsCsvRows => {
-  const hasSubtable = true;
+  const hasSubtable = _hasSubtable(fieldsJson);
 
   const primaryRow: CsvRow = {};
   for (const field of fieldReader(record, fieldsJson)) {
@@ -43,6 +43,11 @@ export const convertRecord = (
 
   return recordCsvRows;
 };
+
+const _hasSubtable = (fieldsJson: FieldsJson) =>
+  Object.values(fieldsJson.properties).some(
+    (field) => field.type === "SUBTABLE"
+  );
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style

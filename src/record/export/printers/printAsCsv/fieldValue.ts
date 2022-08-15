@@ -20,25 +20,22 @@ export const convertFieldValue: (
     case "DATETIME":
     case "DATE":
     case "TIME":
-      return escapeDoubleQuotes(field.value);
+      return field.value ?? "";
     case "CREATOR":
     case "MODIFIER":
-      return escapeDoubleQuotes(field.value.code);
+      return field.value.code;
     case "MULTI_SELECT":
     case "CHECK_BOX":
-      return escapeDoubleQuotes(field.value.join(LINE_BREAK));
+      return field.value.join(LINE_BREAK);
     case "FILE":
-      return escapeDoubleQuotes(
-        field.value
-          .map((value) => (attachmentsDir ? value.localFilePath : value.name))
-          .join(LINE_BREAK)
-      );
+      return field.value
+        .map((value) => (attachmentsDir ? value.localFilePath : value.name))
+        .join(LINE_BREAK);
+
     case "USER_SELECT":
     case "ORGANIZATION_SELECT":
     case "GROUP_SELECT":
-      return escapeDoubleQuotes(
-        field.value.map((value) => value.code).join(LINE_BREAK)
-      );
+      return field.value.map((value) => value.code).join(LINE_BREAK);
     default:
       return "";
   }

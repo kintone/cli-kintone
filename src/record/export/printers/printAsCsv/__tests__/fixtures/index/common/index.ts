@@ -7,6 +7,6 @@ export const pattern: TestPattern = {
   description: "should convert kintone records to csv string correctly",
   fieldsJson: fieldsJson,
   input: input,
-  attachmentsDir: "attachmentsDir",
+  useLocalFilePath: true,
   expected: expectedCsv,
 };

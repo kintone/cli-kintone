@@ -8,6 +8,6 @@ export const pattern: TestPattern = {
     "should convert kintone records to csv string correctly when SUBTABLE included with attachmentsDir option",
   fieldsJson: fieldsJson,
   input: input,
-  attachmentsDir: "attachmentsDir",
+  useLocalFilePath: true,
   expected: expectedCsv,
 };

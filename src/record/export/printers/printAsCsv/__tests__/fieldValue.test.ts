@@ -212,7 +212,9 @@ describe("convertFieldValue", () => {
   it.each(patterns)(
     "[$#] convert $input.type field correctly",
     ({ input, expected, attachmentsDir }) => {
-      expect(convertFieldValue(input, attachmentsDir)).toStrictEqual(expected);
+      expect(convertFieldValue(input, !!attachmentsDir)).toStrictEqual(
+        expected
+      );
     }
   );
 });

@@ -18,12 +18,12 @@ export const hasSubtable = (fieldsJson: FieldsJson) =>
 export const convertSubtableField = (
   field: SubtableField,
   fieldsJson: FieldsJson,
-  attachmentsDir?: string
+  useLocalFilePath: boolean
 ): CsvRow[] => {
   const subtableRows: CsvRow[] = [];
   for (const row of subtableRowReader(field)) {
     subtableRows.push(
-      convertSubtableRow(row, field.code, fieldsJson, attachmentsDir)
+      convertSubtableRow(row, field.code, fieldsJson, useLocalFilePath)
     );
   }
   return subtableRows;
@@ -52,7 +52,7 @@ const convertSubtableRow = (
   subtableRow: SubtableRow,
   subtableFieldCode: string,
   fieldsJson: FieldsJson,
-  attachmentsDir?: string
+  useLocalFilePath: boolean
 ): CsvRow => {
   const newRow: CsvRow = {
     [subtableFieldCode]: subtableRow.id,
@@ -64,7 +64,7 @@ const convertSubtableRow = (
   )) {
     newRow[fieldsInSubtable.code] = convertFieldInSubtable(
       fieldsInSubtable,
-      attachmentsDir
+      useLocalFilePath
     );
   }
   return newRow;
@@ -84,9 +84,9 @@ type FieldInSubtable = {
 
 const convertFieldInSubtable = (
   fieldInSubtable: FieldInSubtable,
-  attachmentsDir?: string
+  useLocalFilePath: boolean
 ): string => {
-  return convertFieldValue(fieldInSubtable.value, attachmentsDir);
+  return convertFieldValue(fieldInSubtable.value, useLocalFilePath);
 };
 
 // eslint-disable-next-line func-style

@@ -11,9 +11,9 @@ export const printRecords: (options: {
   records: KintoneRecord[];
   app: string;
   format?: ExportFileFormat;
-  attachmentsDir?: string;
+  useLocalFilePath: boolean;
 }) => void = async (options) => {
-  const { apiClient, records, app, format, attachmentsDir } = options;
+  const { apiClient, records, app, format, useLocalFilePath } = options;
   switch (format) {
     case "json": {
       printAsJson(records);
@@ -23,7 +23,7 @@ export const printRecords: (options: {
       printAsCsv(
         records,
         await apiClient.app.getFormFields({ app }),
-        attachmentsDir
+        useLocalFilePath
       );
       break;
     }

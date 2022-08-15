@@ -8,5 +8,6 @@ export const pattern: TestPattern = {
     "should convert kintone records to csv string correctly when FILE included and without attachmentsDir option",
   fieldsJson: fieldsJson,
   input: input,
+  useLocalFilePath: false,
   expected: expectedCsv,
 };

@@ -14,13 +14,13 @@ export type RecordAsCsvRows = CsvRow[];
 export const convertRecord = (
   record: KintoneRecord,
   fieldsJson: FieldsJson,
-  attachmentsDir?: string
+  useLocalFilePath: boolean
 ): RecordAsCsvRows => {
   const _hasSubtable = hasSubtable(fieldsJson);
 
   const primaryRow: CsvRow = {};
   for (const field of fieldReader(record, fieldsJson)) {
-    primaryRow[field.code] = convertField(field, attachmentsDir);
+    primaryRow[field.code] = convertField(field, useLocalFilePath);
   }
 
   if (!_hasSubtable) {
@@ -30,7 +30,7 @@ export const convertRecord = (
   const subtableRows: CsvRow[] = [];
   for (const subtableField of subtableFieldReader(record, fieldsJson)) {
     subtableRows.push(
-      ...convertSubtableField(subtableField, fieldsJson, attachmentsDir)
+      ...convertSubtableField(subtableField, fieldsJson, useLocalFilePath)
     );
   }
 

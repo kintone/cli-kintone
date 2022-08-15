@@ -10,8 +10,11 @@ type Field = {
   value: Fields.OneOf;
 };
 
-export const convertField = (field: Field, attachmentsDir?: string): string => {
-  return convertFieldValue(field.value, attachmentsDir);
+export const convertField = (
+  field: Field,
+  useLocalFilePath: boolean
+): string => {
+  return convertFieldValue(field.value, useLocalFilePath);
 };
 
 // eslint-disable-next-line func-style

@@ -93,14 +93,12 @@ export const input: KintoneRecord[] = [
                 {
                   contentType: "text/plain",
                   fileKey: "test-file-key",
-
                   name: "test.txt",
                   size: "12345",
                 },
                 {
                   contentType: "text/plain",
                   fileKey: "test-file-key",
-
                   name: "test.txt",
                   size: "12345",
                 },

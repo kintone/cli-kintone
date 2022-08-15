@@ -4,7 +4,7 @@ import { LINE_BREAK } from "./constants";
 
 export const convertFieldValue = (
   field: Fields.OneOf,
-  attachmentsDir?: string
+  useLocalFilePath: boolean
 ): string => {
   switch (field.type) {
     case "RECORD_NUMBER":
@@ -30,7 +30,7 @@ export const convertFieldValue = (
       return field.value.join(LINE_BREAK);
     case "FILE":
       return field.value
-        .map((value) => (attachmentsDir ? value.localFilePath : value.name))
+        .map((value) => (useLocalFilePath ? value.localFilePath : value.name))
         .join(LINE_BREAK);
 
     case "USER_SELECT":

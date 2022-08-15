@@ -1,4 +1,4 @@
-import { KintoneRecord } from "../../../../../types/record";
+import { KintoneRecord } from "../../../../../../types/record";
 
 export const input: KintoneRecord[] = [
   {

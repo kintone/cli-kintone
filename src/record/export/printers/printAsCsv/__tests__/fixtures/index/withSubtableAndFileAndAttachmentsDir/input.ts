@@ -1,4 +1,4 @@
-import { KintoneRecord } from "../../../../../types/record";
+import { KintoneRecord } from "../../../../../../types/record";
 
 export const input: KintoneRecord[] = [
   {
@@ -93,16 +93,16 @@ export const input: KintoneRecord[] = [
                 {
                   contentType: "text/plain",
                   fileKey: "test-file-key",
-
                   name: "test.txt",
                   size: "12345",
+                  localFilePath: "subTableFile-9-0/test.txt",
                 },
                 {
                   contentType: "text/plain",
                   fileKey: "test-file-key",
-
                   name: "test.txt",
                   size: "12345",
+                  localFilePath: "subTableFile-9-0/test (1).txt",
                 },
               ],
             },
@@ -158,12 +158,14 @@ export const input: KintoneRecord[] = [
                   fileKey: "test-file-key",
                   name: "test.txt",
                   size: "12345",
+                  localFilePath: "subTableFile-9-1/test.txt",
                 },
                 {
                   contentType: "text/plain",
                   fileKey: "test-file-key",
                   name: "test.txt",
                   size: "12345",
+                  localFilePath: "subTableFile-9-1/test (1).txt",
                 },
               ],
             },

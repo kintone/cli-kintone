@@ -2,11 +2,11 @@ import { stringifyAsCsv } from "../index";
 import { FieldsJson } from "../../../../../kintone/types";
 import { KintoneRecord } from "../../../types/record";
 
-import { pattern as common } from "./fixtures/common";
-import { pattern as withFileAndAttachmentsDir } from "./fixtures/withFileAndAttachmentsDir";
-import { pattern as withFileAndNoAttachmentsDir } from "./fixtures/withFileAndNoAttachmentsDir";
-import { pattern as withSubtableAndFileAndAttachmentsDir } from "./fixtures/withSubtableAndFileAndAttachmentsDir";
-import { pattern as withEmptySubtable } from "./fixtures/withEmptySubtable";
+import { pattern as common } from "./fixtures/index/common";
+import { pattern as withFileAndAttachmentsDir } from "./fixtures/index/withFileAndAttachmentsDir";
+import { pattern as withFileAndNoAttachmentsDir } from "./fixtures/index/withFileAndNoAttachmentsDir";
+import { pattern as withSubtableAndFileAndAttachmentsDir } from "./fixtures/index/withSubtableAndFileAndAttachmentsDir";
+import { pattern as withEmptySubtable } from "./fixtures/index/withEmptySubtable";
 
 export type TestPattern = {
   description: string;

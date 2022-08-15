@@ -1,4 +1,4 @@
-import { KintoneRecord } from "../../../../../types/record";
+import { KintoneRecord } from "../../../../../../types/record";
 
 export const input: KintoneRecord[] = [
   {
@@ -73,22 +73,9 @@ export const input: KintoneRecord[] = [
       type: "__ID__",
       value: "9",
     },
-    file: {
-      type: "FILE",
-      value: [
-        {
-          contentType: "text/plain",
-          fileKey: "test-file-key",
-          size: "12345",
-          name: "test.txt",
-        },
-        {
-          contentType: "text/plain",
-          fileKey: "test-file-key",
-          size: "12345",
-          name: "test.txt",
-        },
-      ],
+    subTable: {
+      type: "SUBTABLE",
+      value: [],
     },
   },
 ];

@@ -1,8 +1,8 @@
 import { CsvRow, FieldsJson } from "../../../../kintone/types";
-import { PRIMARY_MARK } from "../../../export/printers/printAsCsvOld/constants";
 import { KintoneRecord } from "../../types/record";
 import { convertField, fieldReader } from "./field";
 import { convertSubtableField, subtableFieldReader } from "./subtable";
+import { PRIMARY_MARK } from "../../../export/printers/printAsCsv/constants";
 
 type RecordCsv = CsvRow[];
 

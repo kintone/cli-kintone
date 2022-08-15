@@ -1,10 +1,10 @@
 import { LINE_BREAK } from "./constants";
 import * as Fields from "../../types/field";
 
-export const convertFieldValue: (
+export const convertFieldValue = (
   field: Fields.OneOf,
   attachmentsDir?: string
-) => string = (field, attachmentsDir) => {
+): string => {
   switch (field.type) {
     case "RECORD_NUMBER":
     case "SINGLE_LINE_TEXT":

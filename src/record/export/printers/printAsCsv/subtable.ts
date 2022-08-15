@@ -9,6 +9,11 @@ type SubtableField = {
   value: Fields.Subtable;
 };
 
+export const hasSubtable = (fieldsJson: FieldsJson) =>
+  Object.values(fieldsJson.properties).some(
+    (field) => field.type === "SUBTABLE"
+  );
+
 export const convertSubtableField = (
   field: SubtableField,
   fieldsJson: FieldsJson,

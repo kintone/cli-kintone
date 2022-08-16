@@ -1,26 +1,35 @@
 import type { KintoneRecord } from "../../types/record";
-import type { CsvRow, FieldsJson } from "../../../../kintone/types";
+import type { CsvRow, FieldsJson, LayoutJson } from "../../../../kintone/types";
 
 import stringify from "csv-stringify/lib/sync";
 
 import { convertRecord, recordReader } from "./record";
 import { LINE_BREAK, SEPARATOR } from "./constants";
 import { buildHeaderFields } from "./header";
+import { defaultStrategy } from "./strategies/defaultStrategy";
 
 export const printAsCsv = (
   records: KintoneRecord[],
   fieldsJson: FieldsJson,
+  layoutJson: LayoutJson,
   useLocalFilePath: boolean
 ): void => {
-  console.log(stringifyAsCsv(records, fieldsJson, useLocalFilePath));
+  console.log(
+    stringifyAsCsv(records, fieldsJson, layoutJson, useLocalFilePath)
+  );
 };
 
 export const stringifyAsCsv = (
   records: KintoneRecord[],
   fieldsJson: FieldsJson,
+  layoutJson: LayoutJson,
   useLocalFilePath: boolean
 ): string => {
-  const headerFields = buildHeaderFields(fieldsJson);
+  const headerFields = buildHeaderFields(
+    fieldsJson,
+    layoutJson,
+    defaultStrategy(fieldsJson, layoutJson)
+  );
 
   const csvRows: CsvRow[] = [];
   for (const record of recordReader(records)) {

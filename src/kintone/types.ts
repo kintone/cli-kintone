@@ -1,5 +1,6 @@
 import {
   KintoneFormFieldProperty,
+  KintoneFormLayout,
   KintoneRecordField,
 } from "@kintone/rest-api-client";
 
@@ -32,4 +33,15 @@ export type FieldProperties = Record<string, KintoneFormFieldProperty.OneOf>;
 export type FieldsJson = {
   properties: FieldProperties;
   revision: Revision;
+};
+
+export type LayoutJson = {
+  layout: Array<
+    | KintoneFormLayout.Row<KintoneFormLayout.Field.OneOf[]>
+    | KintoneFormLayout.Subtable<KintoneFormLayout.Field.InSubtable[]>
+    | KintoneFormLayout.Group<
+        Array<KintoneFormLayout.Row<KintoneFormLayout.Field.OneOf[]>>
+      >
+  >;
+  revision: string;
 };

@@ -1,4 +1,4 @@
-import type { FieldsJson } from "../../../../kintone/types";
+import type { FieldsJson, LayoutJson } from "../../../../kintone/types";
 
 import {
   PRIMARY_MARK,
@@ -7,7 +7,16 @@ import {
 } from "./constants";
 import { hasSubtable } from "./subtable";
 
-export const buildHeaderFields = (fieldsJson: FieldsJson): string[] => {
+export type Strategy = {
+  filter: (code: string) => boolean;
+  comparator: (codeA: string, codeB: string) => number;
+};
+
+export const buildHeaderFields = (
+  fieldsJson: FieldsJson,
+  layoutJson: LayoutJson,
+  strategy: Strategy
+): string[] => {
   const headerFields: string[] = [];
 
   if (hasSubtable(fieldsJson)) {
@@ -15,7 +24,7 @@ export const buildHeaderFields = (fieldsJson: FieldsJson): string[] => {
   }
 
   for (const [fieldCode, field] of Object.entries(fieldsJson.properties)) {
-    if (!supportedFieldTypes.includes(fieldsJson.properties[fieldCode].type)) {
+    if (!supportedFieldTypes.includes(field.type)) {
       continue;
     }
 
@@ -32,5 +41,6 @@ export const buildHeaderFields = (fieldsJson: FieldsJson): string[] => {
       }
     }
   }
-  return headerFields;
+
+  return headerFields.filter(strategy.filter).sort(strategy.comparator);
 };

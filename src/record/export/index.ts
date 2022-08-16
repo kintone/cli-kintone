@@ -32,6 +32,6 @@ export const run: (
     records,
     app,
     format,
-    attachmentsDir,
+    useLocalFilePath: !!attachmentsDir,
   });
 };

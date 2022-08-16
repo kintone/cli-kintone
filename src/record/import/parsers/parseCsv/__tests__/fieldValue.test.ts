@@ -101,8 +101,17 @@ const patterns: Array<{
     },
     expected: { value: [] },
   },
+  {
+    input: { type: "DATE", value: "2012-01-11" },
+    expected: { value: "2012-01-11" },
+  },
   { input: { type: "DATE", value: "" }, expected: { value: "" } },
+  { input: { type: "TIME", value: "11:30" }, expected: { value: "11:30" } },
   { input: { type: "TIME", value: "" }, expected: { value: "" } },
+  {
+    input: { type: "DATETIME", value: "2012-01-11T11:30:00Z" },
+    expected: { value: "2012-01-11T11:30:00Z" },
+  },
   { input: { type: "DATETIME", value: "" }, expected: { value: "" } },
   {
     input: { type: "USER_SELECT", value: "sato\ntanaka" },

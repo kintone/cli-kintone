@@ -31,4 +31,5 @@ export type KintoneRecordForResponse = {
 export type FieldProperties = Record<string, KintoneFormFieldProperty.OneOf>;
 export type FieldsJson = {
   properties: FieldProperties;
+  revision: Revision;
 };

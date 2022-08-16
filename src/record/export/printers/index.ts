@@ -1,7 +1,8 @@
+import type { KintoneRecord } from "../types/record";
+
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { printAsJson } from "./printAsJson";
 import { printAsCsv } from "./printAsCsv";
-import { KintoneRecord } from "../types/record";
 
 export type ExportFileFormat = "csv" | "json";
 
@@ -10,21 +11,20 @@ export const printRecords: (options: {
   records: KintoneRecord[];
   app: string;
   format?: ExportFileFormat;
-  attachmentsDir?: string;
+  useLocalFilePath: boolean;
 }) => void = async (options) => {
-  const { apiClient, records, app, format, attachmentsDir } = options;
+  const { apiClient, records, app, format, useLocalFilePath } = options;
   switch (format) {
     case "json": {
       printAsJson(records);
       break;
     }
     case "csv": {
-      // TODO: pass the schema as arguments
-      printAsCsv({
+      printAsCsv(
         records,
-        fieldsJson: await apiClient.app.getFormFields({ app }),
-        attachmentsDir,
-      });
+        await apiClient.app.getFormFields({ app }),
+        useLocalFilePath
+      );
       break;
     }
     default: {

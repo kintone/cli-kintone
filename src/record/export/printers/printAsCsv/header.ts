@@ -6,8 +6,9 @@ import {
   supportedFieldTypesInSubtable,
 } from "./constants";
 import { hasSubtable } from "./subtable";
+import { formLayout } from "./headerTransformers/formLayout";
 
-export type Strategy = {
+export type HeaderTransformer = {
   filter: (code: string) => boolean;
   comparator: (codeA: string, codeB: string) => number;
 };
@@ -15,7 +16,7 @@ export type Strategy = {
 export const buildHeaderFields = (
   fieldsJson: FieldsJson,
   layoutJson: LayoutJson,
-  strategy: Strategy
+  transformer: HeaderTransformer = formLayout(fieldsJson, layoutJson)
 ): string[] => {
   const headerFields: string[] = [];
 
@@ -42,5 +43,5 @@ export const buildHeaderFields = (
     }
   }
 
-  return headerFields.filter(strategy.filter).sort(strategy.comparator);
+  return headerFields.filter(transformer.filter).sort(transformer.comparator);
 };

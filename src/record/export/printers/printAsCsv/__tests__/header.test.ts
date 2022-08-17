@@ -2,7 +2,6 @@ import type { FieldsJson, LayoutJson } from "../../../../../kintone/types";
 
 import { buildHeaderFields } from "../header";
 import { PRIMARY_MARK } from "../constants";
-import { defaultStrategy } from "../strategies/defaultStrategy";
 
 const fieldsJson: FieldsJson = require("./fixtures/header/fields.json");
 const layoutJson: LayoutJson = require("./fixtures/header/layout.json");
@@ -14,41 +13,19 @@ const subtableLayoutJson: LayoutJson = require("./fixtures/header/subtable_layou
 describe("buildHeaderFields", () => {
   it("should generate fieldCode array correctly (data without subtable)", () => {
     expect(
-      buildHeaderFields(
-        fieldsJson,
-        layoutJson,
-        defaultStrategy(fieldsJson, layoutJson)
-      ).includes(PRIMARY_MARK)
+      buildHeaderFields(fieldsJson, layoutJson).includes(PRIMARY_MARK)
     ).toBe(false);
-    expect(
-      buildHeaderFields(
-        fieldsJson,
-        layoutJson,
-        defaultStrategy(fieldsJson, layoutJson)
-      )
-    ).toHaveLength(20);
-    expect(
-      buildHeaderFields(
-        fileFieldsJson,
-        fileLayoutJson,
-        defaultStrategy(fileFieldsJson, fileLayoutJson)
-      )
-    ).toHaveLength(15);
+    expect(buildHeaderFields(fieldsJson, layoutJson)).toHaveLength(20);
+    expect(buildHeaderFields(fileFieldsJson, fileLayoutJson)).toHaveLength(15);
   });
   it("should generate fieldCode array correctly (data with subtable)", () => {
     expect(
-      buildHeaderFields(
-        subtableFieldsJson,
-        subtableLayoutJson,
-        defaultStrategy(subtableFieldsJson, subtableLayoutJson)
-      ).includes(PRIMARY_MARK)
+      buildHeaderFields(subtableFieldsJson, subtableLayoutJson).includes(
+        PRIMARY_MARK
+      )
     ).toBe(true);
     expect(
-      buildHeaderFields(
-        subtableFieldsJson,
-        subtableLayoutJson,
-        defaultStrategy(subtableFieldsJson, subtableLayoutJson)
-      )
+      buildHeaderFields(subtableFieldsJson, subtableLayoutJson)
     ).toHaveLength(22);
   });
 });

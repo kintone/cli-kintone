@@ -1,13 +1,13 @@
 import type { FieldsJson, LayoutJson } from "../../../../../kintone/types";
 import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
-import type { Strategy } from "../header";
+import type { HeaderTransformer } from "../header";
 
 import { PRIMARY_MARK } from "../constants";
 
-export const defaultStrategy = (
+export const formLayout = (
   fieldsJson: FieldsJson,
   layoutJson: LayoutJson
-): Strategy => {
+): HeaderTransformer => {
   return {
     filter: (code) => true,
     comparator: orderByFormLayoutComparator(fieldsJson, layoutJson),
@@ -17,7 +17,7 @@ export const defaultStrategy = (
 export const orderByFormLayoutComparator = (
   fieldsJson: FieldsJson,
   layoutJson: LayoutJson
-): Strategy["comparator"] => {
+): HeaderTransformer["comparator"] => {
   const flatLayout = flattenLayout(layoutJson.layout);
   return (codeA, codeB) => {
     // the PRIMARY_MARK is always precedence

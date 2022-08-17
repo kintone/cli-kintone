@@ -6,7 +6,7 @@ import stringify from "csv-stringify/lib/sync";
 import { convertRecord, recordReader } from "./record";
 import { LINE_BREAK, SEPARATOR } from "./constants";
 import { buildHeaderFields } from "./header";
-import { defaultStrategy } from "./strategies/defaultStrategy";
+import { formLayout } from "./headerTransformers/formLayout";
 
 export const printAsCsv = (
   records: KintoneRecord[],
@@ -25,11 +25,7 @@ export const stringifyAsCsv = (
   layoutJson: LayoutJson,
   useLocalFilePath: boolean
 ): string => {
-  const headerFields = buildHeaderFields(
-    fieldsJson,
-    layoutJson,
-    defaultStrategy(fieldsJson, layoutJson)
-  );
+  const headerFields = buildHeaderFields(fieldsJson, layoutJson);
 
   const csvRows: CsvRow[] = [];
   for (const record of recordReader(records)) {

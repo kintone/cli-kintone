@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.0](https://github.com/kintone/cli-kintone/compare/v0.12.0...v0.13.0) (2022-08-17)
+
+
+### Features
+
+* sort fields based on form layout when record export ([#31](https://github.com/kintone/cli-kintone/issues/31)) ([1178fbb](https://github.com/kintone/cli-kintone/commit/1178fbba9f2c3df5d91037562d7f417357e882bb))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.1.7 ([#26](https://github.com/kintone/cli-kintone/issues/26)) ([06029d2](https://github.com/kintone/cli-kintone/commit/06029d242bf7444a0360f0e1f19ddff828e82815))
+
 ## [0.12.0](https://github.com/kintone/cli-kintone/compare/v0.11.2...v0.12.0) (2022-08-10)
 
 

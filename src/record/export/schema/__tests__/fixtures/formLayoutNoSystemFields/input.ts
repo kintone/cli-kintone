@@ -1,6 +1,6 @@
-import { FieldsJson } from "../../../../../../../../kintone/types";
+import { FieldsJson } from "../../../../../../kintone/types";
 
-export const fieldsJson: FieldsJson = {
+export const input: FieldsJson = {
   revision: "29",
   properties: {
     recordNumber: {
@@ -38,6 +38,81 @@ export const fieldsJson: FieldsJson = {
       code: "creator",
       label: "creator",
       noLabel: false,
+    },
+    subTable: {
+      type: "SUBTABLE",
+      code: "subTable",
+      noLabel: false,
+      label: "subTable",
+      fields: {
+        subTableText: {
+          type: "SINGLE_LINE_TEXT",
+          code: "subTableText",
+          label: "subTableText",
+          noLabel: false,
+          required: false,
+          minLength: "",
+          maxLength: "",
+          expression: "",
+          hideExpression: false,
+          unique: false,
+          defaultValue: "",
+        },
+        subTableCheckbox: {
+          type: "CHECK_BOX",
+          code: "subTableCheckbox",
+          label: "subTableCheckbox",
+          noLabel: false,
+          required: false,
+          options: {
+            st_sample2: {
+              label: "st_sample2",
+              index: "1",
+            },
+            st_sample1: {
+              label: "st_sample1",
+              index: "0",
+            },
+          },
+          defaultValue: [],
+          align: "HORIZONTAL",
+        },
+        subTableFile: {
+          type: "FILE",
+          code: "subTableFile",
+          label: "subTableFile",
+          noLabel: false,
+          required: false,
+          thumbnailSize: "150",
+        },
+        userSelect: {
+          type: "USER_SELECT",
+          code: "userSelect",
+          label: "userSelect",
+          noLabel: false,
+          required: false,
+          entities: [],
+          defaultValue: [],
+        },
+        organizationSelect: {
+          type: "ORGANIZATION_SELECT",
+          code: "organizationSelect",
+          label: "organizationSelect",
+          noLabel: false,
+          required: false,
+          entities: [],
+          defaultValue: [],
+        },
+        groupSelect: {
+          type: "GROUP_SELECT",
+          code: "groupSelect",
+          label: "groupSelect",
+          noLabel: false,
+          required: false,
+          entities: [],
+          defaultValue: [],
+        },
+      },
     },
     Assignee: {
       type: "STATUS_ASSIGNEE",

@@ -2,6 +2,7 @@ import type * as Fields from "../../types/field";
 import type { KintoneRecord } from "../../types/record";
 import type { CsvRow, FieldsJson } from "../../../../kintone/types";
 import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
+import type { RecordSchema } from "../../types/schema";
 
 import { convertFieldValue } from "./fieldValue";
 import { supportedFieldTypesInSubtable } from "./constants";
@@ -9,9 +10,7 @@ import { supportedFieldTypesInSubtable } from "./constants";
 type SubtableField = {
   code: string;
   value: Fields.Subtable;
-  fields: {
-    [fieldCode: string]: KintoneFormFieldProperty.InSubtable;
-  };
+  fields: KintoneFormFieldProperty.InSubtable[];
 };
 
 export const hasSubtable = (fieldsJson: FieldsJson) =>
@@ -35,20 +34,20 @@ export const convertSubtableField = (
 // eslint-disable-next-line func-style
 export function* subtableFieldReader(
   record: KintoneRecord,
-  fieldsJson: FieldsJson
+  schema: RecordSchema
 ): Generator<SubtableField, void, undefined> {
-  for (const [code, properties] of Object.entries(fieldsJson.properties)) {
-    if (properties.type !== "SUBTABLE") {
+  for (const field of schema.fields) {
+    if (field.type !== "SUBTABLE") {
       continue;
     }
 
-    if (!(code in record)) {
-      throw new Error(`The record is missing a field (${code})`);
+    if (!(field.code in record)) {
+      throw new Error(`The record is missing a field (${field.code})`);
     }
     yield {
-      code,
-      value: record[code] as Fields.Subtable,
-      fields: properties.fields,
+      code: field.code,
+      value: record[field.code] as Fields.Subtable,
+      fields: field.fields,
     };
   }
 }
@@ -102,20 +101,18 @@ function* fieldsInSubtableReader(
   subtableFieldCode: string,
   subtableFields: SubtableField["fields"]
 ): Generator<FieldInSubtable, void, undefined> {
-  for (const [fieldCodeInSubtable, fieldPropertyInSubtable] of Object.entries(
-    subtableFields
-  )) {
+  for (const fieldPropertyInSubtable of subtableFields) {
     if (!supportedFieldTypesInSubtable.includes(fieldPropertyInSubtable.type)) {
       continue;
     }
 
-    if (!subtableRow.value[fieldCodeInSubtable]) {
+    if (!(fieldPropertyInSubtable.code in subtableRow.value)) {
       continue;
     }
 
     yield {
-      code: fieldCodeInSubtable,
-      value: subtableRow.value[fieldCodeInSubtable],
+      code: fieldPropertyInSubtable.code,
+      value: subtableRow.value[fieldPropertyInSubtable.code],
     };
   }
 }

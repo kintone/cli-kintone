@@ -1,44 +1,33 @@
-import type { FieldsJson, LayoutJson } from "../../../../kintone/types";
-
+import type { RecordSchema } from "../../types/schema";
 import {
   PRIMARY_MARK,
   supportedFieldTypes,
   supportedFieldTypesInSubtable,
 } from "./constants";
-import { hasSubtable } from "./subtable";
-import { formLayout } from "./headerTransformers/formLayout";
 
-export type HeaderTransformer = (headerFields: string[]) => string[];
-
-export const buildHeaderFields = (
-  fieldsJson: FieldsJson,
-  layoutJson: LayoutJson,
-  transformer: HeaderTransformer = formLayout(fieldsJson, layoutJson)
-): string[] => {
+export const buildHeaderFields = (schema: RecordSchema): string[] => {
   const headerFields: string[] = [];
 
-  if (hasSubtable(fieldsJson)) {
+  if (schema.hasSubtable) {
     headerFields.push(PRIMARY_MARK);
   }
 
-  for (const [fieldCode, field] of Object.entries(fieldsJson.properties)) {
+  for (const field of schema.fields) {
     if (!supportedFieldTypes.includes(field.type)) {
       continue;
     }
 
-    headerFields.push(fieldCode);
+    headerFields.push(field.code);
 
     if (field.type === "SUBTABLE") {
-      for (const [fieldCodeInSubtable, fieldInSubtable] of Object.entries(
-        field.fields
-      )) {
+      for (const fieldInSubtable of field.fields) {
         if (!supportedFieldTypesInSubtable.includes(fieldInSubtable.type)) {
           continue;
         }
-        headerFields.push(fieldCodeInSubtable);
+        headerFields.push(fieldInSubtable.code);
       }
     }
   }
 
-  return transformer(headerFields);
+  return headerFields;
 };

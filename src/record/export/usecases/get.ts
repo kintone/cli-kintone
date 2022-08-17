@@ -1,45 +1,59 @@
-import { KintoneRecordForResponse } from "../../../kintone/types";
-import { KintoneRecord } from "../types/record";
-import * as Fields from "../types/field";
-import path from "path";
-import {
+import type { KintoneRecordForResponse } from "../../../kintone/types";
+import type { KintoneRecord } from "../types/record";
+import type * as Fields from "../types/field";
+import type { FieldSchema, RecordSchema } from "../types/schema";
+import type {
   KintoneRecordField,
   KintoneRestAPIClient,
 } from "@kintone/rest-api-client";
+
+import path from "path";
+
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 export const getRecords: (
   apiClient: KintoneRestAPIClient,
   app: string,
+  schema: RecordSchema,
   options: {
     condition?: string;
     orderBy?: string;
-    attachmentsDir?: string;
   }
-) => Promise<KintoneRecord[]> = async (apiClient, app, options) => {
-  const { condition, orderBy, attachmentsDir } = options;
+) => Promise<KintoneRecord[]> = async (apiClient, app, schema, options) => {
+  const { condition, orderBy } = options;
   const kintoneRecords = await apiClient.record.getAllRecords({
     app,
     condition,
     orderBy,
   });
-  return recordsReducer(kintoneRecords, (recordId, fieldCode, field) =>
-    fieldProcessor(recordId, fieldCode, field, { apiClient, attachmentsDir })
+  return recordsReducer(
+    kintoneRecords,
+    schema,
+    (recordId, field, fieldSchema) =>
+      fieldProcessor(recordId, field, fieldSchema, {
+        apiClient,
+        useLocalFilePath: schema.useLocalFilePath,
+        attachmentsDir: schema.attachmentsDir,
+      })
   );
 };
 
 const recordsReducer: (
   records: KintoneRecordForResponse[],
+  schema: RecordSchema,
   task: (
     recordId: string,
-    fieldCode: string,
-    field: KintoneRecordField.OneOf
+    field: KintoneRecordField.OneOf,
+    fieldSchema: FieldSchema
   ) => Promise<Fields.OneOf>
-) => Promise<KintoneRecord[]> = async (kintoneRecords, task) => {
+) => Promise<KintoneRecord[]> = async (kintoneRecords, schema, task) => {
   const records: KintoneRecord[] = [];
   for (const kintoneRecord of kintoneRecords) {
-    const record = await recordReducer(kintoneRecord, (fieldCode, field) =>
-      task(kintoneRecord.$id.value as string, fieldCode, field)
+    const record = await recordReducer(
+      kintoneRecord,
+      schema,
+      (field, fieldSchema) =>
+        task(kintoneRecord.$id.value as string, field, fieldSchema)
     );
     records.push(record);
   }
@@ -48,36 +62,46 @@ const recordsReducer: (
 
 const recordReducer: (
   record: KintoneRecordForResponse,
+  schema: RecordSchema,
   task: (
-    fieldCode: string,
-    field: KintoneRecordField.OneOf
+    field: KintoneRecordField.OneOf,
+    fieldSchema: FieldSchema
   ) => Promise<Fields.OneOf>
-) => Promise<KintoneRecord> = async (record, task) => {
+) => Promise<KintoneRecord> = async (record, schema, task) => {
   const newRecord: KintoneRecord = {};
-  for (const [fieldCode, field] of Object.entries(record)) {
-    newRecord[fieldCode] = await task(fieldCode, field);
+  // This step filters fields implicitly
+  for (const fieldSchema of schema.fields) {
+    if (!(fieldSchema.code in record)) {
+      throw new Error(`The response is missing a field (${fieldSchema.code})`);
+    }
+    newRecord[fieldSchema.code] = await task(
+      record[fieldSchema.code],
+      fieldSchema
+    );
   }
   return newRecord;
 };
 
 const fieldProcessor: (
   recordId: string,
-  fieldCode: string,
   field: KintoneRecordField.OneOf,
-  options: { apiClient: KintoneRestAPIClient; attachmentsDir?: string }
-) => Promise<Fields.OneOf> = async (recordId, fieldCode, field, options) => {
-  const { attachmentsDir, apiClient } = options;
+  fieldSchema: FieldSchema,
+  options: {
+    apiClient: KintoneRestAPIClient;
+    useLocalFilePath: boolean;
+    attachmentsDir: string;
+  }
+) => Promise<Fields.OneOf> = async (recordId, field, fieldSchema, options) => {
+  const { apiClient, useLocalFilePath, attachmentsDir } = options;
 
-  // TODO: filter fields
-
-  switch (field.type) {
+  switch (fieldSchema.type) {
     case "FILE":
-      if (attachmentsDir) {
+      if (useLocalFilePath) {
         const downloadedList: Fields.File["value"] = [];
-        for (const fileInfo of field.value) {
+        for (const fileInfo of (field as Fields.File).value) {
           const localFilePath = path.join(
             attachmentsDir,
-            `${fieldCode}-${recordId}`,
+            `${fieldSchema.code}-${recordId}`,
             fileInfo.name
           );
 
@@ -100,7 +124,9 @@ const fieldProcessor: (
       return field;
     case "SUBTABLE": {
       const newRows = [];
-      for (const [rowIndex, row] of field.value.entries()) {
+      for (const [rowIndex, row] of (
+        field as Fields.Subtable
+      ).value.entries()) {
         const fieldsInRow: Fields.Subtable["value"][number]["value"] = {};
         for (const [fieldCodeInSubtable, fieldInSubtable] of Object.entries(
           row.value
@@ -111,7 +137,7 @@ const fieldProcessor: (
             rowIndex,
             fieldCodeInSubtable,
             fieldInSubtable,
-            { apiClient, attachmentsDir }
+            { apiClient, useLocalFilePath, attachmentsDir }
           );
         }
         newRows.push({ id: row.id, value: fieldsInRow });
@@ -132,7 +158,11 @@ const fieldProcessorInSubtable: (
   rowIndex: number,
   fieldCode: string,
   field: KintoneRecordField.InSubtable,
-  options: { apiClient: KintoneRestAPIClient; attachmentsDir?: string }
+  options: {
+    apiClient: KintoneRestAPIClient;
+    useLocalFilePath: boolean;
+    attachmentsDir: string;
+  }
 ) => Promise<Fields.InSubtable> = async (
   recordId,
   rowId,
@@ -141,10 +171,10 @@ const fieldProcessorInSubtable: (
   field,
   options
 ) => {
-  const { apiClient, attachmentsDir } = options;
+  const { apiClient, useLocalFilePath, attachmentsDir } = options;
   switch (field.type) {
     case "FILE":
-      if (attachmentsDir) {
+      if (useLocalFilePath) {
         const downloadedList: Fields.File["value"] = [];
         for (const fileInfo of field.value) {
           const localFilePath = path.join(

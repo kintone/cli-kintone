@@ -1,6 +1,6 @@
 import type { KintoneRecord } from "../../types/record";
 import type * as Fields from "../../types/field";
-import type { FieldsJson } from "../../../../kintone/types";
+import type { RecordSchema } from "../../types/schema";
 
 import { supportedFieldTypes } from "./constants";
 import { convertFieldValue } from "./fieldValue";
@@ -20,20 +20,20 @@ export const convertField = (
 // eslint-disable-next-line func-style
 export function* fieldReader(
   record: KintoneRecord,
-  fieldsJson: FieldsJson
+  schema: RecordSchema
 ): Generator<Field, void, undefined> {
-  for (const [code, property] of Object.entries(fieldsJson.properties)) {
-    if (!supportedFieldTypes.includes(property.type)) {
+  for (const field of schema.fields) {
+    if (!supportedFieldTypes.includes(field.type)) {
       continue;
     }
 
-    if (property.type === "SUBTABLE") {
+    if (field.type === "SUBTABLE") {
       continue;
     }
 
-    if (!(code in record)) {
-      throw new Error(`The record is missing a field (${code})`);
+    if (!(field.code in record)) {
+      throw new Error(`The record is missing a field (${field.code})`);
     }
-    yield { code, value: record[code] };
+    yield { code: field.code, value: record[field.code] };
   }
 }

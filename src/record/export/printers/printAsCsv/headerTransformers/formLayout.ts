@@ -4,6 +4,20 @@ import type { HeaderTransformer } from "../header";
 
 import { PRIMARY_MARK } from "../constants";
 
+/**
+ * This transformer returns all supported fields.
+ * This transformer sorts headerFields by the following rules.
+ * - based on form layout of the kintone app
+ * - the PRIMARY_MARK is always precedence.
+ * - When following fields are missing from layout,
+ *   - RECORD_NUMBER: placed at just after the PRIMARY_MARK (or head of the array)
+ *   - CREATOR      : placed at the end of the array
+ *   - CREATED_TIME : placed at the end of the array
+ *   - MODIFIER     : placed at the end of the array
+ *   - UPDATED_TIME : placed at the end of the array
+ * @param fieldsJson
+ * @param layoutJson
+ */
 export const formLayout =
   (fieldsJson: FieldsJson, layoutJson: LayoutJson): HeaderTransformer =>
   (headerFields: string[]) =>

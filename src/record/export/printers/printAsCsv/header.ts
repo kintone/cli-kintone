@@ -8,10 +8,7 @@ import {
 import { hasSubtable } from "./subtable";
 import { formLayout } from "./headerTransformers/formLayout";
 
-export type HeaderTransformer = {
-  filter: (code: string) => boolean;
-  comparator: (codeA: string, codeB: string) => number;
-};
+export type HeaderTransformer = (headerFields: string[]) => string[];
 
 export const buildHeaderFields = (
   fieldsJson: FieldsJson,
@@ -43,5 +40,5 @@ export const buildHeaderFields = (
     }
   }
 
-  return headerFields.filter(transformer.filter).sort(transformer.comparator);
+  return transformer(headerFields);
 };

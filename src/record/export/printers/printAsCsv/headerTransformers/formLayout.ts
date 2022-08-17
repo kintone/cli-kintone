@@ -4,20 +4,15 @@ import type { HeaderTransformer } from "../header";
 
 import { PRIMARY_MARK } from "../constants";
 
-export const formLayout = (
-  fieldsJson: FieldsJson,
-  layoutJson: LayoutJson
-): HeaderTransformer => {
-  return {
-    filter: (code) => true,
-    comparator: orderByFormLayoutComparator(fieldsJson, layoutJson),
-  };
-};
+export const formLayout =
+  (fieldsJson: FieldsJson, layoutJson: LayoutJson): HeaderTransformer =>
+  (headerFields: string[]) =>
+    headerFields.sort(orderByFormLayoutComparator(fieldsJson, layoutJson));
 
 export const orderByFormLayoutComparator = (
   fieldsJson: FieldsJson,
   layoutJson: LayoutJson
-): HeaderTransformer["comparator"] => {
+): ((codeA: string, codeB: string) => number) => {
   const flatLayout = flattenLayout(layoutJson.layout);
   return (codeA, codeB) => {
     // the PRIMARY_MARK is always precedence

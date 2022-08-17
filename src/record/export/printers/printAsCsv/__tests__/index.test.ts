@@ -1,4 +1,4 @@
-import type { FieldsJson } from "../../../../../kintone/types";
+import type { FieldsJson, LayoutJson } from "../../../../../kintone/types";
 import type { KintoneRecord } from "../../../types/record";
 
 import { stringifyAsCsv } from "../index";
@@ -13,6 +13,7 @@ import { pattern as withEmptySubtable } from "./fixtures/index/withEmptySubtable
 export type TestPattern = {
   description: string;
   fieldsJson: FieldsJson;
+  layoutJson: LayoutJson;
   input: KintoneRecord[];
   useLocalFilePath: boolean;
   expected: string;
@@ -32,6 +33,7 @@ describe("stringifyAsCsv", () => {
       stringifyAsCsv(
         pattern.input,
         pattern.fieldsJson,
+        pattern.layoutJson,
         pattern.useLocalFilePath
       )
     ).toEqual(pattern.expected);

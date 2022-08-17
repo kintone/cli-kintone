@@ -1,4 +1,4 @@
-import type { FieldsJson } from "../../../../kintone/types";
+import type { FieldsJson, LayoutJson } from "../../../../kintone/types";
 
 import {
   PRIMARY_MARK,
@@ -6,8 +6,15 @@ import {
   supportedFieldTypesInSubtable,
 } from "./constants";
 import { hasSubtable } from "./subtable";
+import { formLayout } from "./headerTransformers/formLayout";
 
-export const buildHeaderFields = (fieldsJson: FieldsJson): string[] => {
+export type HeaderTransformer = (headerFields: string[]) => string[];
+
+export const buildHeaderFields = (
+  fieldsJson: FieldsJson,
+  layoutJson: LayoutJson,
+  transformer: HeaderTransformer = formLayout(fieldsJson, layoutJson)
+): string[] => {
   const headerFields: string[] = [];
 
   if (hasSubtable(fieldsJson)) {
@@ -15,7 +22,7 @@ export const buildHeaderFields = (fieldsJson: FieldsJson): string[] => {
   }
 
   for (const [fieldCode, field] of Object.entries(fieldsJson.properties)) {
-    if (!supportedFieldTypes.includes(fieldsJson.properties[fieldCode].type)) {
+    if (!supportedFieldTypes.includes(field.type)) {
       continue;
     }
 
@@ -32,5 +39,6 @@ export const buildHeaderFields = (fieldsJson: FieldsJson): string[] => {
       }
     }
   }
-  return headerFields;
+
+  return transformer(headerFields);
 };

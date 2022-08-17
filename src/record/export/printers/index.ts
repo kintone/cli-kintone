@@ -23,6 +23,7 @@ export const printRecords: (options: {
       printAsCsv(
         records,
         await apiClient.app.getFormFields({ app }),
+        await apiClient.app.getFormLayout({ app }),
         useLocalFilePath
       );
       break;

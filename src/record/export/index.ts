@@ -27,7 +27,8 @@ export const run: (
   const fieldsJson = await apiClient.app.getFormFields({ app });
   const schema = createSchema(
     fieldsJson,
-    defaultTransformer(await apiClient.app.getFormLayout({ app }))
+    defaultTransformer(await apiClient.app.getFormLayout({ app })),
+    attachmentsDir
   );
   const records = await getRecords(apiClient, app, schema, {
     condition,

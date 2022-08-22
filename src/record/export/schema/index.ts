@@ -12,10 +12,9 @@ export type SchemaTransformer = (
 export const createSchema = (
   fieldsJson: FieldsJson,
   transformer: SchemaTransformer,
-  attachmentsDir: string = ""
+  attachmentsDir?: string
 ): RecordSchema => {
-  const useLocalFilePath = attachmentsDir.length > 0;
-
+  const useLocalFilePath = !!attachmentsDir;
   const fields: FieldSchema[] = transformer(convert(fieldsJson.properties));
 
   const hasSubtable: boolean = fields.some(
@@ -26,7 +25,7 @@ export const createSchema = (
     fields,
     hasSubtable,
     useLocalFilePath,
-    attachmentsDir,
+    attachmentsDir: attachmentsDir ?? "",
   };
 };
 

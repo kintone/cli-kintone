@@ -20,10 +20,4 @@ describe("createSchema", () => {
       createSchema(pattern.input, pattern.transformer, pattern.attachmentsDir)
     ).toStrictEqual(pattern.expected);
   });
-  // describe("formLayout", () => {
-  //   it("should create schema", () => {});
-  //   it("should create schema with no system fields in layout", () => {
-  //     createSchema();
-  //   });
-  // });
 });

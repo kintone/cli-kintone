@@ -4,6 +4,7 @@ import { RecordSchema } from "../../types/schema";
 
 import { pattern as formLayout } from "./fixtures/formLayout";
 import { pattern as formLayoutNoSystemFields } from "./fixtures/formLayoutNoSystemFields";
+import { pattern as userSelected } from "./fixtures/userSelected";
 
 export type TestPattern = {
   description: string;
@@ -13,7 +14,7 @@ export type TestPattern = {
 };
 
 describe("createSchema", () => {
-  const patterns = [formLayout, formLayoutNoSystemFields];
+  const patterns = [formLayout, formLayoutNoSystemFields, userSelected];
   it.each(patterns)("$description", (pattern) => {
     expect(createSchema(pattern.input, pattern.transformer)).toStrictEqual(
       pattern.expected

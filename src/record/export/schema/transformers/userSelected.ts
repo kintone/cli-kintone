@@ -28,7 +28,13 @@ export const userSelected = (
  */
 const validateFields = (fields: string[], fieldsJson: FieldsJson) => {
   for (const field of fields) {
-    // TODO: throw an Error when field is field in subtable
+    for (const property of Object.values(fieldsJson.properties)) {
+      if (property.type === "SUBTABLE" && field in property.fields) {
+        throw new Error(
+          `The field in Table "${field}" cannot be specified to fields option`
+        );
+      }
+    }
     if (!(field in fieldsJson.properties)) {
       throw new Error(
         `The specified field "${field}" does not exist on the app`

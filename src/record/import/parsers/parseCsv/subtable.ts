@@ -1,15 +1,13 @@
-import { CsvRow, FieldsJson } from "../../../../kintone/types";
-import * as Fields from "../../types/field";
-import { KintoneFormFieldProperty } from "@kintone/rest-api-client";
-import { importSupportedFieldTypesInSubtable } from "./constants";
+import type { CsvRow } from "../../../../kintone/types";
+import type * as Fields from "../../types/field";
+import type { InSubtable, RecordSchema } from "../../types/schema";
+
 import { convertFieldValue } from "./fieldValue";
 
 type SubtableField = {
   code: string;
   rows: CsvRow[];
-  fields: {
-    [fieldCode: string]: KintoneFormFieldProperty.InSubtable;
-  };
+  fields: InSubtable[];
 };
 
 export const convertSubtableField = (
@@ -25,46 +23,36 @@ export const convertSubtableField = (
 // eslint-disable-next-line func-style
 export function* subtableFieldReader(
   rows: CsvRow[],
-  fieldsJson: FieldsJson
+  schema: RecordSchema
 ): Generator<SubtableField, void, undefined> {
-  const subtableFieldProperties = Object.entries(fieldsJson.properties).flatMap(
-    ([fieldCode, fieldProperty]) =>
-      fieldProperty.type === "SUBTABLE" ? [{ fieldCode, fieldProperty }] : []
+  const subtableFields = schema.fields.flatMap((field) =>
+    field.type === "SUBTABLE" ? [field] : []
   );
 
-  for (const { fieldCode, fieldProperty } of subtableFieldProperties) {
+  for (const subtableField of subtableFields) {
     // pick rows which contains subtable related fields
-    const subtableRows = rows.filter((row) =>
-      doesRowContainSubtableFields(row, fieldCode, fieldProperty.fields)
+    const subtableRows = rows.filter(
+      (row) =>
+        subtableField.code ||
+        subtableField.fields.some(({ code }) => code in row)
     );
 
     if (subtableRows.length > 0) {
       yield {
-        code: fieldCode,
+        code: subtableField.code,
         rows: subtableRows,
-        fields: fieldProperty.fields,
+        fields: subtableField.fields,
       };
     }
   }
 }
-const doesRowContainSubtableFields = (
-  row: CsvRow,
-  subtableFieldCode: string,
-  subtableFields: {
-    [fieldCode: string]: KintoneFormFieldProperty.InSubtable;
-  }
-): boolean =>
-  Object.keys(subtableFields)
-    .concat(subtableFieldCode)
-    .some((fieldCode) => !!row[fieldCode]);
 
 type SubtableRow = {
   id: string;
   row: CsvRow;
-  fields: {
-    [fieldCode: string]: KintoneFormFieldProperty.InSubtable;
-  };
+  fields: InSubtable[];
 };
+
 const convertSubtableRow = (
   subtableRow: SubtableRow
 ): Fields.Subtable["value"][number] => {
@@ -91,7 +79,7 @@ function* subtableRowReader(
 type FieldInSubtable = {
   code: string;
   value: string;
-  type: KintoneFormFieldProperty.InSubtable["type"];
+  type: InSubtable["type"];
 };
 const convertFieldInSubtable = (
   fieldInSubtable: FieldInSubtable
@@ -104,24 +92,15 @@ function* fieldInSubtableReader({
   row,
   fields,
 }: SubtableRow): Generator<FieldInSubtable, void, undefined> {
-  for (const [fieldCodeInSubtable, fieldPropertyInSubtable] of Object.entries(
-    fields
-  )) {
-    if (
-      !importSupportedFieldTypesInSubtable.includes(
-        fieldPropertyInSubtable.type
-      )
-    ) {
-      continue;
-    }
-    if (!row[fieldCodeInSubtable]) {
+  for (const fieldInSubtable of fields) {
+    if (!(fieldInSubtable.code in row)) {
       continue;
     }
 
     yield {
-      code: fieldCodeInSubtable,
-      value: row[fieldCodeInSubtable],
-      type: fieldPropertyInSubtable.type,
+      code: fieldInSubtable.code,
+      value: row[fieldInSubtable.code],
+      type: fieldInSubtable.type,
     };
   }
 }

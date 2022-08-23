@@ -1,15 +1,12 @@
-import { csv } from "./input";
-import { FieldsJson } from "../../../../../../../kintone/types";
-import { KintoneRecord } from "../../../../../types/record";
+import type { TestPattern } from "../../index.test";
 
-export const pattern: {
-  description: string;
-  fieldsJson: FieldsJson;
-  input: string;
-  expected: KintoneRecord;
-} = {
+import { csv } from "./input";
+import { schema } from "./schema";
+import { expected } from "./expected";
+
+export const pattern: TestPattern = {
   description: "should convert csv string to JSON correctly",
-  fieldsJson: require("./fields.json"),
+  schema: schema,
   input: csv,
-  expected: require("./expected.json"),
+  expected: expected,
 };

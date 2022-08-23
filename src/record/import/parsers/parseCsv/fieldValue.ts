@@ -1,12 +1,13 @@
-import * as Fields from "../../types/field";
-import { FieldProperties } from "../../../../kintone/types";
-import { LINE_BREAK } from "../../../export/printers/printAsCsv/constants";
+import type * as Fields from "../../types/field";
+import type { FieldSchema } from "../../types/schema";
+
+import { LINE_BREAK } from "./constants";
 
 export const convertFieldValue = ({
   type,
   value = "",
 }: {
-  type: FieldProperties[string]["type"];
+  type: FieldSchema["type"];
   value: string;
 }): Fields.OneOf => {
   switch (type) {

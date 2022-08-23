@@ -36,10 +36,9 @@ export const run: (
     );
     const { content, format } = await readFile(filePath, encoding);
     const records = await parseRecords({
-      apiClient,
       source: content,
-      app,
       format,
+      schema,
     });
     if (updateKey) {
       await upsertRecords(apiClient, app, records, updateKey, {
@@ -53,9 +52,4 @@ export const run: (
     // eslint-disable-next-line no-process-exit
     process.exit(1);
   }
-};
-
-type Deps = { apiClient: KintoneRestAPIClient };
-export const func = (deps: Deps) => (appId: string) => {
-  return true;
 };

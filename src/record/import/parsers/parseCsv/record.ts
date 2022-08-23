@@ -1,20 +1,22 @@
-import { CsvRow, FieldsJson } from "../../../../kintone/types";
-import { KintoneRecord } from "../../types/record";
+import type { CsvRow } from "../../../../kintone/types";
+import type { KintoneRecord } from "../../types/record";
+import type { RecordSchema } from "../../types/schema";
+
 import { convertField, fieldReader } from "./field";
 import { convertSubtableField, subtableFieldReader } from "./subtable";
-import { PRIMARY_MARK } from "../../../export/printers/printAsCsv/constants";
+import { PRIMARY_MARK } from "./constants";
 
 type RecordCsv = CsvRow[];
 
 export const convertRecord = (
   recordCsv: RecordCsv,
-  fieldsJson: FieldsJson
+  schema: RecordSchema
 ): KintoneRecord => {
   const record: KintoneRecord = {};
-  for (const field of fieldReader(recordCsv[0], fieldsJson)) {
+  for (const field of fieldReader(recordCsv[0], schema)) {
     record[field.code] = convertField(field);
   }
-  for (const subtableField of subtableFieldReader(recordCsv, fieldsJson)) {
+  for (const subtableField of subtableFieldReader(recordCsv, schema)) {
     record[subtableField.code] = convertSubtableField(subtableField);
   }
   return record;

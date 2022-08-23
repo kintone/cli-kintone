@@ -1,12 +1,13 @@
-import { CsvRow, FieldProperties, FieldsJson } from "../../../../kintone/types";
-import * as Fields from "../../types/field";
-import { importSupportedFieldTypes } from "./constants";
+import type { CsvRow } from "../../../../kintone/types";
+import type * as Fields from "../../types/field";
+import type { FieldSchema, RecordSchema } from "../../types/schema";
+
 import { convertFieldValue } from "./fieldValue";
 
 type Field = {
   code: string;
   value: string;
-  type: FieldProperties[string]["type"];
+  type: FieldSchema["type"];
 };
 
 export const convertField = (field: Field): Fields.OneOf => {
@@ -16,18 +17,15 @@ export const convertField = (field: Field): Fields.OneOf => {
 // eslint-disable-next-line func-style
 export function* fieldReader(
   row: CsvRow,
-  fieldsJson: FieldsJson
+  schema: RecordSchema
 ): Generator<Field, void, undefined> {
-  for (const [code, property] of Object.entries(fieldsJson.properties)) {
-    if (!importSupportedFieldTypes.includes(property.type)) {
+  for (const field of schema.fields) {
+    if (field.type === "SUBTABLE") {
       continue;
     }
-    if (property.type === "SUBTABLE") {
+    if (!(field.code in row)) {
       continue;
     }
-    if (!row[code]) {
-      continue;
-    }
-    yield { code, value: row[code], type: property.type };
+    yield { code: field.code, value: row[field.code], type: field.type };
   }
 }

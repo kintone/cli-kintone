@@ -61,7 +61,7 @@ describe("userSelected", () => {
     expect(() =>
       userSelected(["recordNumber", "subTableText"], fieldsJson)
     ).toThrow(
-      'The field in Table "subTableText" cannot be specified to fields option'
+      'The specified field "subTableText" in a table cannot be specified to fields option'
     );
   });
   it("should throw an Error if specified field does not exist", () => {

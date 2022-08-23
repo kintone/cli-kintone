@@ -3,7 +3,7 @@ import { getRecords } from "./usecases/get";
 import { ExportFileFormat, printRecords } from "./printers";
 import { createSchema } from "./schema";
 import { formLayout as defaultTransformer } from "./schema/transformers/formLayout";
-import { option } from "yargs";
+import { userSelected } from "./schema/transformers/userSelected";
 
 export type Options = {
   app: string;
@@ -11,6 +11,7 @@ export type Options = {
   format?: ExportFileFormat;
   condition?: string;
   orderBy?: string;
+  fields?: string[];
 };
 
 export const run: (
@@ -21,6 +22,7 @@ export const run: (
     format,
     condition,
     orderBy,
+    fields,
     attachmentsDir,
     ...restApiClientOptions
   } = argv;
@@ -28,7 +30,9 @@ export const run: (
   const fieldsJson = await apiClient.app.getFormFields({ app });
   const schema = createSchema(
     fieldsJson,
-    defaultTransformer(await apiClient.app.getFormLayout({ app }))
+    fields
+      ? userSelected(fields, fieldsJson)
+      : defaultTransformer(await apiClient.app.getFormLayout({ app }))
   );
   const records = await getRecords(apiClient, app, schema, {
     condition,

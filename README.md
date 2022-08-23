@@ -136,6 +136,8 @@ Options:
                                       [choices: "csv", "json"] [default: "csv"]
   -c, --condition            The query string                           [string]
       --order-by             The sort order as a query                  [string]
+      --fields               The fields to be exported in comma-separated
+                                                                        [string]
       --pfx-file-path        The path to client certificate file        [string]
       --pfx-file-password    The password of client certificate file    [string]
       --proxy                The URL of a proxy server

@@ -32,7 +32,7 @@ const validateFields = (fields: string[], fieldsJson: FieldsJson) => {
     for (const property of Object.values(fieldsJson.properties)) {
       if (property.type === "SUBTABLE" && field in property.fields) {
         throw new Error(
-          `The field in Table "${field}" cannot be specified to fields option`
+          `The specified field "${field}" in a table cannot be specified to fields option`
         );
       }
     }

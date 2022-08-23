@@ -12,6 +12,7 @@ export type Options = {
   attachmentsDir?: string;
   updateKey?: string;
   encoding?: SupportedImportEncoding;
+  fields?: string[];
 };
 
 export const run: (
@@ -23,6 +24,7 @@ export const run: (
     encoding,
     attachmentsDir,
     updateKey,
+    fields,
     ...restApiClientOptions
   } = argv;
 

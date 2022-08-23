@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.14.0](https://github.com/kintone/cli-kintone/compare/v0.13.0...v0.14.0) (2022-08-23)
+
+
+### Features
+
+* filter and sort fields by user input ([#41](https://github.com/kintone/cli-kintone/issues/41)) ([36ec322](https://github.com/kintone/cli-kintone/commit/36ec322b23da6c02ee2c1d94041ca526f96734f5))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.1.8 ([#38](https://github.com/kintone/cli-kintone/issues/38)) ([994d716](https://github.com/kintone/cli-kintone/commit/994d71607bd6b5bfd376186a2311731514e8dbef))
+* **deps:** update dependency csv-stringify to v5.6.5 ([#36](https://github.com/kintone/cli-kintone/issues/36)) ([095e097](https://github.com/kintone/cli-kintone/commit/095e0978cfa2217909e4043377f8e3bfd953f338))
+
 ## [0.13.0](https://github.com/kintone/cli-kintone/compare/v0.12.0...v0.13.0) (2022-08-17)
 
 

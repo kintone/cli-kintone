@@ -115,22 +115,10 @@ export const schema: RecordSchema = {
       ],
     },
     {
-      type: "STATUS_ASSIGNEE",
-      code: "Assignee",
-      label: "Assignee",
-      enabled: false,
-    },
-    {
       type: "MODIFIER",
       code: "modifier",
       label: "modifier",
       noLabel: false,
-    },
-    {
-      type: "STATUS",
-      code: "Status",
-      label: "Status",
-      enabled: false,
     },
     {
       type: "RICH_TEXT",
@@ -152,12 +140,6 @@ export const schema: RecordSchema = {
       hideExpression: false,
       unique: false,
       defaultValue: "",
-    },
-    {
-      type: "CATEGORY",
-      code: "Categories",
-      label: "Categories",
-      enabled: false,
     },
     {
       type: "NUMBER",

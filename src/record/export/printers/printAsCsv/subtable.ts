@@ -5,7 +5,6 @@ import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 import type { RecordSchema } from "../../types/schema";
 
 import { convertFieldValue } from "./fieldValue";
-import { supportedFieldTypesInSubtable } from "./constants";
 
 type SubtableField = {
   code: string;
@@ -102,10 +101,6 @@ function* fieldsInSubtableReader(
   subtableFields: SubtableField["fields"]
 ): Generator<FieldInSubtable, void, undefined> {
   for (const fieldPropertyInSubtable of subtableFields) {
-    if (!supportedFieldTypesInSubtable.includes(fieldPropertyInSubtable.type)) {
-      continue;
-    }
-
     if (!(fieldPropertyInSubtable.code in subtableRow.value)) {
       continue;
     }

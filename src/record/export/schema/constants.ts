@@ -1,8 +1,16 @@
 import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 
-export const supportedFieldTypes: Array<
-  KintoneFormFieldProperty.OneOf["type"]
-> = [
+type SupportedFieldType = Exclude<
+  KintoneFormFieldProperty.OneOf,
+  | KintoneFormFieldProperty.Status
+  | KintoneFormFieldProperty.StatusAssignee
+  | KintoneFormFieldProperty.Category
+  | KintoneFormFieldProperty.Group
+  | KintoneFormFieldProperty.ReferenceTable
+  | KintoneFormFieldProperty.Lookup
+>;
+
+const supportedFieldTypes: Array<SupportedFieldType["type"]> = [
   "RECORD_NUMBER",
   "SINGLE_LINE_TEXT",
   "RADIO_BUTTON",
@@ -28,8 +36,20 @@ export const supportedFieldTypes: Array<
   "GROUP_SELECT",
 ];
 
-export const supportedFieldTypesInSubtable: Array<
-  KintoneFormFieldProperty.InSubtable["type"]
+export const isSupportedField = (
+  field: KintoneFormFieldProperty.OneOf
+): field is SupportedFieldType =>
+  supportedFieldTypes.some(
+    (supportedFieldType) => field.type === supportedFieldType
+  );
+
+type SupportedFieldTypeInSubtable = Exclude<
+  KintoneFormFieldProperty.InSubtable,
+  KintoneFormFieldProperty.Lookup
+>;
+
+const supportedFieldTypesInSubtable: Array<
+  SupportedFieldTypeInSubtable["type"]
 > = [
   "SINGLE_LINE_TEXT",
   "RADIO_BUTTON",
@@ -49,3 +69,10 @@ export const supportedFieldTypesInSubtable: Array<
   "ORGANIZATION_SELECT",
   "GROUP_SELECT",
 ];
+
+export const isSupportedFieldInSubtable = (
+  field: KintoneFormFieldProperty.InSubtable
+): field is SupportedFieldTypeInSubtable =>
+  supportedFieldTypesInSubtable.some(
+    (supportedFieldType) => field.type === supportedFieldType
+  );

@@ -1,9 +1,6 @@
 import { FieldsJson } from "../../../kintone/types";
 import { FieldSchema, RecordSchema } from "../types/schema";
-import {
-  supportedFieldTypes,
-  supportedFieldTypesInSubtable,
-} from "./constants";
+import { isSupportedField, isSupportedFieldInSubtable } from "./constants";
 
 export type SchemaTransformer = (
   fields: RecordSchema["fields"]
@@ -28,14 +25,14 @@ export const createSchema = (
 const convert = (properties: FieldsJson["properties"]): FieldSchema[] => {
   const fields: FieldSchema[] = [];
   for (const property of Object.values(properties)) {
-    if (!supportedFieldTypes.includes(property.type)) {
+    if (!isSupportedField(property)) {
       continue;
     }
     if (property.type === "SUBTABLE") {
       const { fields: fieldsInSubtable, ...others } = property;
       fields.push({
-        fields: Object.values(fieldsInSubtable).filter((fieldInSubtable) =>
-          supportedFieldTypesInSubtable.includes(fieldInSubtable.type)
+        fields: Object.values(fieldsInSubtable).filter(
+          isSupportedFieldInSubtable
         ),
         ...others,
       });

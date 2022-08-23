@@ -2,7 +2,6 @@ import type { KintoneRecord } from "../../types/record";
 import type * as Fields from "../../types/field";
 import type { RecordSchema } from "../../types/schema";
 
-import { supportedFieldTypes } from "./constants";
 import { convertFieldValue } from "./fieldValue";
 
 type Field = {
@@ -23,10 +22,6 @@ export function* fieldReader(
   schema: RecordSchema
 ): Generator<Field, void, undefined> {
   for (const field of schema.fields) {
-    if (!supportedFieldTypes.includes(field.type)) {
-      continue;
-    }
-
     if (field.type === "SUBTABLE") {
       continue;
     }

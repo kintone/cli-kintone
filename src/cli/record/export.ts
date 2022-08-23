@@ -95,6 +95,7 @@ const builder = (args: yargs.Argv) =>
     .option("fields", {
       describe: "The fields to export (comma separated)",
       type: "string",
+      requiresArg: true,
     })
     .option("pfx-file-path", {
       describe: "The path to client certificate file",

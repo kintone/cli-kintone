@@ -1,24 +1,15 @@
-import type { FieldsJson, LayoutJson } from "../../../../../kintone/types";
-
 import { buildHeaderFields } from "../header";
 import { PRIMARY_MARK } from "../constants";
 
-const fieldsJson: FieldsJson = require("./fixtures/header/fields.json");
-const layoutJson: LayoutJson = require("./fixtures/header/layout.json");
-const fileFieldsJson: FieldsJson = require("./fixtures/header/file_fields.json");
-const fileLayoutJson: LayoutJson = require("./fixtures/header/file_layout.json");
-const systemFieldsFieldsJson: FieldsJson = require("./fixtures/header/systemfields_fields.json");
-const systemFieldsLayoutJson: LayoutJson = require("./fixtures/header/systemfields_layout.json");
-const subtableFieldsJson: FieldsJson = require("./fixtures/header/subtable_fields.json");
-const subtableLayoutJson: LayoutJson = require("./fixtures/header/subtable_layout.json");
+import { schema } from "./fixtures/header/schema";
+import { schema as fileSchema } from "./fixtures/header/file_schema";
+import { schema as subtableSchema } from "./fixtures/header/subtable_schema";
 
 describe("buildHeaderFields", () => {
   it("should generate fieldCode array correctly (data without subtable)", () => {
-    expect(
-      buildHeaderFields(fieldsJson, layoutJson).includes(PRIMARY_MARK)
-    ).toBe(false);
+    expect(buildHeaderFields(schema).includes(PRIMARY_MARK)).toBe(false);
 
-    expect(buildHeaderFields(fieldsJson, layoutJson)).toStrictEqual([
+    expect(buildHeaderFields(schema)).toStrictEqual([
       "recordNumber",
       "updatedTime",
       "dropDown",
@@ -40,7 +31,7 @@ describe("buildHeaderFields", () => {
       "dateTime",
       "time",
     ]);
-    expect(buildHeaderFields(fileFieldsJson, fileLayoutJson)).toStrictEqual([
+    expect(buildHeaderFields(fileSchema)).toStrictEqual([
       "recordNumber",
       "updatedTime",
       "dropDown",
@@ -57,40 +48,10 @@ describe("buildHeaderFields", () => {
       "multiSelect",
       "file",
     ]);
-    expect(
-      buildHeaderFields(systemFieldsFieldsJson, systemFieldsLayoutJson)
-    ).toStrictEqual([
-      "recordNumber",
-      "dropDown",
-      "richText",
-      "singleLineText",
-      "number",
-      "radioButton",
-      "multiLineText",
-      "checkBox",
-      "calc",
-      "multiSelect",
-      "userSelect",
-      "organizationSelect",
-      "groupSelect",
-      "date",
-      "dateTime",
-      "time",
-      "creator",
-      "createdTime",
-      "modifier",
-      "updatedTime",
-    ]);
   });
   it("should generate fieldCode array correctly (data with subtable)", () => {
-    expect(
-      buildHeaderFields(subtableFieldsJson, subtableLayoutJson).includes(
-        PRIMARY_MARK
-      )
-    ).toBe(true);
-    expect(
-      buildHeaderFields(subtableFieldsJson, subtableLayoutJson)
-    ).toStrictEqual([
+    expect(buildHeaderFields(subtableSchema).includes(PRIMARY_MARK)).toBe(true);
+    expect(buildHeaderFields(subtableSchema)).toStrictEqual([
       "*",
       "recordNumber",
       "updatedTime",

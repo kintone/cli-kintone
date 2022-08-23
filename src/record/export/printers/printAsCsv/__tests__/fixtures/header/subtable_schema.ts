@@ -1,21 +1,21 @@
-import { FieldsJson } from "../../../../../../../../kintone/types";
+import type { RecordSchema } from "../../../../../types/schema";
 
-export const fieldsJson: FieldsJson = {
-  revision: "29",
-  properties: {
-    recordNumber: {
+export const schema: RecordSchema = {
+  hasSubtable: true,
+  fields: [
+    {
       type: "RECORD_NUMBER",
       code: "recordNumber",
       label: "recordNumber",
       noLabel: false,
     },
-    updatedTime: {
+    {
       type: "UPDATED_TIME",
       code: "updatedTime",
       label: "updatedTime",
       noLabel: false,
     },
-    dropDown: {
+    {
       type: "DROP_DOWN",
       code: "dropDown",
       label: "dropDown",
@@ -33,31 +33,94 @@ export const fieldsJson: FieldsJson = {
       },
       defaultValue: "",
     },
-    creator: {
+    {
       type: "CREATOR",
       code: "creator",
       label: "creator",
       noLabel: false,
     },
-    Assignee: {
-      type: "STATUS_ASSIGNEE",
-      code: "Assignee",
-      label: "Assignee",
-      enabled: false,
+    {
+      type: "SUBTABLE",
+      code: "subTable",
+      noLabel: false,
+      label: "subTable",
+      fields: [
+        {
+          type: "SINGLE_LINE_TEXT",
+          code: "subTableText",
+          label: "subTableText",
+          noLabel: false,
+          required: false,
+          minLength: "",
+          maxLength: "",
+          expression: "",
+          hideExpression: false,
+          unique: false,
+          defaultValue: "",
+        },
+        {
+          type: "CHECK_BOX",
+          code: "subTableCheckbox",
+          label: "subTableCheckbox",
+          noLabel: false,
+          required: false,
+          options: {
+            st_sample2: {
+              label: "st_sample2",
+              index: "1",
+            },
+            st_sample1: {
+              label: "st_sample1",
+              index: "0",
+            },
+          },
+          defaultValue: [],
+          align: "HORIZONTAL",
+        },
+        {
+          type: "FILE",
+          code: "subTableFile",
+          label: "subTableFile",
+          noLabel: false,
+          required: false,
+          thumbnailSize: "150",
+        },
+        {
+          type: "USER_SELECT",
+          code: "userSelect",
+          label: "userSelect",
+          noLabel: false,
+          required: false,
+          entities: [],
+          defaultValue: [],
+        },
+        {
+          type: "ORGANIZATION_SELECT",
+          code: "organizationSelect",
+          label: "organizationSelect",
+          noLabel: false,
+          required: false,
+          entities: [],
+          defaultValue: [],
+        },
+        {
+          type: "GROUP_SELECT",
+          code: "groupSelect",
+          label: "groupSelect",
+          noLabel: false,
+          required: false,
+          entities: [],
+          defaultValue: [],
+        },
+      ],
     },
-    modifier: {
+    {
       type: "MODIFIER",
       code: "modifier",
       label: "modifier",
       noLabel: false,
     },
-    Status: {
-      type: "STATUS",
-      code: "Status",
-      label: "Status",
-      enabled: false,
-    },
-    richText: {
+    {
       type: "RICH_TEXT",
       code: "richText",
       label: "richText",
@@ -65,7 +128,7 @@ export const fieldsJson: FieldsJson = {
       required: false,
       defaultValue: "",
     },
-    singleLineText: {
+    {
       type: "SINGLE_LINE_TEXT",
       code: "singleLineText",
       label: "singleLineText",
@@ -78,13 +141,7 @@ export const fieldsJson: FieldsJson = {
       unique: false,
       defaultValue: "",
     },
-    Categories: {
-      type: "CATEGORY",
-      code: "Categories",
-      label: "Categories",
-      enabled: false,
-    },
-    number: {
+    {
       type: "NUMBER",
       code: "number",
       label: "number",
@@ -99,7 +156,7 @@ export const fieldsJson: FieldsJson = {
       unit: "",
       unitPosition: "BEFORE",
     },
-    radioButton: {
+    {
       type: "RADIO_BUTTON",
       code: "radioButton",
       label: "radioButton",
@@ -118,7 +175,7 @@ export const fieldsJson: FieldsJson = {
       defaultValue: "sample1",
       align: "HORIZONTAL",
     },
-    multiLineText: {
+    {
       type: "MULTI_LINE_TEXT",
       code: "multiLineText",
       label: "multiLineText",
@@ -126,13 +183,13 @@ export const fieldsJson: FieldsJson = {
       required: false,
       defaultValue: "",
     },
-    createdTime: {
+    {
       type: "CREATED_TIME",
       code: "createdTime",
       label: "createdTime",
       noLabel: false,
     },
-    checkBox: {
+    {
       type: "CHECK_BOX",
       code: "checkBox",
       label: "checkBox",
@@ -151,7 +208,7 @@ export const fieldsJson: FieldsJson = {
       defaultValue: [],
       align: "HORIZONTAL",
     },
-    calc: {
+    {
       type: "CALC",
       code: "calc",
       label: "calc",
@@ -164,7 +221,7 @@ export const fieldsJson: FieldsJson = {
       unit: "",
       unitPosition: "BEFORE",
     },
-    multiSelect: {
+    {
       type: "MULTI_SELECT",
       code: "multiSelect",
       label: "multiSelect",
@@ -194,61 +251,5 @@ export const fieldsJson: FieldsJson = {
       },
       defaultValue: [],
     },
-    userSelect: {
-      type: "USER_SELECT",
-      code: "userSelect",
-      label: "userSelect",
-      noLabel: false,
-      required: false,
-      entities: [],
-      defaultValue: [],
-    },
-    organizationSelect: {
-      type: "ORGANIZATION_SELECT",
-      code: "organizationSelect",
-      label: "organizationSelect",
-      noLabel: false,
-      required: false,
-      entities: [],
-      defaultValue: [],
-    },
-    groupSelect: {
-      type: "GROUP_SELECT",
-      code: "groupSelect",
-      label: "groupSelect",
-      noLabel: false,
-      required: false,
-      entities: [],
-      defaultValue: [],
-    },
-    date: {
-      type: "DATE",
-      code: "date",
-      label: "date",
-      noLabel: false,
-      required: false,
-      unique: false,
-      defaultValue: "",
-      defaultNowValue: true,
-    },
-    dateTime: {
-      type: "DATETIME",
-      code: "dateTime",
-      label: "dateTime",
-      noLabel: false,
-      required: false,
-      unique: false,
-      defaultValue: "",
-      defaultNowValue: true,
-    },
-    time: {
-      type: "TIME",
-      code: "time",
-      label: "time",
-      noLabel: false,
-      required: false,
-      defaultValue: "",
-      defaultNowValue: true,
-    },
-  },
+  ],
 };

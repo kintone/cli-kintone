@@ -1,6 +1,9 @@
 import { buildRestAPIClient, RestAPIClientOptions } from "../../kintone/client";
 import { getRecords } from "./usecases/get";
 import { ExportFileFormat, printRecords } from "./printers";
+import { createSchema } from "./schema";
+import { formLayout as defaultTransformer } from "./schema/transformers/formLayout";
+import { option } from "yargs";
 
 export type Options = {
   app: string;
@@ -22,16 +25,20 @@ export const run: (
     ...restApiClientOptions
   } = argv;
   const apiClient = buildRestAPIClient(restApiClientOptions);
-  const records = await getRecords(apiClient, app, {
+  const fieldsJson = await apiClient.app.getFormFields({ app });
+  const schema = createSchema(
+    fieldsJson,
+    defaultTransformer(await apiClient.app.getFormLayout({ app }))
+  );
+  const records = await getRecords(apiClient, app, schema, {
     condition,
     orderBy,
     attachmentsDir,
   });
   await printRecords({
-    apiClient,
     records,
-    app,
     format,
+    schema,
     useLocalFilePath: !!attachmentsDir,
   });
 };

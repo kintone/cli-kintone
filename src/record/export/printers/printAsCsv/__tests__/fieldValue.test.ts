@@ -4,7 +4,7 @@ import { convertFieldValue } from "../fieldValue";
 
 const patterns: Array<{
   input: Fields.OneOf;
-  attachmentsDir?: string;
+  useLocalFilePath?: boolean;
   expected: string;
 }> = [
   {
@@ -128,7 +128,7 @@ const patterns: Array<{
         },
       ],
     },
-    attachmentsDir: "attachments",
+    useLocalFilePath: true,
     expected: "attachment-1/image.png\nattachment-1/image2.png",
   },
   {
@@ -211,8 +211,8 @@ const patterns: Array<{
 describe("convertFieldValue", () => {
   it.each(patterns)(
     "[$#] convert $input.type field correctly",
-    ({ input, expected, attachmentsDir }) => {
-      expect(convertFieldValue(input, !!attachmentsDir)).toStrictEqual(
+    ({ input, expected, useLocalFilePath = false }) => {
+      expect(convertFieldValue(input, useLocalFilePath)).toStrictEqual(
         expected
       );
     }

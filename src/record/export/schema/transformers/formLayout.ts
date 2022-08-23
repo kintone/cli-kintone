@@ -1,55 +1,49 @@
-import type { FieldsJson, LayoutJson } from "../../../../../kintone/types";
+import type { LayoutJson } from "../../../../kintone/types";
 import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
-import type { HeaderTransformer } from "../header";
-
-import { PRIMARY_MARK } from "../constants";
+import type { SchemaTransformer } from "../";
+import type { FieldSchema } from "../../types/schema";
 
 /**
  * This transformer returns all supported fields.
  * This transformer sorts headerFields by the following rules.
  * - based on form layout of the kintone app
- * - the PRIMARY_MARK is always precedence.
  * - When following fields are missing from layout,
  *   - RECORD_NUMBER: placed at just after the PRIMARY_MARK (or head of the array)
  *   - CREATOR      : placed at the end of the array
  *   - CREATED_TIME : placed at the end of the array
  *   - MODIFIER     : placed at the end of the array
  *   - UPDATED_TIME : placed at the end of the array
- * @param fieldsJson
  * @param layoutJson
  */
-export const formLayout =
-  (fieldsJson: FieldsJson, layoutJson: LayoutJson): HeaderTransformer =>
-  (headerFields: string[]) =>
-    headerFields.sort(orderByFormLayoutComparator(fieldsJson, layoutJson));
+export const formLayout = (layoutJson: LayoutJson): SchemaTransformer => {
+  const comparator = orderByFormLayoutComparator(layoutJson);
+  return (fields: FieldSchema[]) =>
+    fields.sort(comparator).map((field) => {
+      if (field.type === "SUBTABLE") {
+        field.fields.sort(comparator);
+      }
+      return field;
+    });
+};
 
 export const orderByFormLayoutComparator = (
-  fieldsJson: FieldsJson,
   layoutJson: LayoutJson
-): ((codeA: string, codeB: string) => number) => {
+): ((fieldA: FieldSchema, fieldB: FieldSchema) => number) => {
   const flatLayout = flattenLayout(layoutJson.layout);
-  return (codeA, codeB) => {
-    // the PRIMARY_MARK is always precedence
-    if (codeA === PRIMARY_MARK) {
-      return -1;
-    }
-    if (codeB === PRIMARY_MARK) {
-      return 1;
-    }
-
+  return (fieldA, fieldB) => {
     // find fieldCode from layout
-    const indexA = flatLayout.findIndex((field) => field.code === codeA);
-    const indexB = flatLayout.findIndex((field) => field.code === codeB);
+    const indexA = flatLayout.findIndex((field) => field.code === fieldA.code);
+    const indexB = flatLayout.findIndex((field) => field.code === fieldB.code);
 
     if (indexA !== -1 && indexB !== -1) {
       return indexA - indexB;
     } else if (indexA !== -1 && indexB === -1) {
-      if (fieldsJson.properties[codeB]?.type === "RECORD_NUMBER") {
+      if (fieldB.type === "RECORD_NUMBER") {
         return 1;
       }
       return -1;
     } else if (indexA === -1 && indexB !== -1) {
-      if (fieldsJson.properties[codeA]?.type === "RECORD_NUMBER") {
+      if (fieldA.type === "RECORD_NUMBER") {
         return -1;
       }
       return 1;
@@ -64,8 +58,8 @@ export const orderByFormLayoutComparator = (
     ];
 
     return (
-      systemFieldsOrder.indexOf(fieldsJson.properties[codeA].type) -
-      systemFieldsOrder.indexOf(fieldsJson.properties[codeB].type)
+      systemFieldsOrder.findIndex((fieldType) => fieldA.type === fieldType) -
+      systemFieldsOrder.findIndex((fieldType) => fieldB.type === fieldType)
     );
   };
 };

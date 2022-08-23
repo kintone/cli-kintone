@@ -1,6 +1,6 @@
-import { FieldsJson } from "../../../../../../../../kintone/types";
+import { FieldsJson } from "../../../../../../kintone/types";
 
-export const fieldsJson: FieldsJson = {
+export const input: FieldsJson = {
   revision: "29",
   properties: {
     recordNumber: {
@@ -268,6 +268,62 @@ export const fieldsJson: FieldsJson = {
         },
       },
       defaultValue: [],
+    },
+    userSelect: {
+      type: "USER_SELECT",
+      code: "userSelect",
+      label: "userSelect",
+      noLabel: false,
+      required: false,
+      entities: [],
+      defaultValue: [],
+    },
+    organizationSelect: {
+      type: "ORGANIZATION_SELECT",
+      code: "organizationSelect",
+      label: "organizationSelect",
+      noLabel: false,
+      required: false,
+      entities: [],
+      defaultValue: [],
+    },
+    groupSelect: {
+      type: "GROUP_SELECT",
+      code: "groupSelect",
+      label: "groupSelect",
+      noLabel: false,
+      required: false,
+      entities: [],
+      defaultValue: [],
+    },
+    date: {
+      type: "DATE",
+      code: "date",
+      label: "date",
+      noLabel: false,
+      required: false,
+      unique: false,
+      defaultValue: "",
+      defaultNowValue: true,
+    },
+    dateTime: {
+      type: "DATETIME",
+      code: "dateTime",
+      label: "dateTime",
+      noLabel: false,
+      required: false,
+      unique: false,
+      defaultValue: "",
+      defaultNowValue: true,
+    },
+    time: {
+      type: "TIME",
+      code: "time",
+      label: "time",
+      noLabel: false,
+      required: false,
+      defaultValue: "",
+      defaultNowValue: true,
     },
   },
 };

@@ -1,6 +1,7 @@
 import { KintoneRecordForResponse } from "../../../../../../kintone/types";
 import path from "path";
 import { KintoneRecord } from "../../../../types/record";
+import { RecordSchema } from "../../../../types/schema";
 
 const fileInfo = {
   contentType: "text/plain",
@@ -15,7 +16,7 @@ export const input: KintoneRecordForResponse[] = [
       type: "__ID__",
       value: "2",
     },
-    fieldCode: {
+    value1: {
       type: "SINGLE_LINE_TEXT",
       value: "value1",
     },
@@ -48,7 +49,7 @@ export const input: KintoneRecordForResponse[] = [
       type: "__ID__",
       value: "3",
     },
-    fieldCode: {
+    value1: {
       type: "SINGLE_LINE_TEXT",
       value: "value1",
     },
@@ -71,11 +72,7 @@ export const input: KintoneRecordForResponse[] = [
 
 export const expected: KintoneRecord[] = [
   {
-    $id: {
-      type: "__ID__",
-      value: "2",
-    },
-    fieldCode: {
+    value1: {
       type: "SINGLE_LINE_TEXT",
       value: "value1",
     },
@@ -118,11 +115,7 @@ export const expected: KintoneRecord[] = [
     },
   },
   {
-    $id: {
-      type: "__ID__",
-      value: "3",
-    },
-    fieldCode: {
+    value1: {
       type: "SINGLE_LINE_TEXT",
       value: "value1",
     },
@@ -147,3 +140,38 @@ export const expected: KintoneRecord[] = [
     },
   },
 ];
+
+export const schema: RecordSchema = {
+  fields: [
+    {
+      type: "SINGLE_LINE_TEXT",
+      code: "value1",
+      label: "value1",
+      noLabel: false,
+      required: true,
+      defaultValue: "",
+      unique: false,
+      minLength: "123",
+      maxLength: "0",
+      expression: "",
+      hideExpression: false,
+    },
+    {
+      type: "SUBTABLE",
+      code: "subTable",
+      label: "subTable",
+      noLabel: false,
+      fields: [
+        {
+          type: "FILE",
+          code: "attachment",
+          label: "attachment",
+          noLabel: false,
+          thumbnailSize: "50",
+          required: false,
+        },
+      ],
+    },
+  ],
+  hasSubtable: true,
+};

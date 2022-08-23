@@ -1,4 +1,4 @@
-import { LayoutJson } from "../../../../../../../../kintone/types";
+import { LayoutJson } from "../../../../../../kintone/types";
 
 export const layoutJson: LayoutJson = {
   revision: "29",
@@ -6,20 +6,38 @@ export const layoutJson: LayoutJson = {
     {
       type: "ROW",
       fields: [
-        { type: "RECORD_NUMBER", code: "recordNumber", size: { width: "123" } },
-        { type: "UPDATED_TIME", code: "updatedTime", size: { width: "123" } },
         {
           type: "DROP_DOWN",
           code: "dropDown",
           size: { width: "123" },
         },
-        { type: "CREATOR", code: "creator", size: { width: "123" } },
         { type: "MODIFIER", code: "modifier", size: { width: "123" } },
         {
           type: "RICH_TEXT",
           code: "richText",
           size: { width: "123", innerHeight: "123" },
         },
+        { type: "CREATOR", code: "creator", size: { width: "123" } },
+      ],
+    },
+    {
+      type: "SUBTABLE",
+      code: "subTable",
+      fields: [
+        {
+          type: "SINGLE_LINE_TEXT",
+          code: "subTableText",
+          size: { width: "123" },
+        },
+        { type: "CHECK_BOX", code: "subTableCheckbox", size: { width: "123" } },
+        { type: "FILE", code: "subTableFile", size: { width: "123" } },
+        { type: "USER_SELECT", code: "userSelect", size: { width: "123" } },
+        {
+          type: "ORGANIZATION_SELECT",
+          code: "organizationSelect",
+          size: { width: "123" },
+        },
+        { type: "GROUP_SELECT", code: "groupSelect", size: { width: "123" } },
       ],
     },
     {
@@ -30,6 +48,7 @@ export const layoutJson: LayoutJson = {
           code: "singleLineText",
           size: { width: "123" },
         },
+        { type: "RECORD_NUMBER", code: "recordNumber", size: { width: "123" } },
         { type: "NUMBER", code: "number", size: { width: "123" } },
         { type: "RADIO_BUTTON", code: "radioButton", size: { width: "123" } },
         {
@@ -42,8 +61,29 @@ export const layoutJson: LayoutJson = {
       ],
     },
     {
+      type: "SUBTABLE",
+      code: "subTable",
+      fields: [
+        {
+          type: "SINGLE_LINE_TEXT",
+          code: "subTableText",
+          size: { width: "123" },
+        },
+        { type: "CHECK_BOX", code: "subTableCheckbox", size: { width: "123" } },
+        { type: "FILE", code: "subTableFile", size: { width: "123" } },
+        { type: "USER_SELECT", code: "userSelect", size: { width: "123" } },
+        {
+          type: "ORGANIZATION_SELECT",
+          code: "organizationSelect",
+          size: { width: "123" },
+        },
+        { type: "GROUP_SELECT", code: "groupSelect", size: { width: "123" } },
+      ],
+    },
+    {
       type: "ROW",
       fields: [
+        { type: "UPDATED_TIME", code: "updatedTime", size: { width: "123" } },
         {
           type: "CALC",
           code: "calc",

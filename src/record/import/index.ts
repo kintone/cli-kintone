@@ -4,6 +4,8 @@ import { parseRecords } from "./parsers";
 import { addRecords } from "./usecases/add";
 import { upsertRecords } from "./usecases/upsert";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
+import { createSchema } from "./schema";
+import { noop as defaultTransformer } from "./schema/transformers/noop";
 
 export type Options = {
   app: string;
@@ -28,6 +30,10 @@ export const run: (
   const apiClient = buildRestAPIClient(restApiClientOptions);
 
   try {
+    const schema = createSchema(
+      await apiClient.app.getFormFields({ app }),
+      defaultTransformer()
+    );
     const { content, format } = await readFile(filePath, encoding);
     const records = await parseRecords({
       apiClient,

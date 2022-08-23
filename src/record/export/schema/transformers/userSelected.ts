@@ -1,6 +1,7 @@
 import type { SchemaTransformer } from "../";
 import type { FieldsJson } from "../../../../kintone/types";
 import type { FieldSchema } from "../../types/schema";
+import { isSupportedField } from "../constants";
 
 /**
  * This transformer returns only all supported fields.
@@ -39,6 +40,9 @@ const validateFields = (fields: string[], fieldsJson: FieldsJson) => {
       throw new Error(
         `The specified field "${field}" does not exist on the app`
       );
+    }
+    if (!isSupportedField(fieldsJson.properties[field])) {
+      throw new Error(`The specified field "${field}" is not supported`);
     }
   }
 };

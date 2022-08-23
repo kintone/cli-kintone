@@ -71,4 +71,9 @@ describe("userSelected", () => {
       'The specified field "HyperKintoneText" does not exist on the app'
     );
   });
+  it("should throw an Error if specified field is not supported", () => {
+    expect(() =>
+      userSelected(["recordNumber", "Categories"], fieldsJson)
+    ).toThrow('The specified field "Categories" is not supported');
+  });
 });

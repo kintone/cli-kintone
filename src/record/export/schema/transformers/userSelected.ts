@@ -5,8 +5,7 @@ import { isSupportedField } from "../constants";
 
 /**
  * This transformer returns only all supported fields.
- * This transformer sorts headerFields by the following rules.
- * - based on form layout of the kintone app
+ * This transformer sorts headerFields by order of userSelectedFields
  */
 export const userSelected = (
   userSelectedFields: string[],
@@ -22,8 +21,9 @@ export const userSelected = (
 
 /**
  * throw Error on following situation
- * - given field is field in subtable
- * - given field does not found on fieldJson
+ * - The given field is field in subtable
+ * - The given field does not found on fieldJson
+ * - The given field is not supported
  * @param fields
  * @param fieldsJson
  */

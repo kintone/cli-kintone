@@ -3,8 +3,6 @@ import { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 export type RecordSchema = {
   fields: FieldSchema[];
   hasSubtable: boolean;
-  useLocalFilePath: boolean;
-  attachmentsDir: string;
 };
 
 export type FieldSchema = OneOf;

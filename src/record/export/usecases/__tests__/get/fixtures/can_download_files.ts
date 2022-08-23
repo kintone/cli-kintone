@@ -103,6 +103,4 @@ export const schema: RecordSchema = {
     },
   ],
   hasSubtable: false,
-  useLocalFilePath: true,
-  attachmentsDir: "attachments",
 };

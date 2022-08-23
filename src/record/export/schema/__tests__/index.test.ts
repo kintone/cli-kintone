@@ -9,15 +9,14 @@ export type TestPattern = {
   description: string;
   input: FieldsJson;
   transformer: SchemaTransformer;
-  attachmentsDir?: string;
   expected: RecordSchema;
 };
 
 describe("createSchema", () => {
   const patterns = [formLayout, formLayoutNoSystemFields];
   it.each(patterns)("$description", (pattern) => {
-    expect(
-      createSchema(pattern.input, pattern.transformer, pattern.attachmentsDir)
-    ).toStrictEqual(pattern.expected);
+    expect(createSchema(pattern.input, pattern.transformer)).toStrictEqual(
+      pattern.expected
+    );
   });
 });

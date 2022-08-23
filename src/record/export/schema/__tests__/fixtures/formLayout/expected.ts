@@ -1,8 +1,6 @@
 import type { RecordSchema } from "../../../../types/schema";
 
 export const expected: RecordSchema = {
-  useLocalFilePath: true,
-  attachmentsDir: "attachments",
   hasSubtable: true,
   fields: [
     {

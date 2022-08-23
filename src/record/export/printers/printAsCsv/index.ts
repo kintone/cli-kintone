@@ -10,20 +10,22 @@ import { buildHeaderFields } from "./header";
 
 export const printAsCsv = (
   records: KintoneRecord[],
-  schema: RecordSchema
+  schema: RecordSchema,
+  useLocalFilePath: boolean
 ): void => {
-  console.log(stringifyAsCsv(records, schema));
+  console.log(stringifyAsCsv(records, schema, useLocalFilePath));
 };
 
 export const stringifyAsCsv = (
   records: KintoneRecord[],
-  schema: RecordSchema
+  schema: RecordSchema,
+  useLocalFilePath: boolean
 ): string => {
   const headerFields = buildHeaderFields(schema);
 
   const csvRows: CsvRow[] = [];
   for (const record of recordReader(records)) {
-    csvRows.push(...convertRecord(record, schema));
+    csvRows.push(...convertRecord(record, schema, useLocalFilePath));
   }
 
   return stringify(csvRows, {

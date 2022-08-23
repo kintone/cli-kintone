@@ -9,6 +9,5 @@ export const pattern: TestPattern = {
     "formLayout should create schema correctly without system fields on layout",
   transformer: formLayout(layoutJson),
   input: input,
-  attachmentsDir: "attachments",
   expected: expected,
 };

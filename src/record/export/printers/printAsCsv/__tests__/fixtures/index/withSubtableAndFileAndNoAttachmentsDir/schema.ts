@@ -1,8 +1,6 @@
 import type { RecordSchema } from "../../../../../../types/schema";
 
 export const schema: RecordSchema = {
-  useLocalFilePath: false,
-  attachmentsDir: "attachments",
   hasSubtable: true,
   fields: [
     {

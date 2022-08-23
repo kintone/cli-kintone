@@ -8,6 +8,5 @@ export const pattern: TestPattern = {
   description: "formLayout should create schema correctly",
   transformer: formLayout(layoutJson),
   input: input,
-  attachmentsDir: "attachments",
   expected: expected,
 };

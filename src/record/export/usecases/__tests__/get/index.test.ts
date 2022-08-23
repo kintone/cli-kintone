@@ -80,12 +80,9 @@ describe("getRecords", () => {
       .fn()
       .mockResolvedValue(kintoneRecords);
     apiClient.file.downloadFile = jest.fn().mockResolvedValue(testFileData);
-    const actual = await getRecords(
-      apiClient,
-      "1",
-      { ...schema, attachmentsDir: tempDir },
-      {}
-    );
+    const actual = await getRecords(apiClient, "1", schema, {
+      attachmentsDir: tempDir,
+    });
     expect(actual).toStrictEqual(expectedRecords);
 
     const attachmentValue = (expectedRecords[0].attachment as Fields.File)
@@ -109,12 +106,9 @@ describe("getRecords", () => {
       .fn()
       .mockResolvedValue(kintoneRecords);
     apiClient.file.downloadFile = jest.fn().mockResolvedValue(testFileData);
-    const actual = await getRecords(
-      apiClient,
-      "1",
-      { ...schema, attachmentsDir: tempDir },
-      {}
-    );
+    const actual = await getRecords(apiClient, "1", schema, {
+      attachmentsDir: tempDir,
+    });
     expect(actual).toStrictEqual(expectedRecords);
 
     const attachmentValue = (

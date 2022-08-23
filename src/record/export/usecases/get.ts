@@ -18,9 +18,10 @@ export const getRecords: (
   options: {
     condition?: string;
     orderBy?: string;
+    attachmentsDir?: string;
   }
 ) => Promise<KintoneRecord[]> = async (apiClient, app, schema, options) => {
-  const { condition, orderBy } = options;
+  const { condition, orderBy, attachmentsDir } = options;
   const kintoneRecords = await apiClient.record.getAllRecords({
     app,
     condition,
@@ -32,8 +33,7 @@ export const getRecords: (
     (recordId, field, fieldSchema) =>
       fieldProcessor(recordId, field, fieldSchema, {
         apiClient,
-        useLocalFilePath: schema.useLocalFilePath,
-        attachmentsDir: schema.attachmentsDir,
+        attachmentsDir,
       })
   );
 };
@@ -88,15 +88,14 @@ const fieldProcessor: (
   fieldSchema: FieldSchema,
   options: {
     apiClient: KintoneRestAPIClient;
-    useLocalFilePath: boolean;
-    attachmentsDir: string;
+    attachmentsDir?: string;
   }
 ) => Promise<Fields.OneOf> = async (recordId, field, fieldSchema, options) => {
-  const { apiClient, useLocalFilePath, attachmentsDir } = options;
+  const { apiClient, attachmentsDir } = options;
 
   switch (fieldSchema.type) {
     case "FILE":
-      if (useLocalFilePath) {
+      if (attachmentsDir) {
         const downloadedList: Fields.File["value"] = [];
         for (const fileInfo of (field as Fields.File).value) {
           const localFilePath = path.join(
@@ -137,7 +136,7 @@ const fieldProcessor: (
             rowIndex,
             fieldCodeInSubtable,
             fieldInSubtable,
-            { apiClient, useLocalFilePath, attachmentsDir }
+            { apiClient, attachmentsDir }
           );
         }
         newRows.push({ id: row.id, value: fieldsInRow });
@@ -160,8 +159,7 @@ const fieldProcessorInSubtable: (
   field: KintoneRecordField.InSubtable,
   options: {
     apiClient: KintoneRestAPIClient;
-    useLocalFilePath: boolean;
-    attachmentsDir: string;
+    attachmentsDir?: string;
   }
 ) => Promise<Fields.InSubtable> = async (
   recordId,
@@ -171,10 +169,10 @@ const fieldProcessorInSubtable: (
   field,
   options
 ) => {
-  const { apiClient, useLocalFilePath, attachmentsDir } = options;
+  const { apiClient, attachmentsDir } = options;
   switch (field.type) {
     case "FILE":
-      if (useLocalFilePath) {
+      if (attachmentsDir) {
         const downloadedList: Fields.File["value"] = [];
         for (const fileInfo of field.value) {
           const localFilePath = path.join(

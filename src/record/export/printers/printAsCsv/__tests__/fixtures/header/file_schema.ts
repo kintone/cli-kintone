@@ -2,8 +2,6 @@ import { RecordSchema } from "../../../../../types/schema";
 
 export const schema: RecordSchema = {
   hasSubtable: false,
-  useLocalFilePath: false,
-  attachmentsDir: "",
   fields: [
     {
       type: "RECORD_NUMBER",

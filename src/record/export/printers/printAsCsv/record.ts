@@ -10,11 +10,12 @@ export type RecordAsCsvRows = CsvRow[];
 
 export const convertRecord = (
   record: KintoneRecord,
-  schema: RecordSchema
+  schema: RecordSchema,
+  useLocalFilePath: boolean
 ): RecordAsCsvRows => {
   const primaryRow: CsvRow = {};
   for (const field of fieldReader(record, schema)) {
-    primaryRow[field.code] = convertField(field, schema.useLocalFilePath);
+    primaryRow[field.code] = convertField(field, useLocalFilePath);
   }
 
   if (!schema.hasSubtable) {
@@ -23,9 +24,7 @@ export const convertRecord = (
 
   const subtableRows: CsvRow[] = [];
   for (const subtableField of subtableFieldReader(record, schema)) {
-    subtableRows.push(
-      ...convertSubtableField(subtableField, schema.useLocalFilePath)
-    );
+    subtableRows.push(...convertSubtableField(subtableField, useLocalFilePath));
   }
 
   if (subtableRows.length === 0) {

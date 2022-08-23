@@ -14,6 +14,7 @@ export type TestPattern = {
   description: string;
   input: KintoneRecord[];
   schema: RecordSchema;
+  useLocalFilePath: boolean;
   expected: string;
 };
 
@@ -27,8 +28,8 @@ describe("stringifyAsCsv", () => {
     withEmptySubtable,
   ];
   it.each(patterns)("$description", (pattern) => {
-    expect(stringifyAsCsv(pattern.input, pattern.schema)).toEqual(
-      pattern.expected
-    );
+    expect(
+      stringifyAsCsv(pattern.input, pattern.schema, pattern.useLocalFilePath)
+    ).toEqual(pattern.expected);
   });
 });

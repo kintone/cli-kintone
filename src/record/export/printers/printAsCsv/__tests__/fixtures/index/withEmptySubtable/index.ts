@@ -8,5 +8,6 @@ export const pattern: TestPattern = {
     "should convert kintone records to csv string correctly when SUBTABLE value is an empty array",
   input: input,
   schema: schema,
+  useLocalFilePath: true,
   expected: expectedCsv,
 };

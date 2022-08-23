@@ -93,7 +93,7 @@ const builder = (args: yargs.Argv) =>
       requiresArg: true,
     })
     .option("fields", {
-      describe: "The fields to export (comma separated)",
+      describe: "The fields to be exported in comma-separated",
       type: "string",
       requiresArg: true,
     })

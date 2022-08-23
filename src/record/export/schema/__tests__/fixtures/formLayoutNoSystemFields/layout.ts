@@ -29,13 +29,6 @@ export const layoutJson: LayoutJson = {
         },
         { type: "CHECK_BOX", code: "subTableCheckbox", size: { width: "123" } },
         { type: "FILE", code: "subTableFile", size: { width: "123" } },
-        { type: "USER_SELECT", code: "userSelect", size: { width: "123" } },
-        {
-          type: "ORGANIZATION_SELECT",
-          code: "organizationSelect",
-          size: { width: "123" },
-        },
-        { type: "GROUP_SELECT", code: "groupSelect", size: { width: "123" } },
       ],
     },
     {
@@ -54,26 +47,6 @@ export const layoutJson: LayoutJson = {
           size: { width: "123", innerHeight: "123" },
         },
         { type: "CHECK_BOX", code: "checkBox", size: { width: "123" } },
-      ],
-    },
-    {
-      type: "SUBTABLE",
-      code: "subTable",
-      fields: [
-        {
-          type: "SINGLE_LINE_TEXT",
-          code: "subTableText",
-          size: { width: "123" },
-        },
-        { type: "CHECK_BOX", code: "subTableCheckbox", size: { width: "123" } },
-        { type: "FILE", code: "subTableFile", size: { width: "123" } },
-        { type: "USER_SELECT", code: "userSelect", size: { width: "123" } },
-        {
-          type: "ORGANIZATION_SELECT",
-          code: "organizationSelect",
-          size: { width: "123" },
-        },
-        { type: "GROUP_SELECT", code: "groupSelect", size: { width: "123" } },
       ],
     },
     {

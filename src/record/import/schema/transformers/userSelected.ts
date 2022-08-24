@@ -9,13 +9,21 @@ import { isSupportedField } from "../constants";
  */
 export const userSelected = (
   userSelectedFields: string[],
-  fieldsJson: FieldsJson
+  fieldsJson: FieldsJson,
+  updateKey?: string
 ): SchemaTransformer => {
-  validateFields(userSelectedFields, fieldsJson);
+  const targetFields =
+    updateKey && !userSelectedFields.includes(updateKey)
+      ? [updateKey, ...userSelectedFields]
+      : userSelectedFields;
+  if (updateKey && !targetFields.includes(updateKey)) {
+    targetFields.push(updateKey);
+  }
+  validateFields(targetFields, fieldsJson);
   return (fields: FieldSchema[]) => {
     return fields
-      .filter((fieldSchema) => userSelectedFields.includes(fieldSchema.code))
-      .sort(comparator(userSelectedFields));
+      .filter((fieldSchema) => targetFields.includes(fieldSchema.code))
+      .sort(comparator(targetFields));
   };
 };
 

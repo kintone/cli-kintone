@@ -35,7 +35,9 @@ export const run: (
     const fieldsJson = await apiClient.app.getFormFields({ app });
     const schema = createSchema(
       fieldsJson,
-      fields ? userSelected(fields, fieldsJson) : defaultTransformer()
+      fields
+        ? userSelected(fields, fieldsJson, updateKey)
+        : defaultTransformer()
     );
     const { content, format } = await readFile(filePath, encoding);
     const records = await parseRecords({

@@ -2,7 +2,7 @@ import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { upsertRecords } from "../../upsert";
 
 import { input } from "./fixtures/input";
-import { properties } from "./fixtures/properties";
+import { schema } from "./fixtures/schema";
 import { patterns as patternsSucceeded } from "./fixtures/patterns_succeeded";
 import { patterns as patternsFailed } from "./fixtures/patterns_failed";
 import { existingRecords } from "./fixtures/existing_records";
@@ -19,10 +19,6 @@ describe("upsert records correctly", () => {
   it.each(patternsSucceeded)(
     "$description",
     async ({ updateKey, forUpdateExpected, forAddExpected }) => {
-      apiClient.app.getFormFields = jest.fn().mockResolvedValue({
-        properties,
-      });
-
       const getAllRecordsMockFn = jest.fn().mockResolvedValue(existingRecords);
       apiClient.record.getAllRecords = getAllRecordsMockFn;
       const updateAllRecordsMockFn = jest.fn().mockResolvedValue({
@@ -38,7 +34,7 @@ describe("upsert records correctly", () => {
       apiClient.record.addAllRecords = addAllRecordsMockFn;
 
       const APP_ID = "1";
-      await upsertRecords(apiClient, APP_ID, input, updateKey, {});
+      await upsertRecords(apiClient, APP_ID, input, schema, updateKey, {});
 
       expect(updateAllRecordsMockFn).toBeCalledWith(forUpdateExpected);
       expect(addAllRecordsMockFn).toBeCalledWith(forAddExpected);
@@ -58,16 +54,13 @@ describe("upsert records failed", () => {
   it.each(patternsFailed)(
     "$description",
     async ({ updateKey, errorMessage }) => {
-      apiClient.app.getFormFields = jest.fn().mockResolvedValue({
-        properties,
-      });
       apiClient.record.getAllRecords = jest
         .fn()
         .mockResolvedValue(existingRecords);
 
       const APP_ID = "1";
       await expect(
-        upsertRecords(apiClient, APP_ID, input, updateKey, {})
+        upsertRecords(apiClient, APP_ID, input, schema, updateKey, {})
       ).rejects.toThrow(errorMessage);
     }
   );

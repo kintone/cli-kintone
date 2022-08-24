@@ -1,4 +1,4 @@
-import { KintoneRestAPIClient } from "@kintone/rest-api-client";
+import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 
 export const existingRecords: Awaited<
   ReturnType<KintoneRestAPIClient["record"]["getAllRecords"]>

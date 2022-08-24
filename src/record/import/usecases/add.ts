@@ -1,28 +1,30 @@
-import {
-  KintoneFormFieldProperty,
-  KintoneRestAPIClient,
-} from "@kintone/rest-api-client";
-import { KintoneRecord } from "../types/record";
-import { KintoneRecordForParameter } from "../../../kintone/types";
+import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
+import type { KintoneRecord } from "../types/record";
+import type { KintoneRecordForParameter } from "../../../kintone/types";
+import type { RecordSchema } from "../types/schema";
+
 import { fieldProcessor, recordReducer } from "./add/record";
 
 export const addRecords: (
   apiClient: KintoneRestAPIClient,
   app: string,
   records: KintoneRecord[],
+  schema: RecordSchema,
   options: {
     attachmentsDir?: string;
   }
-) => Promise<void> = async (apiClient, app, records, { attachmentsDir }) => {
-  const { properties } = await apiClient.app.getFormFields<
-    Record<string, KintoneFormFieldProperty.OneOf>
-  >({ app });
-
+) => Promise<void> = async (
+  apiClient,
+  app,
+  records,
+  schema,
+  { attachmentsDir }
+) => {
   const kintoneRecords = await convertRecordsToApiRequestParameter(
     apiClient,
     app,
     records,
-    properties,
+    schema,
     {
       attachmentsDir,
     }
@@ -35,7 +37,7 @@ const convertRecordsToApiRequestParameter = async (
   apiClient: KintoneRestAPIClient,
   app: string,
   records: KintoneRecord[],
-  properties: Record<string, KintoneFormFieldProperty.OneOf>,
+  schema: RecordSchema,
   options: {
     attachmentsDir?: string;
   }
@@ -44,10 +46,13 @@ const convertRecordsToApiRequestParameter = async (
 
   const kintoneRecords: KintoneRecordForParameter[] = [];
   for (const record of records) {
-    const kintoneRecord = await recordReducer(record, (fieldCode, field) =>
-      fieldProcessor(apiClient, fieldCode, field, properties, {
-        attachmentsDir,
-      })
+    const kintoneRecord = await recordReducer(
+      record,
+      schema,
+      (field, fieldSchema) =>
+        fieldProcessor(apiClient, field, fieldSchema, {
+          attachmentsDir,
+        })
     );
     kintoneRecords.push(kintoneRecord);
   }

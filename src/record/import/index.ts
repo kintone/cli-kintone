@@ -3,7 +3,6 @@ import { SupportedImportEncoding, readFile } from "./utils/file";
 import { parseRecords } from "./parsers";
 import { addRecords } from "./usecases/add";
 import { upsertRecords } from "./usecases/upsert";
-import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
 
@@ -41,11 +40,11 @@ export const run: (
       schema,
     });
     if (updateKey) {
-      await upsertRecords(apiClient, app, records, updateKey, {
+      await upsertRecords(apiClient, app, records, schema, updateKey, {
         attachmentsDir,
       });
     } else {
-      await addRecords(apiClient, app, records, { attachmentsDir });
+      await addRecords(apiClient, app, records, schema, { attachmentsDir });
     }
   } catch (e) {
     console.log(e);

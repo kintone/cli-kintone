@@ -1,28 +1,20 @@
-import {
-  KintoneFormFieldProperty,
-  KintoneRestAPIClient,
-} from "@kintone/rest-api-client";
+import type { KintoneRecord } from "../types/record";
+import type { RecordSchema } from "../types/schema";
+
 import { parseJson } from "./parseJson";
 import { parseCsv } from "./parseCsv";
-import { KintoneRecord } from "../types/record";
 
 export const parseRecords: (options: {
-  apiClient: KintoneRestAPIClient;
   source: string;
   format: string;
-  app: string;
+  schema: RecordSchema;
 }) => Promise<KintoneRecord[]> = async (options) => {
-  const { apiClient, source, format } = options;
+  const { source, format, schema } = options;
   switch (format) {
     case "json":
-      return parseJson(source);
+      return parseJson(source); // TODO: filter fields by the schema
     case "csv":
-      return parseCsv(
-        source,
-        await apiClient.app.getFormFields<
-          Record<string, KintoneFormFieldProperty.OneOf>
-        >(options)
-      );
+      return parseCsv(source, schema);
     default:
       throw new Error(`Unexpected file type: ${format} is unacceptable.`);
   }

@@ -1,15 +1,12 @@
+import type * as Fields from "../../../types/field";
+import type { FieldSchema } from "../../../types/schema";
+
 import { convertFieldValue } from "../fieldValue";
-import { FieldProperties } from "../../../../../kintone/types";
-import * as Fields from "../../../types/field";
 
 const patterns: Array<{
-  input: { type: FieldProperties[string]["type"]; value: string };
+  input: { type: FieldSchema["type"]; value: string };
   expected: Fields.OneOf;
 }> = [
-  {
-    input: { type: "RECORD_NUMBER", value: "unsupported" },
-    expected: { value: "unsupported" },
-  },
   {
     input: { type: "CREATOR", value: "creator" },
     expected: { value: { code: "creator" } },
@@ -27,26 +24,10 @@ const patterns: Array<{
     expected: { value: "2022-03-15T07:21:00Z" },
   },
   {
-    input: { type: "CATEGORY", value: "unsupported" },
-    expected: { value: "unsupported" },
-  },
-  {
-    input: { type: "STATUS", value: "unsupported" },
-    expected: { value: "unsupported" },
-  },
-  {
-    input: { type: "STATUS_ASSIGNEE", value: "unsupported" },
-    expected: { value: "unsupported" },
-  },
-  {
     input: { type: "SINGLE_LINE_TEXT", value: "text" },
     expected: { value: "text" },
   },
   { input: { type: "NUMBER", value: "123" }, expected: { value: "123" } },
-  {
-    input: { type: "CALC", value: "unsupported" },
-    expected: { value: "unsupported" },
-  },
   {
     input: { type: "MULTI_LINE_TEXT", value: "line1\nline2" },
     expected: { value: "line1\nline2" },
@@ -146,14 +127,6 @@ const patterns: Array<{
   {
     input: { type: "GROUP_SELECT", value: "" },
     expected: { value: [] },
-  },
-  {
-    input: { type: "GROUP", value: "unsupported" },
-    expected: { value: "unsupported" },
-  },
-  {
-    input: { type: "REFERENCE_TABLE", value: "unsupported" },
-    expected: { value: "unsupported" },
   },
   {
     input: { type: "SUBTABLE", value: "unsupported" },

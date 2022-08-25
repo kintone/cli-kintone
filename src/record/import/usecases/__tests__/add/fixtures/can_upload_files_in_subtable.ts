@@ -1,7 +1,8 @@
-import { KintoneRecord } from "../../../../types/record";
-import { KintoneFormFieldProperty } from "@kintone/rest-api-client";
+import type { KintoneRecord } from "../../../../types/record";
+import type { KintoneRecordForParameter } from "../../../../../../kintone/types";
+import type { RecordSchema } from "../../../../types/schema";
+
 import path from "path";
-import { KintoneRecordForParameter } from "../../../../../../kintone/types";
 
 export const input: KintoneRecord[] = [
   {
@@ -56,34 +57,36 @@ export const expected: KintoneRecordForParameter[] = [
   },
 ];
 
-export const properties: Record<string, KintoneFormFieldProperty.OneOf> = {
-  singleLineText: {
-    type: "SINGLE_LINE_TEXT",
-    code: "singleLineText",
-    label: "singleLineText",
-    noLabel: false,
-    required: false,
-    minLength: "",
-    maxLength: "",
-    expression: "",
-    hideExpression: false,
-    unique: false,
-    defaultValue: "",
-  },
-  table: {
-    type: "SUBTABLE",
-    code: "table",
-    noLabel: false,
-    label: "table",
-    fields: {
-      attachmentInSubtable: {
-        type: "FILE",
-        code: "attachmentInSubtable",
-        label: "attachmentInSubtable",
-        noLabel: false,
-        required: false,
-        thumbnailSize: "150",
-      },
+export const schema: RecordSchema = {
+  fields: [
+    {
+      type: "SINGLE_LINE_TEXT",
+      code: "singleLineText",
+      label: "singleLineText",
+      noLabel: false,
+      required: false,
+      minLength: "",
+      maxLength: "",
+      expression: "",
+      hideExpression: false,
+      unique: false,
+      defaultValue: "",
     },
-  },
+    {
+      type: "SUBTABLE",
+      code: "table",
+      noLabel: false,
+      label: "table",
+      fields: [
+        {
+          type: "FILE",
+          code: "attachmentInSubtable",
+          label: "attachmentInSubtable",
+          noLabel: false,
+          required: false,
+          thumbnailSize: "150",
+        },
+      ],
+    },
+  ],
 };

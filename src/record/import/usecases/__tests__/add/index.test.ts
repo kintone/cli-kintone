@@ -16,31 +16,24 @@ describe("addRecords", () => {
   });
 
   it("should not fail", () => {
-    apiClient.app.getFormFields = jest
-      .fn()
-      .mockResolvedValue({ properties: {} });
     apiClient.record.addAllRecords = jest.fn().mockResolvedValue([{}]);
     return expect(
-      addRecords(apiClient, "1", [], { attachmentsDir: "" })
+      addRecords(apiClient, "1", [], { fields: [] }, { attachmentsDir: "" })
     ).resolves.not.toThrow();
   });
 
   it("should pass parameters to the apiClient correctly", async () => {
-    const getFormFieldsMockFn = jest.fn().mockResolvedValue({ properties: {} });
-    apiClient.app.getFormFields = getFormFieldsMockFn;
     const addAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
     apiClient.record.addAllRecords = addAllRecordsMockFn;
     const ATTACHMENTS_DIR = "";
     const APP_ID = "1";
     const RECORDS = [{}];
+    const SCHEMA = { fields: [] };
 
-    await addRecords(apiClient, APP_ID, RECORDS, {
+    await addRecords(apiClient, APP_ID, RECORDS, SCHEMA, {
       attachmentsDir: ATTACHMENTS_DIR,
     });
 
-    expect(getFormFieldsMockFn.mock.calls[0][0]).toStrictEqual({
-      app: APP_ID,
-    });
     expect(addAllRecordsMockFn.mock.calls[0][0]).toStrictEqual({
       app: APP_ID,
       records: RECORDS,
@@ -48,24 +41,20 @@ describe("addRecords", () => {
   });
 
   it("should throw error when attachmentsDir is NOT given", () => {
-    const getFormFieldsMockFn = jest
-      .fn()
-      .mockResolvedValue({ properties: canUploadFiles.properties });
-    apiClient.app.getFormFields = getFormFieldsMockFn;
-
     const APP_ID = "1";
-    const INPUT_RECORDS = canUploadFiles.input;
 
     return expect(
-      addRecords(apiClient, APP_ID, INPUT_RECORDS, { attachmentsDir: "" })
+      addRecords(
+        apiClient,
+        APP_ID,
+        canUploadFiles.input,
+        canUploadFiles.schema,
+        {}
+      )
     ).rejects.toThrow(new Error("--attachments-dir option is required."));
   });
 
   it("should upload files correctly when attachmentsDir is given", async () => {
-    const getFormFieldsMockFn = jest
-      .fn()
-      .mockResolvedValue({ properties: canUploadFiles.properties });
-    apiClient.app.getFormFields = getFormFieldsMockFn;
     const uploadFileMockFn = jest
       .fn()
       .mockReturnValueOnce({ fileKey: "abcde" })
@@ -76,12 +65,16 @@ describe("addRecords", () => {
 
     const ATTACHMENTS_DIR = "AttachmentsFolder";
     const APP_ID = "1";
-    const INPUT_RECORDS = canUploadFiles.input;
-    const EXPECTED_RECORDS = canUploadFiles.expected;
 
-    await addRecords(apiClient, APP_ID, INPUT_RECORDS, {
-      attachmentsDir: ATTACHMENTS_DIR,
-    });
+    await addRecords(
+      apiClient,
+      APP_ID,
+      canUploadFiles.input,
+      canUploadFiles.schema,
+      {
+        attachmentsDir: ATTACHMENTS_DIR,
+      }
+    );
 
     // apiClient.file.uploadFile should be called with correct filePath
     const fileInfos = canUploadFiles.input[0].attachment.value as Array<{
@@ -101,15 +94,11 @@ describe("addRecords", () => {
     // records should contain fileKeys
     expect(addAllRecordsMockFn.mock.calls[0][0]).toStrictEqual({
       app: APP_ID,
-      records: EXPECTED_RECORDS,
+      records: canUploadFiles.expected,
     });
   });
 
   it("should upload files correctly when attachmentsDir is given and with subtable", async () => {
-    const getFormFieldsMockFn = jest
-      .fn()
-      .mockResolvedValue({ properties: canUploadFilesInSubtable.properties });
-    apiClient.app.getFormFields = getFormFieldsMockFn;
     const uploadFileMockFn = jest
       .fn()
       .mockReturnValueOnce({ fileKey: "abcde" })
@@ -120,12 +109,16 @@ describe("addRecords", () => {
 
     const ATTACHMENTS_DIR = "AttachmentsFolder";
     const APP_ID = "1";
-    const INPUT_RECORDS = canUploadFilesInSubtable.input;
-    const EXPECTED_RECORDS = canUploadFilesInSubtable.expected;
 
-    await addRecords(apiClient, APP_ID, INPUT_RECORDS, {
-      attachmentsDir: ATTACHMENTS_DIR,
-    });
+    await addRecords(
+      apiClient,
+      APP_ID,
+      canUploadFilesInSubtable.input,
+      canUploadFilesInSubtable.schema,
+      {
+        attachmentsDir: ATTACHMENTS_DIR,
+      }
+    );
 
     // apiClient.file.uploadFile should be called with correct filePath
     const fileInfos = canUploadFiles.input[0].attachment.value as Array<{
@@ -145,15 +138,7 @@ describe("addRecords", () => {
     // records should contain fileKeys
     expect(addAllRecordsMockFn.mock.calls[0][0]).toStrictEqual({
       app: APP_ID,
-      records: EXPECTED_RECORDS,
+      records: canUploadFilesInSubtable.expected,
     });
-  });
-
-  it("should throw error when API response is error", () => {
-    const error = new Error("error for test");
-    apiClient.app.getFormFields = jest.fn().mockRejectedValueOnce(error);
-    return expect(
-      addRecords(apiClient, "1", [{}], { attachmentsDir: "" })
-    ).rejects.toThrow(error);
   });
 });

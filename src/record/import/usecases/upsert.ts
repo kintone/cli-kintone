@@ -1,19 +1,22 @@
-import {
+import type {
   KintoneFormFieldProperty,
   KintoneRecordField,
   KintoneRestAPIClient,
 } from "@kintone/rest-api-client";
-import { KintoneRecord } from "../types/record";
-import {
+import type { KintoneRecord } from "../types/record";
+import type {
   KintoneRecordForParameter,
   KintoneRecordForUpdateParameter,
 } from "../../../kintone/types";
+import type { FieldSchema, RecordSchema } from "../types/schema";
+
 import { fieldProcessor, recordReducer } from "./add/record";
 
 export const upsertRecords: (
   apiClient: KintoneRestAPIClient,
   app: string,
   records: KintoneRecord[],
+  schema: RecordSchema,
   updateKey: string,
   options: {
     attachmentsDir?: string;
@@ -22,21 +25,18 @@ export const upsertRecords: (
   apiClient,
   app,
   records,
+  schema,
   updateKey,
   { attachmentsDir }
 ) => {
-  const { properties } = await apiClient.app.getFormFields<
-    Record<string, KintoneFormFieldProperty.OneOf>
-  >({ app });
-
-  validateUpdateKey(properties, updateKey);
+  validateUpdateKey(schema, updateKey);
 
   const kintoneRecords = await convertRecordsToApiRequestParameter(
     apiClient,
     app,
     records,
+    schema,
     updateKey,
-    properties,
     {
       attachmentsDir,
     }
@@ -45,37 +45,39 @@ export const upsertRecords: (
   await uploadToKintone(apiClient, app, kintoneRecords);
 };
 
-const validateUpdateKey = (
-  properties: Record<string, KintoneFormFieldProperty.OneOf>,
-  updateKey: string
-) => {
-  const supportedUpdateKeyFieldTypes = ["SINGLE_LINE_TEXT", "NUMBER"];
+const validateUpdateKey = (schema: RecordSchema, updateKey: string) => {
+  const updateKeySchema = schema.fields.find(
+    (fieldSchema) => fieldSchema.code === updateKey
+  );
 
-  if (!properties[updateKey]) {
+  if (updateKeySchema === undefined) {
     throw new Error("no such update key");
   }
 
-  if (!supportedUpdateKeyFieldTypes.includes(properties[updateKey].type)) {
+  if (!isSupportedUpdateKeyFieldType(updateKeySchema)) {
     throw new Error("unsupported field type for update key");
   }
 
-  if (
-    !(
-      properties[updateKey] as
-        | KintoneFormFieldProperty.SingleLineText
-        | KintoneFormFieldProperty.Number
-    ).unique
-  ) {
+  if (!updateKeySchema.unique) {
     throw new Error("update key field should set to unique");
   }
+};
+
+const isSupportedUpdateKeyFieldType = (
+  fieldSchema: FieldSchema
+): fieldSchema is
+  | KintoneFormFieldProperty.SingleLineText
+  | KintoneFormFieldProperty.Number => {
+  const supportedUpdateKeyFieldTypes = ["SINGLE_LINE_TEXT", "NUMBER"];
+  return supportedUpdateKeyFieldTypes.includes(fieldSchema.type);
 };
 
 const convertRecordsToApiRequestParameter = async (
   apiClient: KintoneRestAPIClient,
   app: string,
   records: KintoneRecord[],
+  schema: RecordSchema,
   updateKey: string,
-  properties: Record<string, KintoneFormFieldProperty.OneOf>,
   options: {
     attachmentsDir?: string;
   }
@@ -102,10 +104,13 @@ const convertRecordsToApiRequestParameter = async (
   const kintoneRecordsForAdd: KintoneRecordForParameter[] = [];
   const kintoneRecordsForUpdate: KintoneRecordForUpdateParameter[] = [];
   for (const record of records) {
-    const kintoneRecord = await recordReducer(record, (fieldCode, field) =>
-      fieldProcessor(apiClient, fieldCode, field, properties, {
-        attachmentsDir,
-      })
+    const kintoneRecord = await recordReducer(
+      record,
+      schema,
+      (field, fieldSchema) =>
+        fieldProcessor(apiClient, field, fieldSchema, {
+          attachmentsDir,
+        })
     );
     if (record[updateKey] === undefined) {
       throw new Error(

@@ -41,7 +41,6 @@ export const fieldProcessor: (
 
   switch (fieldSchema.type) {
     case "FILE": {
-      console.log("throw error");
       if (!attachmentsDir) {
         throw new Error("--attachments-dir option is required.");
       }

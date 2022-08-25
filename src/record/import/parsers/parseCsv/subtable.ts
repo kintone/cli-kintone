@@ -33,8 +33,8 @@ export function* subtableFieldReader(
     // pick rows which contains subtable related fields
     const subtableRows = rows.filter(
       (row) =>
-        row[subtableField.code].length > 0 ||
-        subtableField.fields.some(({ code }) => row[code].length > 0)
+        subtableField.code ||
+        subtableField.fields.some(({ code }) => code in row)
     );
 
     if (subtableRows.length > 0) {
@@ -93,7 +93,7 @@ function* fieldInSubtableReader({
   fields,
 }: SubtableRow): Generator<FieldInSubtable, void, undefined> {
   for (const fieldInSubtable of fields) {
-    if (row[fieldInSubtable.code].length === 0) {
+    if (!(fieldInSubtable.code in row)) {
       continue;
     }
 

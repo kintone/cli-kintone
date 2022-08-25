@@ -23,9 +23,7 @@ export function* fieldReader(
     if (field.type === "SUBTABLE") {
       continue;
     }
-    // detect empty row by length of string
-    // because CsvRow contains all properties defined in header row
-    if (row[field.code].length === 0) {
+    if (!(field.code in row)) {
       continue;
     }
     yield { code: field.code, value: row[field.code], type: field.type };

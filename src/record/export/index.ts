@@ -1,6 +1,6 @@
 import { buildRestAPIClient, RestAPIClientOptions } from "../../kintone/client";
 import { getRecords } from "./usecases/get";
-import { ExportFileFormat, printRecords } from "./printers";
+import { ExportFileEncoding, ExportFileFormat, printRecords } from "./printers";
 import { createSchema } from "./schema";
 import { formLayout as defaultTransformer } from "./schema/transformers/formLayout";
 import { userSelected } from "./schema/transformers/userSelected";
@@ -9,6 +9,7 @@ export type Options = {
   app: string;
   attachmentsDir?: string;
   format?: ExportFileFormat;
+  encoding: ExportFileEncoding;
   condition?: string;
   orderBy?: string;
   fields?: string[];
@@ -20,6 +21,7 @@ export const run: (
   const {
     app,
     format,
+    encoding,
     condition,
     orderBy,
     fields,
@@ -39,10 +41,11 @@ export const run: (
     orderBy,
     attachmentsDir,
   });
-  await printRecords({
+  printRecords({
     records,
-    format,
     schema,
+    format,
+    encoding,
     useLocalFilePath: !!attachmentsDir,
   });
 };

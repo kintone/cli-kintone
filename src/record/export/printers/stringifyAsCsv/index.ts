@@ -8,14 +8,6 @@ import { convertRecord, recordReader } from "./record";
 import { LINE_BREAK, SEPARATOR } from "./constants";
 import { buildHeaderFields } from "./header";
 
-export const printAsCsv = (
-  records: KintoneRecord[],
-  schema: RecordSchema,
-  useLocalFilePath: boolean
-): void => {
-  console.log(stringifyAsCsv(records, schema, useLocalFilePath));
-};
-
 export const stringifyAsCsv = (
   records: KintoneRecord[],
   schema: RecordSchema,

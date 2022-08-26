@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.15.0](https://github.com/kintone/cli-kintone/compare/v0.14.0...v0.15.0) (2022-08-26)
+
+
+### Features
+
+* filter fields to be imported by user input ([#44](https://github.com/kintone/cli-kintone/issues/44)) ([815f30b](https://github.com/kintone/cli-kintone/commit/815f30b4974c0fbbd64ed5ff581032ba22de8ab0))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.1.9 ([#48](https://github.com/kintone/cli-kintone/issues/48)) ([dee358a](https://github.com/kintone/cli-kintone/commit/dee358afe49595ba7c9d04d773c11843446f76a3))
+
 ## [0.14.0](https://github.com/kintone/cli-kintone/compare/v0.13.0...v0.14.0) (2022-08-23)
 
 

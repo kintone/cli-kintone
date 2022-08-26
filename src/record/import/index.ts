@@ -5,6 +5,7 @@ import { addRecords } from "./usecases/add";
 import { upsertRecords } from "./usecases/upsert";
 import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
+import { userSelected } from "./schema/transformers/userSelected";
 
 export type Options = {
   app: string;
@@ -12,6 +13,7 @@ export type Options = {
   attachmentsDir?: string;
   updateKey?: string;
   encoding?: SupportedImportEncoding;
+  fields?: string[];
 };
 
 export const run: (
@@ -23,15 +25,19 @@ export const run: (
     encoding,
     attachmentsDir,
     updateKey,
+    fields,
     ...restApiClientOptions
   } = argv;
 
   const apiClient = buildRestAPIClient(restApiClientOptions);
 
   try {
+    const fieldsJson = await apiClient.app.getFormFields({ app });
     const schema = createSchema(
-      await apiClient.app.getFormFields({ app }),
-      defaultTransformer()
+      fieldsJson,
+      fields
+        ? userSelected(fields, fieldsJson, updateKey)
+        : defaultTransformer()
     );
     const { content, format } = await readFile(filePath, encoding);
     const records = await parseRecords({

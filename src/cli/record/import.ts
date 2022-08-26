@@ -93,6 +93,11 @@ const builder = (args: yargs.Argv) =>
       type: "string",
       requiresArg: true,
     })
+    .option("fields", {
+      describe: "The fields to be imported in comma-separated",
+      type: "string",
+      requiresArg: true,
+    })
     .option("pfx-file-path", {
       describe: "The path to client certificate file",
       type: "string",
@@ -127,6 +132,7 @@ const handler = (args: Args) => {
     attachmentsDir: args["attachments-dir"],
     filePath: args["file-path"],
     updateKey: args["update-key"],
+    fields: args.fields?.split(","),
     encoding: args.encoding,
     pfxFilePath: args["pfx-file-path"],
     pfxFilePassword: args["pfx-file-password"],

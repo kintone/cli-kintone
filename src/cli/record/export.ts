@@ -3,7 +3,7 @@ import * as yargs from "yargs";
 import type {
   ExportFileEncoding,
   ExportFileFormat,
-} from "../../record/export/printers";
+} from "../../record/export/stringifiers";
 import { CommandModule } from "yargs";
 
 import { run } from "../../record/export";

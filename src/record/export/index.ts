@@ -1,6 +1,10 @@
 import { buildRestAPIClient, RestAPIClientOptions } from "../../kintone/client";
 import { getRecords } from "./usecases/get";
-import { ExportFileEncoding, ExportFileFormat, printRecords } from "./printers";
+import {
+  ExportFileEncoding,
+  ExportFileFormat,
+  stringifyRecords,
+} from "./stringifiers";
 import { createSchema } from "./schema";
 import { formLayout as defaultTransformer } from "./schema/transformers/formLayout";
 import { userSelected } from "./schema/transformers/userSelected";
@@ -41,11 +45,12 @@ export const run: (
     orderBy,
     attachmentsDir,
   });
-  printRecords({
+  const buffer = stringifyRecords({
     records,
     schema,
     format,
     encoding,
     useLocalFilePath: !!attachmentsDir,
   });
+  process.stdout.write(buffer);
 };

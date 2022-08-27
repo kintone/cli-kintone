@@ -21,7 +21,8 @@ export type Options = {
 
 export const run: (
   argv: RestAPIClientOptions & Options
-) => Promise<void> = async (argv) => {
+) => Promise<void> = async (options) => {
+  validateOptions(options);
   const {
     app,
     format,
@@ -31,7 +32,7 @@ export const run: (
     fields,
     attachmentsDir,
     ...restApiClientOptions
-  } = argv;
+  } = options;
   const apiClient = buildRestAPIClient(restApiClientOptions);
   const fieldsJson = await apiClient.app.getFormFields({ app });
   const schema = createSchema(
@@ -52,4 +53,12 @@ export const run: (
   });
   const stringifiedRecords = stringifier(records);
   process.stdout.write(iconv.encode(stringifiedRecords, encoding));
+};
+
+const validateOptions = (options: Options): void => {
+  if (options.format === "json" && options.encoding !== "utf8") {
+    throw new Error(
+      "When the output format is JSON, the encoding MUST be UTF-8"
+    );
+  }
 };

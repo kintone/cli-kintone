@@ -1,18 +1,18 @@
+import iconv from "iconv-lite";
+
 import { buildRestAPIClient, RestAPIClientOptions } from "../../kintone/client";
 import { getRecords } from "./usecases/get";
-import {
-  ExportFileEncoding,
-  ExportFileFormat,
-  stringifyRecords,
-} from "./stringifiers";
+import { ExportFileFormat, stringifierFactory } from "./stringifiers";
 import { createSchema } from "./schema";
 import { formLayout as defaultTransformer } from "./schema/transformers/formLayout";
 import { userSelected } from "./schema/transformers/userSelected";
 
+export type ExportFileEncoding = "utf8" | "sjis";
+
 export type Options = {
   app: string;
   attachmentsDir?: string;
-  format?: ExportFileFormat;
+  format: ExportFileFormat;
   encoding: ExportFileEncoding;
   condition?: string;
   orderBy?: string;
@@ -45,12 +45,11 @@ export const run: (
     orderBy,
     attachmentsDir,
   });
-  const buffer = stringifyRecords({
-    records,
-    schema,
+  const stringifier = stringifierFactory({
     format,
-    encoding,
+    schema,
     useLocalFilePath: !!attachmentsDir,
   });
-  process.stdout.write(buffer);
+  const stringifiedRecords = stringifier(records);
+  process.stdout.write(iconv.encode(stringifiedRecords, encoding));
 };

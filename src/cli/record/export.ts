@@ -1,12 +1,9 @@
 import * as yargs from "yargs";
 
-import type {
-  ExportFileEncoding,
-  ExportFileFormat,
-} from "../../record/export/stringifiers";
+import type { ExportFileFormat } from "../../record/export/stringifiers";
 import { CommandModule } from "yargs";
 
-import { run } from "../../record/export";
+import { ExportFileEncoding, run } from "../../record/export";
 
 const formats: ExportFileFormat[] = ["csv", "json"];
 const encodings: ExportFileEncoding[] = ["utf8", "sjis"];

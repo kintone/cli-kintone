@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.0](https://github.com/kintone/cli-kintone/compare/v0.15.0...v0.16.0) (2022-08-29)
+
+
+### Features
+
+* select character encoding when export ([#49](https://github.com/kintone/cli-kintone/issues/49)) ([597b4e6](https://github.com/kintone/cli-kintone/commit/597b4e663d9c41ef9992cfc496655b3b73f973e3))
+
 ## [0.15.0](https://github.com/kintone/cli-kintone/compare/v0.14.0...v0.15.0) (2022-08-26)
 
 

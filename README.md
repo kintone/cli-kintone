@@ -136,6 +136,9 @@ Options:
       --attachments-dir      Attachment file directory                  [string]
       --format               Output format. "csv" or "json"
                                       [choices: "csv", "json"] [default: "csv"]
+      --encoding             Character encoding
+                             (available only if the output format is CSV)
+                                     [choices: "utf8", "sjis"] [default: "utf8"]
   -c, --condition            The query string                           [string]
       --order-by             The sort order as a query                  [string]
       --fields               The fields to be exported in comma-separated

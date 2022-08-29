@@ -1,14 +1,19 @@
+import iconv from "iconv-lite";
+
 import { buildRestAPIClient, RestAPIClientOptions } from "../../kintone/client";
 import { getRecords } from "./usecases/get";
-import { ExportFileFormat, printRecords } from "./printers";
+import { ExportFileFormat, stringifierFactory } from "./stringifiers";
 import { createSchema } from "./schema";
 import { formLayout as defaultTransformer } from "./schema/transformers/formLayout";
 import { userSelected } from "./schema/transformers/userSelected";
 
+export type ExportFileEncoding = "utf8" | "sjis";
+
 export type Options = {
   app: string;
   attachmentsDir?: string;
-  format?: ExportFileFormat;
+  format: ExportFileFormat;
+  encoding: ExportFileEncoding;
   condition?: string;
   orderBy?: string;
   fields?: string[];
@@ -16,16 +21,18 @@ export type Options = {
 
 export const run: (
   argv: RestAPIClientOptions & Options
-) => Promise<void> = async (argv) => {
+) => Promise<void> = async (options) => {
+  validateOptions(options);
   const {
     app,
     format,
+    encoding,
     condition,
     orderBy,
     fields,
     attachmentsDir,
     ...restApiClientOptions
-  } = argv;
+  } = options;
   const apiClient = buildRestAPIClient(restApiClientOptions);
   const fieldsJson = await apiClient.app.getFormFields({ app });
   const schema = createSchema(
@@ -39,10 +46,19 @@ export const run: (
     orderBy,
     attachmentsDir,
   });
-  await printRecords({
-    records,
+  const stringifier = stringifierFactory({
     format,
     schema,
     useLocalFilePath: !!attachmentsDir,
   });
+  const stringifiedRecords = stringifier(records);
+  process.stdout.write(iconv.encode(stringifiedRecords, encoding));
+};
+
+const validateOptions = (options: Options): void => {
+  if (options.format === "json" && options.encoding !== "utf8") {
+    throw new Error(
+      "When the output format is JSON, the encoding MUST be UTF-8"
+    );
+  }
 };

@@ -9,19 +9,32 @@ import path from "path";
 export const recordReducer: (
   record: KintoneRecord,
   schema: RecordSchema,
+  skipMissingFields: boolean,
   task: (
     field: Fields.OneOf,
     fieldSchema: FieldSchema
   ) => Promise<KintoneRecordForParameter[string]>
-) => Promise<KintoneRecordForParameter> = async (record, schema, task) => {
+) => Promise<KintoneRecordForParameter> = async (
+  record,
+  schema,
+  skipMissingFields,
+  task
+) => {
   const newRecord: KintoneRecordForParameter = {};
   for (const fieldSchema of schema.fields) {
-    if (fieldSchema.code in record) {
-      newRecord[fieldSchema.code] = await task(
-        record[fieldSchema.code],
-        fieldSchema
-      );
+    if (!(fieldSchema.code in record)) {
+      if (skipMissingFields) {
+        continue;
+      } else {
+        throw new Error(
+          `The specified field "${fieldSchema.code}" does not exist on the CSV`
+        );
+      }
     }
+    newRecord[fieldSchema.code] = await task(
+      record[fieldSchema.code],
+      fieldSchema
+    );
   }
   return newRecord;
 };
@@ -30,15 +43,13 @@ export const fieldProcessor: (
   apiClient: KintoneRestAPIClient,
   field: Fields.OneOf,
   fieldSchema: FieldSchema,
-  options: { attachmentsDir?: string }
+  options: { attachmentsDir?: string; skipMissingFields?: boolean }
 ) => Promise<KintoneRecordForParameter[string]> = async (
   apiClient,
   field,
   fieldSchema,
-  options
+  { attachmentsDir, skipMissingFields }
 ) => {
-  const { attachmentsDir } = options;
-
   switch (fieldSchema.type) {
     case "FILE": {
       if (!attachmentsDir) {
@@ -69,14 +80,21 @@ export const fieldProcessor: (
       for (const row of subtableValue) {
         const fieldsInRow: KintoneRecordForParameter = {};
         for (const fieldInSubtableSchema of fieldSchema.fields) {
-          if (row.value[fieldInSubtableSchema.code]) {
-            fieldsInRow[fieldInSubtableSchema.code] = await fieldProcessor(
-              apiClient,
-              row.value[fieldInSubtableSchema.code],
-              fieldInSubtableSchema,
-              { attachmentsDir }
-            );
+          if (!row.value[fieldInSubtableSchema.code]) {
+            if (skipMissingFields) {
+              continue;
+            } else {
+              throw new Error(
+                `The specified field "${fieldInSubtableSchema.code}" does not exist on the CSV`
+              );
+            }
           }
+          fieldsInRow[fieldInSubtableSchema.code] = await fieldProcessor(
+            apiClient,
+            row.value[fieldInSubtableSchema.code],
+            fieldInSubtableSchema,
+            { attachmentsDir }
+          );
         }
         newRows.push({ id: row.id, value: fieldsInRow });
       }

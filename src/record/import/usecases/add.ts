@@ -12,13 +12,14 @@ export const addRecords: (
   schema: RecordSchema,
   options: {
     attachmentsDir?: string;
+    skipMissingFields?: boolean;
   }
 ) => Promise<void> = async (
   apiClient,
   app,
   records,
   schema,
-  { attachmentsDir }
+  { attachmentsDir, skipMissingFields = true }
 ) => {
   const kintoneRecords = await convertRecordsToApiRequestParameter(
     apiClient,
@@ -27,6 +28,7 @@ export const addRecords: (
     schema,
     {
       attachmentsDir,
+      skipMissingFields,
     }
   );
 
@@ -40,15 +42,17 @@ const convertRecordsToApiRequestParameter = async (
   schema: RecordSchema,
   options: {
     attachmentsDir?: string;
+    skipMissingFields: boolean;
   }
 ): Promise<KintoneRecordForParameter[]> => {
-  const { attachmentsDir } = options;
+  const { attachmentsDir, skipMissingFields } = options;
 
   const kintoneRecords: KintoneRecordForParameter[] = [];
   for (const record of records) {
     const kintoneRecord = await recordReducer(
       record,
       schema,
+      skipMissingFields,
       (field, fieldSchema) =>
         fieldProcessor(apiClient, field, fieldSchema, {
           attachmentsDir,

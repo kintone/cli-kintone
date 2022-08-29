@@ -56,6 +56,7 @@ const convertRecordsToApiRequestParameter = async (
       (field, fieldSchema) =>
         fieldProcessor(apiClient, field, fieldSchema, {
           attachmentsDir,
+          skipMissingFields,
         })
     );
     kintoneRecords.push(kintoneRecord);

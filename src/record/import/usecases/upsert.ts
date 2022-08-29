@@ -114,6 +114,7 @@ const convertRecordsToApiRequestParameter = async (
       (field, fieldSchema) =>
         fieldProcessor(apiClient, field, fieldSchema, {
           attachmentsDir,
+          skipMissingFields,
         })
     );
     if (record[updateKey] === undefined) {

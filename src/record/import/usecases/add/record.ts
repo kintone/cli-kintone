@@ -43,7 +43,7 @@ export const fieldProcessor: (
   apiClient: KintoneRestAPIClient,
   field: Fields.OneOf,
   fieldSchema: FieldSchema,
-  options: { attachmentsDir?: string; skipMissingFields?: boolean }
+  options: { attachmentsDir?: string; skipMissingFields: boolean }
 ) => Promise<KintoneRecordForParameter[string]> = async (
   apiClient,
   field,
@@ -93,7 +93,7 @@ export const fieldProcessor: (
             apiClient,
             row.value[fieldInSubtableSchema.code],
             fieldInSubtableSchema,
-            { attachmentsDir }
+            { attachmentsDir, skipMissingFields }
           );
         }
         newRows.push({ id: row.id, value: fieldsInRow });

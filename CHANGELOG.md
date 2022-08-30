@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.1](https://github.com/kintone/cli-kintone/compare/v0.16.0...v0.16.1) (2022-08-30)
+
+
+### Bug Fixes
+
+* throw an error if a specified field missing from CSV ([#55](https://github.com/kintone/cli-kintone/issues/55)) ([c71bff0](https://github.com/kintone/cli-kintone/commit/c71bff02fe2b29239a2c8de00ece6003c40a1eaa))
+
 ## [0.16.0](https://github.com/kintone/cli-kintone/compare/v0.15.0...v0.16.0) (2022-08-29)
 
 

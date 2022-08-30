@@ -11,6 +11,7 @@ import { pattern as upsertByNonUniqueKey } from "./fixtures/upsertByNonUniqueKey
 import { pattern as upsertByUnsupportedField } from "./fixtures/upsertByUnsupportedField";
 import { pattern as upsertByNonExistentField } from "./fixtures/upsertByNonExistentField";
 import { pattern as upsertWithMissingKeyFromRecord } from "./fixtures/upsertWithMissingKeyFromRecord";
+import { pattern as upsertWithMissingFieldFromRecord } from "./fixtures/upsertWithMissingFieldFromRecord";
 
 export type TestPattern = {
   description: string;
@@ -52,6 +53,7 @@ describe("upsertRecords", () => {
     upsertByUnsupportedField,
     upsertByNonExistentField,
     upsertWithMissingKeyFromRecord,
+    upsertWithMissingFieldFromRecord,
   ];
 
   it.each(patterns)("$description", async ({ input, expected }) => {

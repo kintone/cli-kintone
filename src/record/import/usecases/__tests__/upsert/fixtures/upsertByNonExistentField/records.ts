@@ -1,6 +1,6 @@
-import type { KintoneRecord } from "../../../../types/record";
+import type { KintoneRecord } from "../../../../../types/record";
 
-export const input: KintoneRecord[] = [
+export const records: KintoneRecord[] = [
   {
     singleLineText: {
       value: "value1",
@@ -10,6 +10,9 @@ export const input: KintoneRecord[] = [
     },
     date: {
       value: "2022-03-01",
+    },
+    singleLineText_nonUnique: {
+      value: "value1",
     },
   },
   {
@@ -21,6 +24,9 @@ export const input: KintoneRecord[] = [
     },
     date: {
       value: "2022-04-01",
+    },
+    singleLineText_nonUnique: {
+      value: "value1",
     },
   },
 ];

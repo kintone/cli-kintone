@@ -45,12 +45,17 @@ export const run: (
       format,
       schema,
     });
+    const skipMissingFields = !fields;
     if (updateKey) {
       await upsertRecords(apiClient, app, records, schema, updateKey, {
         attachmentsDir,
+        skipMissingFields,
       });
     } else {
-      await addRecords(apiClient, app, records, schema, { attachmentsDir });
+      await addRecords(apiClient, app, records, schema, {
+        attachmentsDir,
+        skipMissingFields,
+      });
     }
   } catch (e) {
     console.log(e);

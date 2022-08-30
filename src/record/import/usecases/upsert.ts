@@ -20,6 +20,7 @@ export const upsertRecords: (
   updateKey: string,
   options: {
     attachmentsDir?: string;
+    skipMissingFields?: boolean;
   }
 ) => Promise<void> = async (
   apiClient,
@@ -27,7 +28,7 @@ export const upsertRecords: (
   records,
   schema,
   updateKey,
-  { attachmentsDir }
+  { attachmentsDir, skipMissingFields = true }
 ) => {
   validateUpdateKey(schema, updateKey);
 
@@ -39,6 +40,7 @@ export const upsertRecords: (
     updateKey,
     {
       attachmentsDir,
+      skipMissingFields,
     }
   );
 
@@ -80,12 +82,13 @@ const convertRecordsToApiRequestParameter = async (
   updateKey: string,
   options: {
     attachmentsDir?: string;
+    skipMissingFields: boolean;
   }
 ): Promise<{
   forAdd: KintoneRecordForParameter[];
   forUpdate: KintoneRecordForUpdateParameter[];
 }> => {
-  const { attachmentsDir } = options;
+  const { attachmentsDir, skipMissingFields } = options;
   const recordsOnKintone = await apiClient.record.getAllRecords({
     app,
     fields: [updateKey],
@@ -107,9 +110,11 @@ const convertRecordsToApiRequestParameter = async (
     const kintoneRecord = await recordReducer(
       record,
       schema,
+      skipMissingFields,
       (field, fieldSchema) =>
         fieldProcessor(apiClient, field, fieldSchema, {
           attachmentsDir,
+          skipMissingFields,
         })
     );
     if (record[updateKey] === undefined) {

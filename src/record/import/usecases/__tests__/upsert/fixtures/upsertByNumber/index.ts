@@ -2,6 +2,7 @@ import { TestPattern } from "../../index.test";
 import { records } from "./records";
 import { schema } from "../schema";
 import { expected } from "./expected";
+import { recordsOnKintone } from "../recordsOnKintone";
 
 export const pattern: TestPattern = {
   description: "should upsert records correctly with single line text",
@@ -14,5 +15,6 @@ export const pattern: TestPattern = {
       skipMissingFields: true,
     },
   },
+  recordsOnKintone: recordsOnKintone,
   expected: expected,
 };

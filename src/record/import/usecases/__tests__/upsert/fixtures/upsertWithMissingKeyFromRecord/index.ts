@@ -1,6 +1,7 @@
 import { TestPattern } from "../../index.test";
 import { records } from "./records";
 import { schema } from "../schema";
+import { recordsOnKintone } from "../recordsOnKintone";
 
 export const pattern: TestPattern = {
   description:
@@ -14,6 +15,7 @@ export const pattern: TestPattern = {
       skipMissingFields: true,
     },
   },
+  recordsOnKintone: recordsOnKintone,
   expected: {
     failure: {
       errorMessage:

@@ -7,12 +7,12 @@ export const expected: TestPattern["expected"] = {
       records: [
         {
           updateKey: {
-            field: "number",
-            value: "1",
+            field: "singleLineText",
+            value: "value1",
           },
           record: {
-            singleLineText: {
-              value: "value1",
+            number: {
+              value: "1",
             },
             date: {
               value: "2022-03-01",

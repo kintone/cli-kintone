@@ -4,8 +4,8 @@ import type { RecordSchema } from "../../../types/schema";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { upsertRecords } from "../../upsert";
 
-import { pattern as upsertBySingleLineText } from "./fixtures/upsertBySingleLineText";
-import { pattern as upsertByNumber } from "./fixtures/upsertByNumber";
+import { pattern as upsertBySingleLineText } from "./fixtures/upsertByNumber";
+import { pattern as upsertByNumber } from "./fixtures/upsertBySingleLineText";
 import { pattern as upsertByNonUniqueKey } from "./fixtures/upsertByNonUniqueKey";
 import { pattern as upsertByUnsupportedField } from "./fixtures/upsertByUnsupportedField";
 import { pattern as upsertByNonExistentField } from "./fixtures/upsertByNonExistentField";

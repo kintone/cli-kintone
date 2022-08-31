@@ -1,5 +1,4 @@
 import type {
-  KintoneFormFieldProperty,
   KintoneRecordField,
   KintoneRestAPIClient,
 } from "@kintone/rest-api-client";
@@ -8,9 +7,10 @@ import type {
   KintoneRecordForParameter,
   KintoneRecordForUpdateParameter,
 } from "../../../kintone/types";
-import type { FieldSchema, RecordSchema } from "../types/schema";
+import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor, recordReducer } from "./add/record";
+import { findUpdateKeyInSchema } from "./upsert/updateKey";
 
 export const upsertRecords: (
   apiClient: KintoneRestAPIClient,
@@ -30,14 +30,14 @@ export const upsertRecords: (
   updateKey,
   { attachmentsDir, skipMissingFields = true }
 ) => {
-  validateUpdateKey(schema, updateKey);
+  const updateKeyInSchema = findUpdateKeyInSchema(updateKey, schema);
 
   const kintoneRecords = await convertRecordsToApiRequestParameter(
     apiClient,
     app,
     records,
     schema,
-    updateKey,
+    updateKeyInSchema,
     {
       attachmentsDir,
       skipMissingFields,
@@ -47,39 +47,15 @@ export const upsertRecords: (
   await uploadToKintone(apiClient, app, kintoneRecords);
 };
 
-const validateUpdateKey = (schema: RecordSchema, updateKey: string) => {
-  const updateKeySchema = schema.fields.find(
-    (fieldSchema) => fieldSchema.code === updateKey
-  );
-
-  if (updateKeySchema === undefined) {
-    throw new Error("no such update key");
-  }
-
-  if (!isSupportedUpdateKeyFieldType(updateKeySchema)) {
-    throw new Error("unsupported field type for update key");
-  }
-
-  if (!updateKeySchema.unique) {
-    throw new Error("update key field should set to unique");
-  }
-};
-
-const isSupportedUpdateKeyFieldType = (
-  fieldSchema: FieldSchema
-): fieldSchema is
-  | KintoneFormFieldProperty.SingleLineText
-  | KintoneFormFieldProperty.Number => {
-  const supportedUpdateKeyFieldTypes = ["SINGLE_LINE_TEXT", "NUMBER"];
-  return supportedUpdateKeyFieldTypes.includes(fieldSchema.type);
-};
-
 const convertRecordsToApiRequestParameter = async (
   apiClient: KintoneRestAPIClient,
   app: string,
   records: KintoneRecord[],
   schema: RecordSchema,
-  updateKey: string,
+  updateKey: {
+    code: string;
+    type: string;
+  },
   options: {
     attachmentsDir?: string;
     skipMissingFields: boolean;
@@ -91,13 +67,14 @@ const convertRecordsToApiRequestParameter = async (
   const { attachmentsDir, skipMissingFields } = options;
   const recordsOnKintone = await apiClient.record.getAllRecords({
     app,
-    fields: [updateKey],
+    fields: [updateKey.code],
   });
   const existingUpdateKeyValues = new Set(
     recordsOnKintone.map(
       (record) =>
         (
-          record[updateKey] as
+          record[updateKey.code] as
+            | KintoneRecordField.RecordNumber
             | KintoneRecordField.SingleLineText
             | KintoneRecordField.Number
         ).value
@@ -117,21 +94,28 @@ const convertRecordsToApiRequestParameter = async (
           skipMissingFields,
         })
     );
-    if (record[updateKey] === undefined) {
+    if (record[updateKey.code] === undefined) {
       throw new Error(
-        `The field specified as "Key to Bulk Update" (${updateKey}) does not exist on input`
+        `The field specified as "Key to Bulk Update" (${updateKey.code}) does not exist on input`
       );
     }
-    if (existingUpdateKeyValues.has(record[updateKey].value as string)) {
+    if (existingUpdateKeyValues.has(record[updateKey.code].value as string)) {
       const recordUpdateKey = {
-        field: updateKey,
-        value: kintoneRecord[updateKey].value as string | number,
+        field: updateKey.code,
+        value: kintoneRecord[updateKey.code].value as string,
       };
-      delete kintoneRecord[updateKey];
-      kintoneRecordsForUpdate.push({
-        updateKey: recordUpdateKey,
-        record: kintoneRecord,
-      });
+      delete kintoneRecord[updateKey.code];
+      const recordForUpdate =
+        updateKey.type === "RECORD_NUMBER"
+          ? {
+              id: recordUpdateKey.value,
+              record: kintoneRecord,
+            }
+          : {
+              updateKey: recordUpdateKey,
+              record: kintoneRecord,
+            };
+      kintoneRecordsForUpdate.push(recordForUpdate);
     } else {
       kintoneRecordsForAdd.push(kintoneRecord);
     }

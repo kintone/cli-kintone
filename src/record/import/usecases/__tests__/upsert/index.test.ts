@@ -76,6 +76,7 @@ describe("upsertRecords", () => {
       apiClient.record.updateAllRecords = updateAllRecordsMockFn;
       const addAllRecordsMockFn = jest.fn().mockResolvedValue({});
       apiClient.record.addAllRecords = addAllRecordsMockFn;
+      apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "App" });
 
       const APP_ID = "1";
 

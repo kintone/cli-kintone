@@ -10,7 +10,10 @@ import type {
 import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor, recordReducer } from "./add/record";
-import { findUpdateKeyInSchema } from "./upsert/updateKey";
+import {
+  findUpdateKeyInSchema,
+  validateUpdateKeyInRecords,
+} from "./upsert/updateKey";
 
 export const upsertRecords: (
   apiClient: KintoneRestAPIClient,
@@ -31,6 +34,8 @@ export const upsertRecords: (
   { attachmentsDir, skipMissingFields = true }
 ) => {
   const updateKeyInSchema = findUpdateKeyInSchema(updateKey, schema);
+  const appCode = (await apiClient.app.getApp({ id: app })).code;
+  validateUpdateKeyInRecords(updateKeyInSchema, schema, appCode, records);
 
   const kintoneRecords = await convertRecordsToApiRequestParameter(
     apiClient,
@@ -70,15 +75,7 @@ const convertRecordsToApiRequestParameter = async (
     fields: [updateKey.code],
   });
   const existingUpdateKeyValues = new Set(
-    recordsOnKintone.map(
-      (record) =>
-        (
-          record[updateKey.code] as
-            | KintoneRecordField.RecordNumber
-            | KintoneRecordField.SingleLineText
-            | KintoneRecordField.Number
-        ).value
-    )
+    recordsOnKintone.map((record) => record[updateKey.code].value as string)
   );
 
   const kintoneRecordsForAdd: KintoneRecordForParameter[] = [];
@@ -94,25 +91,17 @@ const convertRecordsToApiRequestParameter = async (
           skipMissingFields,
         })
     );
-    if (record[updateKey.code] === undefined) {
-      throw new Error(
-        `The field specified as "Key to Bulk Update" (${updateKey.code}) does not exist on input`
-      );
-    }
-    if (existingUpdateKeyValues.has(record[updateKey.code].value as string)) {
-      const recordUpdateKey = {
-        field: updateKey.code,
-        value: kintoneRecord[updateKey.code].value as string,
-      };
+    const updateKeyValue = record[updateKey.code].value as string;
+    if (existingUpdateKeyValues.has(updateKeyValue)) {
       delete kintoneRecord[updateKey.code];
       const recordForUpdate =
         updateKey.type === "RECORD_NUMBER"
           ? {
-              id: recordUpdateKey.value,
+              id: updateKeyValue,
               record: kintoneRecord,
             }
           : {
-              updateKey: recordUpdateKey,
+              updateKey: { field: updateKey.code, value: updateKeyValue },
               record: kintoneRecord,
             };
       kintoneRecordsForUpdate.push(recordForUpdate);

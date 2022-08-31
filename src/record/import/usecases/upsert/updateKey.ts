@@ -44,3 +44,57 @@ const isSupportedUpdateKeyFieldType = (
   ];
   return supportedUpdateKeyFieldTypes.includes(fieldSchema.type);
 };
+
+export const validateUpdateKeyInRecords = (
+  updateKey: { code: string; type: string },
+  schema: RecordSchema,
+  appCode: string,
+  records: KintoneRecord[]
+) => {
+  let hasAppCodePrevious: boolean = false;
+  records.forEach((record, index) => {
+    if (!(updateKey.code in record)) {
+      throw new Error(
+        `The field specified as "Key to Bulk Update" (${updateKey.code}) does not exist on the input`
+      );
+    }
+    const value = record[updateKey.code].value;
+    if (typeof value !== "string") {
+      throw new Error(
+        `The value of the "Key to Bulk Update" (${updateKey.code}) on the input is invalid`
+      );
+    }
+
+    if (updateKey.type === "RECORD_NUMBER") {
+      const hasAppCode = doesRecordHasAppCode(value, appCode);
+      if (index !== 0 && hasAppCode !== hasAppCodePrevious) {
+        throw new Error(
+          `The "Key to Bulk Update" should not be mixed with those with and without app code`
+        );
+      }
+      hasAppCodePrevious = hasAppCode;
+    }
+  });
+};
+
+export const doesRecordHasAppCode = (
+  input: string,
+  appCode: string
+): boolean => {
+  const matchWithAppCode = isValidUpdateKeyWithAppCode(input, appCode);
+  const matchWithoutAppCode = isValidUpdateKeyWithoutAppCode(input);
+
+  if (!matchWithAppCode && !matchWithoutAppCode) {
+    throw new Error(`The "Key to Bulk Update" value is invalid (${input})`);
+  }
+
+  return matchWithAppCode && !matchWithoutAppCode;
+};
+
+export const isValidUpdateKeyWithAppCode = (input: string, appCode: string) => {
+  const regex = new RegExp("^" + appCode + "-[0-9]+$");
+  return input.match(regex) !== null;
+};
+
+export const isValidUpdateKeyWithoutAppCode = (input: string) =>
+  input.match(/^[0-9]+$/) !== null;

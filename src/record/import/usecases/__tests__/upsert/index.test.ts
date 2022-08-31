@@ -15,6 +15,8 @@ import { pattern as upsertByNonExistentField } from "./fixtures/upsertByNonExist
 import { pattern as upsertWithMissingKeyFromRecord } from "./fixtures/upsertWithMissingKeyFromRecord";
 import { pattern as upsertWithMissingFieldFromRecord } from "./fixtures/upsertWithMissingFieldFromRecord";
 import { pattern as upsertWithMissingFieldInTableFromRecord } from "./fixtures/upsertWithMissingFieldInTableFromRecord";
+import { pattern as upsertByRecordNumberWithMixedRecordNumber } from "./fixtures/upsertByRecordNumberWithMixedRecordNumber";
+import { pattern as upsertByRecordNumberWithInvalidRecordNumber } from "./fixtures/upsertByRecordNumberWithInvalidRecordNumber";
 
 export type TestPattern = {
   description: string;
@@ -64,6 +66,8 @@ describe("upsertRecords", () => {
     upsertWithMissingKeyFromRecord,
     upsertWithMissingFieldFromRecord,
     upsertWithMissingFieldInTableFromRecord,
+    upsertByRecordNumberWithMixedRecordNumber,
+    upsertByRecordNumberWithInvalidRecordNumber,
   ];
 
   it.each(patterns)(

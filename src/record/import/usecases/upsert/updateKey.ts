@@ -66,21 +66,25 @@ export const validateUpdateKeyInRecords = (
     }
 
     if (updateKey.type === "RECORD_NUMBER") {
-      const hasAppCode = doesRecordHasAppCode(value, appCode);
-      if (index !== 0 && hasAppCode !== hasAppCodePrevious) {
+      const _hasAppCode = hasAppCode(value, appCode);
+      if (index !== 0 && _hasAppCode !== hasAppCodePrevious) {
         throw new Error(
           `The "Key to Bulk Update" should not be mixed with those with and without app code`
         );
       }
-      hasAppCodePrevious = hasAppCode;
+      hasAppCodePrevious = _hasAppCode;
     }
   });
 };
 
-export const doesRecordHasAppCode = (
-  input: string,
-  appCode: string
-): boolean => {
+export const removeAppCode = (input: string, appCode: string) => {
+  if (hasAppCode(input, appCode)) {
+    return input.slice(appCode.length + 1);
+  }
+  return input;
+};
+
+export const hasAppCode = (input: string, appCode: string): boolean => {
   const matchWithAppCode = isValidUpdateKeyWithAppCode(input, appCode);
   const matchWithoutAppCode = isValidUpdateKeyWithoutAppCode(input);
 
@@ -91,10 +95,10 @@ export const doesRecordHasAppCode = (
   return matchWithAppCode && !matchWithoutAppCode;
 };
 
-export const isValidUpdateKeyWithAppCode = (input: string, appCode: string) => {
+const isValidUpdateKeyWithAppCode = (input: string, appCode: string) => {
   const regex = new RegExp("^" + appCode + "-[0-9]+$");
   return input.match(regex) !== null;
 };
 
-export const isValidUpdateKeyWithoutAppCode = (input: string) =>
+const isValidUpdateKeyWithoutAppCode = (input: string) =>
   input.match(/^[0-9]+$/) !== null;

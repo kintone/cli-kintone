@@ -12,6 +12,7 @@ import type { RecordSchema } from "../types/schema";
 import { fieldProcessor, recordReducer } from "./add/record";
 import {
   findUpdateKeyInSchema,
+  removeAppCode,
   validateUpdateKeyInRecords,
 } from "./upsert/updateKey";
 
@@ -34,9 +35,6 @@ export const upsertRecords: (
   { attachmentsDir, skipMissingFields = true }
 ) => {
   const updateKeyInSchema = findUpdateKeyInSchema(updateKey, schema);
-  const appCode = (await apiClient.app.getApp({ id: app })).code;
-  validateUpdateKeyInRecords(updateKeyInSchema, schema, appCode, records);
-
   const kintoneRecords = await convertRecordsToApiRequestParameter(
     apiClient,
     app,
@@ -70,12 +68,22 @@ const convertRecordsToApiRequestParameter = async (
   forUpdate: KintoneRecordForUpdateParameter[];
 }> => {
   const { attachmentsDir, skipMissingFields } = options;
+
+  const appCode = (await apiClient.app.getApp({ id: app })).code;
+  validateUpdateKeyInRecords(updateKey, schema, appCode, records);
+
   const recordsOnKintone = await apiClient.record.getAllRecords({
     app,
     fields: [updateKey.code],
   });
   const existingUpdateKeyValues = new Set(
-    recordsOnKintone.map((record) => record[updateKey.code].value as string)
+    recordsOnKintone.map((record) => {
+      const updateKeyValue = record[updateKey.code].value as string;
+      if (updateKey.type === "RECORD_NUMBER") {
+        return removeAppCode(updateKeyValue, appCode);
+      }
+      return updateKeyValue;
+    })
   );
 
   const kintoneRecordsForAdd: KintoneRecordForParameter[] = [];
@@ -97,7 +105,7 @@ const convertRecordsToApiRequestParameter = async (
       const recordForUpdate =
         updateKey.type === "RECORD_NUMBER"
           ? {
-              id: updateKeyValue,
+              id: removeAppCode(updateKeyValue, appCode),
               record: kintoneRecord,
             }
           : {

@@ -1,6 +1,6 @@
-import { doesRecordHasAppCode } from "../../upsert/updateKey";
+import { hasAppCode } from "../../upsert/updateKey";
 
-describe("doesRecordHasAppCode", () => {
+describe("hasAppCode", () => {
   it.each`
     input        | appCode  | result
     ${"1"}       | ${""}    | ${false}
@@ -19,7 +19,7 @@ describe("doesRecordHasAppCode", () => {
       appCode: string;
       result: boolean;
     }) => {
-      expect(doesRecordHasAppCode(input, appCode)).toBe(result);
+      expect(hasAppCode(input, appCode)).toBe(result);
     }
   );
 
@@ -31,7 +31,7 @@ describe("doesRecordHasAppCode", () => {
   `(
     "should throw with invalid error (input: $input, appCode: $appCode)",
     ({ input, appCode }: { input: string; appCode: string }) => {
-      expect(() => doesRecordHasAppCode(input, appCode)).toThrow(
+      expect(() => hasAppCode(input, appCode)).toThrow(
         `The "Key to Bulk Update" value is invalid (${input})`
       );
     }

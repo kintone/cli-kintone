@@ -99,13 +99,16 @@ const convertRecordsToApiRequestParameter = async (
           skipMissingFields,
         })
     );
-    const updateKeyValue = record[updateKey.code].value as string;
+    const updateKeyValue =
+      updateKey.type === "RECORD_NUMBER"
+        ? removeAppCode(record[updateKey.code].value as string, appCode)
+        : (record[updateKey.code].value as string);
     if (existingUpdateKeyValues.has(updateKeyValue)) {
       delete kintoneRecord[updateKey.code];
       const recordForUpdate =
         updateKey.type === "RECORD_NUMBER"
           ? {
-              id: removeAppCode(updateKeyValue, appCode),
+              id: updateKeyValue,
               record: kintoneRecord,
             }
           : {
@@ -114,6 +117,9 @@ const convertRecordsToApiRequestParameter = async (
             };
       kintoneRecordsForUpdate.push(recordForUpdate);
     } else {
+      if (updateKey.type === "RECORD_NUMBER") {
+        delete kintoneRecord[updateKey.code];
+      }
       kintoneRecordsForAdd.push(kintoneRecord);
     }
   }

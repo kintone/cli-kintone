@@ -4,6 +4,9 @@ import type { RecordSchema } from "../../../types/schema";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { upsertRecords } from "../../upsert";
 
+import { pattern as upsertByRecordNumber } from "./fixtures/upsertByRecordNumber";
+import { pattern as upsertByRecordNumberWithAppCode } from "./fixtures/upsertByRecordNumberWithAppCode";
+import { pattern as upsertByRecordNumberWithAppCodeOnKintone } from "./fixtures/upsertByRecordNumberWithAppCodeOnKintone";
 import { pattern as upsertBySingleLineText } from "./fixtures/upsertByNumber";
 import { pattern as upsertByNumber } from "./fixtures/upsertBySingleLineText";
 import { pattern as upsertByNonUniqueKey } from "./fixtures/upsertByNonUniqueKey";
@@ -50,6 +53,9 @@ describe("upsertRecords", () => {
   });
 
   const patterns = [
+    upsertByRecordNumber,
+    upsertByRecordNumberWithAppCode,
+    upsertByRecordNumberWithAppCodeOnKintone,
     upsertBySingleLineText,
     upsertByNumber,
     upsertByNonUniqueKey,

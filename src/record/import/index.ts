@@ -45,6 +45,10 @@ export const run: (
       format,
       schema,
     });
+    if (records.length === 0) {
+      console.log("The input file does not have any records");
+      return;
+    }
     const skipMissingFields = !fields;
     if (updateKey) {
       await upsertRecords(apiClient, app, records, schema, updateKey, {

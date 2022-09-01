@@ -97,8 +97,10 @@ export const hasAppCode = (input: string, appCode: string): boolean => {
 };
 
 const isValidUpdateKeyWithAppCode = (input: string, appCode: string) => {
-  const regex = new RegExp("^" + appCode + "-[0-9]+$");
-  return input.match(regex) !== null;
+  return (
+    input.startsWith(appCode + "-") &&
+    input.slice(appCode.length + 1).match(/^[0-9]+$/) !== null
+  );
 };
 
 const isValidUpdateKeyWithoutAppCode = (input: string) =>

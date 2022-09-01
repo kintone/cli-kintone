@@ -70,7 +70,7 @@ const convertRecordsToApiRequestParameter = async (
   const { attachmentsDir, skipMissingFields } = options;
 
   const appCode = (await apiClient.app.getApp({ id: app })).code;
-  validateUpdateKeyInRecords(updateKey, schema, appCode, records);
+  validateUpdateKeyInRecords(updateKey, appCode, records);
 
   const recordsOnKintone = await apiClient.record.getAllRecords({
     app,

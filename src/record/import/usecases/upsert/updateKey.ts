@@ -47,7 +47,6 @@ const isSupportedUpdateKeyFieldType = (
 
 export const validateUpdateKeyInRecords = (
   updateKey: { code: string; type: string },
-  schema: RecordSchema,
   appCode: string,
   records: KintoneRecord[]
 ) => {

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.17.0](https://github.com/kintone/cli-kintone/compare/v0.16.2...v0.17.0) (2022-09-01)
+
+
+### Features
+
+* upsert records by record number ([#60](https://github.com/kintone/cli-kintone/issues/60)) ([6bf7765](https://github.com/kintone/cli-kintone/commit/6bf7765165080895cfe794a9510eb2d335f57eea))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.1.10 ([#62](https://github.com/kintone/cli-kintone/issues/62)) ([e2391b1](https://github.com/kintone/cli-kintone/commit/e2391b12a1146ed2d26c1e9249c86389c139f431))
+
 ## [0.16.2](https://github.com/kintone/cli-kintone/compare/v0.16.1...v0.16.2) (2022-09-01)
 
 

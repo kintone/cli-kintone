@@ -27,6 +27,10 @@ export const convertRecord = (
 export function* recordReader(
   rows: CsvRow[]
 ): Generator<RecordCsv, void, undefined> {
+  if (rows.length === 0) {
+    return;
+  }
+
   if (!hasSubtable(rows[0])) {
     yield* rows.map((row) => [row]);
     return;

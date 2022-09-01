@@ -6,10 +6,6 @@ A kintone record importer and exporter.
 
 **THIS IS EXPERIMENTAL, AND THESE FEATURES ARE NOT SUPPORTED YET.**
 
-- use Record ID as Key to Bulk Update to import records
-
-We plan to support them in the future release.
-
 ---
 
 - [Installation](#installation)
@@ -95,8 +91,12 @@ When `--update-key` option is set, the option value is used as “Key to Bulk Up
 
 The field specified as "Key to Bulk Update" should meet the following requirements:
 
-- be of either type Text or Number
-- must have "Prohibit duplicate values" enabled
+- be Record Number field
+- be one of the following field types with "Prohibit duplicate values" enabled
+  - Text
+  - Number
+
+NOTE: When the field specified as "Key to Bulk Update" is Record Number, the value of the field may have app code of the target app.
 
 ### export
 

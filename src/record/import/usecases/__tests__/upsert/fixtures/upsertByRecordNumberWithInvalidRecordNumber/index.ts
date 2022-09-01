@@ -1,15 +1,15 @@
 import { TestPattern } from "../../index.test";
 import { records } from "./records";
-import { schema } from "../schema";
-import { recordsOnKintone } from "../recordsOnKintone";
+import { schema } from "./schema";
+import { recordsOnKintone } from "./recordsOnKintone";
 
 export const pattern: TestPattern = {
   description:
-    "should throw error when update key field does not exist on input record",
+    "should throw error because the record numbers are mixed with those with and without app code",
   input: {
     records: records,
     schema: schema,
-    updateKey: "singleLineText_nonExistentOnInput",
+    updateKey: "recordNumber",
     options: {
       attachmentsDir: "",
       skipMissingFields: true,
@@ -19,7 +19,7 @@ export const pattern: TestPattern = {
   expected: {
     failure: {
       errorMessage:
-        'The field specified as "Key to Bulk Update" (singleLineText_nonExistentOnInput) does not exist on the input',
+        'The "Key to Bulk Update" should not be mixed with those with and without app code',
     },
   },
 };

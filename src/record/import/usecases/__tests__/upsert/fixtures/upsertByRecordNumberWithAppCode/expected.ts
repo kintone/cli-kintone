@@ -6,18 +6,12 @@ export const expected: TestPattern["expected"] = {
       app: "1",
       records: [
         {
-          updateKey: {
-            field: "number",
-            value: "1",
-          },
+          id: "1",
           record: {
+            number: {
+              value: "1",
+            },
             singleLineText: {
-              value: "value1",
-            },
-            date: {
-              value: "2022-03-01",
-            },
-            singleLineText_nonUnique: {
               value: "value1",
             },
           },
@@ -33,12 +27,6 @@ export const expected: TestPattern["expected"] = {
           },
           number: {
             value: "3",
-          },
-          date: {
-            value: "2022-04-01",
-          },
-          singleLineText_nonUnique: {
-            value: "value1",
           },
         },
       ],

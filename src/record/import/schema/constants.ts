@@ -2,7 +2,6 @@ import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 
 type SupportedFieldType = Exclude<
   KintoneFormFieldProperty.OneOf,
-  | KintoneFormFieldProperty.RecordNumber
   | KintoneFormFieldProperty.Calc
   | KintoneFormFieldProperty.Status
   | KintoneFormFieldProperty.StatusAssignee
@@ -13,6 +12,7 @@ type SupportedFieldType = Exclude<
 >;
 
 const supportedFieldTypes: Array<SupportedFieldType["type"]> = [
+  "RECORD_NUMBER",
   "SINGLE_LINE_TEXT",
   "RADIO_BUTTON",
   "MULTI_LINE_TEXT",

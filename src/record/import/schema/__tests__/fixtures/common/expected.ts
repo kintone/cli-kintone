@@ -3,6 +3,12 @@ import type { RecordSchema } from "../../../../types/schema";
 export const expected: RecordSchema = {
   fields: [
     {
+      type: "RECORD_NUMBER",
+      code: "recordNumber",
+      label: "recordNumber",
+      noLabel: false,
+    },
+    {
       type: "UPDATED_TIME",
       code: "updatedTime",
       label: "updatedTime",

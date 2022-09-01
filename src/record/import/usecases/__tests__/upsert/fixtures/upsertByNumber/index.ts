@@ -5,11 +5,11 @@ import { expected } from "./expected";
 import { recordsOnKintone } from "../recordsOnKintone";
 
 export const pattern: TestPattern = {
-  description: "should upsert records correctly with single line text",
+  description: "should upsert records correctly with number",
   input: {
     records: records,
     schema: schema,
-    updateKey: "singleLineText",
+    updateKey: "number",
     options: {
       attachmentsDir: "",
       skipMissingFields: true,

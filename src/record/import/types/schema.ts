@@ -7,6 +7,7 @@ export type RecordSchema = {
 export type FieldSchema = OneOf;
 
 type OneOf =
+  | KintoneFormFieldProperty.RecordNumber
   | KintoneFormFieldProperty.Creator
   | KintoneFormFieldProperty.CreatedTime
   | KintoneFormFieldProperty.Modifier

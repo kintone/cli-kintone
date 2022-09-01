@@ -4,7 +4,7 @@ type FieldWith<V> = {
 
 export type ID = FieldWith<never>;
 export type Revision = FieldWith<never>;
-export type RecordNumber = FieldWith<never>;
+export type RecordNumber = FieldWith<string>;
 export type Creator = FieldWith<{ code: string }>;
 export type CreatedTime = FieldWith<string>;
 export type Modifier = FieldWith<{ code: string }>;

@@ -6,10 +6,6 @@ A kintone record importer and exporter.
 
 **THIS IS EXPERIMENTAL, AND THESE FEATURES ARE NOT SUPPORTED YET.**
 
-- use Record ID as Key to Bulk Update to import records
-
-We plan to support them in the future release.
-
 ---
 
 - [Installation](#installation)

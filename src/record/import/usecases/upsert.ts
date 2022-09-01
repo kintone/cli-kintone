@@ -1,7 +1,4 @@
-import type {
-  KintoneRecordField,
-  KintoneRestAPIClient,
-} from "@kintone/rest-api-client";
+import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { KintoneRecord } from "../types/record";
 import type {
   KintoneRecordForParameter,
@@ -34,13 +31,12 @@ export const upsertRecords: (
   updateKey,
   { attachmentsDir, skipMissingFields = true }
 ) => {
-  const updateKeyInSchema = findUpdateKeyInSchema(updateKey, schema);
   const kintoneRecords = await convertRecordsToApiRequestParameter(
     apiClient,
     app,
     records,
     schema,
-    updateKeyInSchema,
+    updateKey,
     {
       attachmentsDir,
       skipMissingFields,
@@ -55,10 +51,7 @@ const convertRecordsToApiRequestParameter = async (
   app: string,
   records: KintoneRecord[],
   schema: RecordSchema,
-  updateKey: {
-    code: string;
-    type: string;
-  },
+  updateKeyCode: string,
   options: {
     attachmentsDir?: string;
     skipMissingFields: boolean;
@@ -69,6 +62,7 @@ const convertRecordsToApiRequestParameter = async (
 }> => {
   const { attachmentsDir, skipMissingFields } = options;
 
+  const updateKey = findUpdateKeyInSchema(updateKeyCode, schema);
   const appCode = (await apiClient.app.getApp({ id: app })).code;
   validateUpdateKeyInRecords(updateKey, appCode, records);
 

@@ -6,7 +6,7 @@ import type { KintoneRecord } from "../../types/record";
 export const findUpdateKeyInSchema = (
   updateKey: string,
   schema: RecordSchema
-) => {
+): { code: string; type: SupportedUpdateKeyFieldType["type"] } => {
   const updateKeySchema = schema.fields.find(
     (fieldSchema) => fieldSchema.code === updateKey
   );
@@ -31,12 +31,14 @@ export const findUpdateKeyInSchema = (
   return { code: updateKey, type: updateKeySchema.type };
 };
 
-const isSupportedUpdateKeyFieldType = (
-  fieldSchema: FieldSchema
-): fieldSchema is
+export type SupportedUpdateKeyFieldType =
   | KintoneFormFieldProperty.RecordNumber
   | KintoneFormFieldProperty.SingleLineText
-  | KintoneFormFieldProperty.Number => {
+  | KintoneFormFieldProperty.Number;
+
+const isSupportedUpdateKeyFieldType = (
+  fieldSchema: FieldSchema
+): fieldSchema is SupportedUpdateKeyFieldType => {
   const supportedUpdateKeyFieldTypes = [
     "RECORD_NUMBER",
     "SINGLE_LINE_TEXT",
@@ -46,7 +48,7 @@ const isSupportedUpdateKeyFieldType = (
 };
 
 export const validateUpdateKeyInRecords = (
-  updateKey: { code: string; type: string },
+  updateKey: { code: string; type: SupportedUpdateKeyFieldType["type"] },
   appCode: string,
   records: KintoneRecord[]
 ) => {

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.17.1](https://github.com/kintone/cli-kintone/compare/v0.17.0...v0.17.1) (2022-09-05)
+
+
+### Bug Fixes
+
+* abolish JSON format ([#66](https://github.com/kintone/cli-kintone/issues/66)) ([52b7d72](https://github.com/kintone/cli-kintone/commit/52b7d721103663681ea0da3556e954d2cbbf0e61))
+
 ## [0.17.0](https://github.com/kintone/cli-kintone/compare/v0.16.2...v0.17.0) (2022-09-01)
 
 

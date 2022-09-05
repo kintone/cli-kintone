@@ -16,7 +16,6 @@ A kintone record importer and exporter.
     - [Options](#options-1)
 - [Supported file formats](#supported-file-formats)
   - [CSV format](#csv-format)
-  - [JSON format](#json-format)
 - [LICENSE](#license)
 
 ## Installation
@@ -61,10 +60,10 @@ Options:
       --guest-space-id       The ID of guest space
                                       [string] [default: KINTONE_GUEST_SPACE_ID]
       --attachments-dir      Attachment file directory                  [string]
-      --file-path            The path to source file. ".csv" or ".json"
+      --file-path            The path to source file.
+                             The file extension should be ".csv"
                                                              [string] [required]
       --encoding             Character encoding
-                             (available only if the source file format is CSV)
                                      [choices: "utf8", "sjis"] [default: "utf8"]
       --update-key           The key to Bulk Update                     [string]
       --fields               The fields to be imported in comma-separated
@@ -134,10 +133,7 @@ Options:
       --guest-space-id       The ID of guest space
                                       [string] [default: KINTONE_GUEST_SPACE_ID]
       --attachments-dir      Attachment file directory                  [string]
-      --format               Output format. "csv" or "json"
-                                      [choices: "csv", "json"] [default: "csv"]
       --encoding             Character encoding
-                             (available only if the output format is CSV)
                                      [choices: "utf8", "sjis"] [default: "utf8"]
   -c, --condition            The query string                           [string]
       --order-by             The sort order as a query                  [string]
@@ -159,11 +155,13 @@ If set `--attachments-dir` option, attachment files will be downloaded to local 
 
 ## Supported file formats
 
-cli-kintone supports CSV and JSON for both import/export commands.  
-When import, it determines the format automatically by the extension of the file (specified by `--file-path` option).  
-When export, you can specify the format by specifying `--format` option.
+cli-kintone supports following formats for both import/export commands.
 
-The detailed formats of CSV / JSON files are as follows:
+- CSV
+
+When importing, it determines the format automatically by the extension of the file (specified by `--file-path` option).
+
+The detailed formats are as follows:
 
 ### CSV format
 
@@ -240,91 +238,6 @@ When export, if NOT set `--attachments-dir` option, only the file name will be o
 "fileFieldCode"
 "test.txt
 test.txt"
-```
-
-### JSON format
-
-The format of JSON file is the same as Get/Add/Update records REST API.
-
-```json
-[
-  {
-    "FieldCode1": {
-      "type": "SINGLE_LINE_TEXT",
-      "value": "foo"
-    },
-    "Created_by": {
-      "type": "CREATOR",
-      "value": {
-        "code": "Administrator",
-        "name": "Administrator"
-      }
-    },
-    ...
-  },
-  {
-    ...
-  },
-  ...
-]
-```
-
-#### Attachment field
-
-If set `--attachments-dir` option, the format of Attachment field will be changed to below.  
-(Attachment field in Table follows the same rule.)
-
-##### Export
-
-```json
-[
-  {
-     "$id": {
-      "type": "__ID__",
-      "value": "1"
-    },
-    "fileFieldCode": {
-      "type": "FILE",
-      "value": [
-        {
-          "contentType": "text/plain",
-          "fileKey": "test-file-key",
-          "name": "test.txt",
-          "localFilePath": "file-1/test.txt"
-        },
-        {
-          "contentType": "text/plain",
-          "fileKey": "test-file-key",
-          "name": "test.txt",
-          "localFilePath": "file-1/test (1).txt"
-        }
-      ]
-    },
-    ...
-  }
-  ...
-]
-```
-
-##### Import
-
-```json
-[
-  {
-    "fileFieldCode": {
-      "value": [
-        {
-          "localFilePath": "file-1/test.txt"
-        },
-        {
-          "localFilePath": "file-1/test (1).txt"
-        }
-      ]
-    },
-    ...
-  }
-  ...
-]
 ```
 
 ## LICENSE

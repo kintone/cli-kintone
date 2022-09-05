@@ -5,7 +5,7 @@ import type { RecordSchema } from "../../types/schema";
 import csvParse from "csv-parse/lib/sync";
 
 import { convertRecord, recordReader } from "./record";
-import { LINE_BREAK, SEPARATOR } from "./constants";
+import { SEPARATOR } from "./constants";
 
 export const parseCsv: (
   csv: string,
@@ -15,7 +15,6 @@ export const parseCsv: (
     columns: true,
     skip_empty_lines: true,
     delimiter: SEPARATOR,
-    record_delimiter: LINE_BREAK,
   });
 
   const records: KintoneRecord[] = [];

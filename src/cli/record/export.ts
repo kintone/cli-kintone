@@ -1,11 +1,9 @@
 import * as yargs from "yargs";
 
-import type { ExportFileFormat } from "../../record/export/stringifiers";
 import { CommandModule } from "yargs";
 
 import { ExportFileEncoding, run } from "../../record/export";
 
-const formats: ExportFileFormat[] = ["csv", "json"];
 const encodings: ExportFileEncoding[] = ["utf8", "sjis"];
 
 const command = "export";
@@ -77,15 +75,8 @@ const builder = (args: yargs.Argv) =>
       type: "string",
       requiresArg: true,
     })
-    .option("format", {
-      describe: 'Output format. "csv" or "json"',
-      default: "csv" as ExportFileFormat,
-      choices: formats,
-      requiresArg: true,
-    })
     .option("encoding", {
-      describe:
-        "Character encoding\n(available only if the output format is CSV)",
+      describe: "Character encoding",
       default: "utf8" as ExportFileEncoding,
       choices: encodings,
       requiresArg: true,
@@ -138,7 +129,6 @@ const handler = (args: Args) => {
     app: args.app,
     guestSpaceId: args["guest-space-id"],
     attachmentsDir: args["attachments-dir"],
-    format: args.format,
     encoding: args.encoding,
     condition: args.condition,
     orderBy: args["order-by"],

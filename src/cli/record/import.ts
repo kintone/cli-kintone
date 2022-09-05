@@ -76,14 +76,13 @@ const builder = (args: yargs.Argv) =>
       requiresArg: true,
     })
     .option("file-path", {
-      describe: 'The path to source file. ".csv" or ".json"',
+      describe: 'The path to source file.\nThe file extension should be ".csv"',
       type: "string",
       demandOption: true,
       requiresArg: true,
     })
     .option("encoding", {
-      describe:
-        "Character encoding\n(available only if the source file format is CSV)",
+      describe: "Character encoding",
       default: "utf8" as SupportedImportEncoding,
       choices: encoding,
       requiresArg: true,

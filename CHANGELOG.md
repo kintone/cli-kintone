@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.18.0](https://github.com/kintone/cli-kintone/compare/v0.17.1...v0.18.0) (2022-09-06)
+
+
+### Features
+
+* auto-discover line break represents record delimiter ([#69](https://github.com/kintone/cli-kintone/issues/69)) ([e2edc44](https://github.com/kintone/cli-kintone/commit/e2edc44503b54e23ec7928ed119f287d333bf00f))
+
 ## [0.17.1](https://github.com/kintone/cli-kintone/compare/v0.17.0...v0.17.1) (2022-09-05)
 
 

@@ -10,6 +10,7 @@ import { fieldProcessor, recordReducer } from "./add/record";
 import {
   findUpdateKeyInSchema,
   removeAppCode,
+  UpdateKey,
   validateUpdateKeyInRecords,
 } from "./upsert/updateKey";
 
@@ -100,11 +101,16 @@ const convertRecordsToApiRequestParameter = async (
           skipMissingFields,
         })
     );
-    const updateKeyValue =
-      updateKey.type === "RECORD_NUMBER"
-        ? removeAppCode(record[updateKey.code].value as string, appCode)
-        : (record[updateKey.code].value as string);
-    if (existingUpdateKeyValues.has(updateKeyValue)) {
+
+    const updateKeyValue = parseUpdateKeyValue(
+      record[updateKey.code].value as string,
+      updateKey,
+      appCode
+    );
+    if (
+      updateKeyValue.length > 0 &&
+      existingUpdateKeyValues.has(updateKeyValue)
+    ) {
       delete kintoneRecord[updateKey.code];
       const recordForUpdate =
         updateKey.type === "RECORD_NUMBER"
@@ -131,6 +137,20 @@ const convertRecordsToApiRequestParameter = async (
     }
   }
   return kintoneRecords;
+};
+
+const parseUpdateKeyValue = (
+  input: string,
+  updateKey: UpdateKey,
+  appCode: string
+) => {
+  if (input.length === 0) {
+    return input;
+  }
+  if (updateKey.type === "RECORD_NUMBER") {
+    return removeAppCode(input, appCode);
+  }
+  return input;
 };
 
 const uploadToKintone = async (

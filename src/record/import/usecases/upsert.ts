@@ -188,4 +188,7 @@ const uploadToKintone = async (
       recordsToUploadNext.records.push(record.record as any);
     }
   }
+  if (recordsToUploadNext) {
+    await upsert(recordsToUploadNext);
+  }
 };

@@ -34,10 +34,20 @@ export type TestPattern = {
   >;
   expected: {
     success?: {
-      forUpdate: Parameters<
-        KintoneRestAPIClient["record"]["updateAllRecords"]
-      >[0];
-      forAdd: Parameters<KintoneRestAPIClient["record"]["addAllRecords"]>[0];
+      requests: Array<
+        | {
+            type: "update";
+            payload: Parameters<
+              KintoneRestAPIClient["record"]["updateAllRecords"]
+            >[0];
+          }
+        | {
+            type: "add";
+            payload: Parameters<
+              KintoneRestAPIClient["record"]["addAllRecords"]
+            >[0];
+          }
+      >;
     };
     failure?: {
       errorMessage: string;
@@ -99,10 +109,13 @@ describe("upsertRecords", () => {
           input.updateKey,
           input.options
         );
-        expect(updateAllRecordsMockFn).toBeCalledWith(
-          expected.success.forUpdate
-        );
-        expect(addAllRecordsMockFn).toBeCalledWith(expected.success.forAdd);
+        for (const request of expected.success.requests) {
+          if (request.type === "update") {
+            expect(updateAllRecordsMockFn).toBeCalledWith(request.payload);
+          } else {
+            expect(addAllRecordsMockFn).toBeCalledWith(request.payload);
+          }
+        }
       }
       if (expected.failure !== undefined) {
         await expect(

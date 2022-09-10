@@ -9,6 +9,7 @@ import { pattern as upsertByRecordNumberWithAppCode } from "./fixtures/upsertByR
 import { pattern as upsertByRecordNumberWithAppCodeOnKintone } from "./fixtures/upsertByRecordNumberWithAppCodeOnKintone";
 import { pattern as upsertBySingleLineText } from "./fixtures/upsertByNumber";
 import { pattern as upsertByNumber } from "./fixtures/upsertBySingleLineText";
+import { pattern as upsertRecordsSequentially } from "./fixtures/upsertRecordsSequentially";
 import { pattern as upsertByNonUniqueKey } from "./fixtures/upsertByNonUniqueKey";
 import { pattern as upsertByUnsupportedField } from "./fixtures/upsertByUnsupportedField";
 import { pattern as upsertByNonExistentField } from "./fixtures/upsertByNonExistentField";
@@ -70,6 +71,7 @@ describe("upsertRecords", () => {
     upsertByRecordNumberWithAppCodeOnKintone,
     upsertBySingleLineText,
     upsertByNumber,
+    upsertRecordsSequentially,
     upsertByNonUniqueKey,
     upsertByUnsupportedField,
     upsertByNonExistentField,

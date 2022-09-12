@@ -47,7 +47,7 @@ export const upsertRecords: (
   await uploadToKintone(apiClient, app, kintoneRecords);
 };
 
-type KintoneRecords = Array<
+type RecordAsRequestParameter =
   | {
       type: "add";
       record: KintoneRecordForParameter;
@@ -55,8 +55,7 @@ type KintoneRecords = Array<
   | {
       type: "update";
       record: KintoneRecordForUpdateParameter;
-    }
->;
+    };
 
 const convertRecordsToApiRequestParameter = async (
   apiClient: KintoneRestAPIClient,
@@ -68,7 +67,7 @@ const convertRecordsToApiRequestParameter = async (
     attachmentsDir?: string;
     skipMissingFields: boolean;
   }
-): Promise<KintoneRecords> => {
+): Promise<RecordAsRequestParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
 
   const updateKey = findUpdateKeyInSchema(updateKeyCode, schema);
@@ -89,7 +88,7 @@ const convertRecordsToApiRequestParameter = async (
     })
   );
 
-  const kintoneRecords: KintoneRecords = [];
+  const kintoneRecords: RecordAsRequestParameter[] = [];
   for (const record of records) {
     const kintoneRecord = await recordReducer(
       record,
@@ -156,7 +155,7 @@ const parseUpdateKeyValue = (
 const uploadToKintone = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  kintoneRecords: KintoneRecords
+  kintoneRecords: RecordAsRequestParameter[]
 ) => {
   let recordsToUploadNext:
     | {

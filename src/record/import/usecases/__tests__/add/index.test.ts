@@ -5,6 +5,7 @@ import path from "path";
 
 import * as canUploadFiles from "./fixtures/can_upload_files";
 import * as canUploadFilesInSubtable from "./fixtures/can_upload_files_in_subtable";
+import { AddRecordsError } from "../../add/error";
 
 describe("addRecords", () => {
   let apiClient: KintoneRestAPIClient;
@@ -51,7 +52,9 @@ describe("addRecords", () => {
         canUploadFiles.schema,
         {}
       )
-    ).rejects.toThrow(new Error("--attachments-dir option is required."));
+    ).rejects.toThrow(
+      new AddRecordsError(new Error("--attachments-dir option is required."))
+    );
   });
 
   it("should upload files correctly when attachmentsDir is given", async () => {

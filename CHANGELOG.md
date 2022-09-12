@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.19.0](https://github.com/kintone/cli-kintone/compare/v0.18.0...v0.19.0) (2022-09-12)
+
+
+### Features
+
+* upsert records sequentially ([#74](https://github.com/kintone/cli-kintone/issues/74)) ([7e9decb](https://github.com/kintone/cli-kintone/commit/7e9decb724a77a845def3823af0e7bb54e98554c))
+
 ## [0.18.0](https://github.com/kintone/cli-kintone/compare/v0.17.1...v0.18.0) (2022-09-06)
 
 

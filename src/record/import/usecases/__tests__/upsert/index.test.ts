@@ -9,6 +9,7 @@ import { pattern as upsertByRecordNumberWithAppCode } from "./fixtures/upsertByR
 import { pattern as upsertByRecordNumberWithAppCodeOnKintone } from "./fixtures/upsertByRecordNumberWithAppCodeOnKintone";
 import { pattern as upsertBySingleLineText } from "./fixtures/upsertByNumber";
 import { pattern as upsertByNumber } from "./fixtures/upsertBySingleLineText";
+import { pattern as upsertRecordsSequentially } from "./fixtures/upsertRecordsSequentially";
 import { pattern as upsertByNonUniqueKey } from "./fixtures/upsertByNonUniqueKey";
 import { pattern as upsertByUnsupportedField } from "./fixtures/upsertByUnsupportedField";
 import { pattern as upsertByNonExistentField } from "./fixtures/upsertByNonExistentField";
@@ -34,10 +35,20 @@ export type TestPattern = {
   >;
   expected: {
     success?: {
-      forUpdate: Parameters<
-        KintoneRestAPIClient["record"]["updateAllRecords"]
-      >[0];
-      forAdd: Parameters<KintoneRestAPIClient["record"]["addAllRecords"]>[0];
+      requests: Array<
+        | {
+            type: "update";
+            payload: Parameters<
+              KintoneRestAPIClient["record"]["updateAllRecords"]
+            >[0];
+          }
+        | {
+            type: "add";
+            payload: Parameters<
+              KintoneRestAPIClient["record"]["addAllRecords"]
+            >[0];
+          }
+      >;
     };
     failure?: {
       errorMessage: string;
@@ -60,6 +71,7 @@ describe("upsertRecords", () => {
     upsertByRecordNumberWithAppCodeOnKintone,
     upsertBySingleLineText,
     upsertByNumber,
+    upsertRecordsSequentially,
     upsertByNonUniqueKey,
     upsertByUnsupportedField,
     upsertByNonExistentField,
@@ -99,10 +111,13 @@ describe("upsertRecords", () => {
           input.updateKey,
           input.options
         );
-        expect(updateAllRecordsMockFn).toBeCalledWith(
-          expected.success.forUpdate
-        );
-        expect(addAllRecordsMockFn).toBeCalledWith(expected.success.forAdd);
+        for (const request of expected.success.requests) {
+          if (request.type === "update") {
+            expect(updateAllRecordsMockFn).toBeCalledWith(request.payload);
+          } else {
+            expect(addAllRecordsMockFn).toBeCalledWith(request.payload);
+          }
+        }
       }
       if (expected.failure !== undefined) {
         await expect(

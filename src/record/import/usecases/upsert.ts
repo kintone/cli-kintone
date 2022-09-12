@@ -10,6 +10,7 @@ import { fieldProcessor, recordReducer } from "./add/record";
 import {
   findUpdateKeyInSchema,
   removeAppCode,
+  UpdateKey,
   validateUpdateKeyInRecords,
 } from "./upsert/updateKey";
 
@@ -46,6 +47,16 @@ export const upsertRecords: (
   await uploadToKintone(apiClient, app, kintoneRecords);
 };
 
+type RecordAsRequestParameter =
+  | {
+      type: "add";
+      record: KintoneRecordForParameter;
+    }
+  | {
+      type: "update";
+      record: KintoneRecordForUpdateParameter;
+    };
+
 const convertRecordsToApiRequestParameter = async (
   apiClient: KintoneRestAPIClient,
   app: string,
@@ -56,10 +67,7 @@ const convertRecordsToApiRequestParameter = async (
     attachmentsDir?: string;
     skipMissingFields: boolean;
   }
-): Promise<{
-  forAdd: KintoneRecordForParameter[];
-  forUpdate: KintoneRecordForUpdateParameter[];
-}> => {
+): Promise<RecordAsRequestParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
 
   const updateKey = findUpdateKeyInSchema(updateKeyCode, schema);
@@ -80,8 +88,7 @@ const convertRecordsToApiRequestParameter = async (
     })
   );
 
-  const kintoneRecordsForAdd: KintoneRecordForParameter[] = [];
-  const kintoneRecordsForUpdate: KintoneRecordForUpdateParameter[] = [];
+  const kintoneRecords: RecordAsRequestParameter[] = [];
   for (const record of records) {
     const kintoneRecord = await recordReducer(
       record,
@@ -93,11 +100,16 @@ const convertRecordsToApiRequestParameter = async (
           skipMissingFields,
         })
     );
-    const updateKeyValue =
-      updateKey.type === "RECORD_NUMBER"
-        ? removeAppCode(record[updateKey.code].value as string, appCode)
-        : (record[updateKey.code].value as string);
-    if (existingUpdateKeyValues.has(updateKeyValue)) {
+
+    const updateKeyValue = parseUpdateKeyValue(
+      record[updateKey.code].value as string,
+      updateKey,
+      appCode
+    );
+    if (
+      updateKeyValue.length > 0 &&
+      existingUpdateKeyValues.has(updateKeyValue)
+    ) {
       delete kintoneRecord[updateKey.code];
       const recordForUpdate =
         updateKey.type === "RECORD_NUMBER"
@@ -109,49 +121,93 @@ const convertRecordsToApiRequestParameter = async (
               updateKey: { field: updateKey.code, value: updateKeyValue },
               record: kintoneRecord,
             };
-      kintoneRecordsForUpdate.push(recordForUpdate);
+      kintoneRecords.push({
+        type: "update",
+        record: recordForUpdate,
+      });
     } else {
       if (updateKey.type === "RECORD_NUMBER") {
         delete kintoneRecord[updateKey.code];
       }
-      kintoneRecordsForAdd.push(kintoneRecord);
+      kintoneRecords.push({
+        type: "add",
+        record: kintoneRecord,
+      });
     }
   }
-  return { forAdd: kintoneRecordsForAdd, forUpdate: kintoneRecordsForUpdate };
+  return kintoneRecords;
+};
+
+const parseUpdateKeyValue = (
+  input: string,
+  updateKey: UpdateKey,
+  appCode: string
+) => {
+  if (input.length === 0) {
+    return input;
+  }
+  if (updateKey.type === "RECORD_NUMBER") {
+    return removeAppCode(input, appCode);
+  }
+  return input;
 };
 
 const uploadToKintone = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  kintoneRecords: {
-    forAdd: KintoneRecordForParameter[];
-    forUpdate: KintoneRecordForUpdateParameter[];
-  }
+  kintoneRecords: RecordAsRequestParameter[]
 ) => {
-  if (kintoneRecords.forUpdate.length > 0) {
+  let recordsToUploadNext:
+    | {
+        type: "add";
+        records: KintoneRecordForParameter[];
+      }
+    | {
+        type: "update";
+        records: KintoneRecordForUpdateParameter[];
+      }
+    | undefined;
+
+  const upsert = async (
+    recordsToUpload:
+      | { type: "add"; records: KintoneRecordForParameter[] }
+      | { type: "update"; records: KintoneRecordForUpdateParameter[] }
+  ) => {
     try {
-      await apiClient.record.updateAllRecords({
-        app,
-        records: kintoneRecords.forUpdate,
-      });
-      console.log(
-        `SUCCESS: update records[${kintoneRecords.forUpdate.length}]`
-      );
+      if (recordsToUpload.type === "update") {
+        await apiClient.record.updateAllRecords({
+          app,
+          records: recordsToUpload.records,
+        });
+      } else {
+        await apiClient.record.addAllRecords({
+          app,
+          records: recordsToUpload.records,
+        });
+      }
+      console.log(`SUCCESS: import records[${recordsToUpload.records.length}]`);
     } catch (e) {
-      console.log(`FAILED: update records[${kintoneRecords.forUpdate.length}]`);
+      console.log(`FAILED: import records[${recordsToUpload.records.length}]`);
       throw e;
+    }
+  };
+
+  for (const record of kintoneRecords) {
+    if (recordsToUploadNext && record.type !== recordsToUploadNext.type) {
+      await upsert(recordsToUploadNext);
+      recordsToUploadNext = undefined;
+    }
+
+    if (recordsToUploadNext === undefined) {
+      recordsToUploadNext = {
+        type: record.type,
+        records: [record.record as any],
+      };
+    } else {
+      recordsToUploadNext.records.push(record.record as any);
     }
   }
-  if (kintoneRecords.forAdd.length > 0) {
-    try {
-      await apiClient.record.addAllRecords({
-        app,
-        records: kintoneRecords.forAdd,
-      });
-      console.log(`SUCCESS: add records[${kintoneRecords.forAdd.length}]`);
-    } catch (e) {
-      console.log(`FAILED: add records[${kintoneRecords.forAdd.length}]`);
-      throw e;
-    }
+  if (recordsToUploadNext) {
+    await upsert(recordsToUploadNext);
   }
 };

@@ -3,10 +3,15 @@ import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 import type { FieldSchema, RecordSchema } from "../../types/schema";
 import type { KintoneRecord } from "../../types/record";
 
+export type UpdateKey = {
+  code: string;
+  type: SupportedUpdateKeyFieldType["type"];
+};
+
 export const findUpdateKeyInSchema = (
   updateKey: string,
   schema: RecordSchema
-): { code: string; type: SupportedUpdateKeyFieldType["type"] } => {
+): UpdateKey => {
   const updateKeySchema = schema.fields.find(
     (fieldSchema) => fieldSchema.code === updateKey
   );
@@ -48,7 +53,7 @@ const isSupportedUpdateKeyFieldType = (
 };
 
 export const validateUpdateKeyInRecords = (
-  updateKey: { code: string; type: SupportedUpdateKeyFieldType["type"] },
+  updateKey: UpdateKey,
   appCode: string,
   records: KintoneRecord[]
 ) => {
@@ -64,6 +69,10 @@ export const validateUpdateKeyInRecords = (
       throw new Error(
         `The value of the "Key to Bulk Update" (${updateKey.code}) on the input is invalid`
       );
+    }
+
+    if (value.length === 0) {
+      return;
     }
 
     if (updateKey.type === "RECORD_NUMBER") {

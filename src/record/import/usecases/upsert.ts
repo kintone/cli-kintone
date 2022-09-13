@@ -13,6 +13,7 @@ import {
   UpdateKey,
   validateUpdateKeyInRecords,
 } from "./upsert/updateKey";
+import { UpsertRecordsError } from "./upsert/error";
 
 export const upsertRecords: (
   apiClient: KintoneRestAPIClient,
@@ -32,19 +33,23 @@ export const upsertRecords: (
   updateKey,
   { attachmentsDir, skipMissingFields = true }
 ) => {
-  const kintoneRecords = await convertRecordsToApiRequestParameter(
-    apiClient,
-    app,
-    records,
-    schema,
-    updateKey,
-    {
-      attachmentsDir,
-      skipMissingFields,
-    }
-  );
+  try {
+    const kintoneRecords = await convertRecordsToApiRequestParameter(
+      apiClient,
+      app,
+      records,
+      schema,
+      updateKey,
+      {
+        attachmentsDir,
+        skipMissingFields,
+      }
+    );
 
-  await uploadToKintone(apiClient, app, kintoneRecords);
+    await uploadToKintone(apiClient, app, kintoneRecords);
+  } catch (e) {
+    throw new UpsertRecordsError(e);
+  }
 };
 
 type RecordAsRequestParameter =

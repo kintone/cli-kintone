@@ -2,24 +2,24 @@ import { KintoneAllRecordsError } from "@kintone/rest-api-client";
 import { kintoneAllRecordsErrorToString } from "../../utils/error";
 
 // Magic number from @kintone/rest-api-client
-// https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L16
-const ADD_RECORDS_LIMIT = 100;
+// https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L17
+const UPDATE_RECORDS_LIMIT = 100;
 
-export class AddRecordsError extends Error {
+export class UpsertRecordsError extends Error {
   cause: unknown;
-  chunkSize: number = ADD_RECORDS_LIMIT;
+  chunkSize: number = UPDATE_RECORDS_LIMIT;
 
   constructor(cause: unknown) {
-    const message = "Failed to add all records.";
+    const message = "Failed to upsert all records.";
     super(message);
 
-    this.name = "AddRecordsError";
+    this.name = "UpsertRecordsError";
     this.message = message;
     this.cause = cause;
 
     // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
     // Set the prototype explicitly.
-    Object.setPrototypeOf(this, AddRecordsError.prototype);
+    Object.setPrototypeOf(this, UpsertRecordsError.prototype);
   }
 
   toString(): string {
@@ -30,7 +30,7 @@ export class AddRecordsError extends Error {
         this.cause,
         this.chunkSize
       );
-    } else if (this.cause instanceof AddRecordsError) {
+    } else if (this.cause instanceof UpsertRecordsError) {
       errorMessage += this.cause.toString();
     } else {
       errorMessage += this.cause + "\n";

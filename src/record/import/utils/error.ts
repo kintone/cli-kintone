@@ -7,7 +7,7 @@ export const kintoneAllRecordsErrorToString = (
   e: KintoneAllRecordsError,
   chunkSize: number
 ): string => {
-  let errorMessage = "An error occured while uploading records.\n";
+  let errorMessage = "An error occurred while uploading records.\n";
 
   const totalMatch = e.message.match(
     /(?<numOfSuccess>\d+)\/(?<numOfTotal>\d+) records are processed successfully/

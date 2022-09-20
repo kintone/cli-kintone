@@ -2,13 +2,79 @@ import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 
 import type { FieldSchema, RecordSchema } from "../../types/schema";
 import type { KintoneRecord } from "../../types/record";
+import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 
 export type UpdateKey = {
   code: string;
   type: SupportedUpdateKeyFieldType["type"];
 };
 
-export const findUpdateKeyInSchema = (
+export class UpdateKeyHelper {
+  private readonly updateKey: UpdateKey;
+  private readonly appCode: string;
+  private readonly existingUpdateKeyValues: Set<string>;
+
+  constructor(
+    updateKey: UpdateKey,
+    appCode: string,
+    existingUpdateKeyValues: Set<string>
+  ) {
+    this.updateKey = updateKey;
+    this.appCode = appCode;
+    this.existingUpdateKeyValues = existingUpdateKeyValues;
+  }
+
+  static build = async (
+    apiClient: KintoneRestAPIClient,
+    app: string,
+    updateKeyCode: string,
+    schema: RecordSchema
+  ): Promise<UpdateKeyHelper> => {
+    const updateKey = findUpdateKeyInSchema(updateKeyCode, schema);
+    const appCode = (await apiClient.app.getApp({ id: app })).code;
+    const recordsOnKintone = await apiClient.record.getAllRecords({
+      app,
+      fields: [updateKey.code],
+    });
+    const existingUpdateKeyValues = new Set(
+      recordsOnKintone.map((record) => {
+        const updateKeyValue = record[updateKey.code].value as string;
+        if (updateKey.type === "RECORD_NUMBER") {
+          return removeAppCode(updateKeyValue, appCode);
+        }
+        return updateKeyValue;
+      })
+    );
+
+    return new UpdateKeyHelper(updateKey, appCode, existingUpdateKeyValues);
+  };
+
+  getUpdateKey = () => this.updateKey;
+
+  validateUpdateKeyInRecords = (records: KintoneRecord[]) =>
+    validateUpdateKeyInRecords(this.updateKey, this.appCode, records);
+
+  isUpdate = (record: KintoneRecord) => {
+    const updateKeyValue = this.findUpdateKeyValueFromRecord(record);
+    return (
+      updateKeyValue.length > 0 &&
+      this.existingUpdateKeyValues.has(updateKeyValue)
+    );
+  };
+
+  findUpdateKeyValueFromRecord = (record: KintoneRecord): string => {
+    const fieldValue = record.data[this.updateKey.code].value as string;
+    if (fieldValue.length === 0) {
+      return fieldValue;
+    }
+    if (this.updateKey.type === "RECORD_NUMBER") {
+      return removeAppCode(fieldValue, this.appCode);
+    }
+    return fieldValue;
+  };
+}
+
+const findUpdateKeyInSchema = (
   updateKey: string,
   schema: RecordSchema
 ): UpdateKey => {
@@ -36,7 +102,7 @@ export const findUpdateKeyInSchema = (
   return { code: updateKey, type: updateKeySchema.type };
 };
 
-export type SupportedUpdateKeyFieldType =
+type SupportedUpdateKeyFieldType =
   | KintoneFormFieldProperty.RecordNumber
   | KintoneFormFieldProperty.SingleLineText
   | KintoneFormFieldProperty.Number;
@@ -52,19 +118,19 @@ const isSupportedUpdateKeyFieldType = (
   return supportedUpdateKeyFieldTypes.includes(fieldSchema.type);
 };
 
-export const validateUpdateKeyInRecords = (
+const validateUpdateKeyInRecords = (
   updateKey: UpdateKey,
   appCode: string,
   records: KintoneRecord[]
 ) => {
   let hasAppCodePrevious: boolean = false;
   records.forEach((record, index) => {
-    if (!(updateKey.code in record)) {
+    if (!(updateKey.code in record.data)) {
       throw new Error(
         `The field specified as "Key to Bulk Update" (${updateKey.code}) does not exist on the input`
       );
     }
-    const value = record[updateKey.code].value;
+    const value = record.data[updateKey.code].value;
     if (typeof value !== "string") {
       throw new Error(
         `The value of the "Key to Bulk Update" (${updateKey.code}) on the input is invalid`
@@ -87,7 +153,7 @@ export const validateUpdateKeyInRecords = (
   });
 };
 
-export const removeAppCode = (input: string, appCode: string) => {
+const removeAppCode = (input: string, appCode: string) => {
   if (hasAppCode(input, appCode)) {
     return input.slice(appCode.length + 1);
   }

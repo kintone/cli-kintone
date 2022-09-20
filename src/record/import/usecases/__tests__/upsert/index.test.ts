@@ -131,7 +131,11 @@ describe("upsertRecords", () => {
             input.options
           )
         ).rejects.toThrow(
-          new UpsertRecordsError(expected.failure.errorMessage)
+          new UpsertRecordsError(
+            expected.failure.errorMessage,
+            input.records,
+            0
+          )
         );
       }
     }

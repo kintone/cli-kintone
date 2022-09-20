@@ -35,7 +35,7 @@ export const addRecords: (
     );
     await uploadToKintone(apiClient, app, kintoneRecords);
   } catch (e) {
-    throw new AddRecordsError(e);
+    throw new AddRecordsError(e, records, 0);
   }
 };
 

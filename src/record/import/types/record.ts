@@ -1,5 +1,11 @@
 import { OneOf } from "./field";
 
 export type KintoneRecord = {
-  [fieldCode: string]: OneOf;
+  data: { [fieldCode: string]: OneOf };
+  metadata: {
+    csv?: {
+      lineFirst: number;
+      lineLast: number;
+    };
+  };
 };

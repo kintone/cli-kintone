@@ -6,20 +6,29 @@ import { convertField, fieldReader } from "./field";
 import { convertSubtableField, subtableFieldReader } from "./subtable";
 import { PRIMARY_MARK } from "./constants";
 
-type RecordCsv = CsvRow[];
+type RecordCsv = {
+  rows: CsvRow[];
+  lineFirst: number;
+  lineLast: number;
+};
 
 export const convertRecord = (
   recordCsv: RecordCsv,
   schema: RecordSchema
 ): KintoneRecord => {
-  const record: KintoneRecord = {};
-  for (const field of fieldReader(recordCsv[0], schema)) {
-    record[field.code] = convertField(field);
+  const recordData: KintoneRecord["data"] = {};
+  for (const field of fieldReader(recordCsv.rows[0], schema)) {
+    recordData[field.code] = convertField(field);
   }
-  for (const subtableField of subtableFieldReader(recordCsv, schema)) {
-    record[subtableField.code] = convertSubtableField(subtableField);
+  for (const subtableField of subtableFieldReader(recordCsv.rows, schema)) {
+    recordData[subtableField.code] = convertSubtableField(subtableField);
   }
-  return record;
+  return {
+    data: recordData,
+    metadata: {
+      csv: { lineFirst: recordCsv.lineFirst, lineLast: recordCsv.lineLast },
+    },
+  };
 };
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
@@ -32,7 +41,11 @@ export function* recordReader(
   }
 
   if (!hasSubtable(rows[0])) {
-    yield* rows.map((row) => [row]);
+    yield* rows.map((row, index) => ({
+      rows: [row],
+      lineFirst: index,
+      lineLast: index,
+    }));
     return;
   }
 
@@ -51,7 +64,11 @@ export function* recordReader(
       last++;
     }
 
-    yield rows.slice(first, last + 1);
+    yield {
+      rows: rows.slice(first, last + 1),
+      lineFirst: first,
+      lineLast: last,
+    };
 
     index = last + 1;
   }

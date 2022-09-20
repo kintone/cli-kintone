@@ -2,80 +2,101 @@ import type { KintoneRecord } from "../../../../../types/record";
 
 export const records: KintoneRecord[] = [
   {
-    recordNumber: {
-      value: "",
+    data: {
+      recordNumber: {
+        value: "",
+      },
+      singleLineText: {
+        value: "value11",
+      },
+      number: {
+        value: "11",
+      },
     },
-    singleLineText: {
-      value: "value11",
-    },
-    number: {
-      value: "11",
-    },
+    metadata: {},
   },
   {
-    recordNumber: {
-      value: "",
+    data: {
+      recordNumber: {
+        value: "",
+      },
+      singleLineText: {
+        value: "value22",
+      },
+      number: {
+        value: "22",
+      },
     },
-    singleLineText: {
-      value: "value22",
-    },
-    number: {
-      value: "22",
-    },
+    metadata: {},
   },
   {
-    recordNumber: {
-      value: "",
+    data: {
+      recordNumber: {
+        value: "",
+      },
+      singleLineText: {
+        value: "value33",
+      },
+      number: {
+        value: "33",
+      },
     },
-    singleLineText: {
-      value: "value33",
-    },
-    number: {
-      value: "33",
-    },
+    metadata: {},
   },
   {
-    recordNumber: {
-      value: "1",
+    data: {
+      recordNumber: {
+        value: "1",
+      },
+      singleLineText: {
+        value: "value1",
+      },
+      number: {
+        value: "1",
+      },
     },
-    singleLineText: {
-      value: "value1",
-    },
-    number: {
-      value: "1",
-    },
+    metadata: {},
   },
   {
-    recordNumber: {
-      value: "2",
+    data: {
+      recordNumber: {
+        value: "2",
+      },
+      singleLineText: {
+        value: "value2",
+      },
+      number: {
+        value: "2",
+      },
     },
-    singleLineText: {
-      value: "value2",
-    },
-    number: {
-      value: "2",
-    },
+    metadata: {},
   },
   {
-    recordNumber: {
-      value: "",
+    data: {
+      recordNumber: {
+        value: "",
+      },
+      singleLineText: {
+        value: "value44",
+      },
+      number: {
+        value: "44",
+      },
     },
-    singleLineText: {
-      value: "value44",
-    },
-    number: {
-      value: "44",
-    },
+    metadata: {},
   },
   {
-    recordNumber: {
-      value: "",
+    data: {
+      recordNumber: {
+        value: "",
+      },
+      singleLineText: {
+        value: "value55",
+      },
+      number: {
+        value: "55",
+      },
     },
-    singleLineText: {
-      value: "value55",
-    },
-    number: {
-      value: "55",
-    },
+    metadata: {},
   },
 ];

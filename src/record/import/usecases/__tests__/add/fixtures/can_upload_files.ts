@@ -6,19 +6,22 @@ import path from "path";
 
 export const input: KintoneRecord[] = [
   {
-    singleLineText: {
-      value: "value1",
+    data: {
+      singleLineText: {
+        value: "value1",
+      },
+      attachment: {
+        value: [
+          {
+            localFilePath: path.join("attachment-1", "test.txt"),
+          },
+          {
+            localFilePath: path.join("attachment-1", "test (1).txt"),
+          },
+        ],
+      },
     },
-    attachment: {
-      value: [
-        {
-          localFilePath: path.join("attachment-1", "test.txt"),
-        },
-        {
-          localFilePath: path.join("attachment-1", "test (1).txt"),
-        },
-      ],
-    },
+    metadata: {},
   },
 ];
 

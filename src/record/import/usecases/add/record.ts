@@ -22,7 +22,7 @@ export const recordReducer: (
 ) => {
   const newRecord: KintoneRecordForParameter = {};
   for (const fieldSchema of schema.fields) {
-    if (!(fieldSchema.code in record)) {
+    if (!(fieldSchema.code in record.data)) {
       if (skipMissingFields) {
         continue;
       } else {
@@ -32,7 +32,7 @@ export const recordReducer: (
       }
     }
     newRecord[fieldSchema.code] = await task(
-      record[fieldSchema.code],
+      record.data[fieldSchema.code],
       fieldSchema
     );
   }

@@ -8,22 +8,22 @@ export const kintoneAllRecordsErrorToString = (
   e: KintoneAllRecordsError,
   chunkSize: number,
   records: KintoneRecord[],
-  currentIndex: number
+  offset: number
 ): string => {
   let errorMessage = "An error occurred while uploading records.\n";
 
   const totalMatch = e.message.match(
     /(?<numOfSuccess>\d+)\/(?<numOfTotal>\d+) records are processed successfully/
   );
-  const numOfSuccess = Number(totalMatch?.groups?.numOfSuccess) + currentIndex;
-  const numOfTotal = Number(totalMatch?.groups?.numOfTotal) + currentIndex;
+  const numOfSuccess = Number(totalMatch?.groups?.numOfSuccess) + offset;
+  const numOfTotal = Number(totalMatch?.groups?.numOfTotal) + offset;
   errorMessage += `${numOfSuccess}/${numOfTotal} records are processed successfully.\n`;
 
   errorMessage += kintoneRestAPIErrorToString(
     e.error,
     chunkSize,
     records,
-    currentIndex
+    offset + numOfSuccess
   );
 
   return errorMessage;
@@ -33,9 +33,9 @@ const kintoneRestAPIErrorToString = (
   e: KintoneRestAPIError,
   chunkSize: number,
   records: KintoneRecord[],
-  currentIndex: number
+  offset: number
 ): string => {
-  let errorMessage = e.message;
+  let errorMessage = e.message + "\n";
 
   if (e.errors !== undefined) {
     const errors = e.errors as {
@@ -55,7 +55,8 @@ const kintoneRestAPIErrorToString = (
     for (const [key, value] of orderedErrors) {
       const bulkRequestIndex = e.bulkRequestIndex ?? 0;
       const indexMatch = key.match(/records\[(\d+)\]/);
-      const index = Number(indexMatch?.at(1)) + bulkRequestIndex * chunkSize;
+      const index =
+        Number(indexMatch?.at(1)) + bulkRequestIndex * chunkSize + offset;
       errorMessage += `  An error occurred at records[${index}].\n`;
       for (const message of value.messages) {
         errorMessage += `    Cause: ${message}\n`;

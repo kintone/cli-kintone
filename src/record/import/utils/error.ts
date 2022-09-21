@@ -25,7 +25,7 @@ export const kintoneAllRecordsErrorToString = (
       ?.lastRowIndex;
 
     if (lastSucceededRow !== undefined) {
-      errorMessage += `Rows from 0 to ${lastSucceededRow} are processed successfully.\n`;
+      errorMessage += `Rows from 1 to ${lastSucceededRow} are processed successfully.\n`;
     } else {
       errorMessage += `${numOfSuccess}/${numOfTotal} records are processed successfully.\n`;
     }

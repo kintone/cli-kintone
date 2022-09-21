@@ -7,38 +7,31 @@ import type {
 import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor, recordReducer } from "./add/record";
-import { UpdateKeyHelper } from "./upsert/updateKey";
+import { UpdateKey } from "./upsert/updateKey";
 import { UpsertRecordsError } from "./upsert/error";
 
-export const upsertRecords: (
+export const upsertRecords = async (
   apiClient: KintoneRestAPIClient,
   app: string,
   records: KintoneRecord[],
   schema: RecordSchema,
-  updateKey: string,
-  options: {
-    attachmentsDir?: string;
-    skipMissingFields?: boolean;
-  }
-) => Promise<void> = async (
-  apiClient,
-  app,
-  records,
-  schema,
-  updateKeyCode,
-  { attachmentsDir, skipMissingFields = true }
-) => {
+  updateKeyCode: string,
+  {
+    attachmentsDir,
+    skipMissingFields = true,
+  }: { attachmentsDir?: string; skipMissingFields?: boolean }
+): Promise<void> => {
   let currentIndex = 0;
   try {
-    const updateKeyHelper = await UpdateKeyHelper.build(
+    const updateKey = await UpdateKey.build(
       apiClient,
       app,
       updateKeyCode,
       schema
     );
-    updateKeyHelper.validateUpdateKeyInRecords(records);
+    updateKey.validateUpdateKeyInRecords(records);
 
-    for (const [recordsNext, index] of recordReader(records, updateKeyHelper)) {
+    for (const [recordsNext, index] of recordReader(records, updateKey)) {
       currentIndex = index;
       if (recordsNext.type === "update") {
         const recordsToUpload = await convertToKintoneRecordForUpdate(
@@ -46,7 +39,7 @@ export const upsertRecords: (
           app,
           recordsNext.records,
           schema,
-          updateKeyHelper,
+          updateKey,
           { attachmentsDir, skipMissingFields }
         );
         await apiClient.record.updateAllRecords({
@@ -59,7 +52,7 @@ export const upsertRecords: (
           app,
           recordsNext.records,
           schema,
-          updateKeyHelper,
+          updateKey,
           { attachmentsDir, skipMissingFields }
         );
         await apiClient.record.addAllRecords({
@@ -79,7 +72,7 @@ const convertToKintoneRecordForUpdate = async (
   app: string,
   records: KintoneRecord[],
   schema: RecordSchema,
-  updateKeyHelper: UpdateKeyHelper,
+  updateKey: UpdateKey,
   options: {
     attachmentsDir?: string;
     skipMissingFields: boolean;
@@ -100,18 +93,18 @@ const convertToKintoneRecordForUpdate = async (
         })
     );
 
-    const updateKey = updateKeyHelper.getUpdateKey();
-    const updateKeyValue = updateKeyHelper.findUpdateKeyValueFromRecord(record);
+    const updateKeyField = updateKey.getUpdateKeyField();
+    const updateKeyValue = updateKey.findUpdateKeyValueFromRecord(record);
 
-    delete kintoneRecord[updateKey.code];
+    delete kintoneRecord[updateKeyField.code];
     kintoneRecords.push(
-      updateKey.type === "RECORD_NUMBER"
+      updateKeyField.type === "RECORD_NUMBER"
         ? {
             id: updateKeyValue,
             record: kintoneRecord,
           }
         : {
-            updateKey: { field: updateKey.code, value: updateKeyValue },
+            updateKey: { field: updateKeyField.code, value: updateKeyValue },
             record: kintoneRecord,
           }
     );
@@ -125,14 +118,14 @@ const convertToKintoneRecordForAdd = async (
   app: string,
   records: KintoneRecord[],
   schema: RecordSchema,
-  updateKeyHelper: UpdateKeyHelper,
+  updateKey: UpdateKey,
   options: {
     attachmentsDir?: string;
     skipMissingFields: boolean;
   }
 ): Promise<KintoneRecordForParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
-  const updateKey = updateKeyHelper.getUpdateKey();
+  const updateKeyField = updateKey.getUpdateKeyField();
 
   const kintoneRecords: KintoneRecordForParameter[] = [];
   for (const record of records) {
@@ -147,8 +140,8 @@ const convertToKintoneRecordForAdd = async (
         })
     );
 
-    if (updateKey.type === "RECORD_NUMBER") {
-      delete kintoneRecord[updateKey.code];
+    if (updateKeyField.type === "RECORD_NUMBER") {
+      delete kintoneRecord[updateKeyField.code];
     }
 
     kintoneRecords.push(kintoneRecord);
@@ -161,7 +154,7 @@ const convertToKintoneRecordForAdd = async (
 // eslint-disable-next-line func-style
 function* recordReader(
   records: KintoneRecord[],
-  updateKeyHelper: UpdateKeyHelper
+  updateKey: UpdateKey
 ): Generator<
   [{ type: "add" | "update"; records: KintoneRecord[] }, number],
   void,
@@ -174,11 +167,11 @@ function* recordReader(
   let index = 0;
   while (index < records.length) {
     let last = index;
-    const isUpdateCurrent = updateKeyHelper.isUpdate(records[index]);
+    const isUpdateCurrent = updateKey.isUpdate(records[index]);
 
     while (
       last + 1 < records.length &&
-      updateKeyHelper.isUpdate(records[last + 1]) === isUpdateCurrent
+      updateKey.isUpdate(records[last + 1]) === isUpdateCurrent
     ) {
       last++;
     }

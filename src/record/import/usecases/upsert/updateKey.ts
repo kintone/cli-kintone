@@ -4,22 +4,22 @@ import type { FieldSchema, RecordSchema } from "../../types/schema";
 import type { KintoneRecord } from "../../types/record";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 
-export type UpdateKey = {
+type UpdateKeyField = {
   code: string;
   type: SupportedUpdateKeyFieldType["type"];
 };
 
-export class UpdateKeyHelper {
-  private readonly updateKey: UpdateKey;
+export class UpdateKey {
+  private readonly field: UpdateKeyField;
   private readonly appCode: string;
   private readonly existingUpdateKeyValues: Set<string>;
 
   constructor(
-    updateKey: UpdateKey,
+    field: UpdateKeyField,
     appCode: string,
     existingUpdateKeyValues: Set<string>
   ) {
-    this.updateKey = updateKey;
+    this.field = field;
     this.appCode = appCode;
     this.existingUpdateKeyValues = existingUpdateKeyValues;
   }
@@ -29,30 +29,30 @@ export class UpdateKeyHelper {
     app: string,
     updateKeyCode: string,
     schema: RecordSchema
-  ): Promise<UpdateKeyHelper> => {
-    const updateKey = findUpdateKeyInSchema(updateKeyCode, schema);
+  ): Promise<UpdateKey> => {
+    const updateKeyField = findUpdateKeyInSchema(updateKeyCode, schema);
     const appCode = (await apiClient.app.getApp({ id: app })).code;
     const recordsOnKintone = await apiClient.record.getAllRecords({
       app,
-      fields: [updateKey.code],
+      fields: [updateKeyField.code],
     });
     const existingUpdateKeyValues = new Set(
       recordsOnKintone.map((record) => {
-        const updateKeyValue = record[updateKey.code].value as string;
-        if (updateKey.type === "RECORD_NUMBER") {
+        const updateKeyValue = record[updateKeyField.code].value as string;
+        if (updateKeyField.type === "RECORD_NUMBER") {
           return removeAppCode(updateKeyValue, appCode);
         }
         return updateKeyValue;
       })
     );
 
-    return new UpdateKeyHelper(updateKey, appCode, existingUpdateKeyValues);
+    return new UpdateKey(updateKeyField, appCode, existingUpdateKeyValues);
   };
 
-  getUpdateKey = () => this.updateKey;
+  getUpdateKeyField = () => this.field;
 
   validateUpdateKeyInRecords = (records: KintoneRecord[]) =>
-    validateUpdateKeyInRecords(this.updateKey, this.appCode, records);
+    validateUpdateKeyInRecords(this.field, this.appCode, records);
 
   isUpdate = (record: KintoneRecord) => {
     const updateKeyValue = this.findUpdateKeyValueFromRecord(record);
@@ -63,11 +63,11 @@ export class UpdateKeyHelper {
   };
 
   findUpdateKeyValueFromRecord = (record: KintoneRecord): string => {
-    const fieldValue = record.data[this.updateKey.code].value as string;
+    const fieldValue = record.data[this.field.code].value as string;
     if (fieldValue.length === 0) {
       return fieldValue;
     }
-    if (this.updateKey.type === "RECORD_NUMBER") {
+    if (this.field.type === "RECORD_NUMBER") {
       return removeAppCode(fieldValue, this.appCode);
     }
     return fieldValue;
@@ -77,7 +77,7 @@ export class UpdateKeyHelper {
 const findUpdateKeyInSchema = (
   updateKey: string,
   schema: RecordSchema
-): UpdateKey => {
+): UpdateKeyField => {
   const updateKeySchema = schema.fields.find(
     (fieldSchema) => fieldSchema.code === updateKey
   );
@@ -119,7 +119,7 @@ const isSupportedUpdateKeyFieldType = (
 };
 
 const validateUpdateKeyInRecords = (
-  updateKey: UpdateKey,
+  updateKey: UpdateKeyField,
   appCode: string,
   records: KintoneRecord[]
 ) => {

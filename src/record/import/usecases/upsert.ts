@@ -66,9 +66,8 @@ export const upsertRecords: (
           app,
           records: recordsToUpload,
         });
-
-        console.log(`SUCCESS: import records[${recordsNext.records.length}]`);
       }
+      console.log(`SUCCESS: import records[${recordsNext.records.length}]`);
     }
   } catch (e) {
     throw new UpsertRecordsError(e, records, currentIndex);

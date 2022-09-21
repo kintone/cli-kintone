@@ -85,7 +85,7 @@ export const expected: KintoneRecord[] = [
       },
     },
     metadata: {
-      csv: { lineFirst: 0, lineLast: 0 },
+      csv: { lineFirst: 1, lineLast: 1 },
     },
   },
 ];

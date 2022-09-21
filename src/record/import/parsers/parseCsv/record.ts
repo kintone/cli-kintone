@@ -40,11 +40,13 @@ export function* recordReader(
     return;
   }
 
+  const lineOffset = 1; // offset the header row
+
   if (!hasSubtable(rows[0])) {
     yield* rows.map((row, index) => ({
       rows: [row],
-      lineFirst: index,
-      lineLast: index,
+      lineFirst: index + lineOffset,
+      lineLast: index + lineOffset,
     }));
     return;
   }
@@ -66,8 +68,8 @@ export function* recordReader(
 
     yield {
       rows: rows.slice(first, last + 1),
-      lineFirst: first,
-      lineLast: last,
+      lineFirst: first + lineOffset,
+      lineLast: last + lineOffset,
     };
 
     index = last + 1;

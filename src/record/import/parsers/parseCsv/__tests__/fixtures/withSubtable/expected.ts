@@ -137,7 +137,7 @@ export const expected: KintoneRecord[] = [
         ],
       },
     },
-    metadata: { csv: { lineFirst: 0, lineLast: 1 } },
+    metadata: { csv: { lineFirst: 1, lineLast: 2 } },
   },
   {
     data: {
@@ -275,6 +275,6 @@ export const expected: KintoneRecord[] = [
         ],
       },
     },
-    metadata: { csv: { lineFirst: 2, lineLast: 3 } },
+    metadata: { csv: { lineFirst: 3, lineLast: 4 } },
   },
 ];

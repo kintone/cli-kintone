@@ -8,8 +8,8 @@ import { PRIMARY_MARK } from "./constants";
 
 type RecordCsv = {
   rows: CsvRow[];
-  lineFirst: number;
-  lineLast: number;
+  firstRowIndex: number;
+  lastRowIndex: number;
 };
 
 export const convertRecord = (
@@ -26,7 +26,10 @@ export const convertRecord = (
   return {
     data: recordData,
     metadata: {
-      csv: { lineFirst: recordCsv.lineFirst, lineLast: recordCsv.lineLast },
+      csv: {
+        firstRowIndex: recordCsv.firstRowIndex,
+        lastRowIndex: recordCsv.lastRowIndex,
+      },
     },
   };
 };
@@ -43,10 +46,10 @@ export function* recordReader(
   const lineOffset = 1; // offset the header row
 
   if (!hasSubtable(rows[0])) {
-    yield* rows.map((row, index) => ({
+    yield* rows.map<RecordCsv>((row, index) => ({
       rows: [row],
-      lineFirst: index + lineOffset,
-      lineLast: index + lineOffset,
+      firstRowIndex: index + lineOffset,
+      lastRowIndex: index + lineOffset,
     }));
     return;
   }
@@ -68,8 +71,8 @@ export function* recordReader(
 
     yield {
       rows: rows.slice(first, last + 1),
-      lineFirst: first + lineOffset,
-      lineLast: last + lineOffset,
+      firstRowIndex: first + lineOffset,
+      lastRowIndex: last + lineOffset,
     };
 
     index = last + 1;

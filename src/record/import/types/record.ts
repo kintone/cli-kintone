@@ -4,8 +4,8 @@ export type KintoneRecord = {
   data: { [fieldCode: string]: OneOf };
   metadata: {
     csv?: {
-      lineFirst: number;
-      lineLast: number;
+      firstRowIndex: number;
+      lastRowIndex: number;
     };
   };
 };

@@ -34,7 +34,7 @@ describe("addRecords", () => {
     const RECORDS: KintoneRecord[] = [
       {
         data: { number: { value: "1" } },
-        metadata: { csv: { lineFirst: 0, lineLast: 0 } },
+        metadata: { csv: { firstRowIndex: 0, lastRowIndex: 0 } },
       },
     ];
     const SCHEMA: RecordSchema = {

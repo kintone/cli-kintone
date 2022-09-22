@@ -20,7 +20,7 @@ export class ParserError extends Error {
     let errorMessage = "";
     errorMessage += this.message + "\n";
     if (this.cause instanceof CsvError) {
-      errorMessage += `${this.cause.code}: ${this.cause.message}`;
+      errorMessage += `${this.cause.code}: ${this.cause.message}\n`;
     } else {
       errorMessage += this.cause + "\n";
     }

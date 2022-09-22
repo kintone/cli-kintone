@@ -10,7 +10,6 @@ export const printError = (error: unknown): void => {
     } else if (error instanceof UpsertRecordsError) {
       logger(error.toString());
     } else {
-      logger("Unexpected error");
       logger(error);
     }
   } else {

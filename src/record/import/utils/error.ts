@@ -16,19 +16,12 @@ export const kintoneAllRecordsErrorToString = (
     /(?<numOfSuccess>\d+)\/(?<numOfTotal>\d+) records are processed successfully/
   );
   const numOfSuccess = Number(totalMatch?.groups?.numOfSuccess) + offset;
-  const numOfTotal = Number(totalMatch?.groups?.numOfTotal) + offset;
 
   if (numOfSuccess === 0) {
     errorMessage += `No records are processed successfully.\n`;
   } else {
-    const lastSucceededRow = records.at(numOfSuccess - 1)?.metadata.csv
-      ?.lastRowIndex;
-
-    if (lastSucceededRow !== undefined) {
-      errorMessage += `Rows from 1 to ${lastSucceededRow} are processed successfully.\n`;
-    } else {
-      errorMessage += `${numOfSuccess}/${numOfTotal} records are processed successfully.\n`;
-    }
+    const lastSucceededRecord = records[numOfSuccess - 1];
+    errorMessage += `Rows from 1 to ${lastSucceededRecord.metadata.format.lastRowIndex} are processed successfully.\n`;
   }
 
   errorMessage += kintoneRestAPIErrorToString(
@@ -70,16 +63,13 @@ const kintoneRestAPIErrorToString = (
       const index =
         Number(indexMatch?.at(1)) + bulkRequestIndex * chunkSize + offset;
 
-      const csvInfo = records.at(index)?.metadata.csv;
-      if (csvInfo !== undefined) {
-        if (csvInfo.firstRowIndex === csvInfo.lastRowIndex) {
-          errorMessage += `  An error occurred at row ${csvInfo.lastRowIndex}.\n`;
-        } else {
-          errorMessage += `  An error occurred at rows from ${csvInfo.firstRowIndex} to ${csvInfo.lastRowIndex}.\n`;
-        }
+      const formatInfo = records[index].metadata.format;
+      if (formatInfo.firstRowIndex === formatInfo.lastRowIndex) {
+        errorMessage += `  An error occurred at row ${formatInfo.lastRowIndex}.\n`;
       } else {
-        errorMessage += `  An error occurred at records[${index}].\n`;
+        errorMessage += `  An error occurred at rows from ${formatInfo.firstRowIndex} to ${formatInfo.lastRowIndex}.\n`;
       }
+
       for (const message of value.messages) {
         errorMessage += `    Cause: ${message}\n`;
       }

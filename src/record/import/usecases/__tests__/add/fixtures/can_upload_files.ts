@@ -21,7 +21,7 @@ export const input: KintoneRecord[] = [
         ],
       },
     },
-    metadata: {},
+    metadata: { format: { type: "csv", firstRowIndex: 1, lastRowIndex: 1 } },
   },
 ];
 

@@ -26,7 +26,8 @@ export const convertRecord = (
   return {
     data: recordData,
     metadata: {
-      csv: {
+      format: {
+        type: "csv",
         firstRowIndex: recordCsv.firstRowIndex,
         lastRowIndex: recordCsv.lastRowIndex,
       },

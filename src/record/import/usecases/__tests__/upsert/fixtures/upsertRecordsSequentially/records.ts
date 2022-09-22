@@ -13,7 +13,7 @@ export const records: KintoneRecord[] = [
         value: "11",
       },
     },
-    metadata: {},
+    metadata: { format: { type: "csv", firstRowIndex: 1, lastRowIndex: 1 } },
   },
   {
     data: {
@@ -27,7 +27,7 @@ export const records: KintoneRecord[] = [
         value: "22",
       },
     },
-    metadata: {},
+    metadata: { format: { type: "csv", firstRowIndex: 2, lastRowIndex: 2 } },
   },
   {
     data: {
@@ -41,7 +41,7 @@ export const records: KintoneRecord[] = [
         value: "33",
       },
     },
-    metadata: {},
+    metadata: { format: { type: "csv", firstRowIndex: 3, lastRowIndex: 3 } },
   },
   {
     data: {
@@ -55,7 +55,7 @@ export const records: KintoneRecord[] = [
         value: "1",
       },
     },
-    metadata: {},
+    metadata: { format: { type: "csv", firstRowIndex: 4, lastRowIndex: 4 } },
   },
   {
     data: {
@@ -69,7 +69,7 @@ export const records: KintoneRecord[] = [
         value: "2",
       },
     },
-    metadata: {},
+    metadata: { format: { type: "csv", firstRowIndex: 5, lastRowIndex: 5 } },
   },
   {
     data: {
@@ -83,7 +83,7 @@ export const records: KintoneRecord[] = [
         value: "44",
       },
     },
-    metadata: {},
+    metadata: { format: { type: "csv", firstRowIndex: 6, lastRowIndex: 6 } },
   },
   {
     data: {
@@ -97,6 +97,6 @@ export const records: KintoneRecord[] = [
         value: "55",
       },
     },
-    metadata: {},
+    metadata: { format: { type: "csv", firstRowIndex: 7, lastRowIndex: 7 } },
   },
 ];

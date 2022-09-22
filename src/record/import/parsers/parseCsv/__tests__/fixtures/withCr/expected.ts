@@ -13,7 +13,7 @@ export const expected: KintoneRecord[] = [
         value: ['"sample3"', "sample4,sample5"],
       },
     },
-    metadata: { csv: { firstRowIndex: 1, lastRowIndex: 1 } },
+    metadata: { format: { type: "csv", firstRowIndex: 1, lastRowIndex: 1 } },
   },
   {
     data: {
@@ -27,6 +27,6 @@ export const expected: KintoneRecord[] = [
         value: ['"sample4"', "sample5,sample6"],
       },
     },
-    metadata: { csv: { firstRowIndex: 2, lastRowIndex: 2 } },
+    metadata: { format: { type: "csv", firstRowIndex: 2, lastRowIndex: 2 } },
   },
 ];

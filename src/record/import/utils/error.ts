@@ -47,8 +47,8 @@ const kintoneRestAPIErrorToString = (
       [k: string]: { messages: string[] };
     };
     const orderedErrors = Object.entries(errors).sort((error1, error2) => {
-      const index1 = error1[0].match(/records\[(\d+)\]/)?.at(1);
-      const index2 = error2[0].match(/records\[(\d+)\]/)?.at(1);
+      const index1 = error1[0].match(/records\[(?<index>\d+)\]/)?.groups?.index;
+      const index2 = error2[0].match(/records\[(?<index>\d+)\]/)?.groups?.index;
       if (index1 === undefined) {
         return 1;
       }
@@ -59,9 +59,11 @@ const kintoneRestAPIErrorToString = (
     });
     for (const [key, value] of orderedErrors) {
       const bulkRequestIndex = e.bulkRequestIndex ?? 0;
-      const indexMatch = key.match(/records\[(\d+)\]/);
+      const indexMatch = key.match(/records\[(?<index>\d+)\]/);
       const index =
-        Number(indexMatch?.at(1)) + bulkRequestIndex * chunkSize + offset;
+        Number(indexMatch?.groups?.index) +
+        bulkRequestIndex * chunkSize +
+        offset;
 
       const formatInfo = records[index].metadata.format;
       if (formatInfo.firstRowIndex === formatInfo.lastRowIndex) {

@@ -32,7 +32,7 @@ describe("UpsertRecordsError", () => {
       numOfAlreadyImportedRecords
     );
     expect(upsertRecordsError.toString()).toBe(
-      "Failed to upsert all records.\nRows from 1 to 40 are processed successfully.\nAn error occurred while uploading records.\n[500] [some code] some error message (some id)\n  An error occurred at row 45.\n    Cause: invalid value\n"
+      "Failed to upsert all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while uploading records.\n[500] [some code] some error message (some id)\n  An error occurred at row 46.\n    Cause: invalid value\n"
     );
   });
 });

@@ -66,9 +66,13 @@ const kintoneRestAPIErrorToString = (
 
       const formatInfo = records[index].metadata.format;
       if (formatInfo.firstRowIndex === formatInfo.lastRowIndex) {
-        errorMessage += `  An error occurred at row ${formatInfo.lastRowIndex}.\n`;
+        errorMessage += `  An error occurred at row ${
+          formatInfo.lastRowIndex + 1
+        }.\n`;
       } else {
-        errorMessage += `  An error occurred at rows from ${formatInfo.firstRowIndex} to ${formatInfo.lastRowIndex}.\n`;
+        errorMessage += `  An error occurred at rows from ${
+          formatInfo.firstRowIndex + 1
+        } to ${formatInfo.lastRowIndex}.\n`;
       }
 
       for (const message of value.messages) {

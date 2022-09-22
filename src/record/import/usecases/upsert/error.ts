@@ -45,7 +45,9 @@ export class UpsertRecordsError extends Error {
       errorMessage += `No records are processed successfully.\n`;
     } else {
       const lastSucceededRecord = this.records[this.numOfSuccess - 1];
-      errorMessage += `Rows from 1 to ${lastSucceededRecord.metadata.format.lastRowIndex} are processed successfully.\n`;
+      errorMessage += `Rows from 1 to ${
+        lastSucceededRecord.metadata.format.lastRowIndex + 1
+      } are processed successfully.\n`;
     }
 
     if (this.cause instanceof KintoneAllRecordsError) {

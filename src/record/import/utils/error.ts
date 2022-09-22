@@ -28,7 +28,7 @@ export const kintoneAllRecordsErrorToString = (
     e.error,
     chunkSize,
     records,
-    offset + numOfSuccess
+    numOfSuccess
   );
 
   return errorMessage;

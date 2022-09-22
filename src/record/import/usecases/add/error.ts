@@ -1,5 +1,8 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import { kintoneAllRecordsErrorToString } from "../../utils/error";
+import {
+  kintoneAllRecordsErrorToString,
+  parseKintoneAllRecordsError,
+} from "../../utils/error";
 import { KintoneRecord } from "../../types/record";
 
 // Magic number from @kintone/rest-api-client
@@ -10,7 +13,8 @@ export class AddRecordsError extends Error {
   private readonly cause: unknown;
   private readonly chunkSize: number = ADD_RECORDS_LIMIT;
   private readonly records: KintoneRecord[];
-  private readonly currentIndex: number;
+  private readonly numOfSuccess: number;
+  private readonly numOfTotal: number;
 
   constructor(cause: unknown, records: KintoneRecord[], currentIndex: number) {
     const message = "Failed to add all records.";
@@ -20,7 +24,13 @@ export class AddRecordsError extends Error {
     this.message = message;
     this.cause = cause;
     this.records = records;
-    this.currentIndex = currentIndex;
+
+    this.numOfSuccess = currentIndex;
+    this.numOfTotal = this.records.length;
+    if (this.cause instanceof KintoneAllRecordsError) {
+      const { numOfSuccess } = parseKintoneAllRecordsError(this.cause);
+      this.numOfSuccess += numOfSuccess;
+    }
 
     // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
     // Set the prototype explicitly.
@@ -30,12 +40,20 @@ export class AddRecordsError extends Error {
   toString(): string {
     let errorMessage = "";
     errorMessage += this.message + "\n";
+
+    if (this.numOfSuccess === 0) {
+      errorMessage += `No records are processed successfully.\n`;
+    } else {
+      const lastSucceededRecord = this.records[this.numOfSuccess - 1];
+      errorMessage += `Rows from 1 to ${lastSucceededRecord.metadata.format.lastRowIndex} are processed successfully.\n`;
+    }
+
     if (this.cause instanceof KintoneAllRecordsError) {
       errorMessage += kintoneAllRecordsErrorToString(
         this.cause,
         this.chunkSize,
         this.records,
-        this.currentIndex
+        this.numOfSuccess
       );
     } else if (this.cause instanceof AddRecordsError) {
       errorMessage += this.cause.toString();

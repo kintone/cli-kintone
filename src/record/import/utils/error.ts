@@ -4,25 +4,24 @@ import {
 } from "@kintone/rest-api-client";
 import { KintoneRecord } from "../types/record";
 
+export const parseKintoneAllRecordsError = (
+  e: KintoneAllRecordsError
+): { numOfSuccess: number; numOfTotal: number } => {
+  const totalMatch = e.message.match(
+    /(?<numOfSuccess>\d+)\/(?<numOfTotal>\d+) records are processed successfully/
+  );
+  const numOfSuccess = Number(totalMatch?.groups?.numOfSuccess);
+  const numOfTotal = Number(totalMatch?.groups?.numOfTotal);
+  return { numOfSuccess, numOfTotal };
+};
+
 export const kintoneAllRecordsErrorToString = (
   e: KintoneAllRecordsError,
   chunkSize: number,
   records: KintoneRecord[],
-  offset: number
+  numOfSuccess: number
 ): string => {
   let errorMessage = "An error occurred while uploading records.\n";
-
-  const totalMatch = e.message.match(
-    /(?<numOfSuccess>\d+)\/(?<numOfTotal>\d+) records are processed successfully/
-  );
-  const numOfSuccess = Number(totalMatch?.groups?.numOfSuccess) + offset;
-
-  if (numOfSuccess === 0) {
-    errorMessage += `No records are processed successfully.\n`;
-  } else {
-    const lastSucceededRecord = records[numOfSuccess - 1];
-    errorMessage += `Rows from 1 to ${lastSucceededRecord.metadata.format.lastRowIndex} are processed successfully.\n`;
-  }
 
   errorMessage += kintoneRestAPIErrorToString(
     e.error,

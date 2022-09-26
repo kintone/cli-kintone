@@ -4,6 +4,7 @@ import type { KintoneRecordForParameter } from "../../../kintone/types";
 import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor, recordReducer } from "./add/record";
+import { AddRecordsError } from "./add/error";
 
 export const addRecords: (
   apiClient: KintoneRestAPIClient,
@@ -21,18 +22,21 @@ export const addRecords: (
   schema,
   { attachmentsDir, skipMissingFields = true }
 ) => {
-  const kintoneRecords = await convertRecordsToApiRequestParameter(
-    apiClient,
-    app,
-    records,
-    schema,
-    {
-      attachmentsDir,
-      skipMissingFields,
-    }
-  );
-
-  await uploadToKintone(apiClient, app, kintoneRecords);
+  try {
+    const kintoneRecords = await convertRecordsToApiRequestParameter(
+      apiClient,
+      app,
+      records,
+      schema,
+      {
+        attachmentsDir,
+        skipMissingFields,
+      }
+    );
+    await uploadToKintone(apiClient, app, kintoneRecords);
+  } catch (e) {
+    throw new AddRecordsError(e, records, 0);
+  }
 };
 
 const convertRecordsToApiRequestParameter = async (
@@ -77,7 +81,7 @@ const uploadToKintone = async (
       });
       console.log(`SUCCESS: add records[${kintoneRecords.length}]`);
     } catch (e) {
-      console.log(`FAILED: add records[${kintoneRecords.length}]`);
+      console.error(`FAILED: add records[${kintoneRecords.length}]`);
       throw e;
     }
   }

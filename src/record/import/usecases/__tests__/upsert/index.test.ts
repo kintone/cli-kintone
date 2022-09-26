@@ -18,6 +18,7 @@ import { pattern as upsertWithMissingFieldFromRecord } from "./fixtures/upsertWi
 import { pattern as upsertWithMissingFieldInTableFromRecord } from "./fixtures/upsertWithMissingFieldInTableFromRecord";
 import { pattern as upsertByRecordNumberWithMixedRecordNumber } from "./fixtures/upsertByRecordNumberWithMixedRecordNumber";
 import { pattern as upsertByRecordNumberWithInvalidRecordNumber } from "./fixtures/upsertByRecordNumberWithInvalidRecordNumber";
+import { UpsertRecordsError } from "../../upsert/error";
 
 export type TestPattern = {
   description: string;
@@ -129,7 +130,13 @@ describe("upsertRecords", () => {
             input.updateKey,
             input.options
           )
-        ).rejects.toThrow(expected.failure.errorMessage);
+        ).rejects.toThrow(
+          new UpsertRecordsError(
+            expected.failure.errorMessage,
+            input.records,
+            0
+          )
+        );
       }
     }
   );

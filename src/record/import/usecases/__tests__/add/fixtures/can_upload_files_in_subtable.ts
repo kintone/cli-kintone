@@ -6,27 +6,30 @@ import path from "path";
 
 export const input: KintoneRecord[] = [
   {
-    singleLineText: {
-      value: "value1",
-    },
-    table: {
-      value: [
-        {
-          value: {
-            attachmentInSubtable: {
-              value: [
-                {
-                  localFilePath: path.join("attachment-1", "test.txt"),
-                },
-                {
-                  localFilePath: path.join("attachment-1", "test (1).txt"),
-                },
-              ],
+    data: {
+      singleLineText: {
+        value: "value1",
+      },
+      table: {
+        value: [
+          {
+            value: {
+              attachmentInSubtable: {
+                value: [
+                  {
+                    localFilePath: path.join("attachment-1", "test.txt"),
+                  },
+                  {
+                    localFilePath: path.join("attachment-1", "test (1).txt"),
+                  },
+                ],
+              },
             },
           },
-        },
-      ],
+        ],
+      },
     },
+    metadata: { format: { type: "csv", firstRowIndex: 1, lastRowIndex: 1 } },
   },
 ];
 

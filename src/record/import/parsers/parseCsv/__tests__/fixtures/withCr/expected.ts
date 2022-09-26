@@ -2,25 +2,31 @@ import type { KintoneRecord } from "../../../../../types/record";
 
 export const expected: KintoneRecord[] = [
   {
-    singleLineText: {
-      value: '"single line text"',
+    data: {
+      singleLineText: {
+        value: '"single line text"',
+      },
+      multiLineText: {
+        value: "multi\nline\ntext",
+      },
+      multiSelect: {
+        value: ['"sample3"', "sample4,sample5"],
+      },
     },
-    multiLineText: {
-      value: "multi\nline\ntext",
-    },
-    multiSelect: {
-      value: ['"sample3"', "sample4,sample5"],
-    },
+    metadata: { format: { type: "csv", firstRowIndex: 1, lastRowIndex: 1 } },
   },
   {
-    singleLineText: {
-      value: '"single line text"',
+    data: {
+      singleLineText: {
+        value: '"single line text"',
+      },
+      multiLineText: {
+        value: "multi\nline\ntext",
+      },
+      multiSelect: {
+        value: ['"sample4"', "sample5,sample6"],
+      },
     },
-    multiLineText: {
-      value: "multi\nline\ntext",
-    },
-    multiSelect: {
-      value: ['"sample4"', "sample5,sample6"],
-    },
+    metadata: { format: { type: "csv", firstRowIndex: 2, lastRowIndex: 2 } },
   },
 ];

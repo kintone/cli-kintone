@@ -6,20 +6,33 @@ import { convertField, fieldReader } from "./field";
 import { convertSubtableField, subtableFieldReader } from "./subtable";
 import { PRIMARY_MARK } from "./constants";
 
-type RecordCsv = CsvRow[];
+type RecordCsv = {
+  rows: CsvRow[];
+  firstRowIndex: number;
+  lastRowIndex: number;
+};
 
 export const convertRecord = (
   recordCsv: RecordCsv,
   schema: RecordSchema
 ): KintoneRecord => {
-  const record: KintoneRecord = {};
-  for (const field of fieldReader(recordCsv[0], schema)) {
-    record[field.code] = convertField(field);
+  const recordData: KintoneRecord["data"] = {};
+  for (const field of fieldReader(recordCsv.rows[0], schema)) {
+    recordData[field.code] = convertField(field);
   }
-  for (const subtableField of subtableFieldReader(recordCsv, schema)) {
-    record[subtableField.code] = convertSubtableField(subtableField);
+  for (const subtableField of subtableFieldReader(recordCsv.rows, schema)) {
+    recordData[subtableField.code] = convertSubtableField(subtableField);
   }
-  return record;
+  return {
+    data: recordData,
+    metadata: {
+      format: {
+        type: "csv",
+        firstRowIndex: recordCsv.firstRowIndex,
+        lastRowIndex: recordCsv.lastRowIndex,
+      },
+    },
+  };
 };
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
@@ -31,8 +44,14 @@ export function* recordReader(
     return;
   }
 
+  const lineOffset = 1; // offset the header row
+
   if (!hasSubtable(rows[0])) {
-    yield* rows.map((row) => [row]);
+    yield* rows.map<RecordCsv>((row, index) => ({
+      rows: [row],
+      firstRowIndex: index + lineOffset,
+      lastRowIndex: index + lineOffset,
+    }));
     return;
   }
 
@@ -51,7 +70,11 @@ export function* recordReader(
       last++;
     }
 
-    yield rows.slice(first, last + 1);
+    yield {
+      rows: rows.slice(first, last + 1),
+      firstRowIndex: first + lineOffset,
+      lastRowIndex: last + lineOffset,
+    };
 
     index = last + 1;
   }

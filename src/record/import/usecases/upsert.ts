@@ -7,88 +7,80 @@ import type {
 import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor, recordReducer } from "./add/record";
-import {
-  findUpdateKeyInSchema,
-  removeAppCode,
-  UpdateKey,
-  validateUpdateKeyInRecords,
-} from "./upsert/updateKey";
+import { UpdateKey } from "./upsert/updateKey";
+import { UpsertRecordsError } from "./upsert/error";
 
-export const upsertRecords: (
-  apiClient: KintoneRestAPIClient,
-  app: string,
-  records: KintoneRecord[],
-  schema: RecordSchema,
-  updateKey: string,
-  options: {
-    attachmentsDir?: string;
-    skipMissingFields?: boolean;
-  }
-) => Promise<void> = async (
-  apiClient,
-  app,
-  records,
-  schema,
-  updateKey,
-  { attachmentsDir, skipMissingFields = true }
-) => {
-  const kintoneRecords = await convertRecordsToApiRequestParameter(
-    apiClient,
-    app,
-    records,
-    schema,
-    updateKey,
-    {
-      attachmentsDir,
-      skipMissingFields,
-    }
-  );
-
-  await uploadToKintone(apiClient, app, kintoneRecords);
-};
-
-type RecordAsRequestParameter =
-  | {
-      type: "add";
-      record: KintoneRecordForParameter;
-    }
-  | {
-      type: "update";
-      record: KintoneRecordForUpdateParameter;
-    };
-
-const convertRecordsToApiRequestParameter = async (
+export const upsertRecords = async (
   apiClient: KintoneRestAPIClient,
   app: string,
   records: KintoneRecord[],
   schema: RecordSchema,
   updateKeyCode: string,
+  {
+    attachmentsDir,
+    skipMissingFields = true,
+  }: { attachmentsDir?: string; skipMissingFields?: boolean }
+): Promise<void> => {
+  let currentIndex = 0;
+  try {
+    const updateKey = await UpdateKey.build(
+      apiClient,
+      app,
+      updateKeyCode,
+      schema
+    );
+    updateKey.validateUpdateKeyInRecords(records);
+
+    for (const [recordsNext, index] of recordReader(records, updateKey)) {
+      currentIndex = index;
+      if (recordsNext.type === "update") {
+        const recordsToUpload = await convertToKintoneRecordForUpdate(
+          apiClient,
+          app,
+          recordsNext.records,
+          schema,
+          updateKey,
+          { attachmentsDir, skipMissingFields }
+        );
+        await apiClient.record.updateAllRecords({
+          app,
+          records: recordsToUpload,
+        });
+      } else {
+        const recordsToUpload = await convertToKintoneRecordForAdd(
+          apiClient,
+          app,
+          recordsNext.records,
+          schema,
+          updateKey,
+          { attachmentsDir, skipMissingFields }
+        );
+        await apiClient.record.addAllRecords({
+          app,
+          records: recordsToUpload,
+        });
+      }
+      console.log(`SUCCESS: import records[${recordsNext.records.length}]`);
+    }
+  } catch (e) {
+    throw new UpsertRecordsError(e, records, currentIndex);
+  }
+};
+
+const convertToKintoneRecordForUpdate = async (
+  apiClient: KintoneRestAPIClient,
+  app: string,
+  records: KintoneRecord[],
+  schema: RecordSchema,
+  updateKey: UpdateKey,
   options: {
     attachmentsDir?: string;
     skipMissingFields: boolean;
   }
-): Promise<RecordAsRequestParameter[]> => {
+): Promise<KintoneRecordForUpdateParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
 
-  const updateKey = findUpdateKeyInSchema(updateKeyCode, schema);
-  const appCode = (await apiClient.app.getApp({ id: app })).code;
-  validateUpdateKeyInRecords(updateKey, appCode, records);
-
-  const recordsOnKintone = await apiClient.record.getAllRecords({
-    app,
-    fields: [updateKey.code],
-  });
-  const existingUpdateKeyValues = new Set(
-    recordsOnKintone.map((record) => {
-      const updateKeyValue = record[updateKey.code].value as string;
-      if (updateKey.type === "RECORD_NUMBER") {
-        return removeAppCode(updateKeyValue, appCode);
-      }
-      return updateKeyValue;
-    })
-  );
-
-  const kintoneRecords: RecordAsRequestParameter[] = [];
+  const kintoneRecords: KintoneRecordForUpdateParameter[] = [];
   for (const record of records) {
     const kintoneRecord = await recordReducer(
       record,
@@ -101,113 +93,98 @@ const convertRecordsToApiRequestParameter = async (
         })
     );
 
-    const updateKeyValue = parseUpdateKeyValue(
-      record[updateKey.code].value as string,
-      updateKey,
-      appCode
+    const updateKeyField = updateKey.getUpdateKeyField();
+    const updateKeyValue = updateKey.findUpdateKeyValueFromRecord(record);
+
+    delete kintoneRecord[updateKeyField.code];
+    kintoneRecords.push(
+      updateKeyField.type === "RECORD_NUMBER"
+        ? {
+            id: updateKeyValue,
+            record: kintoneRecord,
+          }
+        : {
+            updateKey: { field: updateKeyField.code, value: updateKeyValue },
+            record: kintoneRecord,
+          }
     );
-    if (
-      updateKeyValue.length > 0 &&
-      existingUpdateKeyValues.has(updateKeyValue)
-    ) {
-      delete kintoneRecord[updateKey.code];
-      const recordForUpdate =
-        updateKey.type === "RECORD_NUMBER"
-          ? {
-              id: updateKeyValue,
-              record: kintoneRecord,
-            }
-          : {
-              updateKey: { field: updateKey.code, value: updateKeyValue },
-              record: kintoneRecord,
-            };
-      kintoneRecords.push({
-        type: "update",
-        record: recordForUpdate,
-      });
-    } else {
-      if (updateKey.type === "RECORD_NUMBER") {
-        delete kintoneRecord[updateKey.code];
-      }
-      kintoneRecords.push({
-        type: "add",
-        record: kintoneRecord,
-      });
-    }
   }
+
   return kintoneRecords;
 };
 
-const parseUpdateKeyValue = (
-  input: string,
-  updateKey: UpdateKey,
-  appCode: string
-) => {
-  if (input.length === 0) {
-    return input;
-  }
-  if (updateKey.type === "RECORD_NUMBER") {
-    return removeAppCode(input, appCode);
-  }
-  return input;
-};
-
-const uploadToKintone = async (
+const convertToKintoneRecordForAdd = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  kintoneRecords: RecordAsRequestParameter[]
-) => {
-  let recordsToUploadNext:
-    | {
-        type: "add";
-        records: KintoneRecordForParameter[];
-      }
-    | {
-        type: "update";
-        records: KintoneRecordForUpdateParameter[];
-      }
-    | undefined;
-
-  const upsert = async (
-    recordsToUpload:
-      | { type: "add"; records: KintoneRecordForParameter[] }
-      | { type: "update"; records: KintoneRecordForUpdateParameter[] }
-  ) => {
-    try {
-      if (recordsToUpload.type === "update") {
-        await apiClient.record.updateAllRecords({
-          app,
-          records: recordsToUpload.records,
-        });
-      } else {
-        await apiClient.record.addAllRecords({
-          app,
-          records: recordsToUpload.records,
-        });
-      }
-      console.log(`SUCCESS: import records[${recordsToUpload.records.length}]`);
-    } catch (e) {
-      console.log(`FAILED: import records[${recordsToUpload.records.length}]`);
-      throw e;
-    }
-  };
-
-  for (const record of kintoneRecords) {
-    if (recordsToUploadNext && record.type !== recordsToUploadNext.type) {
-      await upsert(recordsToUploadNext);
-      recordsToUploadNext = undefined;
-    }
-
-    if (recordsToUploadNext === undefined) {
-      recordsToUploadNext = {
-        type: record.type,
-        records: [record.record as any],
-      };
-    } else {
-      recordsToUploadNext.records.push(record.record as any);
-    }
+  records: KintoneRecord[],
+  schema: RecordSchema,
+  updateKey: UpdateKey,
+  options: {
+    attachmentsDir?: string;
+    skipMissingFields: boolean;
   }
-  if (recordsToUploadNext) {
-    await upsert(recordsToUploadNext);
+): Promise<KintoneRecordForParameter[]> => {
+  const { attachmentsDir, skipMissingFields } = options;
+  const updateKeyField = updateKey.getUpdateKeyField();
+
+  const kintoneRecords: KintoneRecordForParameter[] = [];
+  for (const record of records) {
+    const kintoneRecord = await recordReducer(
+      record,
+      schema,
+      skipMissingFields,
+      (field, fieldSchema) =>
+        fieldProcessor(apiClient, field, fieldSchema, {
+          attachmentsDir,
+          skipMissingFields,
+        })
+    );
+
+    if (updateKeyField.type === "RECORD_NUMBER") {
+      delete kintoneRecord[updateKeyField.code];
+    }
+
+    kintoneRecords.push(kintoneRecord);
   }
+
+  return kintoneRecords;
 };
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
+// eslint-disable-next-line func-style
+function* recordReader(
+  records: KintoneRecord[],
+  updateKey: UpdateKey
+): Generator<
+  [{ type: "add" | "update"; records: KintoneRecord[] }, number],
+  void,
+  undefined
+> {
+  if (records.length === 0) {
+    return;
+  }
+
+  let index = 0;
+  while (index < records.length) {
+    let last = index;
+    const isUpdateCurrent = updateKey.isUpdate(records[index]);
+
+    while (
+      last + 1 < records.length &&
+      updateKey.isUpdate(records[last + 1]) === isUpdateCurrent
+    ) {
+      last++;
+    }
+
+    yield [
+      {
+        type: isUpdateCurrent ? "update" : "add",
+        records: records.slice(index, last + 1),
+      },
+      index,
+    ];
+
+    index = last + 1;
+    last = index;
+  }
+}

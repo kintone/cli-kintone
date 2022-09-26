@@ -1,3 +1,6 @@
+import type { RecordSchema } from "../../../types/schema";
+import type { KintoneRecord } from "../../../types/record";
+
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { addRecords } from "../../add";
 
@@ -5,6 +8,7 @@ import path from "path";
 
 import * as canUploadFiles from "./fixtures/can_upload_files";
 import * as canUploadFilesInSubtable from "./fixtures/can_upload_files_in_subtable";
+import { AddRecordsError } from "../../add/error";
 
 describe("addRecords", () => {
   let apiClient: KintoneRestAPIClient;
@@ -27,8 +31,33 @@ describe("addRecords", () => {
     apiClient.record.addAllRecords = addAllRecordsMockFn;
     const ATTACHMENTS_DIR = "";
     const APP_ID = "1";
-    const RECORDS = [{}];
-    const SCHEMA = { fields: [] };
+    const RECORDS: KintoneRecord[] = [
+      {
+        data: { number: { value: "1" } },
+        metadata: {
+          format: { type: "csv", firstRowIndex: 0, lastRowIndex: 0 },
+        },
+      },
+    ];
+    const SCHEMA: RecordSchema = {
+      fields: [
+        {
+          type: "NUMBER",
+          code: "number",
+          label: "number",
+          noLabel: false,
+          required: true,
+          minValue: "",
+          maxValue: "",
+          digit: false,
+          unique: true,
+          defaultValue: "",
+          displayScale: "",
+          unit: "",
+          unitPosition: "BEFORE",
+        },
+      ],
+    };
 
     await addRecords(apiClient, APP_ID, RECORDS, SCHEMA, {
       attachmentsDir: ATTACHMENTS_DIR,
@@ -36,7 +65,7 @@ describe("addRecords", () => {
 
     expect(addAllRecordsMockFn.mock.calls[0][0]).toStrictEqual({
       app: APP_ID,
-      records: RECORDS,
+      records: [{ number: { value: "1" } }],
     });
   });
 
@@ -51,7 +80,13 @@ describe("addRecords", () => {
         canUploadFiles.schema,
         {}
       )
-    ).rejects.toThrow(new Error("--attachments-dir option is required."));
+    ).rejects.toThrow(
+      new AddRecordsError(
+        new Error("--attachments-dir option is required."),
+        canUploadFiles.input,
+        0
+      )
+    );
   });
 
   it("should upload files correctly when attachmentsDir is given", async () => {
@@ -77,7 +112,7 @@ describe("addRecords", () => {
     );
 
     // apiClient.file.uploadFile should be called with correct filePath
-    const fileInfos = canUploadFiles.input[0].attachment.value as Array<{
+    const fileInfos = canUploadFiles.input[0].data.attachment.value as Array<{
       localFilePath: string;
     }>;
     expect(uploadFileMockFn.mock.calls[0][0]).toStrictEqual({
@@ -121,7 +156,7 @@ describe("addRecords", () => {
     );
 
     // apiClient.file.uploadFile should be called with correct filePath
-    const fileInfos = canUploadFiles.input[0].attachment.value as Array<{
+    const fileInfos = canUploadFiles.input[0].data.attachment.value as Array<{
       localFilePath: string;
     }>;
     expect(uploadFileMockFn.mock.calls[0][0]).toStrictEqual({

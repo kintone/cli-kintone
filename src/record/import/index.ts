@@ -6,6 +6,7 @@ import { upsertRecords } from "./usecases/upsert";
 import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
+import { printError } from "./utils/log";
 
 export type Options = {
   app: string;
@@ -62,7 +63,7 @@ export const run: (
       });
     }
   } catch (e) {
-    console.log(e);
+    printError(e);
     // eslint-disable-next-line no-process-exit
     process.exit(1);
   }

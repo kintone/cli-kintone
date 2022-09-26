@@ -5,7 +5,7 @@ import { schema } from "./schema";
 import { expected } from "./expected";
 
 export const pattern: TestPattern = {
-  description: "should convert empty csv string to JSON correctly",
+  description: "should convert csv string with no record to JSON correctly",
   schema: schema,
   input: csv,
   expected: expected,

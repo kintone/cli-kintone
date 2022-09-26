@@ -18,6 +18,7 @@ bin
 **/.DS_Store
 *.tsbuildinfo
 attachments
+/*.csv
 
 # editor
 **/.vs

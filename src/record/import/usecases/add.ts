@@ -5,6 +5,7 @@ import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor, recordReducer } from "./add/record";
 import { AddRecordsError } from "./add/error";
+import { logger } from "../utils/log";
 
 export const addRecords: (
   apiClient: KintoneRestAPIClient,
@@ -79,9 +80,9 @@ const uploadToKintone = async (
         app,
         records: kintoneRecords,
       });
-      console.log(`SUCCESS: add records[${kintoneRecords.length}]`);
+      logger.info(`SUCCESS to add records[${kintoneRecords.length}]`);
     } catch (e) {
-      console.error(`FAILED: add records[${kintoneRecords.length}]`);
+      logger.error(`FAILED to add records[${kintoneRecords.length}]`);
       throw e;
     }
   }

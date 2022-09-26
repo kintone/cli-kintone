@@ -9,6 +9,7 @@ import type { RecordSchema } from "../types/schema";
 import { fieldProcessor, recordReducer } from "./add/record";
 import { UpdateKey } from "./upsert/updateKey";
 import { UpsertRecordsError } from "./upsert/error";
+import { logger } from "../utils/log";
 
 export const upsertRecords = async (
   apiClient: KintoneRestAPIClient,
@@ -60,7 +61,7 @@ export const upsertRecords = async (
           records: recordsToUpload,
         });
       }
-      console.log(`SUCCESS: import records[${recordsNext.records.length}]`);
+      logger.info(`SUCCESS to import records[${recordsNext.records.length}]`);
     }
   } catch (e) {
     throw new UpsertRecordsError(e, records, currentIndex);

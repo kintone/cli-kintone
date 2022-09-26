@@ -72,7 +72,7 @@ const kintoneRestAPIErrorToString = (
       } else {
         errorMessage += `  An error occurred at rows from ${
           formatInfo.firstRowIndex + 1
-        } to ${formatInfo.lastRowIndex}.\n`;
+        } to ${formatInfo.lastRowIndex + 1}.\n`;
       }
 
       for (const message of value.messages) {

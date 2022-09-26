@@ -44,14 +44,7 @@ export class AddRecordsError extends Error {
     if (this.numOfSuccess === 0) {
       errorMessage += `No records are processed successfully.\n`;
     } else {
-      const lastSucceededRecord = this.records.at(this.numOfSuccess - 1);
-      if (lastSucceededRecord === undefined) {
-        throw new Error(
-          `Missing records[${
-            this.numOfSuccess - 1
-          }] not found. This error is likely caused by a bug in cli-kintone. Please file an issue.`
-        );
-      }
+      const lastSucceededRecord = this.records[this.numOfSuccess - 1];
       errorMessage += `Rows from 1 to ${
         lastSucceededRecord.metadata.format.lastRowIndex + 1
       } are processed successfully.\n`;

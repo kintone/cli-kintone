@@ -10,16 +10,6 @@ export const parseKintoneAllRecordsError = (
   const totalMatch = e.message.match(
     /(?<numOfSuccess>\d+)\/(?<numOfTotal>\d+) records are processed successfully/
   );
-  if (totalMatch?.groups?.numOfSuccess === undefined) {
-    throw new Error(
-      "Missing numOfSuccess in error message of KintoneAllRecordsError. This error is likely caused by a bug in cli-kintone. Please file an issue."
-    );
-  }
-  if (totalMatch?.groups?.numOfTotal === undefined) {
-    throw new Error(
-      "Missing numOfTotal in error message of KintoneAllRecordsError. This error is likely caused by a bug in cli-kintone. Please file an issue."
-    );
-  }
   const numOfSuccess = Number(totalMatch?.groups?.numOfSuccess);
   const numOfTotal = Number(totalMatch?.groups?.numOfTotal);
   return { numOfSuccess, numOfTotal };
@@ -69,11 +59,6 @@ const kintoneRestAPIErrorToString = (
     for (const [key, value] of orderedErrors) {
       const bulkRequestIndex = e.bulkRequestIndex ?? 0;
       const indexMatch = key.match(/records\[(?<index>\d+)\]/);
-      if (indexMatch?.groups?.index === undefined) {
-        throw new Error(
-          "Missing record index in error message of KintoneRestAPIError. This error is likely caused by a bug in cli-kintone. Please file an issue."
-        );
-      }
       const index =
         Number(indexMatch?.groups?.index) +
         bulkRequestIndex * chunkSize +

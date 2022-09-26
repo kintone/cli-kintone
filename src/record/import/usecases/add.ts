@@ -27,10 +27,10 @@ export const addRecords: (
   { attachmentsDir, skipMissingFields = true }
 ) => {
   let currentIndex = 0;
+  const progressLogger = new ProgressLogger(records.length);
   try {
     logger.info("Upload all records to kintone");
-    const progressLogger = new ProgressLogger(records.length);
-    progressLogger.update(0);
+    progressLogger.start();
     for (const [recordsNext, index] of recordReader(records)) {
       currentIndex = index;
       const recordsToUpload = await convertRecordsToApiRequestParameter(
@@ -51,6 +51,7 @@ export const addRecords: (
     }
     progressLogger.done();
   } catch (e) {
+    progressLogger.abort(currentIndex);
     throw new AddRecordsError(e, records, currentIndex);
   }
 };

@@ -26,6 +26,7 @@ export const upsertRecords = async (
   }: { attachmentsDir?: string; skipMissingFields?: boolean }
 ): Promise<void> => {
   let currentIndex = 0;
+  const progressLogger = new ProgressLogger(records.length);
   try {
     logger.info("Download all existing records from kintone");
     const updateKey = await UpdateKey.build(
@@ -37,8 +38,7 @@ export const upsertRecords = async (
     updateKey.validateUpdateKeyInRecords(records);
 
     logger.info("Upload all records to kintone");
-    const progressLogger = new ProgressLogger(records.length);
-    progressLogger.update(0);
+    progressLogger.start();
     for (const [recordsNext, index] of recordReader(records, updateKey)) {
       currentIndex = index;
       if (recordsNext.type === "update") {
@@ -70,7 +70,9 @@ export const upsertRecords = async (
       }
       progressLogger.update(index + recordsNext.records.length);
     }
+    progressLogger.done();
   } catch (e) {
+    progressLogger.abort(currentIndex);
     throw new UpsertRecordsError(e, records, currentIndex);
   }
 };

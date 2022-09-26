@@ -6,6 +6,9 @@ import type { RecordSchema } from "../types/schema";
 import { fieldProcessor, recordReducer } from "./add/record";
 import { AddRecordsError } from "./add/error";
 import { logger } from "../utils/log";
+import { ProgressLogger } from "./add/progress";
+
+const CHUNK_SIZE = 2000;
 
 export const addRecords: (
   apiClient: KintoneRestAPIClient,
@@ -23,20 +26,32 @@ export const addRecords: (
   schema,
   { attachmentsDir, skipMissingFields = true }
 ) => {
+  let currentIndex = 0;
   try {
-    const kintoneRecords = await convertRecordsToApiRequestParameter(
-      apiClient,
-      app,
-      records,
-      schema,
-      {
-        attachmentsDir,
-        skipMissingFields,
-      }
-    );
-    await uploadToKintone(apiClient, app, kintoneRecords);
+    logger.info("Upload all records to kintone");
+    const progressLogger = new ProgressLogger(records.length);
+    progressLogger.update(0);
+    for (const [recordsNext, index] of recordReader(records)) {
+      currentIndex = index;
+      const recordsToUpload = await convertRecordsToApiRequestParameter(
+        apiClient,
+        app,
+        recordsNext,
+        schema,
+        {
+          attachmentsDir,
+          skipMissingFields,
+        }
+      );
+      await apiClient.record.addAllRecords({
+        app,
+        records: recordsToUpload,
+      });
+      progressLogger.update(index + recordsNext.length);
+    }
+    progressLogger.done();
   } catch (e) {
-    throw new AddRecordsError(e, records, 0);
+    throw new AddRecordsError(e, records, currentIndex);
   }
 };
 
@@ -69,21 +84,21 @@ const convertRecordsToApiRequestParameter = async (
   return kintoneRecords;
 };
 
-const uploadToKintone = async (
-  apiClient: KintoneRestAPIClient,
-  app: string,
-  kintoneRecords: KintoneRecordForParameter[]
-) => {
-  if (kintoneRecords.length > 0) {
-    try {
-      await apiClient.record.addAllRecords({
-        app,
-        records: kintoneRecords,
-      });
-      logger.info(`SUCCESS to add records[${kintoneRecords.length}]`);
-    } catch (e) {
-      logger.error(`FAILED to add records[${kintoneRecords.length}]`);
-      throw e;
-    }
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
+// eslint-disable-next-line func-style
+function* recordReader(
+  records: KintoneRecord[]
+): Generator<[KintoneRecord[], number], void, undefined> {
+  if (records.length === 0) {
+    return;
   }
-};
+
+  let index = 0;
+  while (index < records.length) {
+    const last = Math.min(index + CHUNK_SIZE - 1, records.length - 1);
+
+    yield [records.slice(index, last + 1), index];
+
+    index = last + 1;
+  }
+}

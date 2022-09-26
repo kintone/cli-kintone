@@ -17,8 +17,12 @@ export class ProgressLogger {
       this.nextInterval += this.interval;
     }
   }
+
+  done() {
+    printProgress(this.length, this.length);
+  }
 }
 
 const printProgress = (current: number, length: number): void => {
-  logger.info(`Success to import ${current}/${length} records`);
+  logger.info(`Succeeded to import ${current}/${length} records`);
 };

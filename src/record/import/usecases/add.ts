@@ -29,7 +29,7 @@ export const addRecords: (
   let currentIndex = 0;
   const progressLogger = new ProgressLogger(records.length);
   try {
-    logger.info("Upload all records to kintone");
+    logger.info("Starting to import records...");
     progressLogger.start();
     for (const [recordsNext, index] of recordReader(records)) {
       currentIndex = index;

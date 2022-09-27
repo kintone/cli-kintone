@@ -25,18 +25,16 @@ export class ProgressLogger {
   }
 
   abort(succeededCount: number) {
-    if (succeededCount > 0 && succeededCount !== this.last) {
-      printProgress(succeededCount, this.length);
-    }
+    logger.info(
+      `Imported ${succeededCount} of ${this.length} records successfully`
+    );
   }
 
   done() {
-    if (this.last !== this.length) {
-      printProgress(this.length, this.length);
-    }
+    logger.info(`Imported ${this.length} records successfully`);
   }
 }
 
 const printProgress = (current: number, length: number): void => {
-  logger.info(`Succeeded to import ${current}/${length} records`);
+  logger.info(`Imported ${current} of ${length} records`);
 };

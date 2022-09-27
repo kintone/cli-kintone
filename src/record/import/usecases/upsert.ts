@@ -28,7 +28,7 @@ export const upsertRecords = async (
   let currentIndex = 0;
   const progressLogger = new ProgressLogger(records.length);
   try {
-    logger.info("Download all existing records from kintone");
+    logger.info("Preparing to import records...");
     const updateKey = await UpdateKey.build(
       apiClient,
       app,
@@ -37,7 +37,7 @@ export const upsertRecords = async (
     );
     updateKey.validateUpdateKeyInRecords(records);
 
-    logger.info("Upload all records to kintone");
+    logger.info("Starting to import records...");
     progressLogger.start();
     for (const [recordsNext, index] of recordReader(records, updateKey)) {
       currentIndex = index;

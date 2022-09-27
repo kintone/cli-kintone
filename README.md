@@ -18,7 +18,13 @@ A kintone record importer and exporter.
 
 ## Installation
 
-// TODO: Write installation guide
+1. Jump to the [Releases](https://github.com/kintone/cli-kintone/releases
+) page.
+2. Download a ZIP file for your platform from "Assets".
+   - Windows: `cli-kintone-win.zip`
+   - Linux: `cli-kintone-linux.zip`
+   - macOS: `cli-kintone-macos.zip`
+3. Extract executables from the ZIP file and run it.
 
 ## Usage
 

@@ -18,8 +18,7 @@ A kintone record importer and exporter.
 
 ## Installation
 
-1. Jump to the [Releases](https://github.com/kintone/cli-kintone/releases
-) page.
+1. Jump to the [Releases](https://github.com/kintone/cli-kintone/releases) page.
 2. Download a ZIP file for your platform from "Assets".
    - Windows: `cli-kintone-win.zip`
    - Linux: `cli-kintone-linux.zip`
@@ -148,6 +147,14 @@ Options:
       --proxy                The URL of a proxy server
                                                  [string] [default: HTTPS_PROXY]
 ```
+
+#### `--condition` and `--order-by` options
+
+You can filter and reorder records with `--condition` and `--order-by` options.
+
+These options are passed to `getAllRecords()` of [@kintone/rest-api-client](https://github.com/kintone/js-sdk/tree/master/packages/rest-api-client#readme).
+
+Refer to the [`getAllRecords()`](https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/docs/record.md#getallrecords) document for more information.
 
 #### Download attachment files
 

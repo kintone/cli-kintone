@@ -4,8 +4,6 @@
 
 A kintone record importer and exporter.
 
-**THIS IS EXPERIMENTAL, AND THESE FEATURES ARE NOT SUPPORTED YET.**
-
 ---
 
 - [Installation](#installation)

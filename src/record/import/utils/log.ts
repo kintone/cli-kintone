@@ -8,7 +8,7 @@ const currentISOString = () => new Date().toISOString();
 export const logger = {
   info: (message: any) => {
     const prefix = `[${currentISOString()}] ${chalk.blue("INFO")}:`;
-    console.log(addPrefixEachLine(message, prefix));
+    console.error(addPrefixEachLine(message, prefix));
   },
 
   warn: (message: any) => {
@@ -25,7 +25,7 @@ export const logger = {
   debug: (message: any) => {
     return; // TODO: Decide how enable debug log
     const prefix = `[${currentISOString()}] ${chalk.yellow("DEBUG")}:`;
-    console.log(addPrefixEachLine(message, prefix));
+    console.error(addPrefixEachLine(message, prefix));
   },
 };
 

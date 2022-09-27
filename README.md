@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A kintone record importer and exporter.
+A CLI tool to import/export records to/from [kintone](https://www.kintone.com/).
 
 ---
 
@@ -29,7 +29,7 @@ A kintone record importer and exporter.
 
 ### import
 
-`import` command allows you to import record data into a specified kintone app.
+The `import` command allows you to import record data into a specified kintone app.
 
 ```
 $ cli-kintone record import \
@@ -102,7 +102,7 @@ NOTE: When the field specified as "Key to Bulk Update" is Record Number, the val
 
 ### export
 
-`export` command allows you to export record data from a specified kintone app.
+The `export` command allows you to export record data from a specified kintone app.
 
 ```
 $ cli-kintone record export \

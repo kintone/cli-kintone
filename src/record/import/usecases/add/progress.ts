@@ -8,7 +8,7 @@ export class ProgressLogger {
   private next: number;
   private last: number = -1;
 
-  constructor(logger: Logger, length: number, interval: number = 1000) {
+  constructor(logger: Logger, length: number, interval: number = 2000) {
     this.logger = logger;
     this.length = length;
     this.interval = interval;

@@ -9,6 +9,10 @@ import type { RecordSchema } from "../types/schema";
 import { fieldProcessor, recordReducer } from "./add/record";
 import { UpdateKey } from "./upsert/updateKey";
 import { UpsertRecordsError } from "./upsert/error";
+import { logger } from "../utils/log";
+import { ProgressLogger } from "./add/progress";
+
+const CHUNK_SIZE = 2000;
 
 export const upsertRecords = async (
   apiClient: KintoneRestAPIClient,
@@ -22,7 +26,9 @@ export const upsertRecords = async (
   }: { attachmentsDir?: string; skipMissingFields?: boolean }
 ): Promise<void> => {
   let currentIndex = 0;
+  const progressLogger = new ProgressLogger(logger, records.length);
   try {
+    logger.info("Preparing to import records...");
     const updateKey = await UpdateKey.build(
       apiClient,
       app,
@@ -31,6 +37,7 @@ export const upsertRecords = async (
     );
     updateKey.validateUpdateKeyInRecords(records);
 
+    logger.info("Starting to import records...");
     for (const [recordsNext, index] of recordReader(records, updateKey)) {
       currentIndex = index;
       if (recordsNext.type === "update") {
@@ -60,9 +67,11 @@ export const upsertRecords = async (
           records: recordsToUpload,
         });
       }
-      console.log(`SUCCESS: import records[${recordsNext.records.length}]`);
+      progressLogger.update(index + recordsNext.records.length);
     }
+    progressLogger.done();
   } catch (e) {
+    progressLogger.abort(currentIndex);
     throw new UpsertRecordsError(e, records, currentIndex);
   }
 };
@@ -171,6 +180,7 @@ function* recordReader(
 
     while (
       last + 1 < records.length &&
+      last - index < CHUNK_SIZE - 1 &&
       updateKey.isUpdate(records[last + 1]) === isUpdateCurrent
     ) {
       last++;

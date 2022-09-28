@@ -6,7 +6,7 @@ import { upsertRecords } from "./usecases/upsert";
 import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
-import { printError } from "./utils/log";
+import { logger } from "./utils/log";
 
 export type Options = {
   app: string;
@@ -47,7 +47,7 @@ export const run: (
       schema,
     });
     if (records.length === 0) {
-      console.log("The input file does not have any records");
+      logger.warn("The input file does not have any records");
       return;
     }
     const skipMissingFields = !fields;
@@ -63,7 +63,7 @@ export const run: (
       });
     }
   } catch (e) {
-    printError(e);
+    logger.error(e);
     // eslint-disable-next-line no-process-exit
     process.exit(1);
   }

@@ -26,7 +26,7 @@ export const upsertRecords = async (
   }: { attachmentsDir?: string; skipMissingFields?: boolean }
 ): Promise<void> => {
   let currentIndex = 0;
-  const progressLogger = new ProgressLogger(records.length);
+  const progressLogger = new ProgressLogger(logger, records.length);
   try {
     logger.info("Preparing to import records...");
     const updateKey = await UpdateKey.build(

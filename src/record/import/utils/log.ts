@@ -5,7 +5,14 @@ import chalk from "chalk";
 
 const currentISOString = () => new Date().toISOString();
 
-export const logger = {
+export type Logger = {
+  info: (message: any) => void;
+  warn: (message: any) => void;
+  error: (message: any) => void;
+  debug: (message: any) => void;
+};
+
+export const logger: Logger = {
   info: (message: any) => {
     const prefix = `[${currentISOString()}] ${chalk.blue("INFO")}:`;
     console.error(addPrefixEachLine(message, prefix));

@@ -1,85 +1,75 @@
-import { ProgressLogger } from "../../add/progress";
-import chalk from "chalk";
+import type { Logger } from "../../../utils/log";
 
-const info = chalk.blue("INFO");
+import { ProgressLogger } from "../../add/progress";
+
+const mockLogger: Logger = {
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn(),
+  debug: jest.fn(),
+};
 
 describe("ProgressLogger", () => {
-  const date = new Date(1664258017505);
-  const dateMock = jest
-    .spyOn(global, "Date")
-    .mockImplementation(() => date as unknown as string);
-
-  afterAll(() => {
-    dateMock.mockRestore();
-  });
-
   it("should show progress logs correctly", () => {
-    const consoleErrorMock = jest.spyOn(console, "error").mockImplementation();
-    const progressLogger = new ProgressLogger(5000);
-    expect(consoleErrorMock).not.toHaveBeenCalled();
+    const progressLogger = new ProgressLogger(mockLogger, 5000);
+    expect(mockLogger.info).not.toHaveBeenCalled();
 
     progressLogger.update(100);
-    expect(consoleErrorMock).not.toHaveBeenCalled();
+    expect(mockLogger.info).not.toHaveBeenCalled();
 
     progressLogger.update(2000);
-    expect(consoleErrorMock).toHaveBeenCalledTimes(2);
-    expect(consoleErrorMock).toHaveBeenNthCalledWith(
+    expect(mockLogger.info).toHaveBeenCalledTimes(2);
+    expect(mockLogger.info).toHaveBeenNthCalledWith(
       1,
-      `[${date.toISOString()}] ${info}: Imported 1000 of 5000 records`
+      "Imported 1000 of 5000 records"
     );
-    expect(consoleErrorMock).toHaveBeenNthCalledWith(
+    expect(mockLogger.info).toHaveBeenNthCalledWith(
       2,
-      `[${date.toISOString()}] ${info}: Imported 2000 of 5000 records`
+      "Imported 2000 of 5000 records"
     );
 
     progressLogger.update(4100);
-    expect(consoleErrorMock).toHaveBeenCalledTimes(4);
-    expect(consoleErrorMock).toHaveBeenNthCalledWith(
+    expect(mockLogger.info).toHaveBeenCalledTimes(4);
+    expect(mockLogger.info).toHaveBeenNthCalledWith(
       3,
-      `[${date.toISOString()}] ${info}: Imported 3000 of 5000 records`
+      "Imported 3000 of 5000 records"
     );
-    expect(consoleErrorMock).toHaveBeenNthCalledWith(
+    expect(mockLogger.info).toHaveBeenNthCalledWith(
       4,
-      `[${date.toISOString()}] ${info}: Imported 4000 of 5000 records`
+      "Imported 4000 of 5000 records"
     );
 
     progressLogger.done();
-    expect(consoleErrorMock).toHaveBeenCalledTimes(5);
-    expect(consoleErrorMock).toHaveBeenNthCalledWith(
+    expect(mockLogger.info).toHaveBeenCalledTimes(5);
+    expect(mockLogger.info).toHaveBeenNthCalledWith(
       5,
-      `[${date.toISOString()}] ${info}: Imported 5000 records successfully`
+      "Imported 5000 records successfully"
     );
-
-    consoleErrorMock.mockRestore();
   });
 
   it("should show progress logs correctly with aborting", () => {
-    const consoleErrorMock = jest.spyOn(console, "error").mockImplementation();
-
-    const progressLogger = new ProgressLogger(3000);
-    expect(consoleErrorMock).not.toHaveBeenCalled();
+    const progressLogger = new ProgressLogger(mockLogger, 3000);
+    expect(mockLogger.info).not.toHaveBeenCalled();
 
     progressLogger.update(100);
-    expect(consoleErrorMock).not.toHaveBeenCalled();
+    expect(mockLogger.info).not.toHaveBeenCalled();
 
     progressLogger.update(2100);
-    expect(consoleErrorMock).toHaveBeenCalledTimes(2);
-    expect(consoleErrorMock).toHaveBeenNthCalledWith(
+    expect(mockLogger.info).toHaveBeenCalledTimes(2);
+    expect(mockLogger.info).toHaveBeenNthCalledWith(
       1,
-      `[${date.toISOString()}] ${info}: Imported 1000 of 3000 records`
+      "Imported 1000 of 3000 records"
     );
-    expect(consoleErrorMock).toHaveBeenNthCalledWith(
+    expect(mockLogger.info).toHaveBeenNthCalledWith(
       2,
-      `[${date.toISOString()}] ${info}: Imported 2000 of 3000 records`
+      "Imported 2000 of 3000 records"
     );
 
     progressLogger.abort(2500);
-    expect(consoleErrorMock).toHaveBeenCalledTimes(3);
-    expect(consoleErrorMock).toHaveBeenNthCalledWith(
+    expect(mockLogger.info).toHaveBeenCalledTimes(3);
+    expect(mockLogger.info).toHaveBeenNthCalledWith(
       3,
-      `[${date.toISOString()}] ${info}: Imported 2500 of 3000 records successfully`
+      "Imported 2500 of 3000 records successfully"
     );
-
-    consoleErrorMock.mockRestore();
   });
 });

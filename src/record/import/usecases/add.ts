@@ -27,7 +27,7 @@ export const addRecords: (
   { attachmentsDir, skipMissingFields = true }
 ) => {
   let currentIndex = 0;
-  const progressLogger = new ProgressLogger(records.length);
+  const progressLogger = new ProgressLogger(logger, records.length);
   try {
     logger.info("Starting to import records...");
     progressLogger.start();

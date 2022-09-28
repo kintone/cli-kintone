@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.21.0](https://github.com/kintone/cli-kintone/compare/v0.20.0...v0.21.0) (2022-09-28)
+
+
+### Features
+
+* show progress log while importing ([#90](https://github.com/kintone/cli-kintone/issues/90)) ([f67ab14](https://github.com/kintone/cli-kintone/commit/f67ab14dff41d13d94e0bf7bb74c74824d083917))
+
 ## [0.20.0](https://github.com/kintone/cli-kintone/compare/v0.19.0...v0.20.0) (2022-09-26)
 
 

@@ -15,10 +15,6 @@ export class ProgressLogger {
     this.next = this.interval;
   }
 
-  start() {
-    printProgress(this.logger, 0, this.length);
-  }
-
   update(succeededCount: number) {
     while (succeededCount >= this.next) {
       printProgress(this.logger, this.next, this.length);

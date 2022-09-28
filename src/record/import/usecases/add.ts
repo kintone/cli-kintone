@@ -30,7 +30,6 @@ export const addRecords: (
   const progressLogger = new ProgressLogger(logger, records.length);
   try {
     logger.info("Starting to import records...");
-    progressLogger.start();
     for (const [recordsNext, index] of recordReader(records)) {
       currentIndex = index;
       const recordsToUpload = await convertRecordsToApiRequestParameter(

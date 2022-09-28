@@ -38,7 +38,6 @@ export const upsertRecords = async (
     updateKey.validateUpdateKeyInRecords(records);
 
     logger.info("Starting to import records...");
-    progressLogger.start();
     for (const [recordsNext, index] of recordReader(records, updateKey)) {
       currentIndex = index;
       if (recordsNext.type === "update") {

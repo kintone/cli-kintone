@@ -34,8 +34,7 @@ The `import` command allows you to import record data into a specified kintone a
 ```
 $ cli-kintone record import \
 --base-url https://${yourDomain} \
---username ${yourLoginName} \
---password ${yourPassword} \
+--api-token ${apiToken} \
 --app ${kintoneAppId} \
 --file-path ${filepath}
 ```
@@ -107,8 +106,7 @@ The `export` command allows you to export record data from a specified kintone a
 ```
 $ cli-kintone record export \
 --base-url https://${yourDomain} \
---username ${yourLoginName} \
---password ${yourPassword} \
+--api-token ${apiToken} \
 --app ${kintoneAppId} \
 > ${filepath}
 ```

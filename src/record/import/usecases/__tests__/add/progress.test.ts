@@ -1,4 +1,4 @@
-import type { Logger } from "../../../utils/log";
+import type { Logger } from "../../../../../utils/log";
 
 import { ProgressLogger } from "../../add/progress";
 

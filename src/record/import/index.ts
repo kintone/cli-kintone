@@ -6,7 +6,7 @@ import { upsertRecords } from "./usecases/upsert";
 import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
-import { logger } from "./utils/log";
+import { logger } from "../../utils/log";
 
 export type Options = {
   app: string;
@@ -20,19 +20,19 @@ export type Options = {
 export const run: (
   argv: RestAPIClientOptions & Options
 ) => Promise<void> = async (argv) => {
-  const {
-    app,
-    filePath,
-    encoding,
-    attachmentsDir,
-    updateKey,
-    fields,
-    ...restApiClientOptions
-  } = argv;
-
-  const apiClient = buildRestAPIClient(restApiClientOptions);
-
   try {
+    const {
+      app,
+      filePath,
+      encoding,
+      attachmentsDir,
+      updateKey,
+      fields,
+      ...restApiClientOptions
+    } = argv;
+
+    const apiClient = buildRestAPIClient(restApiClientOptions);
+
     const fieldsJson = await apiClient.app.getFormFields({ app });
     const schema = createSchema(
       fieldsJson,

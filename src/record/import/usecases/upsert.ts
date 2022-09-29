@@ -9,7 +9,7 @@ import type { RecordSchema } from "../types/schema";
 import { fieldProcessor, recordReducer } from "./add/record";
 import { UpdateKey } from "./upsert/updateKey";
 import { UpsertRecordsError } from "./upsert/error";
-import { logger } from "../utils/log";
+import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
 
 const CHUNK_SIZE = 2000;

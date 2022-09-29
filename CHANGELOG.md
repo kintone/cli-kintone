@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.21.1](https://github.com/kintone/cli-kintone/compare/v0.21.0...v0.21.1) (2022-09-29)
+
+
+### Bug Fixes
+
+* show help message when incorrect argv ([#97](https://github.com/kintone/cli-kintone/issues/97)) ([031713c](https://github.com/kintone/cli-kintone/commit/031713c56674dd3623cc8d1e41e441416339dbad))
+
 ## [0.21.0](https://github.com/kintone/cli-kintone/compare/v0.20.0...v0.21.0) (2022-09-28)
 
 

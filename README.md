@@ -2,9 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A kintone record importer and exporter.
-
-**THIS IS EXPERIMENTAL, AND THESE FEATURES ARE NOT SUPPORTED YET.**
+A CLI tool to import/export records to/from [kintone](https://www.kintone.com/).
 
 ---
 
@@ -20,19 +18,23 @@ A kintone record importer and exporter.
 
 ## Installation
 
-// TODO: Write installation guide
+1. Jump to the [Releases](https://github.com/kintone/cli-kintone/releases) page.
+2. Download a ZIP file for your platform from "Assets".
+   - Windows: `cli-kintone-win.zip`
+   - Linux: `cli-kintone-linux.zip`
+   - macOS: `cli-kintone-macos.zip`
+3. Extract executables from the ZIP file and run it.
 
 ## Usage
 
 ### import
 
-`import` command allows you to import record data into a specified kintone app.
+The `import` command allows you to import record data into a specified kintone app.
 
 ```
 $ cli-kintone record import \
 --base-url https://${yourDomain} \
---username ${yourLoginName} \
---password ${yourPassword} \
+--api-token ${apiToken} \
 --app ${kintoneAppId} \
 --file-path ${filepath}
 ```
@@ -99,13 +101,12 @@ NOTE: When the field specified as "Key to Bulk Update" is Record Number, the val
 
 ### export
 
-`export` command allows you to export record data from a specified kintone app.
+The `export` command allows you to export record data from a specified kintone app.
 
 ```
 $ cli-kintone record export \
 --base-url https://${yourDomain} \
---username ${yourLoginName} \
---password ${yourPassword} \
+--api-token ${apiToken} \
 --app ${kintoneAppId} \
 > ${filepath}
 ```
@@ -144,6 +145,14 @@ Options:
       --proxy                The URL of a proxy server
                                                  [string] [default: HTTPS_PROXY]
 ```
+
+#### `--condition` and `--order-by` options
+
+You can filter and reorder records with `--condition` and `--order-by` options.
+
+These options are passed to `getAllRecords()` of [@kintone/rest-api-client](https://github.com/kintone/js-sdk/tree/master/packages/rest-api-client#readme).
+
+Refer to the [`getAllRecords()`](https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/docs/record.md#getallrecords) document for more information.
 
 #### Download attachment files
 

@@ -46,34 +46,15 @@ jobs:
           node-version: 16.x
           cache: yarn
       - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: |
-          licensed cache
-          licensed notices
-      - name: Archive executables to zip
-        working-directory: /tmp
-        run: |
-          mkdir -p /tmp/cli-kintone-{linux,macos,win}
-          cp ${GITHUB_WORKSPACE}/bin/cli-kintone-linux cli-kintone-linux/cli-kintone
-          cp ${GITHUB_WORKSPACE}/bin/cli-kintone-macos cli-kintone-macos/cli-kintone
-          cp ${GITHUB_WORKSPACE}/bin/cli-kintone-win.exe cli-kintone-win/cli-kintone.exe
-          cp ${GITHUB_WORKSPACE}/LICENSE cli-kintone-linux/LICENSE
-          cp ${GITHUB_WORKSPACE}/LICENSE cli-kintone-macos/LICENSE
-          cp ${GITHUB_WORKSPACE}/LICENSE cli-kintone-win/LICENSE
-          cp ${GITHUB_WORKSPACE}/.licenses/NOTICE cli-kintone-linux/NOTICE
-          cp ${GITHUB_WORKSPACE}/.licenses/NOTICE cli-kintone-macos/NOTICE
-          cp ${GITHUB_WORKSPACE}/.licenses/NOTICE cli-kintone-win/NOTICE
-          zip -r cli-kintone-linux.zip cli-kintone-linux
-          zip -r cli-kintone-macos.zip cli-kintone-macos
-          zip -r cli-kintone-win.zip cli-kintone-win
+      - run: yarn build:artifacts
       - name: Upload executables
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release upload ${{ needs.release.outputs.tag_name }} \
-            /tmp/cli-kintone-linux.zip \
-            /tmp/cli-kintone-macos.zip \
-            /tmp/cli-kintone-win.zip
+            ${GITHUB_WORKSPACE}/artifacts/cli-kintone-linux.zip \
+            ${GITHUB_WORKSPACE}/artifacts/cli-kintone-macos.zip \
+            ${GITHUB_WORKSPACE}/artifacts/cli-kintone-win.zip
 
   publish:
     name: Publish release

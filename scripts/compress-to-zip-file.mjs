@@ -1,27 +1,30 @@
-#!/usr/bin/env zx
+import { $, cd } from "zx";
+
 import fs from "fs/promises";
 import path from "path";
 import os from "os";
-import rimraf from "rimraf"
+import rimraf from "rimraf";
 import { promisify } from "util";
+import { fileURLToPath } from "url";
 
-const projectRoot = path.join(__dirname, "../");
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.join(dirname, "../");
 
-cd(projectRoot)
+cd(projectRoot);
 
 const licenseFile = path.join(projectRoot, "LICENSE");
 const thirdPartyNoticeFile = path.join(projectRoot, ".licenses", "NOTICE");
 
-try{
+try {
   await $`test -e ${licenseFile}`;
-}catch (e) {
+} catch (e) {
   console.log("LICENSE file is missing");
   console.log(licenseFile);
 }
 
-try{
+try {
   await $`test -e ${thirdPartyNoticeFile}`;
-}catch (e) {
+} catch (e) {
   console.log("NOTICE file is missing");
   console.log(thirdPartyNoticeFile);
 }
@@ -30,18 +33,18 @@ const recipes = [
   {
     type: "linux",
     input: "cli-kintone-linux",
-    output: "cli-kintone"
+    output: "cli-kintone",
   },
   {
     type: "macos",
     input: "cli-kintone-macos",
-    output: "cli-kintone"
+    output: "cli-kintone",
   },
   {
     type: "win",
     input: "cli-kintone-win.exe",
-    output: "cli-kintone.exe"
-  }
+    output: "cli-kintone.exe",
+  },
 ];
 
 const artifactsDir = path.join(projectRoot, "artifacts");
@@ -68,4 +71,4 @@ for (const recipe of recipes) {
 
 await promisify(rimraf)(tempDir);
 
-console.log(`Compressed artifacts are saved to ${artifactsDir}`)
+console.log(`Compressed artifacts are saved to ${artifactsDir}`);

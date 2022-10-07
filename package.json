@@ -18,7 +18,10 @@
     "prebuild": "yarn clean",
     "build": "tsc --build --force",
     "postbuild": "yarn pkg",
+    "build:artifacts": "run-s build licensed compress",
     "pkg": "pkg . -o bin/cli-kintone -t linux,macos,win",
+    "licensed": "zx ./scripts/generate-license-notice.mjs",
+    "compress": "zx ./scripts/compress-to-zip-file.mjs",
     "test": "jest",
     "test:ci": "jest --runInBand",
     "lint": "run-p -l lint:*",
@@ -27,7 +30,7 @@
     "fix": "run-p fix:*",
     "fix:lint": "run-s 'lint:eslint --fix'",
     "fix:md": "run-s 'lint:md --write'",
-    "clean": "rimraf lib bin"
+    "clean": "rimraf lib bin artifacts"
   },
   "repository": {
     "type": "git",
@@ -64,7 +67,8 @@
     "pkg": "^5.8.0",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "zx": "^7.1.0"
   },
   "dependencies": {
     "@kintone/rest-api-client": "^3.1.12",

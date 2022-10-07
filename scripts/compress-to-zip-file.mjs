@@ -12,21 +12,35 @@ const projectRoot = path.join(dirname, "../");
 
 cd(projectRoot);
 
+const executableDir = path.join(projectRoot, "bin");
 const licenseFile = path.join(projectRoot, "LICENSE");
 const thirdPartyNoticeFile = path.join(projectRoot, ".licenses", "NOTICE");
 
 try {
-  await $`test -e ${licenseFile}`;
+  await $`test -e ${executableDir}`;
 } catch (e) {
-  console.log("LICENSE file is missing");
-  console.log(licenseFile);
+  console.error(
+    "Error: The executables of cli-kintone are not found at",
+    executableDir
+  );
+  // eslint-disable-next-line no-process-exit
+  process.exit(1);
 }
 
 try {
   await $`test -e ${thirdPartyNoticeFile}`;
 } catch (e) {
-  console.log("NOTICE file is missing");
-  console.log(thirdPartyNoticeFile);
+  console.error("The NOTICE file should exist at", thirdPartyNoticeFile);
+  // eslint-disable-next-line no-process-exit
+  process.exit(1);
+}
+
+try {
+  await $`test -e ${licenseFile}`;
+} catch (e) {
+  console.error("Error: The LICENSE file should exist at", licenseFile);
+  // eslint-disable-next-line no-process-exit
+  process.exit(1);
 }
 
 const recipes = [
@@ -57,8 +71,8 @@ for (const recipe of recipes) {
   const assetsDir = `cli-kintone-${recipe.type}`;
   await $`mkdir ${assetsDir}`;
 
-  const input = `${projectRoot}/bin/${recipe.input}`;
-  const output = `${assetsDir}/${recipe.output}`;
+  const input = path.join(projectRoot, "bin", recipe.input);
+  const output = path.join(assetsDir, recipe.output);
 
   await $`cp ${input} ${output}`;
   await $`cp ${licenseFile} ${assetsDir}/LICENSE`;

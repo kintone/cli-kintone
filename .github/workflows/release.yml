@@ -36,6 +36,9 @@ jobs:
     needs: release
     if: ${{ needs.release.outputs.release_created }}
     steps:
+      - uses: jonabc/setup-licensed@23892537a4b9275324fe790ff1057eb1d00fddbd
+        with:
+          version: '3.x'
       - uses: actions/checkout@v3
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
@@ -44,6 +47,9 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
       - run: yarn build
+      - run: |
+          licensed cache
+          licensed notices
       - name: Archive executables to zip
         working-directory: /tmp
         run: |
@@ -51,6 +57,12 @@ jobs:
           cp ${GITHUB_WORKSPACE}/bin/cli-kintone-linux cli-kintone-linux/cli-kintone
           cp ${GITHUB_WORKSPACE}/bin/cli-kintone-macos cli-kintone-macos/cli-kintone
           cp ${GITHUB_WORKSPACE}/bin/cli-kintone-win.exe cli-kintone-win/cli-kintone.exe
+          cp ${GITHUB_WORKSPACE}/LICENSE cli-kintone-linux/LICENSE
+          cp ${GITHUB_WORKSPACE}/LICENSE cli-kintone-macos/LICENSE
+          cp ${GITHUB_WORKSPACE}/LICENSE cli-kintone-win/LICENSE
+          cp ${GITHUB_WORKSPACE}/.licenses/NOTICE cli-kintone-linux/NOTICE
+          cp ${GITHUB_WORKSPACE}/.licenses/NOTICE cli-kintone-macos/NOTICE
+          cp ${GITHUB_WORKSPACE}/.licenses/NOTICE cli-kintone-win/NOTICE
           zip -r cli-kintone-linux.zip cli-kintone-linux
           zip -r cli-kintone-macos.zip cli-kintone-macos
           zip -r cli-kintone-win.zip cli-kintone-win

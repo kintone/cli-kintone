@@ -10,6 +10,9 @@ yarn-error.log*
 # testing
 coverage/
 
+# licensed
+.licenses
+
 # artifacts
 lib
 bin

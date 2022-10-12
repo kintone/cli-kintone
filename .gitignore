@@ -10,9 +10,13 @@ yarn-error.log*
 # testing
 coverage/
 
+# licensed
+.licenses
+
 # artifacts
 lib
 bin
+artifacts
 
 # misc
 **/.DS_Store

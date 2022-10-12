@@ -24,3 +24,26 @@ jobs:
 
       - name: Check licenses
         run: license_finder --decisions-file=license-finder-decisions.yml
+
+  licensed:
+    name: Licensed
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Licensed
+        uses: jonabc/setup-licensed@23892537a4b9275324fe790ff1057eb1d00fddbd
+        with:
+          version: '3.x'
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Install Node modules
+        run: yarn install --frozen-lockfile
+
+      - name: Check licenses
+        run: |
+          licensed cache
+          licensed status
+          licensed notices

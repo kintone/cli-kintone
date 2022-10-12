@@ -1,0 +1,28 @@
+name: build
+on:
+  push:
+    branches:
+      - main
+      - 'renovate/**'
+  pull_request:
+
+jobs:
+  build:
+    name: Node.js ubuntu-latest 16.x
+    runs-on: ubuntu-latest
+    steps:
+      - uses: jonabc/setup-licensed@23892537a4b9275324fe790ff1057eb1d00fddbd
+        with:
+          version: '3.x'
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: artifacts/*

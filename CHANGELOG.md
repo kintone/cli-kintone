@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.22.0](https://github.com/kintone/cli-kintone/compare/v0.21.1...v0.22.0) (2022-10-12)
+
+
+### Features
+
+* bundle 3rd party license notations to artifacts ([#107](https://github.com/kintone/cli-kintone/issues/107)) ([9aeb960](https://github.com/kintone/cli-kintone/commit/9aeb960efeccc54275680afd10e777e533d70f0a))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.1.12 ([#99](https://github.com/kintone/cli-kintone/issues/99)) ([be139d3](https://github.com/kintone/cli-kintone/commit/be139d3af0ab73df5cedba81592cf7cd2296b261))
+* **deps:** update dependency @kintone/rest-api-client to ^3.1.14 ([#113](https://github.com/kintone/cli-kintone/issues/113)) ([9fd616a](https://github.com/kintone/cli-kintone/commit/9fd616a9e6d9ef6bcb58cb69f20302adea08d6ce))
+* **deps:** update dependency yargs to ^17.6.0 ([#105](https://github.com/kintone/cli-kintone/issues/105)) ([f0f88a9](https://github.com/kintone/cli-kintone/commit/f0f88a9fbc6326a14a678f949ca13728d490aa0c))
+
 ## [0.21.1](https://github.com/kintone/cli-kintone/compare/v0.21.0...v0.21.1) (2022-09-29)
 
 

@@ -11,7 +11,7 @@ jobs:
     name: Node.js ubuntu-latest 16.x
     runs-on: ubuntu-latest
     steps:
-      - uses: jonabc/setup-licensed@bc0b863541a041f6fa5aac5e19324750beb79c0d
+      - uses: jonabc/setup-licensed@7f99d4c585fe12b4ca22ba16fc177aaf13643334
         with:
           version: '3.x'
       - uses: actions/checkout@v3

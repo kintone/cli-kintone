@@ -1,4 +1,4 @@
-import type { FieldsJson } from "../../../../kintone/types";
+import type { FieldsJson, LayoutJson } from "../../../../kintone/types";
 import { userSelected } from "../transformers/userSelected";
 
 export const fieldsJson: FieldsJson = {
@@ -56,24 +56,29 @@ export const fieldsJson: FieldsJson = {
   },
 };
 
+const layoutJson: LayoutJson = {
+  revision: "29",
+  layout: [],
+};
+
 describe("userSelected", () => {
   it("should throw an Error if specified field is in a Table field", () => {
     expect(() =>
-      userSelected(["recordNumber", "subTableText"], fieldsJson)
+      userSelected(["recordNumber", "subTableText"], fieldsJson, layoutJson)
     ).toThrow(
       'The specified field "subTableText" in a table cannot be specified to fields option'
     );
   });
   it("should throw an Error if specified field does not exist", () => {
     expect(() =>
-      userSelected(["recordNumber", "HyperKintoneText"], fieldsJson)
+      userSelected(["recordNumber", "HyperKintoneText"], fieldsJson, layoutJson)
     ).toThrow(
       'The specified field "HyperKintoneText" does not exist on the app'
     );
   });
   it("should throw an Error if specified field is not supported", () => {
     expect(() =>
-      userSelected(["recordNumber", "Categories"], fieldsJson)
+      userSelected(["recordNumber", "Categories"], fieldsJson, layoutJson)
     ).toThrow('The specified field "Categories" is not supported');
   });
 });

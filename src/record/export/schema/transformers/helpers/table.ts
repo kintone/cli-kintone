@@ -1,6 +1,6 @@
 import type { FieldSchema } from "../../../types/schema";
 import type { LayoutJson } from "../../../../../kintone/types";
-import { KintoneFormLayout } from "@kintone/rest-api-client";
+import type { KintoneFormLayout } from "@kintone/rest-api-client";
 
 export const tableLayoutComparator = (
   fieldCode: string,

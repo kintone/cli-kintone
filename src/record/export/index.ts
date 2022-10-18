@@ -34,11 +34,12 @@ export const run: (
     } = options;
     const apiClient = buildRestAPIClient(restApiClientOptions);
     const fieldsJson = await apiClient.app.getFormFields({ app });
+    const layoutJson = await apiClient.app.getFormLayout({ app });
     const schema = createSchema(
       fieldsJson,
       fields
-        ? userSelected(fields, fieldsJson)
-        : defaultTransformer(await apiClient.app.getFormLayout({ app }))
+        ? userSelected(fields, fieldsJson, layoutJson)
+        : defaultTransformer(layoutJson)
     );
     const records = await getRecords(apiClient, app, schema, {
       condition,

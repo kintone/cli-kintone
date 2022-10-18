@@ -1,7 +1,8 @@
 import type { SchemaTransformer } from "../";
-import type { FieldsJson } from "../../../../kintone/types";
+import type { FieldsJson, LayoutJson } from "../../../../kintone/types";
 import type { FieldSchema } from "../../types/schema";
 import { isSupportedField } from "../constants";
+import { tableLayoutComparator } from "./helpers/table";
 
 /**
  * This transformer returns only all supported fields.
@@ -9,13 +10,20 @@ import { isSupportedField } from "../constants";
  */
 export const userSelected = (
   userSelectedFields: string[],
-  fieldsJson: FieldsJson
+  fieldsJson: FieldsJson,
+  layoutJson: LayoutJson
 ): SchemaTransformer => {
   validateFields(userSelectedFields, fieldsJson);
   return (fields: FieldSchema[]) => {
     return fields
       .filter((fieldSchema) => userSelectedFields.includes(fieldSchema.code))
-      .sort(comparator(userSelectedFields));
+      .sort(userSelectedComparator(userSelectedFields))
+      .map((field) => {
+        if (field.type === "SUBTABLE") {
+          field.fields.sort(tableLayoutComparator(field.code, layoutJson));
+        }
+        return field;
+      });
   };
 };
 
@@ -47,7 +55,7 @@ const validateFields = (fields: string[], fieldsJson: FieldsJson) => {
   }
 };
 
-const comparator = (fields: string[]) => {
+const userSelectedComparator = (fields: string[]) => {
   return (a: FieldSchema, b: FieldSchema) => {
     const indexA = fields.indexOf(a.code);
     const indexB = fields.indexOf(b.code);

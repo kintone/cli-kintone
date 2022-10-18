@@ -2,6 +2,7 @@ import type { LayoutJson } from "../../../../kintone/types";
 import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 import type { SchemaTransformer } from "../";
 import type { FieldSchema } from "../../types/schema";
+import { tableLayoutComparator } from "./helpers/table";
 
 /**
  * This transformer returns all supported fields.
@@ -16,17 +17,17 @@ import type { FieldSchema } from "../../types/schema";
  * @param layoutJson
  */
 export const formLayout = (layoutJson: LayoutJson): SchemaTransformer => {
-  const comparator = orderByFormLayoutComparator(layoutJson);
+  const comparator = formLayoutComparator(layoutJson);
   return (fields: FieldSchema[]) =>
     fields.sort(comparator).map((field) => {
       if (field.type === "SUBTABLE") {
-        field.fields.sort(comparator);
+        field.fields.sort(tableLayoutComparator(field.code, layoutJson));
       }
       return field;
     });
 };
 
-export const orderByFormLayoutComparator = (
+export const formLayoutComparator = (
   layoutJson: LayoutJson
 ): ((fieldA: FieldSchema, fieldB: FieldSchema) => number) => {
   const flatLayout = flattenLayout(layoutJson.layout);

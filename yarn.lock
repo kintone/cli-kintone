@@ -1668,10 +1668,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@kintone/rest-api-client@^3.1.14":
-  version "3.1.14"
-  resolved "https://registry.yarnpkg.com/@kintone/rest-api-client/-/rest-api-client-3.1.14.tgz#7ee97c4fe94ea809c35c4ee369fbc4d6e365d53d"
-  integrity sha512-Ldpebaf6HRXZfvDze0NNQVVO0pWNSzJhSXbA/IZOXgg/312nleD43jhnMZOWFLVATVapKjVJUeHsLr8RA7tPsw==
+"@kintone/rest-api-client@^3.1.15":
+  version "3.1.15"
+  resolved "https://registry.yarnpkg.com/@kintone/rest-api-client/-/rest-api-client-3.1.15.tgz#7d301161cf7d3e1d855def35ad03b1317080b55b"
+  integrity sha512-q3n+rq/2PylHVfAoR2s/n+RQxD+N3eDNqdURPn95Hni9ZKS2dunP5w939Q6dSGYdiSn9s5mPjMpOAIUM9QmQ8A==
   dependencies:
     axios "^0.27.2"
     core-js "^3.25.5"

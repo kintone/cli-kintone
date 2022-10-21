@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.22.1](https://github.com/kintone/cli-kintone/compare/v0.22.0...v0.22.1) (2022-10-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.1.15 ([#125](https://github.com/kintone/cli-kintone/issues/125)) ([634ee88](https://github.com/kintone/cli-kintone/commit/634ee88796b8bea8b746f3d64b8d42d5dd244aaf))
+* ignore empty row when importing multiple tables ([#126](https://github.com/kintone/cli-kintone/issues/126)) ([d23f78c](https://github.com/kintone/cli-kintone/commit/d23f78cbb11b46c3f70faae5e86aec96ab62d3a4))
+* the column order is different between with and without specifying the fields option ([#118](https://github.com/kintone/cli-kintone/issues/118)) ([f74961e](https://github.com/kintone/cli-kintone/commit/f74961e495c1d933df042e0fd445b26076d59179))
+
 ## [0.22.0](https://github.com/kintone/cli-kintone/compare/v0.21.1...v0.22.0) (2022-10-12)
 
 

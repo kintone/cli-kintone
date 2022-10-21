@@ -249,6 +249,30 @@ When export, if NOT set `--attachments-dir` option, only the file name will be o
 test.txt"
 ```
 
+#### Table
+
+- The row where a record begins has a PRIMARY_MARK(`*`) on the “`*`“ field.
+- The data of fields outside the Table are specified in the row with PRIMARY_MARK(`*`)
+  - The data of fields outside the Table in other rows will be ignored.
+- The data of fields inside the Table are specified with one or multiple rows
+  - If there is no data about the Table in the row, the row is ignored
+
+```csv
+"*","Text","Table","TextInTable"
+"*","first","<row id>","alice"
+,"first","<row id>","bob"
+```
+
+with multiple Table fields
+
+```csv
+"*","Text","Table","TextInTable","Table_1","NumberInTable"
+"*","first","<row id>","alice",,
+,"first","<row id>","bob",,
+,"first",,,"<row id>","10"
+,"first",,,"<row id>","20"
+```
+
 ## LICENSE
 
 - [MIT](https://github.com/kintone/cli-kintone/blob/main/LICENSE)

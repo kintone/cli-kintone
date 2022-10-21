@@ -5,6 +5,7 @@ import { parseCsv } from "../index";
 
 import { pattern as withoutSubtable } from "./fixtures/withoutSubtable";
 import { pattern as withSubtable } from "./fixtures/withSubtable";
+import { pattern as withMultipleSubtable } from "./fixtures/withMultipleSubtable";
 import { pattern as emptyCsv } from "./fixtures/emptyCsv";
 import { pattern as withNoRecord } from "./fixtures/withNoRecord";
 import { pattern as withCrLf } from "./fixtures/withCrLf";
@@ -22,6 +23,7 @@ describe("parseCsv", () => {
   const patterns = [
     withoutSubtable,
     withSubtable,
+    withMultipleSubtable,
     emptyCsv,
     withNoRecord,
     withCrLf,

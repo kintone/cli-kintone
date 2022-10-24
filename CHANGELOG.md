@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.0](https://github.com/kintone/cli-kintone/compare/v0.22.1...v1.0.0) (2022-10-24)
+
+
+### Miscellaneous Chores
+
+* version bump to 1.0.0 ([8fcb64e](https://github.com/kintone/cli-kintone/commit/8fcb64e6d30eb226ba20ac240197a52f7e1786b6))
+
 ## [0.22.1](https://github.com/kintone/cli-kintone/compare/v0.22.0...v0.22.1) (2022-10-21)
 
 

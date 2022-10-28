@@ -44,29 +44,6 @@ const buildBasicAuthParam = (options: RestAPIClientOptions) => {
     : {};
 };
 
-type ProxyConfig = {
-  protocol?: string;
-  host: string;
-  port: number;
-  auth?: {
-    username: string;
-    password: string;
-  };
-};
-
-const buildProxyConfig = (proxy: string): ProxyConfig | undefined => {
-  const { protocol, hostname: host, port, username, password } = new URL(proxy);
-  const proxyConfig: ProxyConfig = { host, port: Number(port) };
-
-  if (protocol.length > 0) {
-    proxyConfig.protocol = protocol;
-  }
-  if (username.length > 0 && password.length > 0) {
-    proxyConfig.auth = { username, password };
-  }
-  return proxyConfig;
-};
-
 const buildHttpsAgent = (options: {
   proxy?: string;
   pfxFilePath?: string;
@@ -100,9 +77,9 @@ export const buildRestAPIClient = (options: RestAPIClientOptions) => {
     ...buildBasicAuthParam(options),
     ...(options.guestSpaceId ? { guestSpaceId: options.guestSpaceId } : {}),
     userAgent: `${packageJson.name}@${packageJson.version}`,
-    ...(options.httpsProxy
-      ? { proxy: buildProxyConfig(options.httpsProxy) }
-      : {}),
+    // TODO: fix type definition of @kintone/rest-api-client
+    // Currently, the proxy property doesn't accept false
+    proxy: false as any,
     httpsAgent: buildHttpsAgent({
       proxy: options.httpsProxy,
       pfxFilePath: options.pfxFilePath,

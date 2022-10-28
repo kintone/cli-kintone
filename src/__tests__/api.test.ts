@@ -97,6 +97,7 @@ describe("api", () => {
       },
       userAgent: expectedUa,
       httpsAgent: new https.Agent(),
+      proxy: false,
     });
   });
 
@@ -119,6 +120,7 @@ describe("api", () => {
       guestSpaceId: GUEST_SPACE_ID,
       userAgent: expectedUa,
       httpsAgent: new https.Agent(),
+      proxy: false,
     });
   });
 
@@ -133,6 +135,7 @@ describe("api", () => {
       auth: { apiToken: API_TOKEN },
       userAgent: expectedUa,
       httpsAgent: new https.Agent(),
+      proxy: false,
     });
   });
 
@@ -152,6 +155,7 @@ describe("api", () => {
       },
       userAgent: expectedUa,
       httpsAgent: new https.Agent(),
+      proxy: false,
     });
   });
 
@@ -178,6 +182,7 @@ describe("api", () => {
       },
       userAgent: expectedUa,
       httpsAgent: new https.Agent(),
+      proxy: false,
     });
   });
   it("should pass information of client certificate to the apiClient correctly", () => {
@@ -200,6 +205,7 @@ describe("api", () => {
         pfx: "dummy",
         passphrase: PFX_FILE_PASSWORD,
       }),
+      proxy: false,
     });
   });
   it("should pass information of proxy server to the apiClient correctly", () => {
@@ -222,11 +228,7 @@ describe("api", () => {
         host: "proxy.example.com",
         port: "3128",
       }),
-      proxy: {
-        protocol: "http:",
-        host: "proxy.example.com",
-        port: 3128,
-      },
+      proxy: false,
     });
   });
   it("should pass information of client certificate and proxy server to the apiClient correctly", () => {
@@ -253,11 +255,7 @@ describe("api", () => {
         pfx: "dummy",
         passphrase: PFX_FILE_PASSWORD,
       }),
-      proxy: {
-        protocol: "http:",
-        host: "proxy.example.com",
-        port: 3128,
-      },
+      proxy: false,
     });
   });
 });

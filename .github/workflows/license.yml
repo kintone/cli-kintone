@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Setup Licensed
-        uses: jonabc/setup-licensed@7f99d4c585fe12b4ca22ba16fc177aaf13643334
+        uses: jonabc/setup-licensed@f7035f5d2446e15b2e40dc4c4eb5f1dc228880ec
         with:
           version: '3.x'
 

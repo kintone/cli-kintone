@@ -4,6 +4,7 @@ import {
   parseKintoneAllRecordsError,
 } from "../../utils/error";
 import { KintoneRecord } from "../../types/record";
+import { RecordSchema } from "../../types/schema";
 
 // Magic number from @kintone/rest-api-client
 // https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L16
@@ -15,8 +16,14 @@ export class AddRecordsError extends Error {
   private readonly records: KintoneRecord[];
   private readonly numOfSuccess: number;
   private readonly numOfTotal: number;
+  private readonly recordSchema: RecordSchema;
 
-  constructor(cause: unknown, records: KintoneRecord[], currentIndex: number) {
+  constructor(
+    cause: unknown,
+    records: KintoneRecord[],
+    currentIndex: number,
+    recordSchema: RecordSchema
+  ) {
     const message = "Failed to add all records.";
     super(message);
 
@@ -24,6 +31,7 @@ export class AddRecordsError extends Error {
     this.message = message;
     this.cause = cause;
     this.records = records;
+    this.recordSchema = recordSchema;
 
     this.numOfSuccess = currentIndex;
     this.numOfTotal = this.records.length;
@@ -55,7 +63,8 @@ export class AddRecordsError extends Error {
         this.cause,
         this.chunkSize,
         this.records,
-        this.numOfSuccess
+        this.numOfSuccess,
+        this.recordSchema
       );
     } else if (this.cause instanceof AddRecordsError) {
       errorMessage += this.cause.toString();

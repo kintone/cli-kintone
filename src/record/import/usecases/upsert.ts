@@ -72,7 +72,7 @@ export const upsertRecords = async (
     progressLogger.done();
   } catch (e) {
     progressLogger.abort(currentIndex);
-    throw new UpsertRecordsError(e, records, currentIndex);
+    throw new UpsertRecordsError(e, records, currentIndex, schema);
   }
 };
 

@@ -134,7 +134,8 @@ describe("upsertRecords", () => {
           new UpsertRecordsError(
             expected.failure.errorMessage,
             input.records,
-            0
+            0,
+            input.schema
           )
         );
       }

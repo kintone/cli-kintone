@@ -5,8 +5,28 @@ import {
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
 import { AddRecordsError } from "../../add/error";
+import { RecordSchema } from "../../../types/schema";
 
 const CHUNK_SIZE = 100;
+const schema: RecordSchema = {
+  fields: [
+    {
+      type: "NUMBER",
+      code: "number",
+      label: "number",
+      noLabel: false,
+      required: true,
+      minValue: "",
+      maxValue: "",
+      digit: false,
+      unique: true,
+      defaultValue: "",
+      displayScale: "",
+      unit: "",
+      unitPosition: "BEFORE",
+    },
+  ],
+};
 
 describe("AddRecordsError", () => {
   it("should return error message", () => {
@@ -35,10 +55,11 @@ describe("AddRecordsError", () => {
     const upsertRecordsError = new AddRecordsError(
       kintoneAllRecordsError,
       records,
-      numOfAlreadyImportedRecords
+      numOfAlreadyImportedRecords,
+      schema
     );
     expect(upsertRecordsError.toString()).toBe(
-      "Failed to add all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while uploading records.\n[500] [some code] some error message (some id)\n  An error occurred at row 46.\n    Cause: invalid value\n"
+      "Failed to add all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while uploading records.\n[500] [some code] some error message (some id)\n  An error occurred on number at row 46.\n    Cause: invalid value\n"
     );
   });
 });

@@ -51,7 +51,7 @@ export const addRecords: (
     progressLogger.done();
   } catch (e) {
     progressLogger.abort(currentIndex);
-    throw new AddRecordsError(e, records, currentIndex);
+    throw new AddRecordsError(e, records, currentIndex, schema);
   }
 };
 

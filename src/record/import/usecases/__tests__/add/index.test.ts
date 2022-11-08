@@ -84,7 +84,8 @@ describe("addRecords", () => {
       new AddRecordsError(
         new Error("--attachments-dir option is required."),
         canUploadFiles.input,
-        0
+        0,
+        canUploadFiles.schema
       )
     );
   });

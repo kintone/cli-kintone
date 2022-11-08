@@ -1,13 +1,14 @@
-import type { KintoneRecord } from "../../../types/record";
+import type { KintoneRecord } from "../../types/record";
 import {
   KintoneAllRecordsError,
   KintoneErrorResponse,
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
-import { AddRecordsError } from "../../add/error";
-import { RecordSchema } from "../../../types/schema";
+import { kintoneAllRecordsErrorToString } from "../error";
+import { RecordSchema } from "../../types/schema";
 
 const CHUNK_SIZE = 100;
+
 const schema: RecordSchema = {
   fields: [
     {
@@ -28,12 +29,13 @@ const schema: RecordSchema = {
   ],
 };
 
-describe("AddRecordsError", () => {
+describe("kintoneAllRecordsErrorToString", () => {
   it("should return error message", () => {
     const numOfAllRecords = 60;
-    const numOfAlreadyImportedRecords = 10;
-    const numOfProcessedRecords = 30;
+    const numOfProcessedRecords = 40;
     const errorIndex = 44;
+    const errorFieldCode = "number";
+    const errorRowIndex = errorIndex + 2;
     const records: KintoneRecord[] = [...Array(numOfAllRecords).keys()].map(
       (index) => ({
         data: {},
@@ -49,35 +51,35 @@ describe("AddRecordsError", () => {
     const kintoneAllRecordsError = buildKintoneAllRecordsError(
       numOfAllRecords,
       numOfProcessedRecords,
-      numOfAlreadyImportedRecords,
-      errorIndex
+      errorIndex,
+      errorFieldCode
     );
-    const upsertRecordsError = new AddRecordsError(
+    const errorMessage = kintoneAllRecordsErrorToString(
       kintoneAllRecordsError,
+      CHUNK_SIZE,
       records,
-      numOfAlreadyImportedRecords,
+      numOfProcessedRecords,
       schema
     );
-    expect(upsertRecordsError.toString()).toBe(
-      "Failed to add all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while uploading records.\n[500] [some code] some error message (some id)\n  An error occurred on number at row 46.\n    Cause: invalid value\n"
+    expect(errorMessage).toBe(
+      `An error occurred while uploading records.\n[500] [some code] some error message (some id)\n  An error occurred on ${errorFieldCode} at row ${errorRowIndex}.\n    Cause: invalid value\n`
     );
   });
 });
 
 export const buildKintoneRestAPIError = (
   errorIndex: number,
-  numOfProcessedRecords: number,
-  numOfAlreadyImportedRecords: number
+  errorFieldCode: string,
+  numOfProcessedRecords: number
 ): KintoneRestAPIError => {
-  const errorIndexRelative =
-    errorIndex - numOfProcessedRecords - numOfAlreadyImportedRecords;
+  const errorIndexRelative = errorIndex - numOfProcessedRecords;
   const errorResponse: KintoneErrorResponse = {
     data: {
       id: "some id",
       code: "some code",
       message: "some error message",
       errors: {
-        [`records[${errorIndexRelative}].number.value`]: {
+        [`records[${errorIndexRelative}].${errorFieldCode}.value`]: {
           messages: ["invalid value"],
         },
       },
@@ -94,24 +96,23 @@ export const buildKintoneRestAPIError = (
 export const buildKintoneAllRecordsError = (
   numOfAllRecords: number,
   numOfProcessedRecords: number,
-  numOfAlreadyImportedRecords: number,
-  errorIndex: number
+  errorIndex: number,
+  errorFieldCode: string
 ): KintoneAllRecordsError => {
   const processedRecordsResult = {
     records: Array(numOfProcessedRecords).map(() => ({})),
   };
-  const numOfUnprocessedRecords =
-    numOfAllRecords - numOfProcessedRecords - numOfAlreadyImportedRecords;
+  const numOfUnprocessedRecords = numOfAllRecords - numOfProcessedRecords;
   const unprocessedRecords = Array(numOfUnprocessedRecords).map(() => ({}));
   const kintoneRestAPIError = buildKintoneRestAPIError(
     errorIndex,
-    numOfProcessedRecords,
-    numOfAlreadyImportedRecords
+    errorFieldCode,
+    numOfProcessedRecords
   );
   return new KintoneAllRecordsError(
     processedRecordsResult,
     unprocessedRecords,
-    numOfAllRecords - numOfAlreadyImportedRecords,
+    numOfAllRecords,
     kintoneRestAPIError,
     CHUNK_SIZE
   );

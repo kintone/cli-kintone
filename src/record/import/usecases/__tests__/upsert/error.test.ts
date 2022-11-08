@@ -1,6 +1,27 @@
 import type { KintoneRecord } from "../../../types/record";
 import { UpsertRecordsError } from "../../upsert/error";
 import { buildKintoneAllRecordsError } from "../add/error.test";
+import { RecordSchema } from "../../../types/schema";
+
+const schema: RecordSchema = {
+  fields: [
+    {
+      type: "NUMBER",
+      code: "number",
+      label: "number",
+      noLabel: false,
+      required: true,
+      minValue: "",
+      maxValue: "",
+      digit: false,
+      unique: true,
+      defaultValue: "",
+      displayScale: "",
+      unit: "",
+      unitPosition: "BEFORE",
+    },
+  ],
+};
 
 describe("UpsertRecordsError", () => {
   it("should return error message", () => {
@@ -29,10 +50,11 @@ describe("UpsertRecordsError", () => {
     const upsertRecordsError = new UpsertRecordsError(
       kintoneAllRecordsError,
       records,
-      numOfAlreadyImportedRecords
+      numOfAlreadyImportedRecords,
+      schema
     );
     expect(upsertRecordsError.toString()).toBe(
-      "Failed to upsert all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while uploading records.\n[500] [some code] some error message (some id)\n  An error occurred at row 46.\n    Cause: invalid value\n"
+      "Failed to upsert all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while uploading records.\n[500] [some code] some error message (some id)\n  An error occurred on number at row 46.\n    Cause: invalid value\n"
     );
   });
 });

@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.0](https://github.com/kintone/cli-kintone/compare/v1.0.1...v1.1.0) (2022-11-09)
+
+
+### Features
+
+* add fieldCode into the error message ([#147](https://github.com/kintone/cli-kintone/issues/147)) ([6ac16cb](https://github.com/kintone/cli-kintone/commit/6ac16cb1b2e16c3ef3bb444becc351e24bb89ffe))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.2.0 ([#144](https://github.com/kintone/cli-kintone/issues/144)) ([a65cc73](https://github.com/kintone/cli-kintone/commit/a65cc737c5cf3adfc082d52b652736461d333309))
+* **deps:** update dependency yargs to ^17.6.1 ([#145](https://github.com/kintone/cli-kintone/issues/145)) ([cd16757](https://github.com/kintone/cli-kintone/commit/cd167570a71d8d015911a30de462aaf9993206e0))
+* **deps:** update dependency yargs to ^17.6.2 ([#148](https://github.com/kintone/cli-kintone/issues/148)) ([680df84](https://github.com/kintone/cli-kintone/commit/680df84d488e88ff388feae99902975909bb0267))
+
 ## [1.0.1](https://github.com/kintone/cli-kintone/compare/v1.0.0...v1.0.1) (2022-10-28)
 
 

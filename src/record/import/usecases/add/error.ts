@@ -1,8 +1,5 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import {
-  kintoneAllRecordsErrorToString,
-  parseKintoneAllRecordsError,
-} from "../../utils/error";
+import { kintoneAllRecordsErrorToString } from "../../utils/error";
 import { KintoneRecord } from "../../types/record";
 import { RecordSchema } from "../../types/schema";
 
@@ -36,8 +33,7 @@ export class AddRecordsError extends Error {
     this.numOfSuccess = currentIndex;
     this.numOfTotal = this.records.length;
     if (this.cause instanceof KintoneAllRecordsError) {
-      const { numOfSuccess } = parseKintoneAllRecordsError(this.cause);
-      this.numOfSuccess += numOfSuccess;
+      this.numOfSuccess += this.cause.numOfProcessedRecords;
     }
 
     // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work

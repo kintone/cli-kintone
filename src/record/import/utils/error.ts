@@ -5,17 +5,6 @@ import {
 import { KintoneRecord } from "../types/record";
 import { RecordSchema } from "../types/schema";
 
-export const parseKintoneAllRecordsError = (
-  e: KintoneAllRecordsError
-): { numOfSuccess: number; numOfTotal: number } => {
-  const totalMatch = e.message.match(
-    /(?<numOfSuccess>\d+)\/(?<numOfTotal>\d+) records are processed successfully/
-  );
-  const numOfSuccess = Number(totalMatch?.groups?.numOfSuccess);
-  const numOfTotal = Number(totalMatch?.groups?.numOfTotal);
-  return { numOfSuccess, numOfTotal };
-};
-
 export const kintoneAllRecordsErrorToString = (
   e: KintoneAllRecordsError,
   chunkSize: number,

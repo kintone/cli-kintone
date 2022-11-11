@@ -1,7 +1,7 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
 import { kintoneAllRecordsErrorToString } from "../../utils/error";
-import { KintoneRecord } from "../../types/record";
-import { RecordSchema } from "../../types/schema";
+import type { KintoneRecord } from "../../types/record";
+import type { RecordSchema } from "../../types/schema";
 
 // Magic number from @kintone/rest-api-client
 // https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L17

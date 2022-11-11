@@ -1,5 +1,5 @@
-import { FieldsJson } from "../../../kintone/types";
-import { FieldSchema, RecordSchema } from "../types/schema";
+import type { FieldsJson } from "../../../kintone/types";
+import type { FieldSchema, RecordSchema } from "../types/schema";
 import { isSupportedField, isSupportedFieldInSubtable } from "./constants";
 
 export type SchemaTransformer = (

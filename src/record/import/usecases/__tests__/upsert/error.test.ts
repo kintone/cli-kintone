@@ -1,7 +1,7 @@
 import type { KintoneRecord } from "../../../types/record";
 import { UpsertRecordsError } from "../../upsert/error";
 import { buildKintoneAllRecordsError } from "../add/error.test";
-import { RecordSchema } from "../../../types/schema";
+import type { RecordSchema } from "../../../types/schema";
 
 const schema: RecordSchema = {
   fields: [

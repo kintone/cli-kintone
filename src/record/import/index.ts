@@ -1,5 +1,7 @@
-import { buildRestAPIClient, RestAPIClientOptions } from "../../kintone/client";
-import { SupportedImportEncoding, readFile } from "./utils/file";
+import type { RestAPIClientOptions } from "../../kintone/client";
+import { buildRestAPIClient } from "../../kintone/client";
+import type { SupportedImportEncoding } from "./utils/file";
+import { readFile } from "./utils/file";
 import { parseRecords } from "./parsers";
 import { addRecords } from "./usecases/add";
 import { upsertRecords } from "./usecases/upsert";

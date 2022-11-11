@@ -1,11 +1,11 @@
 import type { KintoneRecord } from "../../../types/record";
+import type { KintoneErrorResponse } from "@kintone/rest-api-client";
 import {
   KintoneAllRecordsError,
-  KintoneErrorResponse,
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
 import { AddRecordsError } from "../../add/error";
-import { RecordSchema } from "../../../types/schema";
+import type { RecordSchema } from "../../../types/schema";
 
 const CHUNK_SIZE = 100;
 const schema: RecordSchema = {

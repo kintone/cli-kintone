@@ -1,6 +1,7 @@
-import { createSchema, SchemaTransformer } from "../index";
-import { FieldsJson } from "../../../../kintone/types";
-import { RecordSchema } from "../../types/schema";
+import type { SchemaTransformer } from "../index";
+import { createSchema } from "../index";
+import type { FieldsJson } from "../../../../kintone/types";
+import type { RecordSchema } from "../../types/schema";
 
 import { pattern as formLayout } from "./fixtures/formLayout";
 import { pattern as formLayoutNoSystemFields } from "./fixtures/formLayoutNoSystemFields";

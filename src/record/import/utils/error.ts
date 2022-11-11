@@ -1,9 +1,9 @@
-import {
+import type {
   KintoneAllRecordsError,
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
-import { KintoneRecord } from "../types/record";
-import { RecordSchema } from "../types/schema";
+import type { KintoneRecord } from "../types/record";
+import type { RecordSchema } from "../types/schema";
 
 export const kintoneAllRecordsErrorToString = (
   e: KintoneAllRecordsError,

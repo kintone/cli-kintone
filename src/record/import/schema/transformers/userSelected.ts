@@ -1,6 +1,6 @@
-import { FieldsJson } from "../../../../kintone/types";
-import { SchemaTransformer } from "../index";
-import { FieldSchema } from "../../types/schema";
+import type { FieldsJson } from "../../../../kintone/types";
+import type { SchemaTransformer } from "../index";
+import type { FieldSchema } from "../../types/schema";
 import { isSupportedField } from "../constants";
 
 /**

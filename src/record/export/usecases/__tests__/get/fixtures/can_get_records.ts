@@ -1,6 +1,6 @@
-import { KintoneRecordForResponse } from "../../../../../../kintone/types";
-import { KintoneRecord } from "../../../../types/record";
-import { RecordSchema } from "../../../../types/schema";
+import type { KintoneRecordForResponse } from "../../../../../../kintone/types";
+import type { KintoneRecord } from "../../../../types/record";
+import type { RecordSchema } from "../../../../types/schema";
 
 export const input: KintoneRecordForResponse[] = [
   {

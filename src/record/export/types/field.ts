@@ -1,4 +1,4 @@
-import { KintoneRecordField } from "@kintone/rest-api-client";
+import type { KintoneRecordField } from "@kintone/rest-api-client";
 
 type FieldWith<T extends string, V> = {
   type: T;

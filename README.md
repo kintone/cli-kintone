@@ -327,6 +327,7 @@ source ~/.bashrc
 For Windows OS, you can use cli-kintone command completion via `bash` on [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
 
 Steps:
+
 1. Install Linux on Windows with WSL. Ref: [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
 2. Open a new Linux Terminal
 3. Download and extract executables from the [linux package](https://github.com/kintone/cli-kintone/releases).

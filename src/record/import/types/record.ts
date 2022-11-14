@@ -1,4 +1,4 @@
-import { OneOf } from "./field";
+import type { OneOf } from "./field";
 
 export type KintoneRecord = {
   data: { [fieldCode: string]: OneOf };

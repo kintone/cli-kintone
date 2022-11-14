@@ -1,8 +1,7 @@
-import * as yargs from "yargs";
-
-import { CommandModule } from "yargs";
-
-import { ExportFileEncoding, run } from "../../record/export";
+import type yargs from "yargs";
+import type { CommandModule } from "yargs";
+import type { ExportFileEncoding } from "../../record/export";
+import { run } from "../../record/export";
 
 const encodings: ExportFileEncoding[] = ["utf8", "sjis"];
 

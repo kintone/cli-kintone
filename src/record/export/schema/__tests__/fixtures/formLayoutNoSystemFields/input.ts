@@ -1,4 +1,4 @@
-import { FieldsJson } from "../../../../../../kintone/types";
+import type { FieldsJson } from "../../../../../../kintone/types";
 
 export const input: FieldsJson = {
   revision: "29",

@@ -1,4 +1,4 @@
-import { TestPattern } from "../../../index.test";
+import type { TestPattern } from "../../../index.test";
 import { expectedCsv } from "./expected";
 import { input } from "./input";
 import { schema } from "./schema";

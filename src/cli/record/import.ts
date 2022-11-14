@@ -1,8 +1,7 @@
-import * as yargs from "yargs";
-
+import type yargs from "yargs";
 import { run } from "../../record/import";
-import { SupportedImportEncoding } from "../../record/import/utils/file";
-import { CommandModule } from "yargs";
+import type { SupportedImportEncoding } from "../../record/import/utils/file";
+import type { CommandModule } from "yargs";
 
 const command = "import";
 

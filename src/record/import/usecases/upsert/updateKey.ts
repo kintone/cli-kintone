@@ -1,8 +1,10 @@
-import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
+import type {
+  KintoneFormFieldProperty,
+  KintoneRestAPIClient,
+} from "@kintone/rest-api-client";
 
 import type { FieldSchema, RecordSchema } from "../../types/schema";
 import type { KintoneRecord } from "../../types/record";
-import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 
 type UpdateKeyField = {
   code: string;

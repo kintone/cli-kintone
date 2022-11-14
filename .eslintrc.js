@@ -13,6 +13,12 @@ const config = {
         },
       },
     ],
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        prefer: "type-imports",
+      },
+    ],
   },
 };
 module.exports = config;

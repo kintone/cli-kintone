@@ -1,4 +1,4 @@
-import { RecordSchema } from "../../../../../types/schema";
+import type { RecordSchema } from "../../../../../types/schema";
 
 export const schema: RecordSchema = {
   hasSubtable: false,

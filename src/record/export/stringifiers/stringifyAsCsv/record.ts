@@ -4,7 +4,7 @@ import type { KintoneRecord } from "../../types/record";
 import { convertField, fieldReader } from "./field";
 import { convertSubtableField, subtableFieldReader } from "./subtable";
 import { PRIMARY_MARK } from "./constants";
-import { RecordSchema } from "../../types/schema";
+import type { RecordSchema } from "../../types/schema";
 
 export type RecordAsCsvRows = CsvRow[];
 

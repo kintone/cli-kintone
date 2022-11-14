@@ -1,6 +1,7 @@
 import iconv from "iconv-lite";
 
-import { buildRestAPIClient, RestAPIClientOptions } from "../../kintone/client";
+import type { RestAPIClientOptions } from "../../kintone/client";
+import { buildRestAPIClient } from "../../kintone/client";
 import { getRecords } from "./usecases/get";
 import { stringifierFactory } from "./stringifiers";
 import { createSchema } from "./schema";

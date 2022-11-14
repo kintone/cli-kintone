@@ -1,4 +1,5 @@
-import { readFile, SupportedImportEncoding } from "../file";
+import type { SupportedImportEncoding } from "../file";
+import { readFile } from "../file";
 import { expected } from "./fixtures/expected";
 
 import path from "path";

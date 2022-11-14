@@ -1,4 +1,5 @@
-import yargs, { CommandModule } from "yargs";
+import type { CommandModule } from "yargs";
+import type yargs from "yargs";
 import { exportCommand } from "./record/export";
 import { importCommand } from "./record/import";
 

@@ -287,15 +287,16 @@ To enable it in `zsh`, `cd` to the directory that contains the cli-kintone execu
 # 1. Set PATH environment variables
 echo "export PATH=$(pwd):\$PATH" >> ~/.zshrc
 
-# 2. Enable bash-autocomplete feature
-echo 'autoload -U +X compinit && compinit' >> ~/.zshrc
-echo 'autoload -U +X bashcompinit && bashcompinit' >> ~/.zshrc
+# 2. Create and configure a directory to store the completion scripts
+mkdir -p ~/.zsh_completion.d/
+echo 'fpath=(~/.zsh_completion.d $fpath)' >> ~/.zshrc
 
-# 3. Create command completion script
-./cli-kintone completion >> ~/cli-kintone.completion.sh
+# 3. Enable bash-autocomplete feature
+echo 'autoload bashcompinit && bashcompinit' >> ~/.zshrc
+echo 'autoload -Uz compinit && compinit' >> ~/.zshrc
 
-# 4. Add command completion script to zsh
-echo 'source ~/cli-kintone.completion.sh' >> ~/.zshrc
+# 4. Create command completion script
+./cli-kintone completion >> ~/.zsh_completion.d/_cli-kintone
 
 # 5. Reload zsh
 source ~/.zshrc
@@ -307,18 +308,19 @@ To enable it in `bash`, `cd` to the directory that contains the cli-kintone exec
 
 ```shell
 # 1. Create command completion script
-./cli-kintone completion >> ~/cli-kintone.completion.sh
+mkdir -p ~/.bash_completion.d
+./cli-kintone completion >> ~/.bash_completion.d/_cli-kintone
 
 # 2. Add command completion script to bash
 
 # For login shell
 echo "export PATH=$(pwd):\$PATH" >> ~/.bash_profile
-echo 'source ~/cli-kintone.completion.sh' >> ~/.bash_profile
+echo 'source ~/.bash_completion.d/_cli-kintone' >> ~/.bash_profile
 source ~/.bash_profile
 
 # For non-login shell
 echo "export PATH=$(pwd):\$PATH" >> ~/.bashrc
-echo 'source ~/cli-kintone.completion.sh' >> ~/.bashrc
+echo 'source ~/.bash_completion.d/_cli-kintone' >> ~/.bashrc
 source ~/.bashrc
 ```
 

@@ -273,6 +273,68 @@ with multiple Table fields
 ,"first",,,"<row id>","20"
 ```
 
+## Command completion
+
+cli-kintone provides a command-completion feature that enables you to use the **Tab** key to complete a partially entered command.
+
+cli-kintone command completion is now supported only for `bash` and `zsh` shell.
+
+### zsh
+
+To enable it in `zsh`, `cd` to the directory that contains the cli-kintone executable file, then run the below commands:
+
+```shell
+# 1. Set PATH environment variables
+echo "export PATH=$(pwd):\$PATH" >> ~/.zshrc
+
+# 2. Create and configure a directory to store the completion scripts
+mkdir -p ~/.zsh_completion.d/
+echo 'fpath=(~/.zsh_completion.d $fpath)' >> ~/.zshrc
+
+# 3. Enable bash-autocomplete feature
+echo 'autoload bashcompinit && bashcompinit' >> ~/.zshrc
+echo 'autoload -Uz compinit && compinit' >> ~/.zshrc
+
+# 4. Create command completion script
+./cli-kintone completion >> ~/.zsh_completion.d/_cli-kintone
+
+# 5. Reload zsh
+source ~/.zshrc
+```
+
+### bash
+
+To enable it in `bash`, `cd` to the directory that contains the cli-kintone executable file, then run the below commands:
+
+```shell
+# 1. Create command completion script
+mkdir -p ~/.bash_completion.d
+./cli-kintone completion >> ~/.bash_completion.d/_cli-kintone
+
+# 2. Add command completion script to bash
+
+# For login shell
+echo "export PATH=$(pwd):\$PATH" >> ~/.bash_profile
+echo 'source ~/.bash_completion.d/_cli-kintone' >> ~/.bash_profile
+source ~/.bash_profile
+
+# For non-login shell
+echo "export PATH=$(pwd):\$PATH" >> ~/.bashrc
+echo 'source ~/.bash_completion.d/_cli-kintone' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### For Windows OS
+
+For Windows OS, you can use cli-kintone command completion via `bash` on [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
+
+Steps:
+
+1. Install Linux on Windows with WSL. Ref: [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
+2. Open a new Linux Terminal
+3. Download and extract executables from the [linux package](https://github.com/kintone/cli-kintone/releases).
+4. Run the same commands as [bash section](#bash)
+
 ## LICENSE
 
 - [MIT](https://github.com/kintone/cli-kintone/blob/main/LICENSE)

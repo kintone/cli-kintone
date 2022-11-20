@@ -1,6 +1,6 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { run } from "../delete";
+import { run } from "../../record/delete";
 
 const command = "delete";
 

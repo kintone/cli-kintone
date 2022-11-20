@@ -2,8 +2,8 @@ import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type {
   KintoneRecordForResponse,
   KintoneRecordForDeleteAllParameter,
-} from "../../kintone/types";
-import { logger } from "../../utils/log";
+} from "../../../kintone/types";
+import { logger } from "../../../utils/log";
 import { DeleteAllRecordsError } from "./error";
 
 export const deleteAllRecords: (
@@ -26,10 +26,10 @@ const getRecordsForDeleteAll: (
   app: string
 ) => Promise<KintoneRecordForDeleteAllParameter[]> = async (apiClient, app) => {
   let records: KintoneRecordForDeleteAllParameter[] = [];
-  const params = { app, fields: ["id"] };
+  const params = { app, fields: ["$id"] };
   const kintoneRecords = await apiClient.record.getAllRecordsWithId(params);
   if (!kintoneRecords || kintoneRecords.length === 0) {
-    return records;
+    return [];
   }
 
   records = kintoneRecords.map(

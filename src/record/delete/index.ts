@@ -1,7 +1,7 @@
-import type { RestAPIClientOptions } from "../kintone/client";
-import { buildRestAPIClient } from "../kintone/client";
+import type { RestAPIClientOptions } from "../../kintone/client";
+import { buildRestAPIClient } from "../../kintone/client";
 import { deleteAllRecords } from "./usecases/delete";
-import { logger } from "../utils/log";
+import { logger } from "../../utils/log";
 
 export type Options = {
   app: string;

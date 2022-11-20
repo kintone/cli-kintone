@@ -1,5 +1,7 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import type { KintoneRecordForDeleteAllParameter } from "../../kintone/types";
+import type { KintoneRecordForDeleteAllParameter } from "../../../kintone/types";
+import { kintoneAllRecordsErrorToString } from "../../error";
+import { ErrorParser } from "../utils/error";
 
 export class DeleteAllRecordsError extends Error {
   private readonly cause: unknown;
@@ -37,7 +39,9 @@ export class DeleteAllRecordsError extends Error {
     }
 
     if (this.cause instanceof KintoneAllRecordsError) {
-      errorMessage += `An error occurred while deleting all records.\n${this.cause.error.message}`;
+      errorMessage += kintoneAllRecordsErrorToString(
+        new ErrorParser(this.cause.error)
+      );
     } else if (this.cause instanceof DeleteAllRecordsError) {
       errorMessage += this.cause.toString();
     } else {

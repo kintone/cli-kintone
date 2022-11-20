@@ -4,7 +4,8 @@ import {
   KintoneAllRecordsError,
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
-import { kintoneAllRecordsErrorToString } from "../error";
+import { kintoneAllRecordsErrorToString } from "../../../error";
+import { ErrorParser } from "../error";
 import type { RecordSchema } from "../../types/schema";
 
 const CHUNK_SIZE = 100;
@@ -55,14 +56,16 @@ describe("kintoneAllRecordsErrorToString", () => {
       errorFieldCode
     );
     const errorMessage = kintoneAllRecordsErrorToString(
-      kintoneAllRecordsError,
-      CHUNK_SIZE,
-      records,
-      numOfProcessedRecords,
-      schema
+      new ErrorParser(
+        kintoneAllRecordsError.error,
+        CHUNK_SIZE,
+        records,
+        numOfProcessedRecords,
+        schema
+      )
     );
     expect(errorMessage).toBe(
-      `An error occurred while uploading records.\n[500] [some code] some error message (some id)\n  An error occurred on ${errorFieldCode} at row ${errorRowIndex}.\n    Cause: invalid value\n`
+      `An error occurred while processing records.\n[500] [some code] some error message (some id)\n  An error occurred on ${errorFieldCode} at row ${errorRowIndex}.\n    Cause: invalid value\n`
     );
   });
 });

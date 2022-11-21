@@ -1,7 +1,7 @@
-import type { IParser } from "./types/parser";
+import type { KintoneAllRecordsErrorParser } from "./types/parser";
 
 export const kintoneAllRecordsErrorToString = (
-  errorParser?: IParser
+  errorParser?: KintoneAllRecordsErrorParser
 ): string => {
   let errorMessage = "An error occurred while processing records.\n";
 

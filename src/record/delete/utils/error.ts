@@ -1,14 +1,14 @@
-import type { IParser } from "../../error/types/parser";
-import type { KintoneRestAPIError } from "@kintone/rest-api-client";
+import type { KintoneAllRecordsErrorParser } from "../../error/types/parser";
+import type { KintoneAllRecordsError } from "@kintone/rest-api-client";
 
-export class ErrorParser implements IParser {
-  private readonly error: KintoneRestAPIError;
+export class ErrorParser implements KintoneAllRecordsErrorParser {
+  private readonly error: KintoneAllRecordsError;
 
-  constructor(error: KintoneRestAPIError) {
+  constructor(error: KintoneAllRecordsError) {
     this.error = error;
   }
 
   toString(): string {
-    return this.error.message;
+    return this.error.error.message;
   }
 }

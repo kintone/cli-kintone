@@ -1,3 +1,3 @@
-export interface IParser {
+export type KintoneAllRecordsErrorParser = {
   toString(): string;
-}
+};

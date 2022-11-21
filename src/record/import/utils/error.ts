@@ -1,17 +1,17 @@
-import type { IParser } from "../../error/types/parser";
-import type { KintoneRestAPIError } from "@kintone/rest-api-client";
+import type { KintoneAllRecordsErrorParser } from "../../error/types/parser";
+import type { KintoneAllRecordsError } from "@kintone/rest-api-client";
 import type { KintoneRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
 
-export class ErrorParser implements IParser {
-  private readonly error: KintoneRestAPIError;
+export class ErrorParser implements KintoneAllRecordsErrorParser {
+  private readonly error: KintoneAllRecordsError;
   private readonly chunkSize: number;
   private readonly records: KintoneRecord[];
   private readonly offset: number;
   private readonly recordSchema: RecordSchema;
 
   constructor(
-    error: KintoneRestAPIError,
+    error: KintoneAllRecordsError,
     chunkSize: number,
     records: KintoneRecord[],
     offset: number,
@@ -25,10 +25,10 @@ export class ErrorParser implements IParser {
   }
 
   toString(): string {
-    let errorMessage: string = `${this.error.message}\n`;
+    let errorMessage: string = `${this.error.error.message}\n`;
 
-    if (this.error.errors !== undefined) {
-      const errors = this.error.errors as {
+    if (this.error.error.errors !== undefined) {
+      const errors = this.error.error.errors as {
         [k: string]: { messages: string[] };
       };
       const orderedErrors = Object.entries(errors).sort((error1, error2) => {
@@ -46,7 +46,7 @@ export class ErrorParser implements IParser {
       });
 
       for (const [key, value] of orderedErrors) {
-        const bulkRequestIndex = this.error.bulkRequestIndex ?? 0;
+        const bulkRequestIndex = this.error.error.bulkRequestIndex ?? 0;
         const indexMatch = key.match(/records\[(?<index>\d+)\]/);
         const index =
           Number(indexMatch?.groups?.index) +
@@ -76,21 +76,16 @@ export class ErrorParser implements IParser {
     return errorMessage;
   }
 
-  /**
-   * Parse error key to string array. For example:
-   * Input: records[0].Table.value[1].value.table_text_0.value
-   * Output: ['records', '0', 'Table', 'value', '1', 'value', 'table_text_0', 'value']
-   * @param {string} errorKey
-   */
-  _parseErrorKey(errorKey: string): string[] {
-    return errorKey.split(/[[\].]+/);
-  }
-
-  _getFieldCodeByErrorKeyWithSchema(
+  private _getFieldCodeByErrorKeyWithSchema(
     errorKey: string,
     schema: RecordSchema
   ): string {
-    const parsedErrorKey = this._parseErrorKey(errorKey);
+    /**
+     * Parse error key to string array. For example:
+     * Input: records[0].Table.value[1].value.table_text_0.value
+     * Output: ['records', '0', 'Table', 'value', '1', 'value', 'table_text_0', 'value']
+     */
+    const parsedErrorKey = errorKey.split(/[[\].]+/);
     const fieldCodeIndex = 2;
     const fieldCode = parsedErrorKey[fieldCodeIndex];
 

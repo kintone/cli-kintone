@@ -58,7 +58,7 @@ export class AddRecordsError extends Error {
     if (this.cause instanceof KintoneAllRecordsError) {
       errorMessage += kintoneAllRecordsErrorToString(
         new ErrorParser(
-          this.cause.error,
+          this.cause,
           this.chunkSize,
           this.records,
           this.numOfSuccess,

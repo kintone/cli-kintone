@@ -57,7 +57,7 @@ describe("kintoneAllRecordsErrorToString", () => {
     );
     const errorMessage = kintoneAllRecordsErrorToString(
       new ErrorParser(
-        kintoneAllRecordsError.error,
+        kintoneAllRecordsError,
         CHUNK_SIZE,
         records,
         numOfProcessedRecords,

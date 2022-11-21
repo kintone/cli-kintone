@@ -40,7 +40,7 @@ export class DeleteAllRecordsError extends Error {
 
     if (this.cause instanceof KintoneAllRecordsError) {
       errorMessage += kintoneAllRecordsErrorToString(
-        new ErrorParser(this.cause.error)
+        new ErrorParser(this.cause)
       );
     } else if (this.cause instanceof DeleteAllRecordsError) {
       errorMessage += this.cause.toString();

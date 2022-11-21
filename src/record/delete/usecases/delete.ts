@@ -25,14 +25,13 @@ const getRecordsForDeleteAll: (
   apiClient: KintoneRestAPIClient,
   app: string
 ) => Promise<KintoneRecordForDeleteAllParameter[]> = async (apiClient, app) => {
-  let records: KintoneRecordForDeleteAllParameter[] = [];
   const params = { app, fields: ["$id"] };
   const kintoneRecords = await apiClient.record.getAllRecordsWithId(params);
   if (!kintoneRecords || kintoneRecords.length === 0) {
     return [];
   }
 
-  records = kintoneRecords.map(
+  const records: KintoneRecordForDeleteAllParameter[] = kintoneRecords.map(
     (record: KintoneRecordForResponse): KintoneRecordForDeleteAllParameter => {
       const idValue = record.$id.value as string;
       return {

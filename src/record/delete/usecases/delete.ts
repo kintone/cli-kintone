@@ -12,6 +12,11 @@ export const deleteAllRecords: (
 ) => Promise<void> = async (apiClient, app) => {
   logger.info("Starting to delete all records...");
   const records = await getRecordsForDeleteAll(apiClient, app);
+  if (records.length === 0) {
+    logger.warn("The specified app does not have any records.");
+    return;
+  }
+
   try {
     const params = { app, records };
     await apiClient.record.deleteAllRecords(params);

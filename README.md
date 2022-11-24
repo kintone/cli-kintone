@@ -162,6 +162,19 @@ If set `--attachments-dir` option, attachment files will be downloaded to local 
   - as for attachments in Table, the file path is `<attachmentsDir>/<fieldCode>-<recordId>-<tableRowIndex>/<filename>`
 - if same name files exist in same Attachment field, renamed to `<filename> (<index>).<ext>`
 
+### delete
+
+The `delete` command allows you to delete all record data of a specified kintone app.
+
+```
+$ cli-kintone delete \
+--base-url https://${yourDomain} \
+--api-token ${apiToken} \
+--app ${kintoneAppId} \
+```
+
+**Notice**: This action cannot be rollback.
+
 ## Supported file formats
 
 cli-kintone supports following formats for both import/export commands.

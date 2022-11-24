@@ -26,6 +26,11 @@ export type KintoneRecordForUpdateParameter =
       revision?: Revision;
     };
 
+export type KintoneRecordForDeleteAllParameter = {
+  id: RecordID;
+  revision?: Revision;
+};
+
 export type KintoneRecordForResponse = {
   [fieldCode: string]: KintoneRecordField.OneOf;
 };

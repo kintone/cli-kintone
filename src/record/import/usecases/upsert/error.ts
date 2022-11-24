@@ -1,5 +1,6 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import { kintoneAllRecordsErrorToString } from "../../utils/error";
+import { ErrorParser } from "../../utils/error";
+import { kintoneAllRecordsErrorToString } from "../../../error";
 import type { KintoneRecord } from "../../types/record";
 import type { RecordSchema } from "../../types/schema";
 
@@ -56,11 +57,13 @@ export class UpsertRecordsError extends Error {
 
     if (this.cause instanceof KintoneAllRecordsError) {
       errorMessage += kintoneAllRecordsErrorToString(
-        this.cause,
-        this.chunkSize,
-        this.records,
-        this.numOfSuccess,
-        this.recordSchema
+        new ErrorParser(
+          this.cause,
+          this.chunkSize,
+          this.records,
+          this.numOfSuccess,
+          this.recordSchema
+        )
       );
     } else if (this.cause instanceof UpsertRecordsError) {
       errorMessage += this.cause.toString();

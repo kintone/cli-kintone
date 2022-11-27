@@ -14,25 +14,27 @@ const customCompletion = (
   completionFilter: (onCompleted?: CompletionCallback) => any,
   done: (completions: string[]) => any
 ) => {
-  completionFilter((err: Error | null, defaultCompletions: string[] | undefined) => {
-    if (!defaultCompletions) {
-      done([]);
-      return;
-    }
-
-    const filteredCompletions: string[] = [];
-    const aliasPattern = /^--?[a-zA-Z\d]:$/;
-    defaultCompletions.forEach((completion: string) => {
-      // TODO: remove this workaround after https://github.com/yargs/yargs/issues/2268 is fixed.
-      if (aliasPattern.test(completion)) {
+  completionFilter(
+    (err: Error | null, defaultCompletions: string[] | undefined) => {
+      if (!defaultCompletions) {
+        done([]);
         return;
       }
 
-      // TODO: remove this workaround after https://github.com/yargs/yargs/issues/2270 is fixed.
-      filteredCompletions.push(completion.replace(/(\r\n|\n|\r)/gm, " "));
-    });
-    done(filteredCompletions);
-  });
+      const filteredCompletions: string[] = [];
+      const aliasPattern = /^--?[a-zA-Z\d]:$/;
+      defaultCompletions.forEach((completion: string) => {
+        // TODO: remove this workaround after https://github.com/yargs/yargs/issues/2268 is fixed.
+        if (aliasPattern.test(completion)) {
+          return;
+        }
+
+        // TODO: remove this workaround after https://github.com/yargs/yargs/issues/2270 is fixed.
+        filteredCompletions.push(completion.replace(/(\r\n|\n|\r)/gm, " "));
+      });
+      done(filteredCompletions);
+    }
+  );
 };
 
 // eslint-disable-next-line no-unused-expressions

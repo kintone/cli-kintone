@@ -14,9 +14,9 @@ const customCompletion = (
   completionFilter: (onCompleted?: CompletionCallback) => any,
   done: (completions: string[]) => any
 ) => {
-  completionFilter((err: any, defaultCompletions: any) => {
+  completionFilter((err: Error | null, defaultCompletions: string[] | undefined) => {
     if (!defaultCompletions) {
-      done(defaultCompletions);
+      done([]);
       return;
     }
 

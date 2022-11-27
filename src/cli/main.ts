@@ -3,8 +3,8 @@ import { recordCommand } from "./record";
 
 // eslint-disable-next-line no-unused-expressions
 yargs
-  .completion("completion")
   .command(recordCommand)
   .demandCommand()
   .strict()
-  .help().argv;
+  .help()
+  .completion('completion', customCompletion as any).argv;

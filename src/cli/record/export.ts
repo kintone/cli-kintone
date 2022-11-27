@@ -20,21 +20,21 @@ const builder = (args: yargs.Argv) =>
       requiresArg: true,
     })
     .option("username", {
+      alias: "u",
       describe: "Kintone Username",
       default: process.env.KINTONE_USERNAME,
       defaultDescription: "KINTONE_USERNAME",
       type: "string",
       requiresArg: true,
     })
-    .alias("u", "username")
     .option("password", {
+      alias: "p",
       describe: "Kintone Password",
       default: process.env.KINTONE_PASSWORD,
       defaultDescription: "KINTONE_PASSWORD",
       type: "string",
       requiresArg: true,
     })
-    .alias("p", "password")
     .option("api-token", {
       describe: "App's API token",
       default: process.env.KINTONE_API_TOKEN,
@@ -81,11 +81,11 @@ const builder = (args: yargs.Argv) =>
       requiresArg: true,
     })
     .option("condition", {
+      alias: "c",
       describe: "The query string",
       type: "string",
       requiresArg: true,
     })
-    .alias("c", "condition")
     .option("order-by", {
       description: "The sort order as a query",
       type: "string",

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.0](https://github.com/kintone/cli-kintone/compare/v1.1.0...v1.2.0) (2022-11-28)
+
+
+### Features
+
+* providing subcommand for command completion ([#158](https://github.com/kintone/cli-kintone/issues/158)) ([0b183d1](https://github.com/kintone/cli-kintone/commit/0b183d149fa435d1131f78824183079121f8f5bb))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.2.1 ([#163](https://github.com/kintone/cli-kintone/issues/163)) ([549cb19](https://github.com/kintone/cli-kintone/commit/549cb19ae1eeef3ee0eb5e9f98da618ee01ce085))
+* the output of command completion is displayed incorrectly ([#169](https://github.com/kintone/cli-kintone/issues/169)) ([b44a99e](https://github.com/kintone/cli-kintone/commit/b44a99ef3d4b5c5b265a3e13bbb0fb0a70b2eb9c))
+
 ## [1.1.0](https://github.com/kintone/cli-kintone/compare/v1.0.1...v1.1.0) (2022-11-10)
 
 

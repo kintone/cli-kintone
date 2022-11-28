@@ -6,6 +6,7 @@ import os from "os";
 import rimraf from "rimraf";
 import { promisify } from "util";
 import { fileURLToPath } from "url";
+import packageJson from "../package.json" assert { type: "json" };
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(dirname, "../");
@@ -78,7 +79,7 @@ for (const recipe of recipes) {
   await $`cp ${licenseFile} ${assetsDir}/LICENSE`;
   await $`cp ${thirdPartyNoticeFile} ${assetsDir}/NOTICE`;
 
-  const zipFile = `cli-kintone-${recipe.type}.zip`;
+  const zipFile = `cli-kintone_v${packageJson.version}_${recipe.type}.zip`;
   await $`zip -r ${zipFile} ${assetsDir}`;
   await $`cp ${zipFile} ${artifactsDir}`;
 }

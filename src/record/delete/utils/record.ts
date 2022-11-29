@@ -32,11 +32,11 @@ export const evaluateRecords: (
   const unprivilegedRecordIds: number[] = [];
   const privilegedRecordIds: number[] = [];
 
-  if(recordIds.length === 0){
+  if (recordIds.length === 0) {
     return {
       privilegedRecordIds,
-      unprivilegedRecordIds
-    }
+      unprivilegedRecordIds,
+    };
   }
 
   do {

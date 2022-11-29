@@ -19,8 +19,22 @@ describe("deleteAllRecords", () => {
         },
       },
     ]);
+    apiClient.app.evaluateRecordsAcl = jest.fn().mockResolvedValue({
+      rights: [
+        {
+          id: 1,
+          record: {
+            viewable: true,
+            editable: true,
+            deletable: true,
+          },
+        },
+      ],
+    });
     apiClient.record.deleteAllRecords = jest.fn().mockResolvedValue([{}]);
-    return expect(deleteAllRecords(apiClient, "1")).resolves.not.toThrow();
+    return expect(
+      deleteAllRecords(apiClient, "1", true)
+    ).resolves.not.toThrow();
   });
 
   it("should pass parameters to the apiClient correctly", async () => {
@@ -32,11 +46,23 @@ describe("deleteAllRecords", () => {
         },
       },
     ]);
+    apiClient.app.evaluateRecordsAcl = jest.fn().mockResolvedValue({
+      rights: [
+        {
+          id: 1,
+          record: {
+            viewable: true,
+            editable: true,
+            deletable: true,
+          },
+        },
+      ],
+    });
     const deleteAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
     apiClient.record.deleteAllRecords = deleteAllRecordsMockFn;
     const APP_ID = "1";
 
-    await deleteAllRecords(apiClient, APP_ID);
+    await deleteAllRecords(apiClient, APP_ID, true);
 
     expect(deleteAllRecordsMockFn.mock.calls[0][0]).toStrictEqual({
       app: APP_ID,
@@ -54,7 +80,21 @@ describe("deleteAllRecords", () => {
         },
       },
     ]);
+    apiClient.app.evaluateRecordsAcl = jest.fn().mockResolvedValue({
+      rights: [
+        {
+          id: 1,
+          record: {
+            viewable: true,
+            editable: true,
+            deletable: true,
+          },
+        },
+      ],
+    });
     apiClient.record.deleteAllRecords = jest.fn().mockRejectedValueOnce(error);
-    return expect(deleteAllRecords(apiClient, "1")).rejects.toThrow(error);
+    return expect(deleteAllRecords(apiClient, "1", true)).rejects.toThrow(
+      error
+    );
   });
 });

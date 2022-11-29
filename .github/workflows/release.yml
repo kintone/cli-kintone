@@ -51,10 +51,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          VERSION=$(jq -r '.version' ./package.json)
           gh release upload ${{ needs.release.outputs.tag_name }} \
-            ${GITHUB_WORKSPACE}/artifacts/cli-kintone-linux.zip \
-            ${GITHUB_WORKSPACE}/artifacts/cli-kintone-macos.zip \
-            ${GITHUB_WORKSPACE}/artifacts/cli-kintone-win.zip
+            ${GITHUB_WORKSPACE}/artifacts/cli-kintone_v${VERSION}_linux.zip \
+            ${GITHUB_WORKSPACE}/artifacts/cli-kintone_v${VERSION}_macos.zip \
+            ${GITHUB_WORKSPACE}/artifacts/cli-kintone_v${VERSION}_win.zip
 
   publish:
     name: Publish release

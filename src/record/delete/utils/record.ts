@@ -49,8 +49,7 @@ export const evaluateRecords: (
       ids: evaluationRecordIds,
     });
     const rights = response.rights;
-    for (let index = 0; index < rights.length; index++) {
-      const right = rights[index];
+    for (const right of rights) {
       if (right.record.deletable) {
         privilegedRecordIds.push(Number(right.id));
       } else {

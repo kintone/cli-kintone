@@ -13,7 +13,9 @@ export const run: (
   try {
     const { app, ...restApiClientOptions } = options;
     const apiClient = buildRestAPIClient(restApiClientOptions);
-    await deleteAllRecords(apiClient, app);
+    const isCheckPermission =
+      typeof restApiClientOptions.username !== "undefined";
+    await deleteAllRecords(apiClient, app, isCheckPermission);
   } catch (e) {
     logger.error(e);
     // eslint-disable-next-line no-process-exit

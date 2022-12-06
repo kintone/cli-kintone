@@ -36,7 +36,7 @@ jobs:
     needs: release
     if: ${{ needs.release.outputs.release_created }}
     steps:
-      - uses: jonabc/setup-licensed@036afd4a50ae597a4401f8be39d739faddd70e71
+      - uses: jonabc/setup-licensed@24931374ba8e67b4153ccbade94deca833861ed1
         with:
           version: '3.x'
       - uses: actions/checkout@v3
@@ -51,10 +51,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          VERSION=$(jq -r '.version' ./package.json)
           gh release upload ${{ needs.release.outputs.tag_name }} \
-            ${GITHUB_WORKSPACE}/artifacts/cli-kintone-linux.zip \
-            ${GITHUB_WORKSPACE}/artifacts/cli-kintone-macos.zip \
-            ${GITHUB_WORKSPACE}/artifacts/cli-kintone-win.zip
+            ${GITHUB_WORKSPACE}/artifacts/cli-kintone_v${VERSION}_linux.zip \
+            ${GITHUB_WORKSPACE}/artifacts/cli-kintone_v${VERSION}_macos.zip \
+            ${GITHUB_WORKSPACE}/artifacts/cli-kintone_v${VERSION}_win.zip
 
   publish:
     name: Publish release

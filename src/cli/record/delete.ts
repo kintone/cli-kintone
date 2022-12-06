@@ -1,10 +1,15 @@
-import type yargs from "yargs";
+import yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { run } from "../../record/delete";
+import inquirer from "inquirer";
+import type { Question } from "inquirer";
 
 const command = "delete";
 
 const describe = "delete all records";
+
+const FORCE_DELETE_KEY = "yes";
+const FORCE_DELETE_ALIAS = "y";
 
 const builder = (args: yargs.Argv) =>
   args
@@ -81,13 +86,35 @@ const builder = (args: yargs.Argv) =>
       default: process.env.HTTPS_PROXY ?? process.env.https_proxy,
       defaultDescription: "HTTPS_PROXY",
       type: "string",
+    })
+    .option(FORCE_DELETE_KEY, {
+      alias: FORCE_DELETE_ALIAS,
+      describe: "Force to delete records",
+      type: "boolean",
     });
 
 type Args = yargs.Arguments<
   ReturnType<typeof builder> extends yargs.Argv<infer U> ? U : never
 >;
 
-const handler = (args: Args) => {
+const isArgProvided = (
+  processArgs: string[],
+  arg: string,
+  alias?: string
+): boolean => {
+  return processArgs.some((argProvided: string) => {
+    if (argProvided === `--${arg}` || argProvided.startsWith(`--${arg}=`)) {
+      return true;
+    }
+
+    return (
+      alias &&
+      (argProvided === `-${alias}` || argProvided.startsWith(`-${alias}=`))
+    );
+  });
+};
+
+const execute = (args: Args) => {
   return run({
     baseUrl: args["base-url"],
     username: args.username,
@@ -100,6 +127,33 @@ const handler = (args: Args) => {
     pfxFilePath: args["pfx-file-path"],
     pfxFilePassword: args["pfx-file-password"],
     httpsProxy: args.proxy,
+  });
+};
+
+const handler = (args: Args) => {
+  const processArgs = process.argv.slice(2);
+  if (isArgProvided(processArgs, FORCE_DELETE_KEY, FORCE_DELETE_ALIAS)) {
+    return execute(args);
+  }
+
+  const prompt = inquirer.createPromptModule();
+  const questions: Question[] = [
+    {
+      name: FORCE_DELETE_KEY,
+      type: "confirm",
+      message: "Are you sure want to delete records?",
+      default: true,
+    },
+  ];
+
+  return prompt(questions).then((answers) => {
+    const argv = yargs(processArgs).argv;
+    const result = Object.assign({}, argv, answers);
+    if (!result[FORCE_DELETE_KEY] && !result[FORCE_DELETE_ALIAS]) {
+      return Promise.resolve();
+    }
+
+    return execute(args);
   });
 };
 

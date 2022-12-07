@@ -36,3 +36,11 @@ allowed:
 reviewed:
   npm:
     - color-convert # MIT
+    - bl # MIT
+    - wcwidth # MIT
+    - type-fest # MIT OR CC0-1.0
+    - string_decoder # MIT
+    - string_decoder # MIT
+    - readable-stream # MIT
+    - lodash # MIT
+    - ieee754 # BSD-3-Clause

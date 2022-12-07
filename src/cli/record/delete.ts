@@ -1,4 +1,4 @@
-import yargs from "yargs";
+import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { run } from "../../record/delete";
 import inquirer from "inquirer";
@@ -97,23 +97,6 @@ type Args = yargs.Arguments<
   ReturnType<typeof builder> extends yargs.Argv<infer U> ? U : never
 >;
 
-const isArgProvided = (
-  processArgs: string[],
-  arg: string,
-  alias?: string
-): boolean => {
-  return processArgs.some((argProvided: string) => {
-    if (argProvided === `--${arg}` || argProvided.startsWith(`--${arg}=`)) {
-      return true;
-    }
-
-    return (
-      alias &&
-      (argProvided === `-${alias}` || argProvided.startsWith(`-${alias}=`))
-    );
-  });
-};
-
 const execute = (args: Args) => {
   return run({
     baseUrl: args["base-url"],
@@ -130,9 +113,8 @@ const execute = (args: Args) => {
   });
 };
 
-const handler = (args: Args) => {
-  const processArgs = process.argv.slice(2);
-  if (isArgProvided(processArgs, FORCE_DELETE_KEY, FORCE_DELETE_ALIAS)) {
+const handler = async (args: Args) => {
+  if (args.yes !== undefined && args.yes) {
     return execute(args);
   }
 
@@ -146,15 +128,12 @@ const handler = (args: Args) => {
     },
   ];
 
-  return prompt(questions).then((answers) => {
-    const argv = yargs(processArgs).argv;
-    const result = Object.assign({}, argv, answers);
-    if (!result[FORCE_DELETE_KEY] && !result[FORCE_DELETE_ALIAS]) {
-      return Promise.resolve();
-    }
-
+  const answers = await prompt(questions);
+  if (answers[FORCE_DELETE_KEY]) {
     return execute(args);
-  });
+  }
+
+  return undefined;
 };
 
 export const deleteCommand: CommandModule<{}, Args> = {

@@ -14,6 +14,7 @@ allowed:
   - apache-2.0
   - bsd-3-clause
   - isc
+  - 0bsd
 
 # These dependencies are ignored during enumeration.
 # They will not be cached, and will not raise errors or warnings.

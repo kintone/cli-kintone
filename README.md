@@ -168,6 +168,7 @@ The `delete` command allows you to delete records of a specified kintone app.
 
 **Notice**
 
+- This command only supports API Token
 - This action cannot be rollback.
 
 ```
@@ -189,10 +190,6 @@ Options:
       --help                 Show help                                 [boolean]
       --base-url             Kintone Base Url
                                  [string] [required] [default: KINTONE_BASE_URL]
-  -u, --username             Kintone Username
-                                            [string] [default: KINTONE_USERNAME]
-  -p, --password             Kintone Password
-                                            [string] [default: KINTONE_PASSWORD]
       --api-token            App's API token[array] [default: KINTONE_API_TOKEN]
       --basic-auth-username  Kintone Basic Auth Username
                                  [string] [default: KINTONE_BASIC_AUTH_USERNAME]

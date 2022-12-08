@@ -57,7 +57,7 @@
     "@babel/preset-typescript": "^7.18.6",
     "@cybozu/eslint-config": "^18.0.0",
     "@types/jest": "^29.2.4",
-    "@types/node": "^18.11.10",
+    "@types/node": "^18.11.11",
     "@types/yargs": "^17.0.13",
     "@types/inquirer": "^8.2.5",
     "babel-jest": "^29.3.1",
@@ -72,7 +72,7 @@
     "zx": "^7.1.1"
   },
   "dependencies": {
-    "@kintone/rest-api-client": "^3.2.1",
+    "@kintone/rest-api-client": "^3.2.2",
     "chalk": "4",
     "csv-parse": "^4.16.3",
     "csv-stringify": "5.6.5",

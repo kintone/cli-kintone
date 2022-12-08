@@ -164,16 +164,49 @@ If set `--attachments-dir` option, attachment files will be downloaded to local 
 
 ### delete
 
-The `delete` command allows you to delete all record data of a specified kintone app.
+The `delete` command allows you to delete records of a specified kintone app.
+
+**Notice**
+
+- This action cannot be rollback.
 
 ```
-$ cli-kintone delete \
+$ cli-kintone record delete \
 --base-url https://${yourDomain} \
 --api-token ${apiToken} \
 --app ${kintoneAppId} \
 ```
 
-**Notice**: This action cannot be rollback.
+You can use the option `--yes` or `-y` to bypass the confirmation step.
+
+#### Options
+
+Some options use environment variables starting `KINTONE_` as default values.
+
+```
+Options:
+      --version              Show version number                       [boolean]
+      --help                 Show help                                 [boolean]
+      --base-url             Kintone Base Url
+                                 [string] [required] [default: KINTONE_BASE_URL]
+  -u, --username             Kintone Username
+                                            [string] [default: KINTONE_USERNAME]
+  -p, --password             Kintone Password
+                                            [string] [default: KINTONE_PASSWORD]
+      --api-token            App's API token[array] [default: KINTONE_API_TOKEN]
+      --basic-auth-username  Kintone Basic Auth Username
+                                 [string] [default: KINTONE_BASIC_AUTH_USERNAME]
+      --basic-auth-password  Kintone Basic Auth Password
+                                 [string] [default: KINTONE_BASIC_AUTH_PASSWORD]
+      --app                  The ID of the app               [string] [required]
+      --guest-space-id       The ID of guest space
+                                      [string] [default: KINTONE_GUEST_SPACE_ID]
+      --pfx-file-path        The path to client certificate file        [string]
+      --pfx-file-password    The password of client certificate file    [string]
+      --proxy                The URL of a proxy server
+                                                 [string] [default: HTTPS_PROXY]
+  -y, --yes                  Force to delete records                   [boolean]
+```
 
 ## Supported file formats
 

@@ -1,10 +1,15 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { run } from "../../record/delete";
+import inquirer from "inquirer";
+import type { Question } from "inquirer";
 
 const command = "delete";
 
 const describe = "delete all records";
+
+const FORCE_DELETE_KEY = "yes";
+const FORCE_DELETE_ALIAS = "y";
 
 const builder = (args: yargs.Argv) =>
   args
@@ -81,13 +86,18 @@ const builder = (args: yargs.Argv) =>
       default: process.env.HTTPS_PROXY ?? process.env.https_proxy,
       defaultDescription: "HTTPS_PROXY",
       type: "string",
+    })
+    .option(FORCE_DELETE_KEY, {
+      alias: FORCE_DELETE_ALIAS,
+      describe: "Force to delete records",
+      type: "boolean",
     });
 
 type Args = yargs.Arguments<
   ReturnType<typeof builder> extends yargs.Argv<infer U> ? U : never
 >;
 
-const handler = (args: Args) => {
+const execute = (args: Args) => {
   return run({
     baseUrl: args["base-url"],
     username: args.username,
@@ -101,6 +111,29 @@ const handler = (args: Args) => {
     pfxFilePassword: args["pfx-file-password"],
     httpsProxy: args.proxy,
   });
+};
+
+const handler = async (args: Args) => {
+  if (args.yes !== undefined && args.yes) {
+    return execute(args);
+  }
+
+  const prompt = inquirer.createPromptModule();
+  const questions: Question[] = [
+    {
+      name: FORCE_DELETE_KEY,
+      type: "confirm",
+      message: "Are you sure want to delete records?",
+      default: true,
+    },
+  ];
+
+  const answers = await prompt(questions);
+  if (answers[FORCE_DELETE_KEY]) {
+    return execute(args);
+  }
+
+  return undefined;
 };
 
 export const deleteCommand: CommandModule<{}, Args> = {

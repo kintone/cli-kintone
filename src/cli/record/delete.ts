@@ -21,22 +21,6 @@ const builder = (args: yargs.Argv) =>
       demandOption: true,
       requiresArg: true,
     })
-    .option("username", {
-      alias: "u",
-      describe: "Kintone Username",
-      default: process.env.KINTONE_USERNAME,
-      defaultDescription: "KINTONE_USERNAME",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("password", {
-      alias: "p",
-      describe: "Kintone Password",
-      default: process.env.KINTONE_PASSWORD,
-      defaultDescription: "KINTONE_PASSWORD",
-      type: "string",
-      requiresArg: true,
-    })
     .option("api-token", {
       describe: "App's API token",
       default: process.env.KINTONE_API_TOKEN,
@@ -100,8 +84,6 @@ type Args = yargs.Arguments<
 const execute = (args: Args) => {
   return run({
     baseUrl: args["base-url"],
-    username: args.username,
-    password: args.password,
     apiToken: args["api-token"],
     basicAuthUsername: args["basic-auth-username"],
     basicAuthPassword: args["basic-auth-password"],

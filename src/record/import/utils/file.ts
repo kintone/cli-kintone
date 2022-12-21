@@ -1,13 +1,15 @@
 import fs from "fs";
 import path from "path";
 import iconv from "iconv-lite";
+import { Readable } from "stream";
+import type { ReadableStream } from "stream/web";
 
 export type SupportedImportEncoding = "utf8" | "sjis";
 
-export const readFile: (
+export const readFileStream: (
   filePath: string,
   encoding?: SupportedImportEncoding
-) => Promise<{ content: string; format: string }> = async (
+) => { content: ReadableStream<string>; format: string } = (
   filePath,
   encoding = "utf8"
 ) => {
@@ -18,18 +20,10 @@ export const readFile: (
   const stream = fs
     .createReadStream(filePath)
     .pipe(iconv.decodeStream(encoding));
-  const content = await readStream(stream);
-  return { content, format };
-};
+  const readable = new Readable().wrap(stream);
+  const webStream: ReadableStream<string> = Readable.toWeb(readable);
 
-const readStream: (stream: NodeJS.ReadWriteStream) => Promise<string> = async (
-  stream
-) => {
-  let content = "";
-  for await (const chunk of stream) {
-    content += chunk;
-  }
-  return content;
+  return { content: webStream, format };
 };
 
 const extractFileFormat: (filepath: string) => string = (filepath) => {

@@ -1,5 +1,6 @@
 # Ignore artifacts:
 lib
+dist
 coverage
 
 # Ignore all HTML files:

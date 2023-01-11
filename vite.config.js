@@ -5,18 +5,13 @@ import glob from "glob";
 export default defineConfig({
   // Dev note: The logic below is used to preserve process.env in the build files
   // Ref: https://github.com/vitejs/vite/issues/3229#issuecomment-1028093830
+  // In order to use some values of process.env in the build files, please specify as below
+  // define: {
+  //   "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+  //   "process.env": "process.env",
+  // },
   define: {
-    "process.env.KINTONE_BASE_URL": "process.env.KINTONE_BASE_URL",
-    "process.env.KINTONE_USERNAME": "process.env.KINTONE_USERNAME",
-    "process.env.KINTONE_PASSWORD": "process.env.KINTONE_PASSWORD",
-    "process.env.KINTONE_API_TOKEN": "process.env.KINTONE_API_TOKEN",
-    "process.env.KINTONE_BASIC_AUTH_USERNAME":
-      "process.env.KINTONE_BASIC_AUTH_USERNAME",
-    "process.env.KINTONE_BASIC_AUTH_PASSWORD":
-      "process.env.KINTONE_BASIC_AUTH_PASSWORD",
-    "process.env.KINTONE_GUEST_SPACE_ID": "process.env.KINTONE_GUEST_SPACE_ID",
-    "process.env.HTTPS_PROXY": "process.env.HTTPS_PROXY",
-    "process.env.https_proxy": "process.env.https_proxy",
+    "process.env": "process.env",
   },
   build: {
     rollupOptions: {

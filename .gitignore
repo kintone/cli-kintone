@@ -9,6 +9,7 @@ yarn-error.log*
 
 # testing
 coverage/
+stats.html
 
 # licensed
 .licenses

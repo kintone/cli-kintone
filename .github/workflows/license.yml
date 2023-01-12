@@ -35,6 +35,7 @@ jobs:
         uses: jonabc/setup-licensed@24931374ba8e67b4153ccbade94deca833861ed1
         with:
           version: '3.x'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check out repository
         uses: actions/checkout@v3

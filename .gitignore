@@ -15,6 +15,7 @@ coverage/
 
 # artifacts
 lib
+dist
 bin
 artifacts
 

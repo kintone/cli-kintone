@@ -1845,15 +1845,16 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@kintone/rest-api-client@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@kintone/rest-api-client/-/rest-api-client-3.2.3.tgz#dca201536d4158547209e5b557796f4996884c99"
-  integrity sha512-mYsKNS5j47LYN7kX44NNAshdPCsjzlLl4PF6o8XCPEn+tXFYqmHgOC4Bm88GHWCpybCdVGMQzqyUbTlpUu6IDg==
+"@kintone/rest-api-client@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@kintone/rest-api-client/-/rest-api-client-3.3.0.tgz#5021dd91101ee9e3b6e165cef7685057048a3f6e"
+  integrity sha512-oArQm/Gwmq421HBfEDC/kPUjAj8wAX11sMJRd7XFmfE5ViKTrdjzY+TwDc1gjQi4lnP/Nw+1aoi+H+XyGfKzlQ==
   dependencies:
     axios "^0.27.2"
     core-js "^3.25.5"
     form-data "^4.0.0"
-    js-base64 "^3.7.3"
+    js-base64 "^3.7.4"
+    mime-types "^2.1.35"
     qs "^6.10.5"
 
 "@nodelib/fs.scandir@2.1.5":
@@ -4332,10 +4333,10 @@ jest@^29.4.0:
     import-local "^3.0.2"
     jest-cli "^29.4.0"
 
-js-base64@^3.7.3:
-  version "3.7.3"
-  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.7.3.tgz#2e784bb0851636bf1e99ef12e4f3a8a8c9b7639f"
-  integrity sha512-PAr6Xg2jvd7MCR6Ld9Jg3BmTcjYsHEBx1VlwEwULb/qowPf5VD9kEMagj23Gm7JRnSvE/Da/57nChZjnvL8v6A==
+js-base64@^3.7.4:
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.7.4.tgz#af95b20f23efc8034afd2d1cc5b9d0adf7419037"
+  integrity sha512-wpM/wi20Tl+3ifTyi0RdDckS4YTD4Lf953mBRrpG8547T7hInHNPEj8+ck4gB8VDcGyeAWFK++Wb/fU1BeavKQ==
 
 js-sdsl@^4.1.4:
   version "4.1.4"
@@ -4584,7 +4585,7 @@ mime-db@1.52.0:
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.52.0.tgz#bbabcdc02859f4987301c856e3387ce5ec43bf70"
   integrity sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==
 
-mime-types@^2.1.12:
+mime-types@^2.1.12, mime-types@^2.1.35:
   version "2.1.35"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.35.tgz#381a871b62a734450660ae3deee44813f70d959a"
   integrity sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==

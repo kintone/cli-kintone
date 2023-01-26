@@ -39,6 +39,7 @@ jobs:
       - uses: jonabc/setup-licensed@0b816e1089b3a158cc8a5a3b95ae51c2cecac9e0
         with:
           version: '3.x'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v3
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3

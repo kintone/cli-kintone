@@ -16,12 +16,13 @@
   "scripts": {
     "start": "yarn build --watch",
     "prebuild": "yarn clean",
-    "build": "tsc --build --force",
+    "build": "vite build --force",
     "postbuild": "yarn pkg",
     "build:artifacts": "run-s build licensed compress",
-    "pkg": "vite build --force && pkg ./dist/cli/main.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
+    "pkg": "pkg ./dist/cli-kintone.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
     "licensed": "zx ./scripts/generate-license-notice.mjs",
     "compress": "zx ./scripts/compress-to-zip-file.mjs",
+    "typecheck": "tsc --pretty --noEmit",
     "test": "jest",
     "test:ci": "jest --runInBand",
     "lint": "run-p -l lint:*",
@@ -38,6 +39,7 @@
   },
   "files": [
     "lib",
+    "dist",
     "cli.js"
   ],
   "keywords": [
@@ -58,6 +60,7 @@
     "@cybozu/eslint-config": "^18.0.0",
     "@types/jest": "^29.4.0",
     "@types/node": "^18.11.18",
+    "@types/rollup-plugin-auto-external": "^2.0.2",
     "@types/yargs": "^17.0.13",
     "babel-jest": "^29.4.1",
     "@types/inquirer": "^8.2.5",
@@ -68,11 +71,12 @@
     "pkg": "^5.8.0",
     "prettier": "^2.8.3",
     "rimraf": "^3.0.2",
+    "rollup-plugin-auto-external": "^2.0.0",
+    "rollup-plugin-visualizer": "^5.9.0",
     "typescript": "^4.8.4",
-    "zx": "^7.1.1",
     "vite": "^4.0.4",
-    "glob": "^8.1.0",
-    "rollup-plugin-multi-input": "^1.3.3"
+    "vite-plugin-checker": "^0.5.3",
+    "zx": "^7.1.1"
   },
   "dependencies": {
     "@kintone/rest-api-client": "^3.3.0",

@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require("./lib/cli/main.js");
+require("./dist/cli-kintone.js");

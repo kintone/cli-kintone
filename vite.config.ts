@@ -1,6 +1,8 @@
 import { defineConfig } from "vite";
-import multiInput from "rollup-plugin-multi-input";
-import glob from "glob";
+import { resolve } from "path";
+import autoExternal from "rollup-plugin-auto-external";
+import { visualizer } from "rollup-plugin-visualizer";
+import checker from "vite-plugin-checker";
 
 export default defineConfig({
   // Dev note: The logic below is used to preserve process.env in the build files
@@ -14,14 +16,13 @@ export default defineConfig({
     "process.env": "process.env",
   },
   build: {
+    lib: {
+      entry: resolve(__dirname, "src/cli/main.ts"),
+      formats: ["cjs"],
+    },
     rollupOptions: {
-      input: glob.sync("lib/**/*.js", { ignore: "**/__tests__/**" }),
-      output: {
-        format: "cjs",
-        dir: "dist",
-        entryFileNames: "[name].js",
-      },
-      plugins: [multiInput({ relative: "lib/" })],
+      plugins: [autoExternal(), visualizer()],
     },
   },
+  plugins: [checker({ typescript: true })],
 });

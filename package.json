@@ -39,6 +39,7 @@
   },
   "files": [
     "lib",
+    "dist",
     "cli.js"
   ],
   "keywords": [

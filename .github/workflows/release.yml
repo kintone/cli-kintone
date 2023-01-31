@@ -36,7 +36,7 @@ jobs:
     needs: release
     if: ${{ needs.release.outputs.release_created }}
     steps:
-      - uses: jonabc/setup-licensed@0b816e1089b3a158cc8a5a3b95ae51c2cecac9e0
+      - uses: jonabc/setup-licensed@0e5069eac49a285317cf8d3dbe3dfeecc9ff9185
         with:
           version: '3.x'
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,8 +1,8 @@
 import type { RestAPIClientOptions } from "../../kintone/client";
 import { buildRestAPIClient } from "../../kintone/client";
 import type { SupportedImportEncoding } from "./utils/file";
-import { readFileStream } from "./utils/file";
-import { TransformStringToRecords, parseRecords } from "./parsers";
+import { readFile } from "./utils/file";
+import { parseRecords } from "./parsers";
 import { addRecords } from "./usecases/add";
 import { upsertRecords } from "./usecases/upsert";
 import { createSchema } from "./schema";
@@ -42,16 +42,16 @@ export const run: (
         ? userSelected(fields, fieldsJson, updateKey)
         : defaultTransformer()
     );
-    const { content, format } = readFileStream(filePath, encoding);
-    const [records, recordsTmp] = content
-      .pipeThrough(new TransformStringToRecords(format, schema))
-      .tee();
-    const result = await recordsTmp.getReader().read();
-    if (result.done) {
+    const { content, format } = await readFile(filePath, encoding);
+    const records = await parseRecords({
+      source: content,
+      format,
+      schema,
+    });
+    if (records.length === 0) {
       logger.warn("The input file does not have any records");
       return;
     }
-
     const skipMissingFields = !fields;
     if (updateKey) {
       await upsertRecords(apiClient, app, records, schema, updateKey, {
@@ -68,19 +68,5 @@ export const run: (
     logger.error(e);
     // eslint-disable-next-line no-process-exit
     process.exit(1);
-  }
-};
-
-const main = async () => {
-  init();
-  try {
-    const fsStream = fs.createReadStream();
-    await fsStream
-      .pipeThrough(tranfromStringToCsv)
-      .pipeThrough(tranformCsvToRecord)
-      .pipeThrough(transformRecordToAPIRequestChunk)
-      .pipeTo(writeToKintone);
-  } catch (e) {
-    logger.error(e);
   }
 };

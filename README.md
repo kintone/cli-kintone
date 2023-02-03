@@ -217,6 +217,7 @@ All records of the target app will be deleted if the option `--file-path` is not
 The specific records can be deleted by specifying the option `--file-path`.
 
 The value of the `--file-path` must be the path to the CSV file and should meet the following requirements:
+
 - The file extension should be ".csv"
 - The header row of the record number column must be the record number field code which is defined in the target app.
 - If using the app code in the record number,

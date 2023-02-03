@@ -1,8 +1,9 @@
 import { AddRecordsError } from "../record/import/usecases/add/error";
 import { UpsertRecordsError } from "../record/import/usecases/upsert/error";
 import { ParserError } from "../record/import/parsers/error";
+import { DeleteAllRecordsError } from "../record/delete/usecases/deleteAll/error";
+import { DeleteRecordsError } from "../record/delete/usecases/delete/error";
 import chalk from "chalk";
-import { DeleteAllRecordsError } from "../record/delete/usecases/error";
 
 const currentISOString = () => new Date().toISOString();
 
@@ -52,7 +53,9 @@ const parseErrorMessage = (error: unknown): string => {
       return error.toString();
     } else if (error instanceof DeleteAllRecordsError) {
       return error.toString();
-    } else if (error instanceof ParserError) {
+    } else if (error instanceof DeleteRecordsError) {
+      return error.toString();
+    }else if (error instanceof ParserError) {
       return error.toString();
     }
     return "" + error;

@@ -1,10 +1,10 @@
-import type { KintoneRecordForDeleteAllParameter } from "../../../../kintone/types";
+import type { KintoneRecordForDeleteAllParameter } from "../../../../../kintone/types";
 import type { KintoneErrorResponse } from "@kintone/rest-api-client";
 import {
   KintoneAllRecordsError,
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
-import { DeleteAllRecordsError } from "../error";
+import { DeleteAllRecordsError } from "../../deleteAll/error";
 
 describe("DeleteAllRecordsError", () => {
   it("should return error message", () => {

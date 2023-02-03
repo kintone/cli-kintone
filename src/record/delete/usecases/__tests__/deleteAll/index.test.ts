@@ -1,5 +1,5 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { deleteAllRecords } from "../delete";
+import { deleteAllRecords } from "../../deleteAll";
 
 describe("deleteAllRecords", () => {
   let apiClient: KintoneRestAPIClient;

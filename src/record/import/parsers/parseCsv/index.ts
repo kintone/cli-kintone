@@ -5,7 +5,7 @@ import type { RecordSchema } from "../../types/schema";
 import csvParse from "csv-parse/lib/sync";
 
 import { convertRecord, recordReader } from "./record";
-import { SEPARATOR } from "./constants";
+import { SEPARATOR } from "../../../constants";
 import { ParserError } from "../error";
 
 export const parseCsv: (

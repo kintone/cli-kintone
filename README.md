@@ -176,6 +176,7 @@ $ cli-kintone record delete \
 --base-url https://${yourDomain} \
 --api-token ${apiToken} \
 --app ${kintoneAppId} \
+--file-path ${filepath}
 ```
 
 You can use the option `--yes` or `-y` to bypass the confirmation step.
@@ -196,6 +197,8 @@ Options:
       --basic-auth-password  Kintone Basic Auth Password
                                  [string] [default: KINTONE_BASIC_AUTH_PASSWORD]
       --app                  The ID of the app               [string] [required]
+      --file-path            The path to source file.
+                             The file extension should be ".csv"        [string]
       --guest-space-id       The ID of guest space
                                       [string] [default: KINTONE_GUEST_SPACE_ID]
       --pfx-file-path        The path to client certificate file        [string]
@@ -204,6 +207,21 @@ Options:
                                                  [string] [default: HTTPS_PROXY]
   -y, --yes                  Force to delete records                   [boolean]
 ```
+
+#### Delete all records
+
+All records of the target app will be deleted if the option `--file-path` is not specified.
+
+#### Delete specific records
+
+The specific records can be deleted by specifying the option `--file-path`.
+
+The value of the `--file-path` must be the path to the CSV file and should meet the following requirements:
+- The file extension should be ".csv"
+- The header row of the record number column must be the record number field code which is defined in the target app.
+- If using the app code in the record number,
+  - Every row should contain the same app code (not mix)
+  - The app code is equal to the target app's one.
 
 ## Supported file formats
 

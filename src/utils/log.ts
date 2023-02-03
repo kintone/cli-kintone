@@ -55,7 +55,7 @@ const parseErrorMessage = (error: unknown): string => {
       return error.toString();
     } else if (error instanceof DeleteRecordsError) {
       return error.toString();
-    }else if (error instanceof ParserError) {
+    } else if (error instanceof ParserError) {
       return error.toString();
     }
     return "" + error;

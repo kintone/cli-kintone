@@ -1,5 +1,5 @@
 import type { RecordSchema } from "../../../types/schema";
-import type { KintoneRecord } from "../../../types/record";
+import type { LocalRecord } from "../../../types/record";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { addRecords } from "../../add";
@@ -31,10 +31,11 @@ describe("addRecords", () => {
     apiClient.record.addAllRecords = addAllRecordsMockFn;
     const ATTACHMENTS_DIR = "";
     const APP_ID = "1";
-    const RECORDS: KintoneRecord[] = [
+    const RECORDS: LocalRecord[] = [
       {
         data: { number: { value: "1" } },
         metadata: {
+          recordIndex: 0,
           format: { type: "csv", firstRowIndex: 0, lastRowIndex: 0 },
         },
       },

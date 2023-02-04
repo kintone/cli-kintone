@@ -1,6 +1,6 @@
 import { AddRecordsError } from "../record/import/usecases/add/error";
 import { UpsertRecordsError } from "../record/import/usecases/upsert/error";
-import { ParserError } from "../record/import/parsers/error";
+import { ParserError } from "../record/import/repositories/parsers/error";
 import chalk from "chalk";
 
 const currentISOString = () => new Date().toISOString();

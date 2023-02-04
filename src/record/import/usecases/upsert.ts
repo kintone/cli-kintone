@@ -1,5 +1,5 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { KintoneRecord } from "../types/record";
+import type { LocalRecord } from "../types/record";
 import type {
   KintoneRecordForParameter,
   KintoneRecordForUpdateParameter,
@@ -17,7 +17,7 @@ const CHUNK_SIZE = 2000;
 export const upsertRecords = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  records: KintoneRecord[],
+  records: LocalRecord[],
   schema: RecordSchema,
   updateKeyCode: string,
   {
@@ -79,7 +79,7 @@ export const upsertRecords = async (
 const convertToKintoneRecordForUpdate = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  records: KintoneRecord[],
+  records: LocalRecord[],
   schema: RecordSchema,
   updateKey: UpdateKey,
   options: {
@@ -125,7 +125,7 @@ const convertToKintoneRecordForUpdate = async (
 const convertToKintoneRecordForAdd = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  records: KintoneRecord[],
+  records: LocalRecord[],
   schema: RecordSchema,
   updateKey: UpdateKey,
   options: {
@@ -162,10 +162,10 @@ const convertToKintoneRecordForAdd = async (
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style
 function* recordReader(
-  records: KintoneRecord[],
+  records: LocalRecord[],
   updateKey: UpdateKey
 ): Generator<
-  [{ type: "add" | "update"; records: KintoneRecord[] }, number],
+  [{ type: "add" | "update"; records: LocalRecord[] }, number],
   void,
   undefined
 > {

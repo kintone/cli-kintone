@@ -1,4 +1,4 @@
-import type { KintoneRecord } from "../../../types/record";
+import type { LocalRecord } from "../../../types/record";
 import type { RecordSchema } from "../../../types/schema";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
@@ -23,7 +23,7 @@ import { UpsertRecordsError } from "../../upsert/error";
 export type TestPattern = {
   description: string;
   input: {
-    records: KintoneRecord[];
+    records: LocalRecord[];
     schema: RecordSchema;
     updateKey: string;
     options: {

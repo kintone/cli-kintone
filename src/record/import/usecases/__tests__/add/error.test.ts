@@ -1,4 +1,4 @@
-import type { KintoneRecord } from "../../../types/record";
+import type { LocalRecord } from "../../../types/record";
 import type { KintoneErrorResponse } from "@kintone/rest-api-client";
 import {
   KintoneAllRecordsError,
@@ -34,10 +34,11 @@ describe("AddRecordsError", () => {
     const numOfAlreadyImportedRecords = 10;
     const numOfProcessedRecords = 30;
     const errorIndex = 44;
-    const records: KintoneRecord[] = [...Array(numOfAllRecords).keys()].map(
+    const records: LocalRecord[] = [...Array(numOfAllRecords).keys()].map(
       (index) => ({
         data: {},
         metadata: {
+          recordIndex: index,
           format: {
             type: "csv",
             firstRowIndex: index + 1,

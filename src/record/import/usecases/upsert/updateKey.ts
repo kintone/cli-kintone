@@ -4,7 +4,7 @@ import type {
 } from "@kintone/rest-api-client";
 
 import type { FieldSchema, RecordSchema } from "../../types/schema";
-import type { KintoneRecord } from "../../types/record";
+import type { LocalRecord } from "../../types/record";
 
 type UpdateKeyField = {
   code: string;
@@ -53,10 +53,10 @@ export class UpdateKey {
 
   getUpdateKeyField = () => this.field;
 
-  validateUpdateKeyInRecords = (records: KintoneRecord[]) =>
+  validateUpdateKeyInRecords = (records: LocalRecord[]) =>
     validateUpdateKeyInRecords(this.field, this.appCode, records);
 
-  isUpdate = (record: KintoneRecord) => {
+  isUpdate = (record: LocalRecord) => {
     const updateKeyValue = this.findUpdateKeyValueFromRecord(record);
     return (
       updateKeyValue.length > 0 &&
@@ -64,7 +64,7 @@ export class UpdateKey {
     );
   };
 
-  findUpdateKeyValueFromRecord = (record: KintoneRecord): string => {
+  findUpdateKeyValueFromRecord = (record: LocalRecord): string => {
     const fieldValue = record.data[this.field.code].value as string;
     if (fieldValue.length === 0) {
       return fieldValue;
@@ -123,7 +123,7 @@ const isSupportedUpdateKeyFieldType = (
 const validateUpdateKeyInRecords = (
   updateKey: UpdateKeyField,
   appCode: string,
-  records: KintoneRecord[]
+  records: LocalRecord[]
 ) => {
   let hasAppCodePrevious: boolean = false;
   records.forEach((record, index) => {

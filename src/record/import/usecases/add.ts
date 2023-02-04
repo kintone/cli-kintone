@@ -1,5 +1,5 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { KintoneRecord } from "../types/record";
+import type { LocalRecord } from "../types/record";
 import type { KintoneRecordForParameter } from "../../../kintone/types";
 import type { RecordSchema } from "../types/schema";
 
@@ -7,13 +7,14 @@ import { fieldProcessor, recordReducer } from "./add/record";
 import { AddRecordsError } from "./add/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
+import type { LocalRecordRepository } from "./interface";
 
 const CHUNK_SIZE = 2000;
 
 export const addRecords: (
   apiClient: KintoneRestAPIClient,
   app: string,
-  records: KintoneRecord[],
+  recordSource: LocalRecordRepository,
   schema: RecordSchema,
   options: {
     attachmentsDir?: string;
@@ -22,15 +23,15 @@ export const addRecords: (
 ) => Promise<void> = async (
   apiClient,
   app,
-  records,
+  recordSource: LocalRecordRepository,
   schema,
   { attachmentsDir, skipMissingFields = true }
 ) => {
   let currentIndex = 0;
-  const progressLogger = new ProgressLogger(logger, records.length);
+  const progressLogger = new ProgressLogger(logger, recordSource.length);
   try {
     logger.info("Starting to import records...");
-    for (const [recordsNext, index] of recordReader(records)) {
+    for await (const [recordsNext, index] of recordsReader(recordSource)) {
       currentIndex = index;
       const recordsToUpload = await convertRecordsToApiRequestParameter(
         apiClient,
@@ -51,14 +52,14 @@ export const addRecords: (
     progressLogger.done();
   } catch (e) {
     progressLogger.abort(currentIndex);
-    throw new AddRecordsError(e, records, currentIndex, schema);
+    throw new AddRecordsError(e, [], currentIndex, schema); // TODO
   }
 };
 
 const convertRecordsToApiRequestParameter = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  records: KintoneRecord[],
+  records: LocalRecord[],
   schema: RecordSchema,
   options: {
     attachmentsDir?: string;
@@ -86,19 +87,20 @@ const convertRecordsToApiRequestParameter = async (
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style
-function* recordReader(
-  records: KintoneRecord[]
-): Generator<[KintoneRecord[], number], void, undefined> {
-  if (records.length === 0) {
-    return;
+async function* recordsReader(
+  localRecordReader: LocalRecordRepository
+): AsyncGenerator<[LocalRecord[], number], void, undefined> {
+  let records = [];
+  let currentIndex = 0;
+  for await (const localRecord of localRecordReader.reader) {
+    records.push(localRecord);
+    if (records.length >= CHUNK_SIZE) {
+      yield [records, currentIndex];
+      records = [];
+      currentIndex = localRecord.metadata.recordIndex;
+    }
   }
-
-  let index = 0;
-  while (index < records.length) {
-    const last = Math.min(index + CHUNK_SIZE - 1, records.length - 1);
-
-    yield [records.slice(index, last + 1), index];
-
-    index = last + 1;
+  if (records.length > 0) {
+    yield [records, currentIndex];
   }
 }

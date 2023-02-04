@@ -2,13 +2,13 @@ import type {
   KintoneAllRecordsError,
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
-import type { KintoneRecord } from "../types/record";
+import type { LocalRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
 
 export const kintoneAllRecordsErrorToString = (
   e: KintoneAllRecordsError,
   chunkSize: number,
-  records: KintoneRecord[],
+  records: LocalRecord[],
   numOfSuccess: number,
   recordSchema: RecordSchema
 ): string => {
@@ -28,7 +28,7 @@ export const kintoneAllRecordsErrorToString = (
 const kintoneRestAPIErrorToString = (
   e: KintoneRestAPIError,
   chunkSize: number,
-  records: KintoneRecord[],
+  records: LocalRecord[],
   offset: number,
   recordSchema: RecordSchema
 ): string => {

@@ -1,6 +1,6 @@
-import type { KintoneRecord } from "../../../../../types/record";
+import type { LocalRecord } from "../../../../../types/record";
 
-export const records: KintoneRecord[] = [
+export const records: LocalRecord[] = [
   {
     data: {
       singleLineText: {
@@ -16,7 +16,10 @@ export const records: KintoneRecord[] = [
         value: "value1",
       },
     },
-    metadata: { format: { type: "csv", firstRowIndex: 1, lastRowIndex: 1 } },
+    metadata: {
+      recordIndex: 0,
+      format: { type: "csv", firstRowIndex: 1, lastRowIndex: 1 },
+    },
   },
   {
     data: {
@@ -33,6 +36,9 @@ export const records: KintoneRecord[] = [
         value: "value1",
       },
     },
-    metadata: { format: { type: "csv", firstRowIndex: 2, lastRowIndex: 2 } },
+    metadata: {
+      recordIndex: 1,
+      format: { type: "csv", firstRowIndex: 2, lastRowIndex: 2 },
+    },
   },
 ];

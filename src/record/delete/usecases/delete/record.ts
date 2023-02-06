@@ -1,5 +1,6 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { RecordNumber, RecordId } from "../../types/field";
+import type { KintoneRecordForResponse } from "../../../../kintone/types";
 
 export const getAppCode = async (
   apiClient: KintoneRestAPIClient,
@@ -12,12 +13,8 @@ export const convertRecordNumberToRecordId = (
   recordNumbers: RecordNumber[],
   appCode: string
 ): RecordId[] => {
-  const isHasAppcode = hasAppCode(recordNumbers[0].value, appCode);
-
   return recordNumbers.map((recordNumber: RecordNumber) =>
-    isHasAppcode
-      ? parseInt(recordNumber.value.slice(appCode.length + 1), 10)
-      : parseInt(recordNumber.value, 10)
+    getRecordIdFromRecordNumber(recordNumber, appCode)
   );
 };
 
@@ -31,8 +28,17 @@ export const isValidRecordNumber = (
   );
 };
 
-const hasAppCode = (input: string, appCode: string): boolean => {
+export const hasAppCode = (input: string, appCode: string): boolean => {
   return isValidRecordNumberWithAppCode(input, appCode);
+};
+
+export const getRecordIdFromRecordNumber = (
+  recordNumber: RecordNumber,
+  appCode: string
+): RecordId => {
+  return hasAppCode(recordNumber.value, appCode)
+    ? parseInt(recordNumber.value.slice(appCode.length + 1), 10)
+    : parseInt(recordNumber.value, 10);
 };
 
 const isValidRecordNumberWithAppCode = (
@@ -47,3 +53,18 @@ const isValidRecordNumberWithAppCode = (
 
 const isValidRecordNumberWithoutAppCode = (input: string): boolean =>
   input.match(/^[0-9]+$/) !== null;
+
+export const getAllRecordIds = async (
+  apiClient: KintoneRestAPIClient,
+  app: string
+): Promise<RecordId[]> => {
+  const params = { app, fields: ["$id"] };
+  const kintoneRecords = await apiClient.record.getAllRecordsWithId(params);
+  if (!kintoneRecords || kintoneRecords.length === 0) {
+    return [];
+  }
+
+  return kintoneRecords.map((record: KintoneRecordForResponse) =>
+    parseInt(record.$id.value as string, 10)
+  );
+};

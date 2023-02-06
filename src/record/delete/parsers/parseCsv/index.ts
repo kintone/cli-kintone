@@ -2,7 +2,6 @@ import type { CsvRow } from "../../../../kintone/types";
 import type { RecordNumber } from "../../types/field";
 
 import csvParse from "csv-parse/lib/sync";
-
 import { getRecordNumberFromCsvRows } from "./record";
 import { SEPARATOR } from "../../../constants";
 import { ParserError } from "../error";
@@ -25,9 +24,10 @@ export const parseCsv: (
   if (rows.length === 0) {
     return [];
   }
-
   if (!isMatchedRecordNumberFieldCode(rows[0], recordNumberFieldCode)) {
-    // todo: throw error notMatchRecordNumberFieldCode
+    throw new ParserError(
+      `The record number field code (${recordNumberFieldCode}) is not found.`
+    );
   }
 
   return getRecordNumberFromCsvRows(rows, recordNumberFieldCode);

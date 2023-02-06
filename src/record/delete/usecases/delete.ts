@@ -8,7 +8,7 @@ import { logger } from "../../../utils/log";
 import { DeleteRecordsError } from "./delete/error";
 import { readFile } from "../../../utils/file";
 import { parseRecords } from "../parsers";
-import { validateRecordNumbers } from "./delete/validator";
+import { validateRecordNumbers } from "../validator";
 import { getAppCode, convertRecordNumberToRecordId } from "./delete/record";
 
 export const deleteRecordsByFile: (
@@ -36,7 +36,7 @@ export const deleteRecords: (
 ) => Promise<void> = async (apiClient, app, recordNumbers) => {
   logger.info("Starting to delete records...");
   const appCode = await getAppCode(apiClient, app);
-  await validateRecordNumbers(apiClient, app, recordNumbers);
+  await validateRecordNumbers(apiClient, app, appCode, recordNumbers);
 
   const records = generateRecordsParam(recordNumbers, appCode);
   try {

@@ -4,7 +4,7 @@ import type { RecordSchema } from "../../types/schema";
 
 import { convertField, fieldReader } from "./field";
 import { convertSubtableField, subtableFieldReader } from "./subtable";
-import { PRIMARY_MARK } from "../../../constants";
+import { PRIMARY_MARK } from "./constants";
 
 type RecordCsv = {
   rows: CsvRow[];

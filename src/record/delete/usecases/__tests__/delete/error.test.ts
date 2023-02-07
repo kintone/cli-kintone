@@ -1,5 +1,5 @@
 import type { KintoneRecordForDeleteAllParameter } from "../../../../../kintone/types";
-import { DeleteRecordsError } from "../../delete/error";
+import { DeleteSpecifiedRecordsError } from "../../delete/error";
 import { buildKintoneAllRecordsError } from "../deleteAll/error.test";
 
 describe("DeleteRecordsError", () => {
@@ -15,11 +15,11 @@ describe("DeleteRecordsError", () => {
       numOfAllRecords,
       numOfProcessedRecords
     );
-    const deleteAllRecordsError = new DeleteRecordsError(
+    const deleteSpecifiedRecordsError = new DeleteSpecifiedRecordsError(
       kintoneAllRecordsError,
       recordsId
     );
-    expect(deleteAllRecordsError.toString()).toBe(
+    expect(deleteSpecifiedRecordsError.toString()).toBe(
       `Failed to delete records.\n${numOfProcessedRecords}/${numOfAllRecords} records are deleted successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)`
     );
   });

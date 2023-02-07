@@ -3,7 +3,7 @@ import type { RecordNumber } from "../../types/field";
 
 import csvParse from "csv-parse/lib/sync";
 import { getRecordNumberFromCsvRows } from "./record";
-import { SEPARATOR } from "../../../constants";
+import { SEPARATOR } from "./constants";
 import { ParserError } from "../error";
 
 export const parseCsv: (

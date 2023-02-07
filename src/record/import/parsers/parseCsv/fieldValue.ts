@@ -1,7 +1,7 @@
 import type * as Fields from "../../types/field";
 import type { FieldSchema } from "../../types/schema";
 
-import { LINE_BREAK } from "../../../constants";
+import { LINE_BREAK } from "./constants";
 
 export const convertFieldValue = ({
   type,

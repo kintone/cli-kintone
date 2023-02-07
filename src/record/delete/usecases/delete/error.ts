@@ -3,7 +3,7 @@ import type { KintoneRecordForDeleteAllParameter } from "../../../../kintone/typ
 import { kintoneAllRecordsErrorToString } from "../../../error";
 import { ErrorParser } from "../../utils/error";
 
-export class DeleteRecordsError extends Error {
+export class DeleteSpecifiedRecordsError extends Error {
   private readonly cause: unknown;
   private readonly records: KintoneRecordForDeleteAllParameter[];
   private readonly numOfSuccess: number;
@@ -13,7 +13,7 @@ export class DeleteRecordsError extends Error {
     const message = "Failed to delete records.";
     super(message);
 
-    this.name = "DeleteRecordsError";
+    this.name = "DeleteSpecifiedRecordsError";
     this.message = message;
     this.cause = cause;
     this.records = records;
@@ -25,7 +25,7 @@ export class DeleteRecordsError extends Error {
 
     // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
     // Set the prototype explicitly.
-    Object.setPrototypeOf(this, DeleteRecordsError.prototype);
+    Object.setPrototypeOf(this, DeleteSpecifiedRecordsError.prototype);
   }
 
   toString(): string {
@@ -42,7 +42,7 @@ export class DeleteRecordsError extends Error {
       errorMessage += kintoneAllRecordsErrorToString(
         new ErrorParser(this.cause)
       );
-    } else if (this.cause instanceof DeleteRecordsError) {
+    } else if (this.cause instanceof DeleteSpecifiedRecordsError) {
       errorMessage += this.cause.toString();
     } else {
       errorMessage += this.cause + "\n";

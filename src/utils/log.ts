@@ -2,7 +2,7 @@ import { AddRecordsError } from "../record/import/usecases/add/error";
 import { UpsertRecordsError } from "../record/import/usecases/upsert/error";
 import { ParserError } from "../record/import/parsers/error";
 import { DeleteAllRecordsError } from "../record/delete/usecases/deleteAll/error";
-import { DeleteSpecifiedRecordsError } from "../record/delete/usecases/delete/error";
+import { DeleteSpecifiedRecordsError } from "../record/delete/usecases/deleteByRecordNumber/error";
 import chalk from "chalk";
 
 const currentISOString = () => new Date().toISOString();

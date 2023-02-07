@@ -1,5 +1,5 @@
 import type { KintoneRecordForDeleteAllParameter } from "../../../../../kintone/types";
-import { DeleteSpecifiedRecordsError } from "../../delete/error";
+import { DeleteSpecifiedRecordsError } from "../../deleteByRecordNumber/error";
 import { buildKintoneAllRecordsError } from "../deleteAll/error.test";
 
 describe("DeleteRecordsError", () => {

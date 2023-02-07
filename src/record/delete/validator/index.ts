@@ -5,7 +5,7 @@ import {
   hasAppCode,
   getAllRecordIds,
   getRecordIdFromRecordNumber,
-} from "../usecases/delete/record";
+} from "../usecases/deleteByRecordNumber/record";
 
 import { ErrorHandler } from "./errorHandler";
 import { ValidatorError } from "./error";

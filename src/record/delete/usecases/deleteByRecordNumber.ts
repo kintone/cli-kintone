@@ -2,9 +2,12 @@ import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { KintoneRecordForDeleteAllParameter } from "../../../kintone/types";
 import type { RecordNumber, RecordId } from "../types/field";
 import { logger } from "../../../utils/log";
-import { DeleteSpecifiedRecordsError } from "./delete/error";
+import { DeleteSpecifiedRecordsError } from "./deleteByRecordNumber/error";
 import { validateRecordNumbers } from "../validator";
-import { getAppCode, convertRecordNumberToRecordId } from "./delete/record";
+import {
+  getAppCode,
+  convertRecordNumberToRecordId,
+} from "./deleteByRecordNumber/record";
 
 export const deleteByRecordNumber: (
   apiClient: KintoneRestAPIClient,

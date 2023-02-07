@@ -24,7 +24,7 @@ export class ErrorHandler {
     this.notExists.length > 0 ||
     this.duplicated.length > 0;
 
-  throwError = () => {
+  generateError = () => {
     let errorMessage = "";
 
     if (this.invalidValue.length > 0) {
@@ -45,7 +45,7 @@ export class ErrorHandler {
       )}\n`;
     }
 
-    throw new ValidatorError(errorMessage);
+    return new ValidatorError(errorMessage);
   };
 
   generateReportedId = (recordNumbers: RecordNumber[]): string => {

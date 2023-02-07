@@ -52,6 +52,6 @@ export const validateRecordNumbers: (
   });
 
   if (errorHandler.hasError()) {
-    errorHandler.throwError();
+    throw errorHandler.generateError();
   }
 };

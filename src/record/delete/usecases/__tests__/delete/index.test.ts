@@ -1,5 +1,5 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { deleteRecords } from "../../delete";
+import { deleteByRecordNumber } from "../../deleteByRecordNumber";
 
 describe("deleteRecords", () => {
   let apiClient: KintoneRestAPIClient;
@@ -14,7 +14,7 @@ describe("deleteRecords", () => {
     apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "appcode" });
     apiClient.record.deleteAllRecords = jest.fn().mockResolvedValue([{}]);
     return expect(
-      deleteRecords(apiClient, "1", [{ value: "appcode-1" }])
+      deleteByRecordNumber(apiClient, "1", [{ value: "appcode-1" }])
     ).resolves.not.toThrow();
   });
 
@@ -24,7 +24,7 @@ describe("deleteRecords", () => {
     apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "appcode" });
     const APP_ID = "1";
 
-    await deleteRecords(apiClient, APP_ID, [
+    await deleteByRecordNumber(apiClient, APP_ID, [
       { value: "appcode-1" },
       { value: "appcode-2" },
     ]);
@@ -40,7 +40,7 @@ describe("deleteRecords", () => {
     apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "appcode" });
     apiClient.record.deleteAllRecords = jest.fn().mockRejectedValueOnce(error);
     return expect(
-      deleteRecords(apiClient, "1", [{ value: "appcode-1" }])
+      deleteByRecordNumber(apiClient, "1", [{ value: "appcode-1" }])
     ).rejects.toThrow(error);
   });
 });

@@ -1,7 +1,7 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import type { KintoneRecordForDeleteAllParameter } from "../../../kintone/types";
-import { kintoneAllRecordsErrorToString } from "../../error";
-import { ErrorParser } from "../utils/error";
+import type { KintoneRecordForDeleteAllParameter } from "../../../../kintone/types";
+import { kintoneAllRecordsErrorToString } from "../../../error";
+import { ErrorParser } from "../../utils/error";
 
 export class DeleteAllRecordsError extends Error {
   private readonly cause: unknown;

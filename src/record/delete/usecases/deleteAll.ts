@@ -4,14 +4,14 @@ import type {
   KintoneRecordForDeleteAllParameter,
 } from "../../../kintone/types";
 import { logger } from "../../../utils/log";
-import { DeleteAllRecordsError } from "./error";
+import { DeleteAllRecordsError } from "./deleteAll/error";
 
 export const deleteAllRecords: (
   apiClient: KintoneRestAPIClient,
   app: string
 ) => Promise<void> = async (apiClient, app) => {
   logger.info("Starting to delete all records...");
-  const records = await getRecordsForDeleteAll(apiClient, app);
+  const records = await generateRecordsParamForDeleteAll(apiClient, app);
   if (records.length === 0) {
     logger.warn("The specified app does not have any records.");
     return;
@@ -26,7 +26,7 @@ export const deleteAllRecords: (
   }
 };
 
-const getRecordsForDeleteAll: (
+const generateRecordsParamForDeleteAll: (
   apiClient: KintoneRestAPIClient,
   app: string
 ) => Promise<KintoneRecordForDeleteAllParameter[]> = async (apiClient, app) => {

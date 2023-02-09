@@ -75,6 +75,11 @@ const builder = (args: yargs.Argv) =>
       alias: FORCE_DELETE_ALIAS,
       describe: "Force to delete records",
       type: "boolean",
+    })
+    .option("file-path", {
+      describe: "The path to the CSV file",
+      type: "string",
+      requiresArg: true,
     });
 
 type Args = yargs.Arguments<
@@ -92,6 +97,7 @@ const execute = (args: Args) => {
     pfxFilePath: args["pfx-file-path"],
     pfxFilePassword: args["pfx-file-password"],
     httpsProxy: args.proxy,
+    filePath: args["file-path"],
   });
 };
 

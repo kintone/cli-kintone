@@ -15,11 +15,17 @@ export const readFile: (
   if (format === "json" && encoding !== "utf8") {
     throw new Error("source file is JSON and JSON MUST be encoded with UTF-8");
   }
-  const stream = fs
-    .createReadStream(filePath)
-    .pipe(iconv.decodeStream(encoding));
-  const content = await readStream(stream);
-  return { content, format };
+
+  return new Promise((resolve, reject) => {
+    (async () => {
+      const stream = fs.createReadStream(filePath);
+      stream.on("error", reject);
+
+      const readWriteStream = stream.pipe(iconv.decodeStream(encoding));
+      const content = await readStream(readWriteStream);
+      resolve({ content, format });
+    })();
+  });
 };
 
 const readStream: (stream: NodeJS.ReadWriteStream) => Promise<string> = async (

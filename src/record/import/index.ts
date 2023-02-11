@@ -8,7 +8,7 @@ import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
-import { buildLocalRecordRepositoryFromStream } from "./repositories";
+import { LocalRecordRepositoryByStream } from "./repositories";
 
 export type Options = {
   app: string;
@@ -42,14 +42,14 @@ export const run: (
         ? userSelected(fields, fieldsJson, updateKey)
         : defaultTransformer()
     );
-    const { stream, format } = openFsStreamWithEncode(filePath, encoding);
-    const localRecordRepository = buildLocalRecordRepositoryFromStream(
-      stream,
+    const { format } = openFsStreamWithEncode(filePath, encoding);
+    const localRecordRepository = new LocalRecordRepositoryByStream(
+      () => openFsStreamWithEncode(filePath, encoding).stream,
       format,
       schema
     );
 
-    if (localRecordRepository.length === 0) {
+    if ((await localRecordRepository.length()) === 0) {
       logger.warn("The input file does not have any records");
       return;
     }

@@ -1,34 +1,27 @@
 import type { LocalRecordRepository } from "../usecases/interface";
 import type { RecordSchema } from "../types/schema";
 import { RepositoryError } from "./error";
-import { csvParser } from "./parsers/parseCsv";
+import { countRecordsFromCsv, csvReader } from "./parsers/parseCsv";
 
-export const buildLocalRecordRepositoryFromStream = <
-  T extends NodeJS.ReadableStream
->(
-  source: T,
-  format: string,
-  schema: RecordSchema
-): LocalRecordRepository => {
-  switch (format) {
-    case "csv":
-      return buildLocalRecordRepositoryFromCsvStream(source, schema);
-    default:
-      throw new RepositoryError(
-        `Unexpected file type: ${format} is unacceptable.`
-      );
+export class LocalRecordRepositoryByStream<T extends NodeJS.ReadableStream>
+  implements LocalRecordRepository
+{
+  readonly format;
+  readonly length;
+  readonly reader;
+
+  constructor(source: () => T, format: string, schema: RecordSchema) {
+    this.format = format;
+    this.length = () => countRecordsFromCsv(source());
+
+    switch (format) {
+      case "csv":
+        this.reader = () => csvReader(source, schema);
+        break;
+      default:
+        throw new RepositoryError(
+          `Unexpected file type: ${format} is unacceptable.`
+        );
+    }
   }
-};
-
-const buildLocalRecordRepositoryFromCsvStream = <
-  T extends NodeJS.ReadableStream
->(
-  source: T,
-  schema: RecordSchema
-): LocalRecordRepository => {
-  return {
-    length: 0, // TODO
-    format: "csv",
-    reader: () => csvParser(source, schema),
-  };
-};
+}

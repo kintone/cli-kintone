@@ -28,7 +28,10 @@ export const addRecords: (
   { attachmentsDir, skipMissingFields = true }
 ) => {
   let currentIndex = 0;
-  const progressLogger = new ProgressLogger(logger, recordSource.length);
+  const progressLogger = new ProgressLogger(
+    logger,
+    await recordSource.length()
+  );
   try {
     logger.info("Starting to import records...");
     for await (const [recordsNext, index] of recordsReader(recordSource)) {
@@ -92,7 +95,7 @@ async function* recordsReader(
 ): AsyncGenerator<[LocalRecord[], number], void, undefined> {
   let records = [];
   let currentIndex = 0;
-  for await (const localRecord of localRecordReader.reader) {
+  for await (const localRecord of localRecordReader.reader()) {
     records.push(localRecord);
     if (records.length >= CHUNK_SIZE) {
       yield [records, currentIndex];

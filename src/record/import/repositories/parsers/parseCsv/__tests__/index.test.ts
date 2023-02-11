@@ -1,7 +1,7 @@
 import type { LocalRecord } from "../../../../types/record";
 import type { RecordSchema } from "../../../../types/schema";
 
-import { csvParser } from "../index";
+import { csvReader } from "../index";
 
 import { pattern as withoutSubtable } from "./fixtures/withoutSubtable";
 import { pattern as withSubtable } from "./fixtures/withSubtable";
@@ -33,7 +33,7 @@ describe("parseCsv", () => {
   ];
   it.each(patterns)("$description", async (pattern) => {
     const records = [];
-    for await (const record of csvParser(
+    for await (const record of csvReader(
       Readable.from(pattern.input),
       pattern.schema
     )) {

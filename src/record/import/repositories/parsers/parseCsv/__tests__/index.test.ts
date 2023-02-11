@@ -34,7 +34,7 @@ describe("parseCsv", () => {
   it.each(patterns)("$description", async (pattern) => {
     const records = [];
     for await (const record of csvReader(
-      Readable.from(pattern.input),
+      () => Readable.from(pattern.input),
       pattern.schema
     )) {
       records.push(record);

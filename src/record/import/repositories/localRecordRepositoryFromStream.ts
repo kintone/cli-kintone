@@ -3,7 +3,7 @@ import type { RecordSchema } from "../types/schema";
 import { RepositoryError } from "./error";
 import { countRecordsFromCsv, csvReader } from "./parsers/parseCsv";
 
-export class LocalRecordRepositoryByStream<T extends NodeJS.ReadableStream>
+export class LocalRecordRepositoryFromStream<T extends NodeJS.ReadableStream>
   implements LocalRecordRepository
 {
   readonly format;

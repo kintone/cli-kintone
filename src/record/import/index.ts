@@ -8,7 +8,7 @@ import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
-import { LocalRecordRepositoryByStream } from "./repositories";
+import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
 
 export type Options = {
   app: string;
@@ -43,7 +43,7 @@ export const run: (
         : defaultTransformer()
     );
     const { format } = openFsStreamWithEncode(filePath, encoding);
-    const localRecordRepository = new LocalRecordRepositoryByStream(
+    const localRecordRepository = new LocalRecordRepositoryFromStream(
       () => openFsStreamWithEncode(filePath, encoding).stream,
       format,
       schema

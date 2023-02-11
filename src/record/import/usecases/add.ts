@@ -28,6 +28,7 @@ export const addRecords: (
   { attachmentsDir, skipMissingFields = true }
 ) => {
   let currentIndex = 0;
+  let currentRecords: LocalRecord[] = [];
   const progressLogger = new ProgressLogger(
     logger,
     await recordSource.length()
@@ -36,6 +37,7 @@ export const addRecords: (
     logger.info("Starting to import records...");
     for await (const [recordsNext, index] of recordsReader(recordSource)) {
       currentIndex = index;
+      currentRecords = recordsNext;
       const recordsToUpload = await convertRecordsToApiRequestParameter(
         apiClient,
         app,
@@ -55,7 +57,7 @@ export const addRecords: (
     progressLogger.done();
   } catch (e) {
     progressLogger.abort(currentIndex);
-    throw new AddRecordsError(e, [], currentIndex, schema); // TODO
+    throw new AddRecordsError(e, currentRecords, currentIndex, schema);
   }
 };
 

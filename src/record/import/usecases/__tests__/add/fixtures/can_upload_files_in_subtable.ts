@@ -3,8 +3,9 @@ import type { KintoneRecordForParameter } from "../../../../../../kintone/types"
 import type { RecordSchema } from "../../../../types/schema";
 
 import path from "path";
+import { LocalRecordRepositoryMock } from "../../../../repositories/localRecordRepositoryMock";
 
-export const input: LocalRecord[] = [
+export const inputRecords: LocalRecord[] = [
   {
     data: {
       singleLineText: {
@@ -35,6 +36,8 @@ export const input: LocalRecord[] = [
     },
   },
 ];
+
+export const input = new LocalRecordRepositoryMock(inputRecords, "csv", 1);
 
 export const expected: KintoneRecordForParameter[] = [
   {

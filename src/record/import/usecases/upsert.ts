@@ -11,13 +11,14 @@ import { UpdateKey } from "./upsert/updateKey";
 import { UpsertRecordsError } from "./upsert/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
+import type { LocalRecordRepository } from "./interface";
 
 const CHUNK_SIZE = 2000;
 
 export const upsertRecords = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  records: LocalRecord[],
+  recordSource: LocalRecordRepository,
   schema: RecordSchema,
   updateKeyCode: string,
   {
@@ -26,7 +27,11 @@ export const upsertRecords = async (
   }: { attachmentsDir?: string; skipMissingFields?: boolean }
 ): Promise<void> => {
   let currentIndex = 0;
-  const progressLogger = new ProgressLogger(logger, records.length);
+  let currentRecords: LocalRecord[] = [];
+  const progressLogger = new ProgressLogger(
+    logger,
+    await recordSource.length()
+  );
   try {
     logger.info("Preparing to import records...");
     const updateKey = await UpdateKey.build(
@@ -35,11 +40,17 @@ export const upsertRecords = async (
       updateKeyCode,
       schema
     );
-    updateKey.validateUpdateKeyInRecords(records);
+
+    await updateKey.validateUpdateKeyInRecords(recordSource);
 
     logger.info("Starting to import records...");
-    for (const [recordsNext, index] of recordReader(records, updateKey)) {
+    for await (const [recordsNext, index] of recordReader(
+      recordSource,
+      updateKey
+    )) {
       currentIndex = index;
+      currentRecords = recordsNext.records;
+
       if (recordsNext.type === "update") {
         const recordsToUpload = await convertToKintoneRecordForUpdate(
           apiClient,
@@ -72,7 +83,7 @@ export const upsertRecords = async (
     progressLogger.done();
   } catch (e) {
     progressLogger.abort(currentIndex);
-    throw new UpsertRecordsError(e, records, currentIndex, schema);
+    throw new UpsertRecordsError(e, currentRecords, currentIndex, schema);
   }
 };
 
@@ -161,40 +172,39 @@ const convertToKintoneRecordForAdd = async (
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style
-function* recordReader(
-  records: LocalRecord[],
+async function* recordReader(
+  localRecordReader: LocalRecordRepository,
   updateKey: UpdateKey
-): Generator<
+): AsyncGenerator<
   [{ type: "add" | "update"; records: LocalRecord[] }, number],
   void,
   undefined
 > {
-  if (records.length === 0) {
-    return;
-  }
+  let records: LocalRecord[] = [];
+  let currentIndex = 0;
+  let isUpdate: boolean | undefined;
 
-  let index = 0;
-  while (index < records.length) {
-    let last = index;
-    const isUpdateCurrent = updateKey.isUpdate(records[index]);
-
-    while (
-      last + 1 < records.length &&
-      last - index < CHUNK_SIZE - 1 &&
-      updateKey.isUpdate(records[last + 1]) === isUpdateCurrent
-    ) {
-      last++;
+  for await (const localRecord of localRecordReader.reader()) {
+    const isUpdateCurrent = updateKey.isUpdate(localRecord);
+    if (isUpdate === undefined) {
+      isUpdate = isUpdateCurrent;
     }
-
+    if (isUpdateCurrent === isUpdate && records.length < CHUNK_SIZE) {
+      records.push(localRecord);
+    } else {
+      yield [
+        { type: isUpdate ? "update" : "add", records: records },
+        currentIndex,
+      ];
+      records = [localRecord];
+      currentIndex = localRecord.metadata.recordIndex;
+      isUpdate = isUpdateCurrent;
+    }
+  }
+  if (records.length > 0) {
     yield [
-      {
-        type: isUpdateCurrent ? "update" : "add",
-        records: records.slice(index, last + 1),
-      },
-      index,
+      { type: isUpdate ? "update" : "add", records: records },
+      currentIndex,
     ];
-
-    index = last + 1;
-    last = index;
   }
 }

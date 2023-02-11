@@ -16,14 +16,16 @@ import { pattern as upsertByNonExistentField } from "./fixtures/upsertByNonExist
 import { pattern as upsertWithMissingKeyFromRecord } from "./fixtures/upsertWithMissingKeyFromRecord";
 import { pattern as upsertWithMissingFieldFromRecord } from "./fixtures/upsertWithMissingFieldFromRecord";
 import { pattern as upsertWithMissingFieldInTableFromRecord } from "./fixtures/upsertWithMissingFieldInTableFromRecord";
-import { pattern as upsertByRecordNumberWithMixedRecordNumber } from "./fixtures/upsertByRecordNumberWithMixedRecordNumber";
-import { pattern as upsertByRecordNumberWithInvalidRecordNumber } from "./fixtures/upsertByRecordNumberWithInvalidRecordNumber";
+import { pattern as upsertByRecordNumberWithMixedRecordNumber } from "./fixtures/upsertByRecordNumberWithInvalidRecordNumber";
+import { pattern as upsertByRecordNumberWithInvalidRecordNumber } from "./fixtures/upsertByRecordNumberWithMixedRecordNumber";
 import { UpsertRecordsError } from "../../upsert/error";
+import type { LocalRecordRepository } from "../../interface";
 
 export type TestPattern = {
   description: string;
   input: {
     records: LocalRecord[];
+    repository: LocalRecordRepository;
     schema: RecordSchema;
     updateKey: string;
     options: {
@@ -107,7 +109,7 @@ describe("upsertRecords", () => {
         await upsertRecords(
           apiClient,
           APP_ID,
-          input.records,
+          input.repository,
           input.schema,
           input.updateKey,
           input.options
@@ -125,7 +127,7 @@ describe("upsertRecords", () => {
           upsertRecords(
             apiClient,
             APP_ID,
-            input.records,
+            input.repository,
             input.schema,
             input.updateKey,
             input.options

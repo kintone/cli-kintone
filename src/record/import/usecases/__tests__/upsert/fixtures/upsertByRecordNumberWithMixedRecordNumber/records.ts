@@ -21,7 +21,7 @@ export const records: LocalRecord[] = [
   {
     data: {
       recordNumber: {
-        value: "Hoge-3",
+        value: "App-3",
       },
       singleLineText: {
         value: "value3",

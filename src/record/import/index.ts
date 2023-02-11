@@ -56,10 +56,17 @@ export const run: (
 
     const skipMissingFields = !fields;
     if (updateKey) {
-      await upsertRecords(apiClient, app, [], schema, updateKey, {
-        attachmentsDir,
-        skipMissingFields,
-      });
+      await upsertRecords(
+        apiClient,
+        app,
+        localRecordRepository,
+        schema,
+        updateKey,
+        {
+          attachmentsDir,
+          skipMissingFields,
+        }
+      );
     } else {
       await addRecords(apiClient, app, localRecordRepository, schema, {
         attachmentsDir,

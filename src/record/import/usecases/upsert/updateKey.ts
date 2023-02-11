@@ -5,6 +5,7 @@ import type {
 
 import type { FieldSchema, RecordSchema } from "../../types/schema";
 import type { LocalRecord } from "../../types/record";
+import type { LocalRecordRepository } from "../interface";
 
 type UpdateKeyField = {
   code: string;
@@ -53,7 +54,7 @@ export class UpdateKey {
 
   getUpdateKeyField = () => this.field;
 
-  validateUpdateKeyInRecords = (records: LocalRecord[]) =>
+  validateUpdateKeyInRecords = async (records: LocalRecordRepository) =>
     validateUpdateKeyInRecords(this.field, this.appCode, records);
 
   isUpdate = (record: LocalRecord) => {
@@ -120,13 +121,13 @@ const isSupportedUpdateKeyFieldType = (
   return supportedUpdateKeyFieldTypes.includes(fieldSchema.type);
 };
 
-const validateUpdateKeyInRecords = (
+const validateUpdateKeyInRecords = async (
   updateKey: UpdateKeyField,
   appCode: string,
-  records: LocalRecord[]
+  recordRepository: LocalRecordRepository
 ) => {
   let hasAppCodePrevious: boolean = false;
-  records.forEach((record, index) => {
+  for await (const record of recordRepository.reader()) {
     if (!(updateKey.code in record.data)) {
       throw new Error(
         `The field specified as "Key to Bulk Update" (${updateKey.code}) does not exist on the input`
@@ -145,14 +146,17 @@ const validateUpdateKeyInRecords = (
 
     if (updateKey.type === "RECORD_NUMBER") {
       const _hasAppCode = hasAppCode(value, appCode);
-      if (index !== 0 && _hasAppCode !== hasAppCodePrevious) {
+      if (
+        record.metadata.recordIndex !== 0 &&
+        _hasAppCode !== hasAppCodePrevious
+      ) {
         throw new Error(
           `The "Key to Bulk Update" should not be mixed with those with and without app code`
         );
       }
       hasAppCodePrevious = _hasAppCode;
     }
-  });
+  }
 };
 
 const removeAppCode = (input: string, appCode: string) => {

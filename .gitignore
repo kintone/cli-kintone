@@ -25,6 +25,7 @@ artifacts
 *.tsbuildinfo
 attachments
 /*.csv
+/*.xlsx
 
 # editor
 **/.vs

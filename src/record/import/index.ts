@@ -9,6 +9,7 @@ import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
+import fs from "fs";
 
 export type Options = {
   app: string;
@@ -23,6 +24,13 @@ export const run: (
   argv: RestAPIClientOptions & Options
 ) => Promise<void> = async (argv) => {
   try {
+    fs.writeFileSync(
+      "stats.csv",
+      "timestamp,rss,heapTotal,heapUsed,external,arrayBuffers,label\n"
+    );
+
+    logger.info("Init");
+
     const {
       app,
       filePath,
@@ -33,7 +41,9 @@ export const run: (
       ...restApiClientOptions
     } = argv;
 
+    logger.info("Before apiClient");
     const apiClient = buildRestAPIClient(restApiClientOptions);
+    logger.info("After apiClient");
 
     const fieldsJson = await apiClient.app.getFormFields({ app });
     const schema = createSchema(
@@ -42,27 +52,35 @@ export const run: (
         ? userSelected(fields, fieldsJson, updateKey)
         : defaultTransformer()
     );
+    logger.info("After createSchema");
+
     const { content, format } = await readFile(filePath, encoding);
+    logger.info("After readFile");
     const records = await parseRecords({
       source: content,
       format,
       schema,
     });
+    logger.info("After parseRecords");
     if (records.length === 0) {
       logger.warn("The input file does not have any records");
       return;
     }
     const skipMissingFields = !fields;
     if (updateKey) {
+      logger.info("Before upsertRecords");
       await upsertRecords(apiClient, app, records, schema, updateKey, {
         attachmentsDir,
         skipMissingFields,
       });
+      logger.info("After upsertRecords");
     } else {
+      logger.info("Before addRecords");
       await addRecords(apiClient, app, records, schema, {
         attachmentsDir,
         skipMissingFields,
       });
+      logger.info("After addRecords");
     }
   } catch (e) {
     logger.error(e);

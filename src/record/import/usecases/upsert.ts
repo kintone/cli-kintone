@@ -35,7 +35,9 @@ export const upsertRecords = async (
       updateKeyCode,
       schema
     );
+    logger.info("Before validate");
     updateKey.validateUpdateKeyInRecords(records);
+    logger.info("After validate");
 
     logger.info("Starting to import records...");
     for (const [recordsNext, index] of recordReader(records, updateKey)) {

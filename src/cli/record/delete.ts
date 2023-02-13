@@ -3,10 +3,13 @@ import type { CommandModule } from "yargs";
 import { run } from "../../record/delete";
 import inquirer from "inquirer";
 import type { Question } from "inquirer";
+import type { SupportedImportEncoding } from "../../utils/file";
 
 const command = "delete";
 
 const describe = "delete all records";
+
+const encoding: SupportedImportEncoding[] = ["utf8", "sjis"];
 
 const FORCE_DELETE_KEY = "yes";
 const FORCE_DELETE_ALIAS = "y";
@@ -80,6 +83,12 @@ const builder = (args: yargs.Argv) =>
       describe: "The path to the CSV file",
       type: "string",
       requiresArg: true,
+    })
+    .option("encoding", {
+      describe: "Character encoding",
+      default: "utf8" as SupportedImportEncoding,
+      choices: encoding,
+      requiresArg: true,
     });
 
 type Args = yargs.Arguments<
@@ -98,6 +107,7 @@ const execute = (args: Args) => {
     pfxFilePassword: args["pfx-file-password"],
     httpsProxy: args.proxy,
     filePath: args["file-path"],
+    encoding: args.encoding,
   });
 };
 

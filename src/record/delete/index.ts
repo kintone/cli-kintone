@@ -6,22 +6,24 @@ import { buildRestAPIClient } from "../../kintone/client";
 import { deleteAllRecords } from "./usecases/deleteAll";
 import { deleteByRecordNumber } from "./usecases/deleteByRecordNumber";
 import { logger } from "../../utils/log";
+import type { SupportedImportEncoding } from "../../utils/file";
 import { readFile } from "../../utils/file";
 import { parseRecords } from "./parsers";
 
 export type Options = {
   app: string;
   filePath?: string;
+  encoding?: SupportedImportEncoding;
 };
 
 export const run: (
   argv: RestAPIClientOptions & Options
 ) => Promise<void> = async (options) => {
   try {
-    const { app, filePath, ...restApiClientOptions } = options;
+    const { app, filePath, encoding, ...restApiClientOptions } = options;
     const apiClient = buildRestAPIClient(restApiClientOptions);
     if (filePath) {
-      await deleteRecordsByFile(apiClient, app, filePath);
+      await deleteRecordsByFile(apiClient, app, filePath, encoding);
       return;
     }
     await deleteAllRecords(apiClient, app);
@@ -35,12 +37,14 @@ export const run: (
 const deleteRecordsByFile = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  filePath: string
+  filePath: string,
+  encoding?: SupportedImportEncoding
 ): Promise<void> => {
   const recordNumbers = await getRecordNumbersFromFile(
     apiClient,
     app,
-    filePath
+    filePath,
+    encoding
   );
   if (recordNumbers.length === 0) {
     logger.warn("The specified CSV file does not have any records.");
@@ -53,11 +57,12 @@ const deleteRecordsByFile = async (
 const getRecordNumbersFromFile = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  filePath: string
+  filePath: string,
+  encoding?: SupportedImportEncoding
 ): Promise<RecordNumber[]> => {
   const fieldsJson = await apiClient.app.getFormFields({ app });
   const recordNumberFieldCode = getRecordNumberFieldCode(fieldsJson.properties);
-  const { content, format } = await readFile(filePath);
+  const { content, format } = await readFile(filePath, encoding);
 
   return parseRecords({
     source: content,

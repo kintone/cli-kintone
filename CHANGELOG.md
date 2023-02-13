@@ -47,4 +47,4 @@ This tool has the following big updates from https://github.com/kintone-labs/cli
 - Support a Record number as "Key to Bulk Update" instead of Record ID (`$id`).
 - Support client certificate authentication
 
-See https://developer.cybozu.io/hc/ja/articles/10663181361689 for more details.
+See https://cybozu.dev/ja/kintone/sdk/backup/cli-kintone for more details.

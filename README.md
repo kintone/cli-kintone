@@ -199,6 +199,8 @@ Options:
       --app                  The ID of the app               [string] [required]
       --file-path            The path to source file.
                              The file extension should be ".csv"        [string]
+      --encoding             Character encoding
+                                     [choices: "utf8", "sjis"] [default: "utf8"]
       --guest-space-id       The ID of guest space
                                       [string] [default: KINTONE_GUEST_SPACE_ID]
       --pfx-file-path        The path to client certificate file        [string]

@@ -48,7 +48,6 @@ export const upsertRecords = async (
       recordSource,
       updateKey
     )) {
-      logger.info("While processing");
       currentIndex = index;
       currentRecords = recordsNext.records;
 

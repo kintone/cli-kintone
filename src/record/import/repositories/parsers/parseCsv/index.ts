@@ -9,7 +9,6 @@ import { convertRecord, recordReader } from "./record";
 import { SEPARATOR } from "./constants";
 import { ParserError } from "../error";
 import type { LocalRecordRepository } from "../../../usecases/interface";
-import { logger } from "../../../../../utils/log";
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style

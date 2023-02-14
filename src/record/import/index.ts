@@ -9,7 +9,6 @@ import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
 import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
-import fs from "fs";
 
 export type Options = {
   app: string;
@@ -24,13 +23,6 @@ export const run: (
   argv: RestAPIClientOptions & Options
 ) => Promise<void> = async (argv) => {
   try {
-    fs.writeFileSync(
-      "stats.csv",
-      "timestamp,rss,heapTotal,heapUsed,external,arrayBuffers,label\n"
-    );
-
-    logger.info("Init");
-
     const {
       app,
       filePath,
@@ -41,11 +33,7 @@ export const run: (
       ...restApiClientOptions
     } = argv;
 
-    logger.info("Before apiClient");
-
     const apiClient = buildRestAPIClient(restApiClientOptions);
-
-    logger.info("After apiClient");
 
     const fieldsJson = await apiClient.app.getFormFields({ app });
     const schema = createSchema(
@@ -54,29 +42,20 @@ export const run: (
         ? userSelected(fields, fieldsJson, updateKey)
         : defaultTransformer()
     );
-    if (global.gc) {
-      global.gc();
-    }
-    logger.info("After createSchema");
-
-    // const { format } = openFsStreamWithEncode(filePath, encoding);
+    const { format } = openFsStreamWithEncode(filePath, encoding);
     const localRecordRepository = new LocalRecordRepositoryFromStream(
       () => openFsStreamWithEncode(filePath, encoding).stream,
-      "csv",
+      format,
       schema
     );
-    logger.info("After new LocalRecordRepositoryFromStream");
 
     if ((await localRecordRepository.length()) === 0) {
       logger.warn("The input file does not have any records");
       return;
     }
-    logger.info("After localRecordRepository.length()");
 
     const skipMissingFields = !fields;
     if (updateKey) {
-      logger.info("Before upsertRecords");
-
       await upsertRecords(
         apiClient,
         app,
@@ -88,21 +67,11 @@ export const run: (
           skipMissingFields,
         }
       );
-      if (global.gc) {
-        global.gc();
-      }
-      logger.info("After upsertRecords");
     } else {
-      logger.info("Before addRecords");
-
       await addRecords(apiClient, app, localRecordRepository, schema, {
         attachmentsDir,
         skipMissingFields,
       });
-      if (global.gc) {
-        global.gc();
-      }
-      logger.info("After addRecords");
     }
   } catch (e) {
     logger.error(e);

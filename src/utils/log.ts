@@ -2,7 +2,6 @@ import { AddRecordsError } from "../record/import/usecases/add/error";
 import { UpsertRecordsError } from "../record/import/usecases/upsert/error";
 import { ParserError } from "../record/import/repositories/parsers/error";
 import chalk from "chalk";
-import fs from "fs";
 
 const currentISOString = () => new Date().toISOString();
 
@@ -16,19 +15,7 @@ export type Logger = {
 export const logger: Logger = {
   info: (message: any) => {
     const prefix = `[${currentISOString()}] ${chalk.blue("INFO")}:`;
-    if (global.gc) {
-      global.gc();
-    }
-
-    const usage = process.memoryUsage();
-    fs.appendFileSync(
-      "stats.csv",
-      `${Date.now()},${usage.rss},${usage.heapTotal},${usage.heapUsed},${
-        usage.external
-      },${usage.arrayBuffers},${message}\n`
-    );
     console.error(addPrefixEachLine(message, prefix));
-    console.error(addPrefixEachLine(JSON.stringify(usage), prefix));
   },
 
   warn: (message: any) => {

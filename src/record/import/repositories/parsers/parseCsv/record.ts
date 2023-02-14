@@ -10,7 +10,6 @@ import { Readable } from "stream";
 
 type RecordCsv = {
   rows: CsvRow[];
-  recordIndex: number;
   firstRowIndex: number;
   lastRowIndex: number;
 };
@@ -29,7 +28,6 @@ export const convertRecord = (
   return {
     data: recordData,
     metadata: {
-      recordIndex: recordCsv.recordIndex,
       format: {
         type: "csv",
         firstRowIndex: recordCsv.firstRowIndex,
@@ -59,22 +57,18 @@ export async function* recordReader(
     asyncGeneratorWithIndexAndNextValueFromStream<CsvRow>(stream);
 
   if (!hasSubtable(firstRow)) {
-    let recordIndex = 0;
     for await (const { current: row, index: rowIndex } of generator) {
       yield {
         rows: [row],
-        recordIndex: recordIndex,
         firstRowIndex: rowIndex + lineOffset,
         lastRowIndex: rowIndex + lineOffset,
       };
-      recordIndex++;
     }
     return;
   }
 
   let rows: CsvRow[] = [];
   let firstRowIndex = 0;
-  let recordIndex = 0;
 
   for await (const {
     current: currentRow,
@@ -86,11 +80,9 @@ export async function* recordReader(
       if (rows.length > 0 && isPrimaryCsvRow(rows[0])) {
         yield {
           rows: rows,
-          recordIndex: recordIndex,
           firstRowIndex: firstRowIndex + lineOffset,
           lastRowIndex: rowIndex + lineOffset,
         };
-        recordIndex++;
       }
       firstRowIndex = rowIndex + 1;
       rows = [];

@@ -60,7 +60,6 @@ export const expected: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 0,
       format: { type: "csv", firstRowIndex: 1, lastRowIndex: 4 },
     },
   },
@@ -75,7 +74,6 @@ export const expected: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 1,
       format: { type: "csv", firstRowIndex: 5, lastRowIndex: 6 },
     },
   },
@@ -108,7 +106,6 @@ export const expected: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 2,
       format: { type: "csv", firstRowIndex: 7, lastRowIndex: 8 },
     },
   },
@@ -117,7 +114,6 @@ export const expected: LocalRecord[] = [
       text: { value: "sample1" },
     },
     metadata: {
-      recordIndex: 3,
       format: { type: "csv", firstRowIndex: 9, lastRowIndex: 9 },
     },
   },

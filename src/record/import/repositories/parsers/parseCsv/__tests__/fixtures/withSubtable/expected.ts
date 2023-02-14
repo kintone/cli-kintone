@@ -138,7 +138,6 @@ export const expected: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 0,
       format: { type: "csv", firstRowIndex: 1, lastRowIndex: 2 },
     },
   },
@@ -279,7 +278,6 @@ export const expected: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 1,
       format: { type: "csv", firstRowIndex: 3, lastRowIndex: 4 },
     },
   },

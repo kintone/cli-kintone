@@ -45,7 +45,6 @@ describe("addRecords", () => {
       {
         data: { number: { value: "1" } },
         metadata: {
-          recordIndex: 0,
           format: { type: "csv", firstRowIndex: 0, lastRowIndex: 0 },
         },
       },

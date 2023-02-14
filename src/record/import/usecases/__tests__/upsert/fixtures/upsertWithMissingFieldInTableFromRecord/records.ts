@@ -21,7 +21,6 @@ export const records: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 0,
       format: { type: "csv", firstRowIndex: 1, lastRowIndex: 1 },
     },
   },
@@ -45,7 +44,6 @@ export const records: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 1,
       format: { type: "csv", firstRowIndex: 2, lastRowIndex: 2 },
     },
   },

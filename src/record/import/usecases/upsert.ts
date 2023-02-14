@@ -44,18 +44,14 @@ export const upsertRecords = async (
     await updateKey.validateUpdateKeyInRecords(recordSource);
 
     logger.info("Starting to import records...");
-    for await (const [recordsNext, index] of recordReader(
-      recordSource,
-      updateKey
-    )) {
-      currentIndex = index;
-      currentRecords = recordsNext.records;
+    for await (const recordsByChunk of recordReader(recordSource, updateKey)) {
+      currentRecords = recordsByChunk.records;
 
-      if (recordsNext.type === "update") {
+      if (recordsByChunk.type === "update") {
         const recordsToUpload = await convertToKintoneRecordForUpdate(
           apiClient,
           app,
-          recordsNext.records,
+          recordsByChunk.records,
           schema,
           updateKey,
           { attachmentsDir, skipMissingFields }
@@ -68,7 +64,7 @@ export const upsertRecords = async (
         const recordsToUpload = await convertToKintoneRecordForAdd(
           apiClient,
           app,
-          recordsNext.records,
+          recordsByChunk.records,
           schema,
           updateKey,
           { attachmentsDir, skipMissingFields }
@@ -78,7 +74,8 @@ export const upsertRecords = async (
           records: recordsToUpload,
         });
       }
-      progressLogger.update(index + recordsNext.records.length);
+      currentIndex += recordsByChunk.records.length;
+      progressLogger.update(currentIndex);
     }
     progressLogger.done();
   } catch (e) {
@@ -176,12 +173,11 @@ async function* recordReader(
   localRecordReader: LocalRecordRepository,
   updateKey: UpdateKey
 ): AsyncGenerator<
-  [{ type: "add" | "update"; records: LocalRecord[] }, number],
+  { type: "add" | "update"; records: LocalRecord[] },
   void,
   undefined
 > {
   let records: LocalRecord[] = [];
-  let currentIndex = 0;
   let isUpdate: boolean | undefined;
 
   for await (const localRecord of localRecordReader.reader()) {
@@ -192,19 +188,12 @@ async function* recordReader(
     if (isUpdateCurrent === isUpdate && records.length < CHUNK_SIZE) {
       records.push(localRecord);
     } else {
-      yield [
-        { type: isUpdate ? "update" : "add", records: records },
-        currentIndex,
-      ];
+      yield { type: isUpdate ? "update" : "add", records: records };
       records = [localRecord];
-      currentIndex = localRecord.metadata.recordIndex;
       isUpdate = isUpdateCurrent;
     }
   }
   if (records.length > 0) {
-    yield [
-      { type: isUpdate ? "update" : "add", records: records },
-      currentIndex,
-    ];
+    yield { type: isUpdate ? "update" : "add", records: records };
   }
 }

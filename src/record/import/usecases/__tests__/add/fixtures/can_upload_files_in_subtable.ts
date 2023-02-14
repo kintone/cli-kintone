@@ -31,7 +31,6 @@ export const inputRecords: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 0,
       format: { type: "csv", firstRowIndex: 1, lastRowIndex: 1 },
     },
   },

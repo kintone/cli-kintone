@@ -14,7 +14,6 @@ export const records: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 0,
       format: { type: "csv", firstRowIndex: 1, lastRowIndex: 1 },
     },
   },
@@ -31,7 +30,6 @@ export const records: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 1,
       format: { type: "csv", firstRowIndex: 2, lastRowIndex: 2 },
     },
   },
@@ -48,7 +46,6 @@ export const records: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 2,
       format: { type: "csv", firstRowIndex: 3, lastRowIndex: 3 },
     },
   },
@@ -65,7 +62,6 @@ export const records: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 3,
       format: { type: "csv", firstRowIndex: 4, lastRowIndex: 4 },
     },
   },
@@ -82,7 +78,6 @@ export const records: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 4,
       format: { type: "csv", firstRowIndex: 5, lastRowIndex: 5 },
     },
   },
@@ -99,7 +94,6 @@ export const records: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 5,
       format: { type: "csv", firstRowIndex: 6, lastRowIndex: 6 },
     },
   },
@@ -116,7 +110,6 @@ export const records: LocalRecord[] = [
       },
     },
     metadata: {
-      recordIndex: 6,
       format: { type: "csv", firstRowIndex: 7, lastRowIndex: 7 },
     },
   },

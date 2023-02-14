@@ -127,7 +127,9 @@ const validateUpdateKeyInRecords = async (
   recordRepository: LocalRecordRepository
 ) => {
   let hasAppCodePrevious: boolean = false;
+  let index = -1;
   for await (const record of recordRepository.reader()) {
+    index++;
     if (!(updateKey.code in record.data)) {
       throw new Error(
         `The field specified as "Key to Bulk Update" (${updateKey.code}) does not exist on the input`
@@ -146,10 +148,7 @@ const validateUpdateKeyInRecords = async (
 
     if (updateKey.type === "RECORD_NUMBER") {
       const _hasAppCode = hasAppCode(value, appCode);
-      if (
-        record.metadata.recordIndex !== 0 &&
-        _hasAppCode !== hasAppCodePrevious
-      ) {
+      if (index !== 0 && _hasAppCode !== hasAppCodePrevious) {
         throw new Error(
           `The "Key to Bulk Update" should not be mixed with those with and without app code`
         );

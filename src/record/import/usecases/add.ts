@@ -35,13 +35,12 @@ export const addRecords: (
   );
   try {
     logger.info("Starting to import records...");
-    for await (const [recordsNext, index] of recordsReader(recordSource)) {
-      currentIndex = index;
-      currentRecords = recordsNext;
+    for await (const recordsByChunk of recordsReader(recordSource)) {
+      currentRecords = recordsByChunk;
       const recordsToUpload = await convertRecordsToApiRequestParameter(
         apiClient,
         app,
-        recordsNext,
+        recordsByChunk,
         schema,
         {
           attachmentsDir,
@@ -52,7 +51,8 @@ export const addRecords: (
         app,
         records: recordsToUpload,
       });
-      progressLogger.update(index + recordsNext.length);
+      currentIndex += recordsByChunk.length;
+      progressLogger.update(currentIndex);
     }
     progressLogger.done();
   } catch (e) {
@@ -94,18 +94,16 @@ const convertRecordsToApiRequestParameter = async (
 // eslint-disable-next-line func-style
 async function* recordsReader(
   localRecordReader: LocalRecordRepository
-): AsyncGenerator<[LocalRecord[], number], void, undefined> {
+): AsyncGenerator<LocalRecord[], void, undefined> {
   let records = [];
-  let currentIndex = 0;
   for await (const localRecord of localRecordReader.reader()) {
     records.push(localRecord);
     if (records.length >= CHUNK_SIZE) {
-      yield [records, currentIndex];
+      yield records;
       records = [];
-      currentIndex = localRecord.metadata.recordIndex;
     }
   }
   if (records.length > 0) {
-    yield [records, currentIndex];
+    yield records;
   }
 }

@@ -1,13 +1,14 @@
 import fs from "fs";
 import path from "path";
 import iconv from "iconv-lite";
+import { Transform } from "stream";
 
 export type SupportedImportEncoding = "utf8" | "sjis";
 
 export const openFsStreamWithEncode: (
   filePath: string,
   encoding?: SupportedImportEncoding
-) => { stream: NodeJS.ReadWriteStream; format: string } = (
+) => { stream: NodeJS.ReadableStream; format: string } = (
   filePath,
   encoding = "utf8"
 ) => {
@@ -15,10 +16,19 @@ export const openFsStreamWithEncode: (
   if (format === "json" && encoding !== "utf8") {
     throw new Error("source file is JSON and JSON MUST be encoded with UTF-8");
   }
-  const stream = fs
-    .createReadStream(filePath)
-    .pipe(iconv.decodeStream(encoding));
-  return { stream, format };
+  const stream = fs.createReadStream(filePath);
+
+  const decodedStream = stream.pipe(
+    Transform.from(iconv.decodeStream(encoding))
+  );
+  stream.on("error", (e) => {
+    decodedStream.destroy(e);
+  });
+
+  decodedStream.on("error", () => {
+    /* noop. but this is necessary :) */
+  });
+  return { stream: decodedStream, format };
 };
 
 export const readFile: (

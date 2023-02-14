@@ -1,8 +1,5 @@
-import type { CsvRow } from "../../../../../kintone/types";
-import type { LocalRecord } from "../../../types/record";
 import type { RecordSchema } from "../../../types/schema";
 
-// import csvParse from "csv-parse/lib/sync";
 import csvParse from "csv-parse";
 
 import { convertRecord, recordReader } from "./record";
@@ -17,6 +14,7 @@ export async function* csvReader<T extends NodeJS.ReadableStream>(
   schema: RecordSchema
 ): ReturnType<LocalRecordRepository["reader"]> {
   try {
+    const sourceStream = source();
     const csvStream = source().pipe(
       csvParse({
         columns: true,
@@ -24,6 +22,9 @@ export async function* csvReader<T extends NodeJS.ReadableStream>(
         delimiter: SEPARATOR,
       })
     );
+    sourceStream.on("error", (e) => {
+      csvStream.destroy(e);
+    });
 
     for await (const recordRows of recordReader(csvStream)) {
       yield convertRecord(recordRows, schema);
@@ -45,6 +46,9 @@ export const countRecordsFromCsv = async <T extends NodeJS.ReadableStream>(
         delimiter: SEPARATOR,
       })
     );
+    source.on("error", (e) => {
+      csvStream.destroy(e);
+    });
 
     let count = 0;
     for await (const recordRows of recordReader(csvStream)) {
@@ -52,7 +56,6 @@ export const countRecordsFromCsv = async <T extends NodeJS.ReadableStream>(
     }
     return count;
   } catch (e) {
-    console.error(e);
     throw new ParserError(e);
   }
 };

@@ -1845,15 +1845,15 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@kintone/rest-api-client@^3.3.1":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@kintone/rest-api-client/-/rest-api-client-3.3.1.tgz#838744e8b3ad6ffecaadb1262498938663c91cea"
-  integrity sha512-BRev1MirOrtkQbFT2Rn5edfg2s2YVORkbo8v0tctFJnoyIl+PNJeSFEtramYIOnCX7fcBkRZE/ow9ZkTiDpAdQ==
+"@kintone/rest-api-client@^3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@kintone/rest-api-client/-/rest-api-client-3.3.2.tgz#1f3d39ad73183fe3a3b6624ec0db6cf0803cf160"
+  integrity sha512-ZcOx7TW13ff3wlOzrd7wOuIvS+vjraJp2p05X1U1o0K3xr6Pa+sGjEE9hwcbKHLgaWdW+pWRS1eTrl/ddJBmDQ==
   dependencies:
     axios "^0.27.2"
     core-js "^3.27.2"
     form-data "^4.0.0"
-    js-base64 "^3.7.4"
+    js-base64 "^3.7.5"
     mime-types "^2.1.35"
     qs "^6.10.5"
 
@@ -4390,10 +4390,10 @@ jest@^29.4.2:
     import-local "^3.0.2"
     jest-cli "^29.4.2"
 
-js-base64@^3.7.4:
-  version "3.7.4"
-  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.7.4.tgz#af95b20f23efc8034afd2d1cc5b9d0adf7419037"
-  integrity sha512-wpM/wi20Tl+3ifTyi0RdDckS4YTD4Lf953mBRrpG8547T7hInHNPEj8+ck4gB8VDcGyeAWFK++Wb/fU1BeavKQ==
+js-base64@^3.7.5:
+  version "3.7.5"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.7.5.tgz#21e24cf6b886f76d6f5f165bfcd69cc55b9e3fca"
+  integrity sha512-3MEt5DTINKqfScXKfJFrRbxkrnk2AxPWGBL/ycjz4dK8iqiSJ06UxD8jh8xuh6p10TX4t2+7FsBYVxxQbMg+qA==
 
 js-sdsl@^4.1.4:
   version "4.1.4"

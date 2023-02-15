@@ -9,8 +9,8 @@ import type { LocalRecordRepository } from "../../../usecases/interface";
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style
-export async function* csvReader<T extends NodeJS.ReadableStream>(
-  source: () => T,
+export async function* csvReader(
+  source: () => NodeJS.ReadableStream,
   schema: RecordSchema
 ): ReturnType<LocalRecordRepository["reader"]> {
   try {
@@ -35,8 +35,8 @@ export async function* csvReader<T extends NodeJS.ReadableStream>(
   }
 }
 
-export const countRecordsFromCsv = async <T extends NodeJS.ReadableStream>(
-  source: T
+export const countRecordsFromCsv = async (
+  source: NodeJS.ReadableStream
 ): Promise<number> => {
   try {
     const csvStream = source.pipe(

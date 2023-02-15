@@ -3,14 +3,16 @@ import type { RecordSchema } from "../types/schema";
 import { RepositoryError } from "./error";
 import { countRecordsFromCsv, csvReader } from "./parsers/parseCsv";
 
-export class LocalRecordRepositoryFromStream<T extends NodeJS.ReadableStream>
-  implements LocalRecordRepository
-{
+export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
   readonly format;
   readonly length;
   readonly reader;
 
-  constructor(source: () => T, format: string, schema: RecordSchema) {
+  constructor(
+    source: () => NodeJS.ReadableStream,
+    format: string,
+    schema: RecordSchema
+  ) {
     this.format = format;
     this.length = () => countRecordsFromCsv(source());
 

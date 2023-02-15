@@ -1,7 +1,7 @@
 import type { RestAPIClientOptions } from "../../kintone/client";
 import { buildRestAPIClient } from "../../kintone/client";
 import type { SupportedImportEncoding } from "./utils/file";
-import { openFsStreamWithEncode } from "./utils/file";
+import { extractFileFormat, openFsStreamWithEncode } from "./utils/file";
 import { addRecords } from "./usecases/add";
 import { upsertRecords } from "./usecases/upsert";
 import { createSchema } from "./schema";
@@ -42,9 +42,9 @@ export const run: (
         ? userSelected(fields, fieldsJson, updateKey)
         : defaultTransformer()
     );
-    const { format } = openFsStreamWithEncode(filePath, encoding);
+    const format = extractFileFormat(filePath);
     const localRecordRepository = new LocalRecordRepositoryFromStream(
-      () => openFsStreamWithEncode(filePath, encoding).stream,
+      () => openFsStreamWithEncode(filePath, encoding),
       format,
       schema
     );

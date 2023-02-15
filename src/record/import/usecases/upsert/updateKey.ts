@@ -54,7 +54,7 @@ export class UpdateKey {
 
   getUpdateKeyField = () => this.field;
 
-  validateUpdateKeyInRecords = async (records: LocalRecordRepository) =>
+  validateUpdateKeyInRecords = (records: LocalRecordRepository) =>
     validateUpdateKeyInRecords(this.field, this.appCode, records);
 
   isUpdate = (record: LocalRecord) => {

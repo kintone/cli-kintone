@@ -30,7 +30,6 @@ export async function* csvReader(
       yield convertRecord(recordRows, schema);
     }
   } catch (e) {
-    console.error(e);
     throw new ParserError(e);
   }
 }

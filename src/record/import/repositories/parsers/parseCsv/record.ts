@@ -53,11 +53,15 @@ export async function* recordReader(
   }
 
   const stream = unshiftToStream(csvStream, firstRow);
-  const generator =
-    asyncGeneratorWithIndexAndNextValueFromStream<CsvRow>(stream);
+  const generator = withIndexIterator(
+    withNextIterator<CsvRow>(stream[Symbol.asyncIterator]())
+  );
 
   if (!hasSubtable(firstRow)) {
-    for await (const { current: row, index: rowIndex } of generator) {
+    for await (const {
+      data: { current: row },
+      index: rowIndex,
+    } of generator) {
       yield {
         rows: [row],
         firstRowIndex: rowIndex + lineOffset,
@@ -71,8 +75,7 @@ export async function* recordReader(
   let firstRowIndex = 0;
 
   for await (const {
-    current: currentRow,
-    next: nextRow,
+    data: { current: currentRow, next: nextRow },
     index: rowIndex,
   } of generator) {
     rows.push(currentRow);
@@ -102,20 +105,28 @@ const unshiftToStream = (stream: Readable, element: unknown) =>
     })()
   );
 
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style
-async function* asyncGeneratorWithIndexAndNextValueFromStream<T = unknown>(
-  stream: Readable
-): AsyncGenerator<{ current: T; index: number; next?: T }> {
-  let index = 0;
-  let { value: prev, done } = await stream[Symbol.asyncIterator]().next();
+async function* withNextIterator<T = unknown>(
+  source: AsyncIterableIterator<T> | AsyncGenerator<T>
+): AsyncGenerator<{ current: T; next?: T }> {
+  let { value: prev, done } = await source.next();
   if (done) {
     return;
   }
-  for await (const value of stream) {
-    yield { current: prev, index, next: value };
+  for await (const value of source) {
+    yield { current: prev, next: value };
     prev = value;
+  }
+  yield { current: prev, next: undefined };
+}
+
+// eslint-disable-next-line func-style
+async function* withIndexIterator<T = unknown>(
+  source: AsyncIterableIterator<T> | AsyncGenerator<T>
+): AsyncGenerator<{ data: T; index: number }> {
+  let index = 0;
+  for await (const value of source) {
+    yield { data: value, index };
     index++;
   }
-  yield { current: prev, index, next: undefined };
 }

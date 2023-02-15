@@ -1,8 +1,5 @@
 import type { LocalRecordRepository } from "../usecases/interface";
-import type { RecordSchema } from "../types/schema";
 import type { LocalRecord } from "../types/record";
-import { Readable } from "stream";
-import { number } from "yargs";
 
 export class LocalRecordRepositoryMock implements LocalRecordRepository {
   readonly format: string;

@@ -6,7 +6,6 @@ import {
   withIndex,
   withNext,
 } from "../iterator";
-import { Readable } from "stream";
 
 const arrayToAsyncIter = <T = unknown>(arr: T[]): AsyncIterableIterator<T> =>
   iterToAsyncIter(arr[Symbol.iterator]());

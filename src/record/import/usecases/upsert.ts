@@ -12,6 +12,7 @@ import { UpsertRecordsError } from "./upsert/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
 import type { LocalRecordRepository } from "./interface";
+import { groupByKeyChunked } from "../utils/iterator";
 
 const CHUNK_SIZE = 2000;
 
@@ -44,14 +45,18 @@ export const upsertRecords = async (
     await updateKey.validateUpdateKeyInRecords(recordSource);
 
     logger.info("Starting to import records...");
-    for await (const recordsByChunk of recordReader(recordSource, updateKey)) {
-      currentRecords = recordsByChunk.records;
+    for await (const recordsByChunk of groupByKeyChunked(
+      recordSource.reader(),
+      (record) => (updateKey.isUpdate(record) ? "update" : "add"),
+      CHUNK_SIZE
+    )) {
+      currentRecords = recordsByChunk.data;
 
-      if (recordsByChunk.type === "update") {
+      if (recordsByChunk.key === "update") {
         const recordsToUpload = await convertToKintoneRecordForUpdate(
           apiClient,
           app,
-          recordsByChunk.records,
+          recordsByChunk.data,
           schema,
           updateKey,
           { attachmentsDir, skipMissingFields }
@@ -64,7 +69,7 @@ export const upsertRecords = async (
         const recordsToUpload = await convertToKintoneRecordForAdd(
           apiClient,
           app,
-          recordsByChunk.records,
+          recordsByChunk.data,
           schema,
           updateKey,
           { attachmentsDir, skipMissingFields }
@@ -74,7 +79,7 @@ export const upsertRecords = async (
           records: recordsToUpload,
         });
       }
-      currentIndex += recordsByChunk.records.length;
+      currentIndex += recordsByChunk.data.length;
       progressLogger.update(currentIndex);
     }
     progressLogger.done();
@@ -166,34 +171,3 @@ const convertToKintoneRecordForAdd = async (
 
   return kintoneRecords;
 };
-
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
-// eslint-disable-next-line func-style
-async function* recordReader(
-  localRecordReader: LocalRecordRepository,
-  updateKey: UpdateKey
-): AsyncGenerator<
-  { type: "add" | "update"; records: LocalRecord[] },
-  void,
-  undefined
-> {
-  let records: LocalRecord[] = [];
-  let isUpdate: boolean | undefined;
-
-  for await (const localRecord of localRecordReader.reader()) {
-    const isUpdateCurrent = updateKey.isUpdate(localRecord);
-    if (isUpdate === undefined) {
-      isUpdate = isUpdateCurrent;
-    }
-    if (isUpdateCurrent === isUpdate && records.length < CHUNK_SIZE) {
-      records.push(localRecord);
-    } else {
-      yield { type: isUpdate ? "update" : "add", records: records };
-      records = [localRecord];
-      isUpdate = isUpdateCurrent;
-    }
-  }
-  if (records.length > 0) {
-    yield { type: isUpdate ? "update" : "add", records: records };
-  }
-}

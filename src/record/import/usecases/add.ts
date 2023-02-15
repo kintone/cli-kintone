@@ -8,6 +8,7 @@ import { AddRecordsError } from "./add/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
 import type { LocalRecordRepository } from "./interface";
+import { chunked } from "../utils/iterator";
 
 const CHUNK_SIZE = 2000;
 
@@ -35,7 +36,10 @@ export const addRecords: (
   );
   try {
     logger.info("Starting to import records...");
-    for await (const recordsByChunk of recordsReader(recordSource)) {
+    for await (const recordsByChunk of chunked(
+      recordSource.reader(),
+      CHUNK_SIZE
+    )) {
       currentRecords = recordsByChunk;
       const recordsToUpload = await convertRecordsToApiRequestParameter(
         apiClient,
@@ -89,21 +93,3 @@ const convertRecordsToApiRequestParameter = async (
   }
   return kintoneRecords;
 };
-
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
-// eslint-disable-next-line func-style
-async function* recordsReader(
-  localRecordReader: LocalRecordRepository
-): AsyncGenerator<LocalRecord[], void, undefined> {
-  let records = [];
-  for await (const localRecord of localRecordReader.reader()) {
-    records.push(localRecord);
-    if (records.length >= CHUNK_SIZE) {
-      yield records;
-      records = [];
-    }
-  }
-  if (records.length > 0) {
-    yield records;
-  }
-}

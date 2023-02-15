@@ -7,6 +7,7 @@ import { convertSubtableField, subtableFieldReader } from "./subtable";
 import { PRIMARY_MARK } from "./constants";
 import type csvParse from "csv-parse";
 import { Readable } from "stream";
+import { withIndex, withNext } from "../../../utils/iterator";
 
 type RecordCsv = {
   rows: CsvRow[];
@@ -53,9 +54,7 @@ export async function* recordReader(
   }
 
   const stream = unshiftToStream(csvStream, firstRow);
-  const generator = withIndexIterator(
-    withNextIterator<CsvRow>(stream[Symbol.asyncIterator]())
-  );
+  const generator = withIndex(withNext<CsvRow>(stream[Symbol.asyncIterator]()));
 
   if (!hasSubtable(firstRow)) {
     for await (const {
@@ -104,29 +103,3 @@ const unshiftToStream = (stream: Readable, element: unknown) =>
       yield* stream;
     })()
   );
-
-// eslint-disable-next-line func-style
-async function* withNextIterator<T = unknown>(
-  source: AsyncIterableIterator<T> | AsyncGenerator<T>
-): AsyncGenerator<{ current: T; next?: T }> {
-  let { value: prev, done } = await source.next();
-  if (done) {
-    return;
-  }
-  for await (const value of source) {
-    yield { current: prev, next: value };
-    prev = value;
-  }
-  yield { current: prev, next: undefined };
-}
-
-// eslint-disable-next-line func-style
-async function* withIndexIterator<T = unknown>(
-  source: AsyncIterableIterator<T> | AsyncGenerator<T>
-): AsyncGenerator<{ data: T; index: number }> {
-  let index = 0;
-  for await (const value of source) {
-    yield { data: value, index };
-    index++;
-  }
-}

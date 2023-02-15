@@ -2,14 +2,14 @@ import {
   chunked,
   groupByKey,
   groupByKeyChunked,
-  iterToAsyncIer,
+  iterToAsyncIter,
   withIndex,
   withNext,
 } from "../iterator";
 import { Readable } from "stream";
 
 const arrayToAsyncIter = <T = unknown>(arr: T[]): AsyncIterableIterator<T> =>
-  iterToAsyncIer(arr[Symbol.iterator]());
+  iterToAsyncIter(arr[Symbol.iterator]());
 
 describe("chunked", () => {
   it("can separate data source by chunk", async () => {

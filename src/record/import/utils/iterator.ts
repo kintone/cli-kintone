@@ -2,7 +2,7 @@ type Iterators<T = unknown> = IterableIterator<T> | Generator<T>;
 type AsyncIterators<T = unknown> = AsyncIterableIterator<T> | AsyncGenerator<T>;
 
 // eslint-disable-next-line func-style
-export async function* iterToAsyncIer<T = unknown>(
+export async function* iterToAsyncIter<T = unknown>(
   source: Iterators<T>
 ): AsyncIterators<T> {
   for (const element of source) {
@@ -52,7 +52,7 @@ export async function* groupByKeyChunked<T = unknown, K = unknown>(
 ): AsyncGenerator<{ key: K; data: T[] }, void, undefined> {
   for await (const { key, data } of groupByKey(source, keyFn)) {
     for await (const chunk of chunked(
-      iterToAsyncIer(data[Symbol.iterator]()),
+      iterToAsyncIter(data[Symbol.iterator]()),
       size
     )) {
       yield { key, data: chunk };

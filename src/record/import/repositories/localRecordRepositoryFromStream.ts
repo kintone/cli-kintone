@@ -2,11 +2,14 @@ import type { LocalRecordRepository } from "../usecases/interface";
 import type { RecordSchema } from "../types/schema";
 import { RepositoryError } from "./error";
 import { countRecordsFromCsv, csvReader } from "./parsers/parseCsv";
+import { number } from "yargs";
+import type { LocalRecord } from "../types/record";
 
 export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
-  readonly format;
-  readonly length;
-  readonly reader;
+  readonly format: string;
+  readonly length: () => Promise<number>;
+
+  readonly reader: () => AsyncGenerator<LocalRecord, void, undefined>;
 
   constructor(
     source: () => NodeJS.ReadableStream,

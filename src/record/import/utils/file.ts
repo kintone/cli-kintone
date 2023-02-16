@@ -16,9 +16,6 @@ export const openFsStreamWithEncode: (
   stream.on("error", (e) => {
     decodedStream.destroy(e);
   });
-  decodedStream.on("error", () => {
-    /* noop. but this is necessary :) */
-  });
   return decodedStream;
 };
 

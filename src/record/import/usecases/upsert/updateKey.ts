@@ -6,6 +6,7 @@ import type {
 import type { FieldSchema, RecordSchema } from "../../types/schema";
 import type { LocalRecord } from "../../types/record";
 import type { LocalRecordRepository } from "../interface";
+import { withIndex } from "../../utils/iterator";
 
 type UpdateKeyField = {
   code: string;
@@ -127,9 +128,9 @@ const validateUpdateKeyInRecords = async (
   recordRepository: LocalRecordRepository
 ) => {
   let hasAppCodePrevious: boolean = false;
-  let index = -1;
-  for await (const record of recordRepository.reader()) {
-    index++;
+  for await (const { data: record, index } of withIndex(
+    recordRepository.reader()
+  )) {
     if (!(updateKey.code in record.data)) {
       throw new Error(
         `The field specified as "Key to Bulk Update" (${updateKey.code}) does not exist on the input`

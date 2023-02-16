@@ -9,7 +9,7 @@ export const pattern: TestPattern = {
   description: "should upsert records with correct order",
   input: {
     records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv", records.length),
+    repository: new LocalRecordRepositoryMock(records, "csv"),
     schema: schema,
     updateKey: "recordNumber",
     options: {

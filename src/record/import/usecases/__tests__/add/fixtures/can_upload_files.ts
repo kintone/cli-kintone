@@ -28,7 +28,7 @@ export const inputRecords: LocalRecord[] = [
   },
 ];
 
-export const input = new LocalRecordRepositoryMock(inputRecords, "csv", 1);
+export const input = new LocalRecordRepositoryMock(inputRecords, "csv");
 
 export const expected: KintoneRecordForParameter[] = [
   {

@@ -9,7 +9,7 @@ export const pattern: TestPattern = {
   description: "should upsert records correctly with single line text",
   input: {
     records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv", records.length),
+    repository: new LocalRecordRepositoryMock(records, "csv"),
     schema: schema,
     updateKey: "singleLineText",
     options: {

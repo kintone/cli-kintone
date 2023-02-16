@@ -9,7 +9,7 @@ export const pattern: TestPattern = {
     "should throw error when unsupported field is passed as update key",
   input: {
     records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv", records.length),
+    repository: new LocalRecordRepositoryMock(records, "csv"),
     schema: schema,
     updateKey: "date",
     options: {

@@ -8,7 +8,7 @@ export const pattern: TestPattern = {
   description: "should throw error when update key field is not unique",
   input: {
     records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv", records.length),
+    repository: new LocalRecordRepositoryMock(records, "csv"),
     schema: schema,
     updateKey: "singleLineText_nonUnique",
     options: {

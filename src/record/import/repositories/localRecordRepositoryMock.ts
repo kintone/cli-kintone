@@ -7,9 +7,9 @@ export class LocalRecordRepositoryMock implements LocalRecordRepository {
 
   readonly reader: () => AsyncGenerator<LocalRecord, void, undefined>;
 
-  constructor(source: LocalRecord[], format: string, length: number) {
+  constructor(source: LocalRecord[], format: string) {
     this.format = format;
-    this.length = async () => length;
+    this.length = async () => source.length;
     this.reader = () => asyncGeneratorFromStream(source);
   }
 }

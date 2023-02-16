@@ -29,7 +29,7 @@ describe("addRecords", () => {
       addRecords(
         apiClient,
         "1",
-        new LocalRecordRepositoryMock([], "csv", 0),
+        new LocalRecordRepositoryMock([], "csv"),
         { fields: [] },
         { attachmentsDir: "" }
       )
@@ -68,7 +68,7 @@ describe("addRecords", () => {
         },
       ],
     };
-    const repository = new LocalRecordRepositoryMock(RECORDS, "csv", 1);
+    const repository = new LocalRecordRepositoryMock(RECORDS, "csv");
 
     await addRecords(apiClient, APP_ID, repository, SCHEMA, {
       attachmentsDir: ATTACHMENTS_DIR,

@@ -9,7 +9,7 @@ export const pattern: TestPattern = {
     "should throw error because the record numbers are mixed with those with and without app code",
   input: {
     records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv", records.length),
+    repository: new LocalRecordRepositoryMock(records, "csv"),
     schema: schema,
     updateKey: "recordNumber",
     options: {

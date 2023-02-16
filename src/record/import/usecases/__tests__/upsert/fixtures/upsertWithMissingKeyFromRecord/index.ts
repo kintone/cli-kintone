@@ -9,7 +9,7 @@ export const pattern: TestPattern = {
     "should throw error when update key field does not exist on input record",
   input: {
     records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv", records.length),
+    repository: new LocalRecordRepositoryMock(records, "csv"),
     schema: schema,
     updateKey: "singleLineText_nonExistentOnInput",
     options: {

@@ -9,7 +9,7 @@ export const pattern: TestPattern = {
     "should throw error when the field specified in schema does not exist on input record",
   input: {
     records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv", records.length),
+    repository: new LocalRecordRepositoryMock(records, "csv"),
     schema: schema,
     updateKey: "number",
     options: {

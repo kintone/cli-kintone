@@ -10,7 +10,7 @@ export const pattern: TestPattern = {
     "should upsert records correctly with record numbers on local and kintone have app code",
   input: {
     records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv", records.length),
+    repository: new LocalRecordRepositoryMock(records, "csv"),
     schema: schema,
     updateKey: "recordNumber",
     options: {

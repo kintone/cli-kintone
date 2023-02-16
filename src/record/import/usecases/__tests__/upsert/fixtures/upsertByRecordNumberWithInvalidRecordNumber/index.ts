@@ -8,7 +8,7 @@ export const pattern: TestPattern = {
   description: "should throw error because the record number is invalid",
   input: {
     records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv", records.length),
+    repository: new LocalRecordRepositoryMock(records, "csv"),
     schema: schema,
     updateKey: "recordNumber",
     options: {

@@ -1,8 +1,8 @@
-type Iterators<T = unknown> = IterableIterator<T> | Generator<T>;
-type AsyncIterators<T = unknown> = AsyncIterableIterator<T> | AsyncGenerator<T>;
+type Iterators<T> = IterableIterator<T> | Generator<T>;
+type AsyncIterators<T> = AsyncIterableIterator<T> | AsyncGenerator<T>;
 
 // eslint-disable-next-line func-style
-export async function* iterToAsyncIter<T = unknown>(
+export async function* iterToAsyncIter<T>(
   source: Iterators<T>
 ): AsyncIterators<T> {
   for (const element of source) {
@@ -11,7 +11,7 @@ export async function* iterToAsyncIter<T = unknown>(
 }
 
 // eslint-disable-next-line func-style
-export async function* chunked<T = unknown>(
+export async function* chunked<T>(
   source: AsyncIterators<T>,
   size: number
 ): AsyncGenerator<T[]> {
@@ -29,7 +29,7 @@ export async function* chunked<T = unknown>(
 }
 
 // eslint-disable-next-line func-style
-export async function* groupByKey<T = unknown, K = unknown>(
+export async function* groupByKey<T, K>(
   source: AsyncIterableIterator<T> | AsyncGenerator<T>,
   keyFn: (element: T) => K
 ): AsyncGenerator<{ key: K; data: T[] }, void, undefined> {
@@ -45,7 +45,7 @@ export async function* groupByKey<T = unknown, K = unknown>(
 }
 
 // eslint-disable-next-line func-style
-export async function* groupByKeyChunked<T = unknown, K = unknown>(
+export async function* groupByKeyChunked<T, K>(
   source: AsyncIterators<T>,
   keyFn: (element: T) => K,
   size: number
@@ -61,7 +61,7 @@ export async function* groupByKeyChunked<T = unknown, K = unknown>(
 }
 
 // eslint-disable-next-line func-style
-export async function* withNext<T = unknown>(
+export async function* withNext<T>(
   source: AsyncIterators<T>
 ): AsyncGenerator<{ current: T; next?: T }> {
   let { value: prev, done } = await source.next();
@@ -76,7 +76,7 @@ export async function* withNext<T = unknown>(
 }
 
 // eslint-disable-next-line func-style
-export async function* withIndex<T = unknown>(
+export async function* withIndex<T>(
   source: AsyncIterators<T>
 ): AsyncGenerator<{ data: T; index: number }> {
   let index = 0;

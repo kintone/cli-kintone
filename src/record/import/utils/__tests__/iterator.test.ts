@@ -7,7 +7,7 @@ import {
   withNext,
 } from "../iterator";
 
-const arrayToAsyncIter = <T = unknown>(arr: T[]): AsyncIterableIterator<T> =>
+const arrayToAsyncIter = <T>(arr: T[]): AsyncIterableIterator<T> =>
   iterToAsyncIter(arr[Symbol.iterator]());
 
 describe("chunked", () => {

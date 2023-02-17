@@ -16,7 +16,7 @@ A CLI tool to import/export records to/from [kintone](https://www.kintone.com/).
   - [CSV format](#csv-format)
 - [LICENSE](#license)
 
-## Installation
+## Installations
 
 1. Jump to the [Releases](https://github.com/kintone/cli-kintone/releases) page.
 2. Download a ZIP file for your platform from "Assets".

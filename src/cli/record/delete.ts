@@ -4,6 +4,7 @@ import { run } from "../../record/delete";
 import inquirer from "inquirer";
 import type { Question } from "inquirer";
 import type { SupportedImportEncoding } from "../../utils/file";
+import { logger } from "../../utils/log";
 
 const command = "delete";
 
@@ -23,6 +24,20 @@ const builder = (args: yargs.Argv) =>
       type: "string",
       demandOption: true,
       requiresArg: true,
+    })
+    .option("username", {
+      alias: "u",
+      describe: "*Invalid* Kintone Username",
+      default: process.env.KINTONE_USERNAME,
+      defaultDescription: "KINTONE_USERNAME",
+      hidden: true,
+    })
+    .option("password", {
+      alias: "p",
+      describe: "*Invalid* Kintone Password",
+      default: process.env.KINTONE_PASSWORD,
+      defaultDescription: "KINTONE_PASSWORD",
+      hidden: true,
     })
     .option("api-token", {
       describe: "App's API token",
@@ -112,6 +127,12 @@ const execute = (args: Args) => {
 };
 
 const handler = async (args: Args) => {
+  if (!hasApiToken(args["api-token"]) && (args.username || args.password)) {
+    logger.error("The delete command only supports API token authentication.");
+    // eslint-disable-next-line no-process-exit
+    process.exit(1);
+  }
+
   if (args.yes !== undefined && args.yes) {
     return execute(args);
   }
@@ -132,6 +153,24 @@ const handler = async (args: Args) => {
   }
 
   return undefined;
+};
+
+const hasApiToken = (apiTokenArg?: string | string[]): boolean => {
+  if (!apiTokenArg) {
+    return false;
+  }
+
+  if (typeof apiTokenArg === "string") {
+    return !!apiTokenArg;
+  }
+
+  if (apiTokenArg.length === 0) {
+    return false;
+  }
+
+  const apiToken = apiTokenArg.filter(Boolean);
+
+  return apiToken && apiToken.length > 0;
 };
 
 export const deleteCommand: CommandModule<{}, Args> = {

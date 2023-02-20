@@ -164,13 +164,7 @@ const hasApiToken = (apiTokenArg?: string | string[]): boolean => {
     return !!apiTokenArg;
   }
 
-  if (apiTokenArg.length === 0) {
-    return false;
-  }
-
-  const apiToken = apiTokenArg.filter(Boolean);
-
-  return apiToken && apiToken.length > 0;
+  return apiTokenArg.filter(Boolean).length > 0;
 };
 
 export const deleteCommand: CommandModule<{}, Args> = {

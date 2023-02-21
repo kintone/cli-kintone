@@ -6,7 +6,7 @@ import type {
 import type { FieldSchema, RecordSchema } from "../../types/schema";
 import type { LocalRecord } from "../../types/record";
 import type { LocalRecordRepository } from "../interface";
-import { withIndex } from "../../utils/iterator";
+import { withIndex } from "../../../../utils/iterator";
 
 type UpdateKeyField = {
   code: string;

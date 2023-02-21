@@ -8,7 +8,7 @@ import { AddRecordsError } from "./add/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
 import type { LocalRecordRepository } from "./interface";
-import { chunked } from "../utils/iterator";
+import { chunked } from "../../../utils/iterator";
 
 const CHUNK_SIZE = 2000;
 

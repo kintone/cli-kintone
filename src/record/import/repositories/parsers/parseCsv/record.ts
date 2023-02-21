@@ -7,7 +7,7 @@ import { convertSubtableField, subtableFieldReader } from "./subtable";
 import { PRIMARY_MARK } from "./constants";
 import type csvParse from "csv-parse";
 import { Readable } from "stream";
-import { withIndex, withNext } from "../../../utils/iterator";
+import { withIndex, withNext } from "../../../../../utils/iterator";
 
 type RecordCsv = {
   rows: CsvRow[];

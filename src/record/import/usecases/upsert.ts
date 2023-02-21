@@ -12,7 +12,7 @@ import { UpsertRecordsError } from "./upsert/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
 import type { LocalRecordRepository } from "./interface";
-import { groupByKeyChunked } from "../utils/iterator";
+import { groupByKeyChunked } from "../../../utils/iterator";
 
 const CHUNK_SIZE = 2000;
 

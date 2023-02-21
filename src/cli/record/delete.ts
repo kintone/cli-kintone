@@ -1,13 +1,19 @@
 import type yargs from "yargs";
-import { run } from "../../record/import";
-import type { SupportedImportEncoding } from "../../utils/file";
 import type { CommandModule } from "yargs";
+import { run } from "../../record/delete";
+import inquirer from "inquirer";
+import type { Question } from "inquirer";
+import type { SupportedImportEncoding } from "../../utils/file";
+import { logger } from "../../utils/log";
 
-const command = "import";
+const command = "delete";
 
-const describe = "import the records of the specified app";
+const describe = "delete all records";
 
 const encoding: SupportedImportEncoding[] = ["utf8", "sjis"];
+
+const FORCE_DELETE_KEY = "yes";
+const FORCE_DELETE_ALIAS = "y";
 
 const builder = (args: yargs.Argv) =>
   args
@@ -21,19 +27,17 @@ const builder = (args: yargs.Argv) =>
     })
     .option("username", {
       alias: "u",
-      describe: "Kintone Username",
+      describe: "*Invalid* Kintone Username",
       default: process.env.KINTONE_USERNAME,
       defaultDescription: "KINTONE_USERNAME",
-      type: "string",
-      requiresArg: true,
+      hidden: true,
     })
     .option("password", {
       alias: "p",
-      describe: "Kintone Password",
+      describe: "*Invalid* Kintone Password",
       default: process.env.KINTONE_PASSWORD,
       defaultDescription: "KINTONE_PASSWORD",
-      type: "string",
-      requiresArg: true,
+      hidden: true,
     })
     .option("api-token", {
       describe: "App's API token",
@@ -69,33 +73,6 @@ const builder = (args: yargs.Argv) =>
       type: "string",
       requiresArg: true,
     })
-    .option("attachments-dir", {
-      describe: "Attachment file directory",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("file-path", {
-      describe: 'The path to source file.\nThe file extension should be ".csv"',
-      type: "string",
-      demandOption: true,
-      requiresArg: true,
-    })
-    .option("encoding", {
-      describe: "Character encoding",
-      default: "utf8" as SupportedImportEncoding,
-      choices: encoding,
-      requiresArg: true,
-    })
-    .option("update-key", {
-      describe: "The key to Bulk Update",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("fields", {
-      describe: "The fields to be imported in comma-separated",
-      type: "string",
-      requiresArg: true,
-    })
     .option("pfx-file-path", {
       describe: "The path to client certificate file",
       type: "string",
@@ -111,34 +88,86 @@ const builder = (args: yargs.Argv) =>
       default: process.env.HTTPS_PROXY ?? process.env.https_proxy,
       defaultDescription: "HTTPS_PROXY",
       type: "string",
+    })
+    .option(FORCE_DELETE_KEY, {
+      alias: FORCE_DELETE_ALIAS,
+      describe: "Force to delete records",
+      type: "boolean",
+    })
+    .option("file-path", {
+      describe: "The path to the CSV file",
+      type: "string",
+      requiresArg: true,
+    })
+    .option("encoding", {
+      describe: "Character encoding",
+      default: "utf8" as SupportedImportEncoding,
+      choices: encoding,
+      requiresArg: true,
     });
 
 type Args = yargs.Arguments<
   ReturnType<typeof builder> extends yargs.Argv<infer U> ? U : never
 >;
 
-const handler = (args: Args) => {
+const execute = (args: Args) => {
   return run({
     baseUrl: args["base-url"],
-    username: args.username,
-    password: args.password,
     apiToken: args["api-token"],
     basicAuthUsername: args["basic-auth-username"],
     basicAuthPassword: args["basic-auth-password"],
     app: args.app,
     guestSpaceId: args["guest-space-id"],
-    attachmentsDir: args["attachments-dir"],
-    filePath: args["file-path"],
-    updateKey: args["update-key"],
-    fields: args.fields?.split(","),
-    encoding: args.encoding,
     pfxFilePath: args["pfx-file-path"],
     pfxFilePassword: args["pfx-file-password"],
     httpsProxy: args.proxy,
+    filePath: args["file-path"],
+    encoding: args.encoding,
   });
 };
 
-export const importCommand: CommandModule<{}, Args> = {
+const handler = async (args: Args) => {
+  if (!hasApiToken(args["api-token"]) && (args.username || args.password)) {
+    logger.error("The delete command only supports API token authentication.");
+    // eslint-disable-next-line no-process-exit
+    process.exit(1);
+  }
+
+  if (args.yes !== undefined && args.yes) {
+    return execute(args);
+  }
+
+  const prompt = inquirer.createPromptModule();
+  const questions: Question[] = [
+    {
+      name: FORCE_DELETE_KEY,
+      type: "confirm",
+      message: "Are you sure want to delete records?",
+      default: true,
+    },
+  ];
+
+  const answers = await prompt(questions);
+  if (answers[FORCE_DELETE_KEY]) {
+    return execute(args);
+  }
+
+  return undefined;
+};
+
+const hasApiToken = (apiTokenArg?: string | string[]): boolean => {
+  if (!apiTokenArg) {
+    return false;
+  }
+
+  if (typeof apiTokenArg === "string") {
+    return !!apiTokenArg;
+  }
+
+  return apiTokenArg.filter(Boolean).length > 0;
+};
+
+export const deleteCommand: CommandModule<{}, Args> = {
   command,
   describe,
   builder,

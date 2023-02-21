@@ -162,6 +162,70 @@ If set `--attachments-dir` option, attachment files will be downloaded to local 
   - as for attachments in Table, the file path is `<attachmentsDir>/<fieldCode>-<recordId>-<tableRowIndex>/<filename>`
 - if same name files exist in same Attachment field, renamed to `<filename> (<index>).<ext>`
 
+### delete
+
+The `delete` command allows you to delete records of a specified kintone app.
+
+**Notice**
+
+- This command only supports API token authentication
+- This action cannot be rollback.
+
+```
+$ cli-kintone record delete \
+--base-url https://${yourDomain} \
+--api-token ${apiToken} \
+--app ${kintoneAppId} \
+--file-path ${filepath}
+```
+
+You can use the option `--yes` or `-y` to bypass the confirmation step.
+
+#### Options
+
+Some options use environment variables starting `KINTONE_` as default values.
+
+```
+Options:
+      --version              Show version number                       [boolean]
+      --help                 Show help                                 [boolean]
+      --base-url             Kintone Base Url
+                                 [string] [required] [default: KINTONE_BASE_URL]
+      --api-token            App's API token[array] [default: KINTONE_API_TOKEN]
+      --basic-auth-username  Kintone Basic Auth Username
+                                 [string] [default: KINTONE_BASIC_AUTH_USERNAME]
+      --basic-auth-password  Kintone Basic Auth Password
+                                 [string] [default: KINTONE_BASIC_AUTH_PASSWORD]
+      --app                  The ID of the app               [string] [required]
+      --file-path            The path to source file.
+                             The file extension should be ".csv"        [string]
+      --encoding             Character encoding
+                                     [choices: "utf8", "sjis"] [default: "utf8"]
+      --guest-space-id       The ID of guest space
+                                      [string] [default: KINTONE_GUEST_SPACE_ID]
+      --pfx-file-path        The path to client certificate file        [string]
+      --pfx-file-password    The password of client certificate file    [string]
+      --proxy                The URL of a proxy server
+                                                 [string] [default: HTTPS_PROXY]
+  -y, --yes                  Force to delete records                   [boolean]
+```
+
+#### Delete all records
+
+All records of the target app will be deleted if the option `--file-path` is not specified.
+
+#### Delete specific records
+
+The specific records can be deleted by specifying the option `--file-path`.
+
+The value of the `--file-path` must be the path to the CSV file and should meet the following requirements:
+
+- The file extension should be ".csv"
+- The header row of the record number column must be the record number field code which is defined in the target app.
+- If using the app code in the record number,
+  - Every row should contain the same app code (not mix)
+  - The app code is equal to the target app's one.
+
 ## Supported file formats
 
 cli-kintone supports following formats for both import/export commands.

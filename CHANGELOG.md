@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.0](https://github.com/kintone/cli-kintone/compare/v1.2.0...v1.3.0) (2023-02-21)
+
+
+### Features
+
+* delete records command ([#230](https://github.com/kintone/cli-kintone/issues/230)) ([aaaf4b0](https://github.com/kintone/cli-kintone/commit/aaaf4b01d2dc133322d43c18b7bacf2dd78050e8))
+* improve memory usage of record import ([#218](https://github.com/kintone/cli-kintone/issues/218)) ([c38aa94](https://github.com/kintone/cli-kintone/commit/c38aa94e966b5a6e9117f5405703c5edbee72bd1))
+
+
+### Bug Fixes
+
+* catch the stream error ([#225](https://github.com/kintone/cli-kintone/issues/225)) ([cb4d46a](https://github.com/kintone/cli-kintone/commit/cb4d46aa875031e6b09dfd5ee5e033bf6072f13c))
+* **deps:** update dependency @kintone/rest-api-client to ^3.2.2 ([#181](https://github.com/kintone/cli-kintone/issues/181)) ([78fbcb2](https://github.com/kintone/cli-kintone/commit/78fbcb2c97609634928c9e8d08d0f62e1d9e38fe))
+* **deps:** update dependency @kintone/rest-api-client to ^3.2.3 ([#195](https://github.com/kintone/cli-kintone/issues/195)) ([4c8e4af](https://github.com/kintone/cli-kintone/commit/4c8e4af7cf05a937ab127e0ead4049eb1dd55c4a))
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.0 ([#205](https://github.com/kintone/cli-kintone/issues/205)) ([b951e9e](https://github.com/kintone/cli-kintone/commit/b951e9ec8db8e021ef83e0c8cbddc4ece9eef024))
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.1 ([#215](https://github.com/kintone/cli-kintone/issues/215)) ([b5e42e7](https://github.com/kintone/cli-kintone/commit/b5e42e754cd81bb90ec7893ade4a3e2f5f6dbeac))
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.2 ([#229](https://github.com/kintone/cli-kintone/issues/229)) ([1d4d6c6](https://github.com/kintone/cli-kintone/commit/1d4d6c6b466b6c475ff50e4f52ed0cb864fd1fe5))
+
 ## [1.2.0](https://github.com/kintone/cli-kintone/compare/v1.1.0...v1.2.0) (2022-11-29)
 
 

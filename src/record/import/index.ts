@@ -1,14 +1,14 @@
 import type { RestAPIClientOptions } from "../../kintone/client";
 import { buildRestAPIClient } from "../../kintone/client";
 import type { SupportedImportEncoding } from "../../utils/file";
-import { readFile } from "../../utils/file";
-import { parseRecords } from "./parsers";
+import { extractFileFormat, openFsStreamWithEncode } from "../../utils/file";
 import { addRecords } from "./usecases/add";
 import { upsertRecords } from "./usecases/upsert";
 import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
+import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
 
 export type Options = {
   app: string;
@@ -42,24 +42,33 @@ export const run: (
         ? userSelected(fields, fieldsJson, updateKey)
         : defaultTransformer()
     );
-    const { content, format } = await readFile(filePath, encoding);
-    const records = await parseRecords({
-      source: content,
+    const format = extractFileFormat(filePath);
+    const localRecordRepository = new LocalRecordRepositoryFromStream(
+      () => openFsStreamWithEncode(filePath, encoding),
       format,
-      schema,
-    });
-    if (records.length === 0) {
+      schema
+    );
+
+    if ((await localRecordRepository.length()) === 0) {
       logger.warn("The input file does not have any records");
       return;
     }
+
     const skipMissingFields = !fields;
     if (updateKey) {
-      await upsertRecords(apiClient, app, records, schema, updateKey, {
-        attachmentsDir,
-        skipMissingFields,
-      });
+      await upsertRecords(
+        apiClient,
+        app,
+        localRecordRepository,
+        schema,
+        updateKey,
+        {
+          attachmentsDir,
+          skipMissingFields,
+        }
+      );
     } else {
-      await addRecords(apiClient, app, records, schema, {
+      await addRecords(apiClient, app, localRecordRepository, schema, {
         attachmentsDir,
         skipMissingFields,
       });

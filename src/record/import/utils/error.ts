@@ -1,19 +1,19 @@
 import type { KintoneAllRecordsErrorParser } from "../../error/types/parser";
 import type { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import type { KintoneRecord } from "../types/record";
+import type { LocalRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
 
 export class ErrorParser implements KintoneAllRecordsErrorParser {
   private readonly error: KintoneAllRecordsError;
   private readonly chunkSize: number;
-  private readonly records: KintoneRecord[];
+  private readonly records: LocalRecord[];
   private readonly offset: number;
   private readonly recordSchema: RecordSchema;
 
   constructor(
     error: KintoneAllRecordsError,
     chunkSize: number,
-    records: KintoneRecord[],
+    records: LocalRecord[],
     offset: number,
     recordSchema: RecordSchema
   ) {

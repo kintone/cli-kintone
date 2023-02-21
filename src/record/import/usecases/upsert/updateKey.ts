@@ -4,7 +4,9 @@ import type {
 } from "@kintone/rest-api-client";
 
 import type { FieldSchema, RecordSchema } from "../../types/schema";
-import type { KintoneRecord } from "../../types/record";
+import type { LocalRecord } from "../../types/record";
+import type { LocalRecordRepository } from "../interface";
+import { withIndex } from "../../../../utils/iterator";
 
 type UpdateKeyField = {
   code: string;
@@ -53,10 +55,10 @@ export class UpdateKey {
 
   getUpdateKeyField = () => this.field;
 
-  validateUpdateKeyInRecords = (records: KintoneRecord[]) =>
+  validateUpdateKeyInRecords = (records: LocalRecordRepository) =>
     validateUpdateKeyInRecords(this.field, this.appCode, records);
 
-  isUpdate = (record: KintoneRecord) => {
+  isUpdate = (record: LocalRecord) => {
     const updateKeyValue = this.findUpdateKeyValueFromRecord(record);
     return (
       updateKeyValue.length > 0 &&
@@ -64,7 +66,7 @@ export class UpdateKey {
     );
   };
 
-  findUpdateKeyValueFromRecord = (record: KintoneRecord): string => {
+  findUpdateKeyValueFromRecord = (record: LocalRecord): string => {
     const fieldValue = record.data[this.field.code].value as string;
     if (fieldValue.length === 0) {
       return fieldValue;
@@ -120,13 +122,15 @@ const isSupportedUpdateKeyFieldType = (
   return supportedUpdateKeyFieldTypes.includes(fieldSchema.type);
 };
 
-const validateUpdateKeyInRecords = (
+const validateUpdateKeyInRecords = async (
   updateKey: UpdateKeyField,
   appCode: string,
-  records: KintoneRecord[]
+  recordRepository: LocalRecordRepository
 ) => {
   let hasAppCodePrevious: boolean = false;
-  records.forEach((record, index) => {
+  for await (const { data: record, index } of withIndex(
+    recordRepository.reader()
+  )) {
     if (!(updateKey.code in record.data)) {
       throw new Error(
         `The field specified as "Key to Bulk Update" (${updateKey.code}) does not exist on the input`
@@ -152,7 +156,7 @@ const validateUpdateKeyInRecords = (
       }
       hasAppCodePrevious = _hasAppCode;
     }
-  });
+  }
 };
 
 const removeAppCode = (input: string, appCode: string) => {

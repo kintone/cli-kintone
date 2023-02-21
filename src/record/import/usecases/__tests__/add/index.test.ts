@@ -1,5 +1,5 @@
 import type { RecordSchema } from "../../../types/schema";
-import type { KintoneRecord } from "../../../types/record";
+import type { LocalRecord } from "../../../types/record";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { addRecords } from "../../add";
@@ -9,6 +9,8 @@ import path from "path";
 import * as canUploadFiles from "./fixtures/can_upload_files";
 import * as canUploadFilesInSubtable from "./fixtures/can_upload_files_in_subtable";
 import { AddRecordsError } from "../../add/error";
+import { inputRecords } from "./fixtures/can_upload_files";
+import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock";
 
 describe("addRecords", () => {
   let apiClient: KintoneRestAPIClient;
@@ -22,7 +24,13 @@ describe("addRecords", () => {
   it("should not fail", () => {
     apiClient.record.addAllRecords = jest.fn().mockResolvedValue([{}]);
     return expect(
-      addRecords(apiClient, "1", [], { fields: [] }, { attachmentsDir: "" })
+      addRecords(
+        apiClient,
+        "1",
+        new LocalRecordRepositoryMock([], "csv"),
+        { fields: [] },
+        { attachmentsDir: "" }
+      )
     ).resolves.not.toThrow();
   });
 
@@ -31,7 +39,7 @@ describe("addRecords", () => {
     apiClient.record.addAllRecords = addAllRecordsMockFn;
     const ATTACHMENTS_DIR = "";
     const APP_ID = "1";
-    const RECORDS: KintoneRecord[] = [
+    const RECORDS: LocalRecord[] = [
       {
         data: { number: { value: "1" } },
         metadata: {
@@ -58,8 +66,9 @@ describe("addRecords", () => {
         },
       ],
     };
+    const repository = new LocalRecordRepositoryMock(RECORDS, "csv");
 
-    await addRecords(apiClient, APP_ID, RECORDS, SCHEMA, {
+    await addRecords(apiClient, APP_ID, repository, SCHEMA, {
       attachmentsDir: ATTACHMENTS_DIR,
     });
 
@@ -83,7 +92,7 @@ describe("addRecords", () => {
     ).rejects.toThrow(
       new AddRecordsError(
         new Error("--attachments-dir option is required."),
-        canUploadFiles.input,
+        inputRecords,
         0,
         canUploadFiles.schema
       )
@@ -113,7 +122,8 @@ describe("addRecords", () => {
     );
 
     // apiClient.file.uploadFile should be called with correct filePath
-    const fileInfos = canUploadFiles.input[0].data.attachment.value as Array<{
+    const fileInfos = canUploadFiles.inputRecords[0].data.attachment
+      .value as Array<{
       localFilePath: string;
     }>;
     expect(uploadFileMockFn.mock.calls[0][0]).toStrictEqual({
@@ -157,7 +167,8 @@ describe("addRecords", () => {
     );
 
     // apiClient.file.uploadFile should be called with correct filePath
-    const fileInfos = canUploadFiles.input[0].data.attachment.value as Array<{
+    const fileInfos = canUploadFiles.inputRecords[0].data.attachment
+      .value as Array<{
       localFilePath: string;
     }>;
     expect(uploadFileMockFn.mock.calls[0][0]).toStrictEqual({

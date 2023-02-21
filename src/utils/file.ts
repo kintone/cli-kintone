@@ -1,8 +1,23 @@
 import fs from "fs";
 import path from "path";
 import iconv from "iconv-lite";
+import { Transform } from "stream";
 
 export type SupportedImportEncoding = "utf8" | "sjis";
+
+export const openFsStreamWithEncode: (
+  filePath: string,
+  encoding?: SupportedImportEncoding
+) => NodeJS.ReadableStream = (filePath, encoding = "utf8") => {
+  const stream = fs.createReadStream(filePath);
+  const decodedStream = stream.pipe(
+    Transform.from(iconv.decodeStream(encoding))
+  );
+  stream.on("error", (e) => {
+    decodedStream.destroy(e);
+  });
+  return decodedStream;
+};
 
 export const readFile: (
   filePath: string,
@@ -38,7 +53,7 @@ const readStream: (stream: NodeJS.ReadWriteStream) => Promise<string> = async (
   return content;
 };
 
-const extractFileFormat: (filepath: string) => string = (filepath) => {
+export const extractFileFormat: (filepath: string) => string = (filepath) => {
   // TODO this cannot detect file format without extensions
   return path.extname(filepath).split(".").pop() || "";
 };

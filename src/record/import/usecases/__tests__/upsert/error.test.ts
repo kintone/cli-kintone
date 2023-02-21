@@ -1,4 +1,4 @@
-import type { KintoneRecord } from "../../../types/record";
+import type { LocalRecord } from "../../../types/record";
 import { UpsertRecordsError } from "../../upsert/error";
 import { buildKintoneAllRecordsError } from "../add/error.test";
 import type { RecordSchema } from "../../../types/schema";
@@ -29,10 +29,11 @@ describe("UpsertRecordsError", () => {
     const numOfAlreadyImportedRecords = 10;
     const numOfProcessedRecords = 30;
     const errorIndex = 44;
-    const records: KintoneRecord[] = [...Array(numOfAllRecords).keys()].map(
+    const records: LocalRecord[] = [...Array(numOfAllRecords).keys()].map(
       (index) => ({
         data: {},
         metadata: {
+          recordIndex: index,
           format: {
             type: "csv",
             firstRowIndex: index + 1,

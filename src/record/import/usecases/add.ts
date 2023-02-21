@@ -1,5 +1,5 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { KintoneRecord } from "../types/record";
+import type { LocalRecord } from "../types/record";
 import type { KintoneRecordForParameter } from "../../../kintone/types";
 import type { RecordSchema } from "../types/schema";
 
@@ -7,13 +7,15 @@ import { fieldProcessor, recordReducer } from "./add/record";
 import { AddRecordsError } from "./add/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
+import type { LocalRecordRepository } from "./interface";
+import { chunked } from "../../../utils/iterator";
 
 const CHUNK_SIZE = 2000;
 
 export const addRecords: (
   apiClient: KintoneRestAPIClient,
   app: string,
-  records: KintoneRecord[],
+  recordSource: LocalRecordRepository,
   schema: RecordSchema,
   options: {
     attachmentsDir?: string;
@@ -22,20 +24,27 @@ export const addRecords: (
 ) => Promise<void> = async (
   apiClient,
   app,
-  records,
+  recordSource: LocalRecordRepository,
   schema,
   { attachmentsDir, skipMissingFields = true }
 ) => {
   let currentIndex = 0;
-  const progressLogger = new ProgressLogger(logger, records.length);
+  let currentRecords: LocalRecord[] = [];
+  const progressLogger = new ProgressLogger(
+    logger,
+    await recordSource.length()
+  );
   try {
     logger.info("Starting to import records...");
-    for (const [recordsNext, index] of recordReader(records)) {
-      currentIndex = index;
+    for await (const recordsByChunk of chunked(
+      recordSource.reader(),
+      CHUNK_SIZE
+    )) {
+      currentRecords = recordsByChunk;
       const recordsToUpload = await convertRecordsToApiRequestParameter(
         apiClient,
         app,
-        recordsNext,
+        recordsByChunk,
         schema,
         {
           attachmentsDir,
@@ -46,19 +55,20 @@ export const addRecords: (
         app,
         records: recordsToUpload,
       });
-      progressLogger.update(index + recordsNext.length);
+      currentIndex += recordsByChunk.length;
+      progressLogger.update(currentIndex);
     }
     progressLogger.done();
   } catch (e) {
     progressLogger.abort(currentIndex);
-    throw new AddRecordsError(e, records, currentIndex, schema);
+    throw new AddRecordsError(e, currentRecords, currentIndex, schema);
   }
 };
 
 const convertRecordsToApiRequestParameter = async (
   apiClient: KintoneRestAPIClient,
   app: string,
-  records: KintoneRecord[],
+  records: LocalRecord[],
   schema: RecordSchema,
   options: {
     attachmentsDir?: string;
@@ -83,22 +93,3 @@ const convertRecordsToApiRequestParameter = async (
   }
   return kintoneRecords;
 };
-
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
-// eslint-disable-next-line func-style
-function* recordReader(
-  records: KintoneRecord[]
-): Generator<[KintoneRecord[], number], void, undefined> {
-  if (records.length === 0) {
-    return;
-  }
-
-  let index = 0;
-  while (index < records.length) {
-    const last = Math.min(index + CHUNK_SIZE - 1, records.length - 1);
-
-    yield [records.slice(index, last + 1), index];
-
-    index = last + 1;
-  }
-}

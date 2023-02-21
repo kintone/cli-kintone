@@ -1,13 +1,13 @@
 import type { KintoneRecordForParameter } from "../../../../kintone/types";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { KintoneRecord } from "../../types/record";
+import type { LocalRecord } from "../../types/record";
 import type * as Fields from "../../types/field";
 import type { FieldSchema, RecordSchema } from "../../types/schema";
 
 import path from "path";
 
 export const recordReducer: (
-  record: KintoneRecord,
+  record: LocalRecord,
   schema: RecordSchema,
   skipMissingFields: boolean,
   task: (

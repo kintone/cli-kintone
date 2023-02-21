@@ -1,6 +1,6 @@
 import type { OneOf } from "./field";
 
-export type KintoneRecord = {
+export type LocalRecord = {
   data: { [fieldCode: string]: OneOf };
   metadata: {
     format: {

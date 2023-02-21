@@ -9,8 +9,6 @@ import path from "path";
 import * as canUploadFiles from "./fixtures/can_upload_files";
 import * as canUploadFilesInSubtable from "./fixtures/can_upload_files_in_subtable";
 import { AddRecordsError } from "../../add/error";
-import type { LocalRecordRepository } from "../../interface";
-import { Readable } from "stream";
 import { inputRecords } from "./fixtures/can_upload_files";
 import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock";
 

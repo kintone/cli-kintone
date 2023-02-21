@@ -1,7 +1,7 @@
 import type { RestAPIClientOptions } from "../../kintone/client";
 import { buildRestAPIClient } from "../../kintone/client";
-import type { SupportedImportEncoding } from "./utils/file";
-import { extractFileFormat, openFsStreamWithEncode } from "./utils/file";
+import type { SupportedImportEncoding } from "../../utils/file";
+import { extractFileFormat, openFsStreamWithEncode } from "../../utils/file";
 import { addRecords } from "./usecases/add";
 import { upsertRecords } from "./usecases/upsert";
 import { createSchema } from "./schema";

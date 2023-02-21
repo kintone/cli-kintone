@@ -1,7 +1,8 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import { kintoneAllRecordsErrorToString } from "../../utils/error";
+import { kintoneAllRecordsErrorToString } from "../../../error";
 import type { LocalRecord } from "../../types/record";
 import type { RecordSchema } from "../../types/schema";
+import { ErrorParser } from "../../utils/error";
 
 // Magic number from @kintone/rest-api-client
 // https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L16
@@ -56,11 +57,13 @@ export class AddRecordsError extends Error {
 
     if (this.cause instanceof KintoneAllRecordsError) {
       errorMessage += kintoneAllRecordsErrorToString(
-        this.cause,
-        this.chunkSize,
-        this.records,
-        this.numOfSuccess,
-        this.recordSchema
+        new ErrorParser(
+          this.cause,
+          this.chunkSize,
+          this.records,
+          this.numOfSuccess,
+          this.recordSchema
+        )
       );
     } else if (this.cause instanceof AddRecordsError) {
       errorMessage += this.cause.toString();

@@ -60,7 +60,7 @@ describe("AddRecordsError", () => {
       schema
     );
     expect(upsertRecordsError.toString()).toBe(
-      "Failed to add all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while uploading records.\n[500] [some code] some error message (some id)\n  An error occurred on number at row 46.\n    Cause: invalid value\n"
+      "Failed to add all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n  An error occurred on number at row 46.\n    Cause: invalid value\n"
     );
   });
 });

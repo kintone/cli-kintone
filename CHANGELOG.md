@@ -21,6 +21,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **deps:** update dependency @kintone/rest-api-client to ^3.3.1 ([#215](https://github.com/kintone/cli-kintone/issues/215)) ([b5e42e7](https://github.com/kintone/cli-kintone/commit/b5e42e754cd81bb90ec7893ade4a3e2f5f6dbeac))
 * **deps:** update dependency @kintone/rest-api-client to ^3.3.2 ([#229](https://github.com/kintone/cli-kintone/issues/229)) ([1d4d6c6](https://github.com/kintone/cli-kintone/commit/1d4d6c6b466b6c475ff50e4f52ed0cb864fd1fe5))
 
+### Chores
+
+* minify executable packages ([#200](https://github.com/kintone/cli-kintone/issues/200)) ([0bcea22](https://github.com/kintone/cli-kintone/commit/0bcea228abd29425b697137a87ca7fcf874d3350))
+
 ## [1.2.0](https://github.com/kintone/cli-kintone/compare/v1.1.0...v1.2.0) (2022-11-29)
 
 

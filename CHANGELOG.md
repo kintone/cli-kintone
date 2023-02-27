@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/kintone/cli-kintone/compare/v1.3.0...v1.3.1) (2023-02-27)
+
+
+### Bug Fixes
+
+* show version correctly ([#250](https://github.com/kintone/cli-kintone/issues/250)) ([da92cad](https://github.com/kintone/cli-kintone/commit/da92cad06da59be06b636aa20dcd71a1ad678050))
+
 ## [1.3.0](https://github.com/kintone/cli-kintone/compare/v1.2.0...v1.3.0) (2023-02-21)
 
 

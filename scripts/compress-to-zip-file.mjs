@@ -4,7 +4,6 @@ import fs from "fs/promises";
 import path from "path";
 import os from "os";
 import rimraf from "rimraf";
-import { promisify } from "util";
 import { fileURLToPath } from "url";
 import packageJson from "../package.json" assert { type: "json" };
 
@@ -84,6 +83,6 @@ for (const recipe of recipes) {
   await $`cp ${zipFile} ${artifactsDir}`;
 }
 
-await promisify(rimraf)(tempDir);
+await rimraf(tempDir);
 
 console.log(`Compressed artifacts are saved to ${artifactsDir}`);

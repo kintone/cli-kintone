@@ -5,7 +5,7 @@ import { RepositoryError } from "../record/import/repositories/error";
 import { DeleteAllRecordsError } from "../record/delete/usecases/deleteAll/error";
 import { DeleteSpecifiedRecordsError } from "../record/delete/usecases/deleteByRecordNumber/error";
 
-import chalk from "chalk";
+import { stderr as chalkStderr } from "chalk";
 
 const currentISOString = () => new Date().toISOString();
 
@@ -18,24 +18,24 @@ export type Logger = {
 
 export const logger: Logger = {
   info: (message: any) => {
-    const prefix = `[${currentISOString()}] ${chalk.blue("INFO")}:`;
+    const prefix = `[${currentISOString()}] ${chalkStderr.blue("INFO")}:`;
     console.error(addPrefixEachLine(message, prefix));
   },
 
   warn: (message: any) => {
-    const prefix = `[${currentISOString()}] ${chalk.yellow("WARN")}:`;
+    const prefix = `[${currentISOString()}] ${chalkStderr.yellow("WARN")}:`;
     console.error(addPrefixEachLine(message, prefix));
   },
 
   error: (message: any) => {
     const parsedMessage = parseErrorMessage(message);
-    const prefix = `[${currentISOString()}] ${chalk.red("ERROR")}:`;
+    const prefix = `[${currentISOString()}] ${chalkStderr.red("ERROR")}:`;
     console.error(addPrefixEachLine(parsedMessage, prefix));
   },
 
   debug: (message: any) => {
     return; // TODO: Decide how enable debug log
-    const prefix = `[${currentISOString()}] ${chalk.yellow("DEBUG")}:`;
+    const prefix = `[${currentISOString()}] ${chalkStderr.yellow("DEBUG")}:`;
     console.error(addPrefixEachLine(message, prefix));
   },
 };

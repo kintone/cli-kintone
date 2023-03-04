@@ -79,7 +79,7 @@
     "zx": "^7.2.0"
   },
   "dependencies": {
-    "@kintone/rest-api-client": "^3.3.2",
+    "@kintone/rest-api-client": "^3.3.3",
     "chalk": "4",
     "csv-parse": "^4.16.3",
     "csv-stringify": "5.6.5",

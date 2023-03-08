@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/kintone/cli-kintone/compare/v1.3.1...v1.3.2) (2023-03-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.3 ([#261](https://github.com/kintone/cli-kintone/issues/261)) ([a11a430](https://github.com/kintone/cli-kintone/commit/a11a430a9cd1a8aa33ecd250639bc12619f3057e))
+* **deps:** update dependency yargs to ^17.7.1 ([#231](https://github.com/kintone/cli-kintone/issues/231)) ([aa2737e](https://github.com/kintone/cli-kintone/commit/aa2737e7b38c650ebf2b003cc3ad49b357d14e7f))
+* detection of color support ([#259](https://github.com/kintone/cli-kintone/issues/259)) ([f5fb446](https://github.com/kintone/cli-kintone/commit/f5fb446c9f05fda56df74269277e92799a72bb3a))
+
 ## [1.3.1](https://github.com/kintone/cli-kintone/compare/v1.3.0...v1.3.1) (2023-02-27)
 
 

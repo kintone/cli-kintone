@@ -11,7 +11,7 @@ jobs:
     name: Node.js ubuntu-latest 16.x
     runs-on: ubuntu-latest
     steps:
-      - uses: jonabc/setup-licensed@1174d936f99ee3ae0077011a357f43b9b6f152b5
+      - uses: jonabc/setup-licensed@e9f9099fee78ac9e87628e937e231ca3a8efb360
         with:
           version: '3.x'
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Setup Licensed
-        uses: jonabc/setup-licensed@1174d936f99ee3ae0077011a357f43b9b6f152b5
+        uses: jonabc/setup-licensed@d6b3a6f7058c2b40c06d205e13e15c2418977566 # renovate: tag=v1.1.4
         with:
           version: '3.x'
           github_token: ${{ secrets.GITHUB_TOKEN }}

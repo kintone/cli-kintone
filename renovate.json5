@@ -1,12 +1,22 @@
 {
-  extends: ["github>cybozu/renovate-config", ":prConcurrentLimitNone"],
+  extends: [
+    "github>cybozu/renovate-config",
+    ":prConcurrentLimitNone",
+    "helpers:pinGitHubActionDigests"
+  ],
   npm: {
     packageRules: [
       {
         // automerge minor updates of devDependencies
-        matchPackagePatterns: ["*"],
-        matchDepTypes: ["devDependencies"],
-        matchUpdateTypes: ["minor"],
+        matchPackagePatterns: [
+          "*"
+        ],
+        matchDepTypes: [
+          "devDependencies"
+        ],
+        matchUpdateTypes: [
+          "minor"
+        ],
         automerge: true,
       },
     ],

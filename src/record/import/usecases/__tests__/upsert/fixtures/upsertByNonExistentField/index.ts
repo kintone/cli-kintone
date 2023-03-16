@@ -19,6 +19,6 @@ export const pattern: TestPattern = {
   },
   recordsOnKintone: recordsOnKintone,
   expected: {
-    failure: { errorMessage: "no such update key" },
+    failure: { cause: new Error("no such update key") },
   },
 };

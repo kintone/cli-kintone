@@ -20,8 +20,9 @@ export const pattern: TestPattern = {
   recordsOnKintone: recordsOnKintone,
   expected: {
     failure: {
-      errorMessage:
-        'The specified field "singleLineText_nonExistentOnInput" does not exist on the CSV',
+      cause: new Error(
+        'The specified field "singleLineText_nonExistentOnInput" does not exist on the CSV'
+      ),
     },
   },
 };

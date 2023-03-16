@@ -18,6 +18,6 @@ export const pattern: TestPattern = {
   },
   recordsOnKintone: recordsOnKintone,
   expected: {
-    failure: { errorMessage: "update key field should set to unique" },
+    failure: { cause: new Error("update key field should set to unique") },
   },
 };

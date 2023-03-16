@@ -19,6 +19,6 @@ export const pattern: TestPattern = {
   },
   recordsOnKintone: recordsOnKintone,
   expected: {
-    failure: { errorMessage: "unsupported field type for update key" },
+    failure: { cause: new Error("unsupported field type for update key") },
   },
 };

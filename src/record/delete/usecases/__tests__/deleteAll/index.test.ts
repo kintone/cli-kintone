@@ -1,5 +1,6 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { deleteAllRecords } from "../../deleteAll";
+import { DeleteAllRecordsError } from "../../deleteAll/error";
 
 describe("deleteAllRecords", () => {
   let apiClient: KintoneRestAPIClient;
@@ -45,7 +46,7 @@ describe("deleteAllRecords", () => {
   });
 
   it("should throw error when API response is error", () => {
-    const error = new Error("Failed to delete all records.");
+    const error = new Error("client: error while deleting records");
     apiClient.record.getAllRecordsWithId = jest.fn().mockResolvedValue([
       {
         $id: { value: "1" },
@@ -55,6 +56,8 @@ describe("deleteAllRecords", () => {
       },
     ]);
     apiClient.record.deleteAllRecords = jest.fn().mockRejectedValueOnce(error);
-    return expect(deleteAllRecords(apiClient, "1")).rejects.toThrow(error);
+    return expect(deleteAllRecords(apiClient, "1")).rejects.toThrow(
+      new DeleteAllRecordsError(error, [])
+    );
   });
 });

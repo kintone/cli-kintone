@@ -19,7 +19,7 @@ export const pattern: TestPattern = {
   recordsOnKintone: recordsOnKintone,
   expected: {
     failure: {
-      errorMessage: 'The "Key to Bulk Update" value is invalid (Hoge-3)',
+      cause: new Error('The "Key to Bulk Update" value is invalid (Hoge-3)'),
     },
   },
 };

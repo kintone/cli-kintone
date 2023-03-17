@@ -20,8 +20,9 @@ export const pattern: TestPattern = {
   recordsOnKintone: recordsOnKintone,
   expected: {
     failure: {
-      errorMessage:
-        'The field specified as "Key to Bulk Update" (singleLineText_nonExistentOnInput) does not exist on the input',
+      cause: new Error(
+        'The field specified as "Key to Bulk Update" (singleLineText_nonExistentOnInput) does not exist on the input'
+      ),
     },
   },
 };

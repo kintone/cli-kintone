@@ -54,7 +54,7 @@ export type TestPattern = {
       >;
     };
     failure?: {
-      errorMessage: string;
+      cause: unknown;
     };
   };
 };
@@ -134,7 +134,7 @@ describe("upsertRecords", () => {
           )
         ).rejects.toThrow(
           new UpsertRecordsError(
-            expected.failure.errorMessage,
+            expected.failure.cause,
             input.records,
             0,
             input.schema

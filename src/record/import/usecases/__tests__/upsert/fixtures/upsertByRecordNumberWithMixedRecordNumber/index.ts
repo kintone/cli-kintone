@@ -20,8 +20,9 @@ export const pattern: TestPattern = {
   recordsOnKintone: recordsOnKintone,
   expected: {
     failure: {
-      errorMessage:
-        'The "Key to Bulk Update" should not be mixed with those with and without app code',
+      cause: new Error(
+        'The "Key to Bulk Update" should not be mixed with those with and without app code'
+      ),
     },
   },
 };

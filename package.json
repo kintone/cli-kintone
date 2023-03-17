@@ -62,7 +62,7 @@
     "@types/jest": "^29.4.4",
     "@types/node": "^18.15.3",
     "@types/rollup-plugin-auto-external": "^2.0.2",
-    "@types/yargs": "^17.0.13",
+    "@types/yargs": "^17.0.22",
     "babel-jest": "^29.4.3",
     "cross-env": "^7.0.3",
     "eslint": "^8.35.0",

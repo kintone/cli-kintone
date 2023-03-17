@@ -6581,7 +6581,7 @@ webidl-conversions@^3.0.0:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-3.0.1.tgz#24534275e2a7bc6be7bc86611cc16ae0a5654871"
   integrity sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==
 
-webpod@^0.0.2:
+webpod@^0:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/webpod/-/webpod-0.0.2.tgz#b577c93604fd23596488735887168b3236e3adae"
   integrity sha512-cSwwQIeg8v4i3p4ajHhwgR7N6VyxAf+KYSSsY6Pd3aETE+xEU4vbitz7qQkB0I321xnhDdgtxuiSfk5r/FVtjg==
@@ -6754,10 +6754,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zx@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/zx/-/zx-7.2.0.tgz#2973be4ea81ab8b08d310a6e370c98f9c908691c"
-  integrity sha512-SMuOZ21zFnBxicw+WMtTv3z3eERh6KBtZExAJaL8EAV+Ev/3M1NIAOkrZ8kRfCzD9acv9heUH/WZctTR4vQxBQ==
+zx@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/zx/-/zx-7.2.1.tgz#67b52c576f4df0ebf3b5d3659e43021156e38247"
+  integrity sha512-TgKwppaMLMNAXHhlhbBh7rMoOSx3/9qqnkv8frmhVlSomEuWkDijh/BCmYntkoS7ZQyemApAUyEi24jIrrS+hA==
   dependencies:
     "@types/fs-extra" "^11.0.1"
     "@types/minimist" "^1.2.2"
@@ -6770,6 +6770,6 @@ zx@^7.2.0:
     minimist "^1.2.8"
     node-fetch "3.2.10"
     ps-tree "^1.2.0"
-    webpod "^0.0.2"
+    webpod "^0"
     which "^3.0.0"
     yaml "^2.2.1"

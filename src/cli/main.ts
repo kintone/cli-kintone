@@ -1,13 +1,7 @@
+import type { CompletionCallback } from "yargs";
 import yargs from "yargs";
 import { recordCommand } from "./record";
 import packageJson from "../../package.json";
-
-// TODO: This is the Workaround of https://github.com/DefinitelyTyped/DefinitelyTyped/issues/63396
-// After the issue is fixed, we can remove this.
-type CompletionCallback = (
-  err: Error | null,
-  completions: string[] | undefined
-) => void;
 
 const customCompletion = (
   current: string,

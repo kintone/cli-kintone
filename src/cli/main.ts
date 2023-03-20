@@ -1,4 +1,3 @@
-import type { CompletionCallback } from "yargs";
 import yargs from "yargs";
 import { recordCommand } from "./record";
 import packageJson from "../../package.json";

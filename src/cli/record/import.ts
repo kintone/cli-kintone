@@ -1,7 +1,6 @@
-import type yargs from "yargs";
-import { run } from "../../record/import";
-import type { SupportedImportEncoding } from "../../utils/file";
-import type { CommandModule } from "yargs";
+import type * as yargs from "yargs";
+import { run } from "../../record/import/index.js";
+import type { SupportedImportEncoding } from "../../utils/file.js";
 
 const command = "import";
 
@@ -141,7 +140,7 @@ const handler = (args: Args) => {
   });
 };
 
-export const importCommand: CommandModule<{}, Args> = {
+export const importCommand: yargs.CommandModule<{}, Args> = {
   command,
   describe,
   builder,

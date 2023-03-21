@@ -1,25 +1,26 @@
-import type { LocalRecord } from "../../../types/record";
-import type { RecordSchema } from "../../../types/schema";
+import type { LocalRecord } from "../../../types/record.js";
+import type { RecordSchema } from "../../../types/schema.js";
 
+import { jest } from "@jest/globals";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { upsertRecords } from "../../upsert";
+import { upsertRecords } from "../../upsert.js";
 
-import { pattern as upsertByRecordNumber } from "./fixtures/upsertByRecordNumber";
-import { pattern as upsertByRecordNumberWithAppCode } from "./fixtures/upsertByRecordNumberWithAppCode";
-import { pattern as upsertByRecordNumberWithAppCodeOnKintone } from "./fixtures/upsertByRecordNumberWithAppCodeOnKintone";
-import { pattern as upsertBySingleLineText } from "./fixtures/upsertByNumber";
-import { pattern as upsertByNumber } from "./fixtures/upsertBySingleLineText";
-import { pattern as upsertRecordsSequentially } from "./fixtures/upsertRecordsSequentially";
-import { pattern as upsertByNonUniqueKey } from "./fixtures/upsertByNonUniqueKey";
-import { pattern as upsertByUnsupportedField } from "./fixtures/upsertByUnsupportedField";
-import { pattern as upsertByNonExistentField } from "./fixtures/upsertByNonExistentField";
-import { pattern as upsertWithMissingKeyFromRecord } from "./fixtures/upsertWithMissingKeyFromRecord";
-import { pattern as upsertWithMissingFieldFromRecord } from "./fixtures/upsertWithMissingFieldFromRecord";
-import { pattern as upsertWithMissingFieldInTableFromRecord } from "./fixtures/upsertWithMissingFieldInTableFromRecord";
-import { pattern as upsertByRecordNumberWithMixedRecordNumber } from "./fixtures/upsertByRecordNumberWithInvalidRecordNumber";
-import { pattern as upsertByRecordNumberWithInvalidRecordNumber } from "./fixtures/upsertByRecordNumberWithMixedRecordNumber";
-import { UpsertRecordsError } from "../../upsert/error";
-import type { LocalRecordRepository } from "../../interface";
+import { pattern as upsertByRecordNumber } from "./fixtures/upsertByRecordNumber/index.js";
+import { pattern as upsertByRecordNumberWithAppCode } from "./fixtures/upsertByRecordNumberWithAppCode/index.js";
+import { pattern as upsertByRecordNumberWithAppCodeOnKintone } from "./fixtures/upsertByRecordNumberWithAppCodeOnKintone/index.js";
+import { pattern as upsertBySingleLineText } from "./fixtures/upsertByNumber/index.js";
+import { pattern as upsertByNumber } from "./fixtures/upsertBySingleLineText/index.js";
+import { pattern as upsertRecordsSequentially } from "./fixtures/upsertRecordsSequentially/index.js";
+import { pattern as upsertByNonUniqueKey } from "./fixtures/upsertByNonUniqueKey/index.js";
+import { pattern as upsertByUnsupportedField } from "./fixtures/upsertByUnsupportedField/index.js";
+import { pattern as upsertByNonExistentField } from "./fixtures/upsertByNonExistentField/index.js";
+import { pattern as upsertWithMissingKeyFromRecord } from "./fixtures/upsertWithMissingKeyFromRecord/index.js";
+import { pattern as upsertWithMissingFieldFromRecord } from "./fixtures/upsertWithMissingFieldFromRecord/index.js";
+import { pattern as upsertWithMissingFieldInTableFromRecord } from "./fixtures/upsertWithMissingFieldInTableFromRecord/index.js";
+import { pattern as upsertByRecordNumberWithMixedRecordNumber } from "./fixtures/upsertByRecordNumberWithInvalidRecordNumber/index.js";
+import { pattern as upsertByRecordNumberWithInvalidRecordNumber } from "./fixtures/upsertByRecordNumberWithMixedRecordNumber/index.js";
+import { UpsertRecordsError } from "../../upsert/error.js";
+import type { LocalRecordRepository } from "../../interface.js";
 
 export type TestPattern = {
   description: string;
@@ -88,20 +89,27 @@ describe("upsertRecords", () => {
   it.each(patterns)(
     "$description",
     async ({ input, recordsOnKintone, expected }) => {
-      const getAllRecordsMockFn = jest.fn().mockResolvedValue(recordsOnKintone);
-      apiClient.record.getAllRecords = getAllRecordsMockFn;
-      const updateAllRecordsMockFn = jest.fn().mockResolvedValue({
-        records: [
-          {
-            id: "1",
-            revision: "2",
-          },
-        ],
-      });
+      apiClient.record.getAllRecords = jest
+        .fn<() => Promise<any>>()
+        .mockResolvedValue(recordsOnKintone);
+      const updateAllRecordsMockFn = jest
+        .fn<() => Promise<any>>()
+        .mockResolvedValue({
+          records: [
+            {
+              id: "1",
+              revision: "2",
+            },
+          ],
+        });
       apiClient.record.updateAllRecords = updateAllRecordsMockFn;
-      const addAllRecordsMockFn = jest.fn().mockResolvedValue({});
+      const addAllRecordsMockFn = jest
+        .fn<() => Promise<any>>()
+        .mockResolvedValue({});
       apiClient.record.addAllRecords = addAllRecordsMockFn;
-      apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "App" });
+      apiClient.app.getApp = jest
+        .fn<() => Promise<any>>()
+        .mockResolvedValue({ code: "App" });
 
       const APP_ID = "1";
 

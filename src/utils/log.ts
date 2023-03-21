@@ -1,11 +1,12 @@
-import { AddRecordsError } from "../record/import/usecases/add/error";
-import { UpsertRecordsError } from "../record/import/usecases/upsert/error";
-import { ParserError } from "../record/import/repositories/parsers/error";
-import { RepositoryError } from "../record/import/repositories/error";
-import { DeleteAllRecordsError } from "../record/delete/usecases/deleteAll/error";
-import { DeleteSpecifiedRecordsError } from "../record/delete/usecases/deleteByRecordNumber/error";
+import { AddRecordsError } from "../record/import/usecases/add/error.js";
+import { UpsertRecordsError } from "../record/import/usecases/upsert/error.js";
+import { ParserError } from "../record/import/repositories/parsers/error.js";
+import { RepositoryError } from "../record/import/repositories/error.js";
+import { DeleteAllRecordsError } from "../record/delete/usecases/deleteAll/error.js";
+import { DeleteSpecifiedRecordsError } from "../record/delete/usecases/deleteByRecordNumber/error.js";
+import chalk from "chalk";
 
-import { stderr as chalkStderr } from "chalk";
+const chalkStderr = chalk.stderr;
 
 const currentISOString = () => new Date().toISOString();
 

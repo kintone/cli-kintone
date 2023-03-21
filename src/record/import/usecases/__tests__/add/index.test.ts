@@ -1,16 +1,17 @@
-import type { RecordSchema } from "../../../types/schema";
-import type { LocalRecord } from "../../../types/record";
+import { jest } from "@jest/globals";
+import type { RecordSchema } from "../../../types/schema.js";
+import type { LocalRecord } from "../../../types/record.js";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { addRecords } from "../../add";
+import { addRecords } from "../../add.js";
 
-import path from "path";
+import path from "node:path";
 
-import * as canUploadFiles from "./fixtures/can_upload_files";
-import * as canUploadFilesInSubtable from "./fixtures/can_upload_files_in_subtable";
-import { AddRecordsError } from "../../add/error";
-import { inputRecords } from "./fixtures/can_upload_files";
-import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock";
+import * as canUploadFiles from "./fixtures/can_upload_files.js";
+import * as canUploadFilesInSubtable from "./fixtures/can_upload_files_in_subtable.js";
+import { AddRecordsError } from "../../add/error.js";
+import { inputRecords } from "./fixtures/can_upload_files.js";
+import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock.js";
 
 describe("addRecords", () => {
   let apiClient: KintoneRestAPIClient;
@@ -22,7 +23,9 @@ describe("addRecords", () => {
   });
 
   it("should not fail", () => {
-    apiClient.record.addAllRecords = jest.fn().mockResolvedValue([{}]);
+    apiClient.record.addAllRecords = jest
+      .fn<() => Promise<any>>()
+      .mockResolvedValue([{}]);
     return expect(
       addRecords(
         apiClient,
@@ -35,7 +38,9 @@ describe("addRecords", () => {
   });
 
   it("should pass parameters to the apiClient correctly", async () => {
-    const addAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
+    const addAllRecordsMockFn = jest
+      .fn<(...args: unknown[]) => Promise<any>>()
+      .mockResolvedValue([{}]);
     apiClient.record.addAllRecords = addAllRecordsMockFn;
     const ATTACHMENTS_DIR = "";
     const APP_ID = "1";
@@ -101,11 +106,13 @@ describe("addRecords", () => {
 
   it("should upload files correctly when attachmentsDir is given", async () => {
     const uploadFileMockFn = jest
-      .fn()
+      .fn<(...args: unknown[]) => any>()
       .mockReturnValueOnce({ fileKey: "abcde" })
       .mockReturnValueOnce({ fileKey: "fghij" });
     apiClient.file.uploadFile = uploadFileMockFn;
-    const addAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
+    const addAllRecordsMockFn = jest
+      .fn<(...args: unknown[]) => Promise<any>>()
+      .mockResolvedValue([{}]);
     apiClient.record.addAllRecords = addAllRecordsMockFn;
 
     const ATTACHMENTS_DIR = "AttachmentsFolder";
@@ -146,11 +153,13 @@ describe("addRecords", () => {
 
   it("should upload files correctly when attachmentsDir is given and with subtable", async () => {
     const uploadFileMockFn = jest
-      .fn()
+      .fn<(...args: unknown[]) => any>()
       .mockReturnValueOnce({ fileKey: "abcde" })
       .mockReturnValueOnce({ fileKey: "fghij" });
     apiClient.file.uploadFile = uploadFileMockFn;
-    const addAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
+    const addAllRecordsMockFn = jest
+      .fn<(...args: unknown[]) => Promise<any>>()
+      .mockResolvedValue([{}]);
     apiClient.record.addAllRecords = addAllRecordsMockFn;
 
     const ATTACHMENTS_DIR = "AttachmentsFolder";

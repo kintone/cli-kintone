@@ -1,7 +1,7 @@
-import type { FieldsJson } from "../../../../kintone/types";
-import type { SchemaTransformer } from "../index";
-import type { FieldSchema } from "../../types/schema";
-import { isSupportedField } from "../constants";
+import type { FieldsJson } from "../../../../kintone/types.js";
+import type { SchemaTransformer } from "../index.js";
+import type { FieldSchema } from "../../types/schema.js";
+import { isSupportedField } from "../constants.js";
 
 /**
  * This transformer returns only all supported fields.

@@ -1,7 +1,7 @@
-import type * as Fields from "../../../../types/field";
-import type { FieldSchema } from "../../../../types/schema";
+import type * as Fields from "../../../../types/field.js";
+import type { FieldSchema } from "../../../../types/schema.js";
 
-import { convertFieldValue } from "../fieldValue";
+import { convertFieldValue } from "../fieldValue.js";
 
 const patterns: Array<{
   input: { type: FieldSchema["type"]; value: string };

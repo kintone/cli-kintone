@@ -1,5 +1,5 @@
-import type { RecordNumber } from "../types/field";
-import { ValidatorError } from "./error";
+import type { RecordNumber } from "../types/field.js";
+import { ValidatorError } from "./error.js";
 
 export class ErrorHandler {
   private readonly invalidValue: RecordNumber[];

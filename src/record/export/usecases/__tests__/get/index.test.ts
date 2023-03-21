@@ -1,15 +1,16 @@
-import type * as Fields from "../../../types/field";
+import { jest } from "@jest/globals";
+import type * as Fields from "../../../types/field.js";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
 
-import os from "os";
-import path from "path";
-import { getRecords } from "../../get";
+import os from "node:os";
+import path from "node:path";
+import { getRecords } from "../../get.js";
 
-import * as caseCanGetRecords from "./fixtures/can_get_records";
-import * as caseCanDownloadFiles from "./fixtures/can_download_files";
-import * as caseCanDownloadFilesInSubtable from "./fixtures/can_download_files_in_subtable";
+import * as caseCanGetRecords from "./fixtures/can_get_records.js";
+import * as caseCanDownloadFiles from "./fixtures/can_download_files.js";
+import * as caseCanDownloadFilesInSubtable from "./fixtures/can_download_files_in_subtable.js";
 
 describe("getRecords", () => {
   let apiClient: KintoneRestAPIClient;
@@ -20,28 +21,32 @@ describe("getRecords", () => {
     });
   });
   it("should not be failed", () => {
-    apiClient.record.getAllRecords = jest.fn().mockResolvedValue([
-      {
-        $id: { value: "1" },
-        value1: {
-          values: "",
+    apiClient.record.getAllRecords = jest
+      .fn<() => Promise<any>>()
+      .mockResolvedValue([
+        {
+          $id: { value: "1" },
+          value1: {
+            values: "",
+          },
         },
-      },
-    ]);
+      ]);
     return expect(
       getRecords(apiClient, "1", caseCanGetRecords.schema, {})
     ).resolves.not.toThrow();
   });
 
   it("should pass parameters to the apiClient correctly", async () => {
-    const getAllRecordsMockFn = jest.fn().mockResolvedValue([
-      {
-        $id: { value: "1" },
-        value1: {
-          values: "",
+    const getAllRecordsMockFn = jest
+      .fn<(...args: unknown[]) => Promise<any>>()
+      .mockResolvedValue([
+        {
+          $id: { value: "1" },
+          value1: {
+            values: "",
+          },
         },
-      },
-    ]);
+      ]);
     apiClient.record.getAllRecords = getAllRecordsMockFn;
     const APP_ID = "1";
     const CONDITION = 'Customer like "foo"';
@@ -64,7 +69,9 @@ describe("getRecords", () => {
     const expectedRecords = caseCanGetRecords.expected;
     const schema = caseCanGetRecords.schema;
 
-    apiClient.record.getAllRecords = jest.fn().mockResolvedValue(records);
+    apiClient.record.getAllRecords = jest
+      .fn<() => Promise<any>>()
+      .mockResolvedValue(records);
     const actual = await getRecords(apiClient, "1", schema, {});
     expect(actual).toStrictEqual(expectedRecords);
   });
@@ -77,9 +84,11 @@ describe("getRecords", () => {
     const testFileData = "test data";
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
     apiClient.record.getAllRecords = jest
-      .fn()
+      .fn<() => Promise<any>>()
       .mockResolvedValue(kintoneRecords);
-    apiClient.file.downloadFile = jest.fn().mockResolvedValue(testFileData);
+    apiClient.file.downloadFile = jest
+      .fn<() => Promise<any>>()
+      .mockResolvedValue(testFileData);
     const actual = await getRecords(apiClient, "1", schema, {
       attachmentsDir: tempDir,
     });
@@ -103,9 +112,11 @@ describe("getRecords", () => {
     const testFileData = "test data";
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
     apiClient.record.getAllRecords = jest
-      .fn()
+      .fn<() => Promise<any>>()
       .mockResolvedValue(kintoneRecords);
-    apiClient.file.downloadFile = jest.fn().mockResolvedValue(testFileData);
+    apiClient.file.downloadFile = jest
+      .fn<() => Promise<any>>()
+      .mockResolvedValue(testFileData);
     const actual = await getRecords(apiClient, "1", schema, {
       attachmentsDir: tempDir,
     });
@@ -127,7 +138,9 @@ describe("getRecords", () => {
   });
   it("should throw error when API response is error", () => {
     const error = new Error("error for test");
-    apiClient.record.getAllRecords = jest.fn().mockRejectedValueOnce(error);
+    apiClient.record.getAllRecords = jest
+      .fn<() => Promise<any>>()
+      .mockRejectedValueOnce(error);
     return expect(
       getRecords(apiClient, "1", caseCanGetRecords.schema, {})
     ).rejects.toThrow(error);

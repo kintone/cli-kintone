@@ -1,8 +1,8 @@
-import type { TestPattern } from "../../index.test";
-import { records } from "./records";
-import { schema } from "../schema";
-import { recordsOnKintone } from "../recordsOnKintone";
-import { LocalRecordRepositoryMock } from "../../../../../repositories/localRecordRepositoryMock";
+import type { TestPattern } from "../../index.test.js";
+import { records } from "./records.js";
+import { schema } from "../schema.js";
+import { recordsOnKintone } from "../recordsOnKintone.js";
+import { LocalRecordRepositoryMock } from "../../../../../repositories/localRecordRepositoryMock.js";
 
 export const pattern: TestPattern = {
   description:

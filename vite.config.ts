@@ -1,8 +1,11 @@
 import { defineConfig } from "vite";
-import { resolve } from "path";
+import path, { resolve } from "node:path";
 import autoExternal from "rollup-plugin-auto-external";
 import { visualizer } from "rollup-plugin-visualizer";
 import checker from "vite-plugin-checker";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   // Dev note: The logic below is used to preserve process.env in the build files
@@ -16,12 +19,14 @@ export default defineConfig({
     "process.env": "process.env",
   },
   build: {
+    minify: false,
     lib: {
       entry: resolve(__dirname, "src/cli/main.ts"),
       formats: ["cjs"],
     },
     rollupOptions: {
       plugins: [autoExternal(), visualizer()],
+      external: [/^node:.*/],
     },
   },
   plugins: [checker({ typescript: true })],

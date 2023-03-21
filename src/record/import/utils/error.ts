@@ -1,7 +1,7 @@
-import type { KintoneAllRecordsErrorParser } from "../../error/types/parser";
+import type { KintoneAllRecordsErrorParser } from "../../error/types/parser.js";
 import type { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import type { LocalRecord } from "../types/record";
-import type { RecordSchema } from "../types/schema";
+import type { LocalRecord } from "../types/record.js";
+import type { RecordSchema } from "../types/schema.js";
 
 export class ErrorParser implements KintoneAllRecordsErrorParser {
   private readonly error: KintoneAllRecordsError;

@@ -1,7 +1,7 @@
-import { CsvError } from "csv-parse";
+import csvParse from "csv-parse";
 
 export class ParserError extends Error {
-  private readonly cause: unknown;
+  readonly cause: unknown;
 
   constructor(cause: unknown) {
     const message = "Failed to parse input";
@@ -19,7 +19,7 @@ export class ParserError extends Error {
   toString(): string {
     let errorMessage = "";
     errorMessage += this.message + "\n";
-    if (this.cause instanceof CsvError) {
+    if (this.cause instanceof csvParse.CsvError) {
       errorMessage += `${this.cause.code}: ${this.cause.message}\n`;
     } else {
       errorMessage += this.cause + "\n";

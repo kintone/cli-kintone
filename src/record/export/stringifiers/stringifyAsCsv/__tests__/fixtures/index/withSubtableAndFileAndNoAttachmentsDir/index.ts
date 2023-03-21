@@ -1,7 +1,7 @@
-import type { TestPattern } from "../../../index.test";
-import { expectedCsv } from "./expected";
-import { input } from "./input";
-import { schema } from "./schema";
+import type { TestPattern } from "../../../index.test.js";
+import { expectedCsv } from "./expected.js";
+import { input } from "./input.js";
+import { schema } from "./schema.js";
 
 export const pattern: TestPattern = {
   description:

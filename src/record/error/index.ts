@@ -1,4 +1,4 @@
-import type { KintoneAllRecordsErrorParser } from "./types/parser";
+import type { KintoneAllRecordsErrorParser } from "./types/parser.js";
 
 export const kintoneAllRecordsErrorToString = (
   errorParser?: KintoneAllRecordsErrorParser

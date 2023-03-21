@@ -1,7 +1,6 @@
-import type yargs from "yargs";
-import type { CommandModule } from "yargs";
-import type { ExportFileEncoding } from "../../record/export";
-import { run } from "../../record/export";
+import type * as yargs from "yargs";
+import type { ExportFileEncoding } from "../../record/export/index.js";
+import { run } from "../../record/export/index.js";
 
 const encodings: ExportFileEncoding[] = ["utf8", "sjis"];
 
@@ -141,7 +140,7 @@ const handler = (args: Args) => {
   });
 };
 
-export const exportCommand: CommandModule<{}, Args> = {
+export const exportCommand: yargs.CommandModule<{}, Args> = {
   command,
   describe,
   builder,

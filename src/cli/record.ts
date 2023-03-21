@@ -1,8 +1,7 @@
-import type { CommandModule } from "yargs";
-import type yargs from "yargs";
-import { exportCommand } from "./record/export";
-import { importCommand } from "./record/import";
-import { deleteCommand } from "./record/delete";
+import type * as yargs from "yargs";
+import { exportCommand } from "./record/export.js";
+import { importCommand } from "./record/import.js";
+import { deleteCommand } from "./record/delete.js";
 
 const command = "record";
 
@@ -19,7 +18,7 @@ const handler = () => {
   /** noop **/
 };
 
-export const recordCommand: CommandModule = {
+export const recordCommand: yargs.CommandModule = {
   command,
   describe,
   builder,

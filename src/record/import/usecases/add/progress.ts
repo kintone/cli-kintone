@@ -1,4 +1,4 @@
-import type { Logger } from "../../../../utils/log";
+import type { Logger } from "../../../../utils/log.js";
 
 export class ProgressLogger {
   private readonly logger: Logger;

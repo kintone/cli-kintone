@@ -1,7 +1,7 @@
-import { ParserError } from "./parsers/error";
+import { ParserError } from "./parsers/error.js";
 
 export class RepositoryError extends Error {
-  private readonly cause: unknown;
+  readonly cause: unknown;
 
   constructor(cause: unknown) {
     const message =

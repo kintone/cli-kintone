@@ -1,4 +1,4 @@
-import type { LayoutJson } from "../../../../../../kintone/types";
+import type { LayoutJson } from "../../../../../../kintone/types.js";
 
 export const layoutJson: LayoutJson = {
   revision: "29",

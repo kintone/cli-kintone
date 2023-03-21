@@ -2,9 +2,9 @@ import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type {
   KintoneRecordForResponse,
   KintoneRecordForDeleteAllParameter,
-} from "../../../kintone/types";
-import { logger } from "../../../utils/log";
-import { DeleteAllRecordsError } from "./deleteAll/error";
+} from "../../../kintone/types.js";
+import { logger } from "../../../utils/log.js";
+import { DeleteAllRecordsError } from "./deleteAll/error.js";
 
 export const deleteAllRecords: (
   apiClient: KintoneRestAPIClient,

@@ -1,5 +1,5 @@
 export class ValidatorError extends Error {
-  private readonly cause: unknown;
+  readonly cause: unknown;
 
   constructor(cause: unknown) {
     const message = "Failed to delete records";

@@ -1,10 +1,15 @@
-import childProcess from "child_process";
-import { promisify } from "util";
-import path from "path";
+import { jest } from "@jest/globals";
+import childProcess from "node:child_process";
+import { promisify } from "node:util";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const dynamicRequire = createRequire(import.meta.url);
 const projectRoot = path.resolve(__dirname, "../../../");
 const exec = promisify(childProcess.exec);
-const packageJson = require(path.resolve(projectRoot, "package.json"));
+const packageJson = dynamicRequire(path.resolve(projectRoot, "package.json"));
 const mainFilePath = path.resolve(projectRoot, packageJson.bin["cli-kintone"]);
 
 jest.setTimeout(30000);

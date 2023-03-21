@@ -1,4 +1,4 @@
-import type { OneOf } from "./field";
+import type { OneOf } from "./field.js";
 
 export type LocalRecord = {
   data: { [fieldCode: string]: OneOf };

@@ -1,8 +1,8 @@
-import type { KintoneRecord } from "../types/record";
-import type { RecordSchema } from "../types/schema";
+import type { KintoneRecord } from "../types/record.js";
+import type { RecordSchema } from "../types/schema.js";
 
-import { stringifyAsJson } from "./stringifyAsJson";
-import { stringifyAsCsv } from "./stringifyAsCsv";
+import { stringifyAsJson } from "./stringifyAsJson.js";
+import { stringifyAsCsv } from "./stringifyAsCsv/index.js";
 
 export type ExportFileFormat = "csv" | "json";
 

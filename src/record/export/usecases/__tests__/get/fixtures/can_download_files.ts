@@ -1,7 +1,7 @@
-import type { KintoneRecordForResponse } from "../../../../../../kintone/types";
-import path from "path";
-import type { KintoneRecord } from "../../../../types/record";
-import type { RecordSchema } from "../../../../types/schema";
+import type { KintoneRecordForResponse } from "../../../../../../kintone/types.js";
+import path from "node:path";
+import type { KintoneRecord } from "../../../../types/record.js";
+import type { RecordSchema } from "../../../../types/schema.js";
 
 const fileInfo = {
   contentType: "text/plain",

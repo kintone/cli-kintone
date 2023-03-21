@@ -1,12 +1,12 @@
-import type { KintoneRecord } from "../../types/record";
-import type { CsvRow } from "../../../../kintone/types";
-import type { RecordSchema } from "../../types/schema";
+import type { KintoneRecord } from "../../types/record.js";
+import type { CsvRow } from "../../../../kintone/types.js";
+import type { RecordSchema } from "../../types/schema.js";
 
-import stringify from "csv-stringify/lib/sync";
+import stringify from "csv-stringify/lib/sync.js";
 
-import { convertRecord, recordReader } from "./record";
-import { LINE_BREAK, SEPARATOR } from "./constants";
-import { buildHeaderFields } from "./header";
+import { convertRecord, recordReader } from "./record.js";
+import { LINE_BREAK, SEPARATOR } from "./constants.js";
+import { buildHeaderFields } from "./header.js";
 
 export const stringifyAsCsv = (
   records: KintoneRecord[],

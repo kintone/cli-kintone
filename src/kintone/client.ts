@@ -1,8 +1,8 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import * as packageJson from "../../package.json";
-import HttpsProxyAgent from "https-proxy-agent";
-import * as https from "https";
-import fs from "fs";
+import packageJson from "../../package.json" assert { type: "json" };
+import httpsProxyAgent from "https-proxy-agent";
+import * as https from "node:https";
+import fs from "node:fs";
 
 export type RestAPIClientOptions = {
   baseUrl: string;
@@ -62,7 +62,7 @@ const buildHttpsAgent = (options: {
   }
 
   const { protocol, hostname, port } = new URL(options.proxy);
-  return HttpsProxyAgent({
+  return httpsProxyAgent({
     protocol: protocol,
     host: hostname,
     port: port,

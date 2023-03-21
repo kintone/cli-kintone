@@ -1,4 +1,4 @@
-import type { KintoneRecord } from "../types/record";
+import type { KintoneRecord } from "../types/record.js";
 
 export const stringifyAsJson: (records: KintoneRecord[]) => string = (
   records

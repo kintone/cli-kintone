@@ -1,15 +1,15 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import { ErrorParser } from "../../utils/error";
-import { kintoneAllRecordsErrorToString } from "../../../error";
-import type { LocalRecord } from "../../types/record";
-import type { RecordSchema } from "../../types/schema";
+import { ErrorParser } from "../../utils/error.js";
+import { kintoneAllRecordsErrorToString } from "../../../error/index.js";
+import type { LocalRecord } from "../../types/record.js";
+import type { RecordSchema } from "../../types/schema.js";
 
 // Magic number from @kintone/rest-api-client
 // https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L17
 const UPDATE_RECORDS_LIMIT = 100;
 
 export class UpsertRecordsError extends Error {
-  private readonly cause: unknown;
+  readonly cause: unknown;
   private readonly chunkSize: number = UPDATE_RECORDS_LIMIT;
   private readonly records: LocalRecord[];
   private readonly numOfSuccess: number;

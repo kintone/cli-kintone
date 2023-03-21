@@ -1,14 +1,14 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { RecordNumber } from "../types/field";
+import type { RecordNumber } from "../types/field.js";
 import {
   isValidRecordNumber,
   hasAppCode,
   getAllRecordIds,
   getRecordIdFromRecordNumber,
-} from "../usecases/deleteByRecordNumber/record";
+} from "../usecases/deleteByRecordNumber/record.js";
 
-import { ErrorHandler } from "./errorHandler";
-import { ValidatorError } from "./error";
+import { ErrorHandler } from "./errorHandler.js";
+import { ValidatorError } from "./error.js";
 
 export const validateRecordNumbers: (
   apiClient: KintoneRestAPIClient,

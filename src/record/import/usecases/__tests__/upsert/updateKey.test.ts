@@ -1,4 +1,4 @@
-import { hasAppCode } from "../../upsert/updateKey";
+import { hasAppCode } from "../../upsert/updateKey.js";
 
 describe("hasAppCode", () => {
   it.each`

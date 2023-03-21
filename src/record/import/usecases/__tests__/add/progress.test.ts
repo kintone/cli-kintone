@@ -1,6 +1,7 @@
-import type { Logger } from "../../../../../utils/log";
+import { jest } from "@jest/globals";
+import type { Logger } from "../../../../../utils/log.js";
 
-import { ProgressLogger } from "../../add/progress";
+import { ProgressLogger } from "../../add/progress.js";
 
 const mockLogger: Logger = {
   info: jest.fn(),

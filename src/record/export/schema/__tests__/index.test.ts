@@ -1,11 +1,11 @@
-import type { SchemaTransformer } from "../index";
-import { createSchema } from "../index";
-import type { FieldsJson } from "../../../../kintone/types";
-import type { RecordSchema } from "../../types/schema";
+import type { SchemaTransformer } from "../index.js";
+import { createSchema } from "../index.js";
+import type { FieldsJson } from "../../../../kintone/types.js";
+import type { RecordSchema } from "../../types/schema.js";
 
-import { pattern as formLayout } from "./fixtures/formLayout";
-import { pattern as formLayoutNoSystemFields } from "./fixtures/formLayoutNoSystemFields";
-import { pattern as userSelected } from "./fixtures/userSelected";
+import { pattern as formLayout } from "./fixtures/formLayout/index.js";
+import { pattern as formLayoutNoSystemFields } from "./fixtures/formLayoutNoSystemFields/index.js";
+import { pattern as userSelected } from "./fixtures/userSelected/index.js";
 
 export type TestPattern = {
   description: string;

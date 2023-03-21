@@ -1,10 +1,10 @@
-import type { KintoneRecordForParameter } from "../../../../kintone/types";
+import type { KintoneRecordForParameter } from "../../../../kintone/types.js";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { LocalRecord } from "../../types/record";
-import type * as Fields from "../../types/field";
-import type { FieldSchema, RecordSchema } from "../../types/schema";
+import type { LocalRecord } from "../../types/record.js";
+import type * as Fields from "../../types/field.js";
+import type { FieldSchema, RecordSchema } from "../../types/schema.js";
 
-import path from "path";
+import path from "node:path";
 
 export const recordReducer: (
   record: LocalRecord,

@@ -1,15 +1,15 @@
-import type { KintoneRecordForResponse } from "../../../kintone/types";
-import type { KintoneRecord } from "../types/record";
-import type * as Fields from "../types/field";
-import type { FieldSchema, RecordSchema } from "../types/schema";
+import type { KintoneRecordForResponse } from "../../../kintone/types.js";
+import type { KintoneRecord } from "../types/record.js";
+import type * as Fields from "../types/field.js";
+import type { FieldSchema, RecordSchema } from "../types/schema.js";
 import type {
   KintoneRecordField,
   KintoneRestAPIClient,
 } from "@kintone/rest-api-client";
 
-import path from "path";
+import path from "node:path";
 
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 
 export const getRecords: (
   apiClient: KintoneRestAPIClient,

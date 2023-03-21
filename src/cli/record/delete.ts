@@ -1,10 +1,9 @@
-import type yargs from "yargs";
-import type { CommandModule } from "yargs";
-import { run } from "../../record/delete";
+import type * as yargs from "yargs";
+import { run } from "../../record/delete/index.js";
 import inquirer from "inquirer";
 import type { Question } from "inquirer";
-import type { SupportedImportEncoding } from "../../utils/file";
-import { logger } from "../../utils/log";
+import type { SupportedImportEncoding } from "../../utils/file.js";
+import { logger } from "../../utils/log.js";
 
 const command = "delete";
 
@@ -170,7 +169,7 @@ const hasApiToken = (apiTokenArg?: string | string[]): boolean => {
   return apiTokenArg.filter(Boolean).length > 0;
 };
 
-export const deleteCommand: CommandModule<{}, Args> = {
+export const deleteCommand: yargs.CommandModule<{}, Args> = {
   command,
   describe,
   builder,

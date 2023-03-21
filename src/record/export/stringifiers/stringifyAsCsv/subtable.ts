@@ -1,10 +1,10 @@
-import type * as Fields from "../../types/field";
-import type { KintoneRecord } from "../../types/record";
-import type { CsvRow, FieldsJson } from "../../../../kintone/types";
+import type * as Fields from "../../types/field.js";
+import type { KintoneRecord } from "../../types/record.js";
+import type { CsvRow, FieldsJson } from "../../../../kintone/types.js";
 import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
-import type { RecordSchema } from "../../types/schema";
+import type { RecordSchema } from "../../types/schema.js";
 
-import { convertFieldValue } from "./fieldValue";
+import { convertFieldValue } from "./fieldValue.js";
 
 type SubtableField = {
   code: string;

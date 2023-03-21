@@ -1,10 +1,10 @@
 import { $, cd } from "zx";
 
-import fs from "fs/promises";
-import path from "path";
-import os from "os";
+import fs from "node:fs/promises";
+import path from "node:path";
+import os from "node:os";
 import rimraf from "rimraf";
-import { fileURLToPath } from "url";
+import { fileURLToPath } from "node:url";
 import packageJson from "../package.json" assert { type: "json" };
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));

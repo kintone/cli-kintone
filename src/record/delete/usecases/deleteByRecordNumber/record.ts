@@ -1,6 +1,6 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { RecordNumber, RecordId } from "../../types/field";
-import type { KintoneRecordForResponse } from "../../../../kintone/types";
+import type { RecordNumber, RecordId } from "../../types/field.js";
+import type { KintoneRecordForResponse } from "../../../../kintone/types.js";
 
 export const getAppCode = async (
   apiClient: KintoneRestAPIClient,

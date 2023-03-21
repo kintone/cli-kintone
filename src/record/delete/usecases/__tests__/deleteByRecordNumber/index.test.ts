@@ -1,5 +1,6 @@
+import { jest } from "@jest/globals";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { deleteByRecordNumber } from "../../deleteByRecordNumber";
+import { deleteByRecordNumber } from "../../deleteByRecordNumber.js";
 
 describe("deleteRecords", () => {
   let apiClient: KintoneRestAPIClient;
@@ -11,30 +12,42 @@ describe("deleteRecords", () => {
   });
 
   it("should not fail", () => {
-    apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "appcode" });
-    apiClient.record.deleteAllRecords = jest.fn().mockResolvedValue([{}]);
-    apiClient.record.getAllRecordsWithId = jest.fn().mockResolvedValue([
-      {
-        $id: { value: "1" },
-      },
-    ]);
+    apiClient.app.getApp = jest
+      .fn<() => Promise<any>>()
+      .mockResolvedValue({ code: "appcode" });
+    apiClient.record.deleteAllRecords = jest
+      .fn<() => Promise<any[]>>()
+      .mockResolvedValue([{}]);
+    apiClient.record.getAllRecordsWithId = jest
+      .fn<() => Promise<any[]>>()
+      .mockResolvedValue([
+        {
+          $id: { value: "1" },
+        },
+      ]);
     return expect(
       deleteByRecordNumber(apiClient, "1", [{ value: "appcode-1" }])
     ).resolves.not.toThrow();
   });
 
   it("should pass parameters to the apiClient correctly", async () => {
-    const deleteAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
+    const deleteAllRecordsMockFn = jest
+      .fn<(...args: unknown[]) => Promise<any>>()
+      .mockResolvedValue([{}]);
     apiClient.record.deleteAllRecords = deleteAllRecordsMockFn;
-    apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "appcode" });
-    apiClient.record.getAllRecordsWithId = jest.fn().mockResolvedValue([
-      {
-        $id: { value: "1" },
-      },
-      {
-        $id: { value: "2" },
-      },
-    ]);
+    apiClient.app.getApp = jest
+      .fn<() => Promise<any>>()
+      .mockResolvedValue({ code: "appcode" });
+    apiClient.record.getAllRecordsWithId = jest
+      .fn<() => Promise<any[]>>()
+      .mockResolvedValue([
+        {
+          $id: { value: "1" },
+        },
+        {
+          $id: { value: "2" },
+        },
+      ]);
     const APP_ID = "1";
 
     await deleteByRecordNumber(apiClient, APP_ID, [
@@ -50,9 +63,15 @@ describe("deleteRecords", () => {
 
   it("should throw error when API response is error", () => {
     const error = new Error("Failed to delete records");
-    apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "appcode" });
-    apiClient.record.deleteAllRecords = jest.fn().mockRejectedValueOnce(error);
-    apiClient.record.getAllRecordsWithId = jest.fn().mockResolvedValue([]);
+    apiClient.app.getApp = jest
+      .fn<() => Promise<any>>()
+      .mockResolvedValue({ code: "appcode" });
+    apiClient.record.deleteAllRecords = jest
+      .fn<() => Promise<any[]>>()
+      .mockRejectedValueOnce(error);
+    apiClient.record.getAllRecordsWithId = jest
+      .fn<() => Promise<any[]>>()
+      .mockResolvedValue([]);
     return expect(
       deleteByRecordNumber(apiClient, "1", [{ value: "appcode-1" }])
     ).rejects.toThrow(error);

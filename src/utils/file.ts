@@ -1,7 +1,7 @@
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import iconv from "iconv-lite";
-import { Transform } from "stream";
+import { Transform } from "node:stream";
 
 export type SupportedImportEncoding = "utf8" | "sjis";
 

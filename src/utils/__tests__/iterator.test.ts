@@ -5,7 +5,7 @@ import {
   iterToAsyncIter,
   withIndex,
   withNext,
-} from "../iterator";
+} from "../iterator.js";
 
 const arrayToAsyncIter = <T>(arr: T[]): AsyncIterableIterator<T> =>
   iterToAsyncIter(arr[Symbol.iterator]());

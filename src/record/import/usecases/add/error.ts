@@ -1,15 +1,15 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import { kintoneAllRecordsErrorToString } from "../../../error";
-import type { LocalRecord } from "../../types/record";
-import type { RecordSchema } from "../../types/schema";
-import { ErrorParser } from "../../utils/error";
+import { kintoneAllRecordsErrorToString } from "../../../error/index.js";
+import type { LocalRecord } from "../../types/record.js";
+import type { RecordSchema } from "../../types/schema.js";
+import { ErrorParser } from "../../utils/error.js";
 
 // Magic number from @kintone/rest-api-client
 // https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L16
 const ADD_RECORDS_LIMIT = 100;
 
 export class AddRecordsError extends Error {
-  private readonly cause: unknown;
+  readonly cause: unknown;
   private readonly chunkSize: number = ADD_RECORDS_LIMIT;
   private readonly records: LocalRecord[];
   private readonly numOfSuccess: number;

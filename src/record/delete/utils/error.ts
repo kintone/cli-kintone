@@ -1,4 +1,4 @@
-import type { KintoneAllRecordsErrorParser } from "../../error/types/parser";
+import type { KintoneAllRecordsErrorParser } from "../../error/types/parser.js";
 import type { KintoneAllRecordsError } from "@kintone/rest-api-client";
 
 export class ErrorParser implements KintoneAllRecordsErrorParser {

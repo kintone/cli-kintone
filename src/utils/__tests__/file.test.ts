@@ -1,8 +1,10 @@
-import type { SupportedImportEncoding } from "../file";
-import { readFile } from "../file";
-import { expected } from "./fixtures/expected";
+import type { SupportedImportEncoding } from "../file.js";
+import { readFile } from "../file.js";
+import { expected } from "./fixtures/expected.js";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 
-import path from "path";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe("readFile", () => {
   it("can detect file format correctly", async () => {

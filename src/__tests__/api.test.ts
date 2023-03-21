@@ -1,42 +1,38 @@
-import { buildRestAPIClient } from "../kintone/client";
-
-import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import * as https from "https";
-import fs from "fs";
-import HttpsProxyAgent from "https-proxy-agent";
-const packageJson = require("../../package.json");
+import { jest } from "@jest/globals";
+import packageJson from "../../package.json" assert { type: "json" };
 const expectedUa = `${packageJson.name}@${packageJson.version}`;
 
-jest.mock("@kintone/rest-api-client");
+jest.unstable_mockModule("node:fs", () => ({
+  default: {
+    readFileSync: jest.fn().mockReturnValue("dummy"),
+  },
+}));
 
-jest.mock("fs");
-jest.spyOn(fs, "readFileSync").mockReturnValue("dummy");
-
-jest.mock("https", () => {
-  return {
-    Agent: jest
-      .fn()
-      .mockImplementation(
-        (opts?: { pfx?: Buffer | string; passphrase?: string }) => {
-          const agentInstance: {
-            pfx?: Buffer | string;
-            passphrase?: string;
-          } = {};
-          if (opts?.pfx) {
-            agentInstance.pfx = opts.pfx;
-          }
-          if (opts?.passphrase) {
-            agentInstance.passphrase = opts.passphrase;
-          }
-          return agentInstance;
+jest.unstable_mockModule("node:https", () => ({
+  Agent: jest
+    .fn<(...args: any[]) => any>()
+    .mockImplementation(
+      (opts?: { pfx?: Buffer | string; passphrase?: string }) => {
+        const agentInstance: {
+          pfx?: Buffer | string;
+          passphrase?: string;
+        } = {};
+        if (opts?.pfx) {
+          agentInstance.pfx = opts.pfx;
         }
-      ),
-  };
-});
+        if (opts?.passphrase) {
+          agentInstance.passphrase = opts.passphrase;
+        }
+        return agentInstance;
+      }
+    ),
+}));
 
-jest.mock("https-proxy-agent", () => {
-  return jest
-    .fn()
+const https = await import("node:https");
+
+jest.unstable_mockModule("https-proxy-agent", () => ({
+  default: jest
+    .fn<(...args: any[]) => any>()
     .mockImplementation(
       (opts: {
         protocol?: string;
@@ -70,8 +66,18 @@ jest.mock("https-proxy-agent", () => {
         }
         return agentInstance;
       }
-    );
-});
+    ),
+}));
+
+const { default: httpsProxyAgent } = await import("https-proxy-agent");
+
+jest.unstable_mockModule("@kintone/rest-api-client", () => ({
+  KintoneRestAPIClient: jest.fn<(...args: any[]) => any>(),
+}));
+
+const { KintoneRestAPIClient } = await import("@kintone/rest-api-client");
+
+const { buildRestAPIClient } = await import("../kintone/client.js");
 
 describe("api", () => {
   const USERNAME = "username";
@@ -185,6 +191,7 @@ describe("api", () => {
       proxy: false,
     });
   });
+
   it("should pass information of client certificate to the apiClient correctly", () => {
     const apiClient = buildRestAPIClient({
       baseUrl: BASE_URL,
@@ -208,6 +215,7 @@ describe("api", () => {
       proxy: false,
     });
   });
+
   it("should pass information of proxy server to the apiClient correctly", () => {
     const apiClient = buildRestAPIClient({
       baseUrl: BASE_URL,
@@ -223,7 +231,7 @@ describe("api", () => {
         password: PASSWORD,
       },
       userAgent: expectedUa,
-      httpsAgent: HttpsProxyAgent({
+      httpsAgent: httpsProxyAgent({
         protocol: "http:",
         host: "proxy.example.com",
         port: "3128",
@@ -231,6 +239,7 @@ describe("api", () => {
       proxy: false,
     });
   });
+
   it("should pass information of client certificate and proxy server to the apiClient correctly", () => {
     const apiClient = buildRestAPIClient({
       baseUrl: BASE_URL,
@@ -248,7 +257,7 @@ describe("api", () => {
         password: PASSWORD,
       },
       userAgent: expectedUa,
-      httpsAgent: HttpsProxyAgent({
+      httpsAgent: httpsProxyAgent({
         protocol: "http:",
         host: "proxy.example.com",
         port: "3128",

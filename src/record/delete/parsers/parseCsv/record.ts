@@ -1,6 +1,6 @@
-import type { CsvRow } from "../../../../kintone/types";
-import { PRIMARY_MARK } from "./constants";
-import type { RecordNumber } from "../../types/field";
+import type { CsvRow } from "../../../../kintone/types.js";
+import { PRIMARY_MARK } from "./constants.js";
+import type { RecordNumber } from "../../types/field.js";
 
 export const getRecordNumberFromCsvRows = (
   rows: CsvRow[],

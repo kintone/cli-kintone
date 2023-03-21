@@ -1,4 +1,4 @@
-import type { RecordSchema } from "../../../../types/schema";
+import type { RecordSchema } from "../../../../types/schema.js";
 
 export const schema: RecordSchema = {
   fields: [

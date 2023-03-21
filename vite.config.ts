@@ -19,7 +19,6 @@ export default defineConfig({
     "process.env": "process.env",
   },
   build: {
-    minify: false,
     lib: {
       entry: resolve(__dirname, "src/cli/main.ts"),
       formats: ["cjs"],

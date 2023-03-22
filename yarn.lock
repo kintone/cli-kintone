@@ -1971,13 +1971,13 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@kintone/rest-api-client@^3.3.5":
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/@kintone/rest-api-client/-/rest-api-client-3.3.5.tgz#e5e0f1f6d8cdc5ab6a787314b795b8c9f03a3448"
-  integrity sha512-wHDvvFp88oLsK6C1/1VLn6IzdkrtCc91ZIzKaSDewuLlowYL0Ze+IgiP1auCq/oMSvB1T6dcDs0PpFLCl5Z9HA==
+"@kintone/rest-api-client@^3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@kintone/rest-api-client/-/rest-api-client-3.3.6.tgz#74293599b8cdaec9c8b6cb4d46b27dfe5b4e6a0d"
+  integrity sha512-0KZOS2wAkP2n4l/4r8fqlDm2brkcaSEK9CeTyQ3HRX5q8oKFc4vQxSCn245J1yd5ELOt9v8Yz6ZE9HnFVsJsxg==
   dependencies:
     axios "^0.27.2"
-    core-js "^3.29.0"
+    core-js "^3.29.1"
     form-data "^4.0.0"
     js-base64 "^3.7.5"
     mime "^3.0.0"
@@ -2856,10 +2856,10 @@ core-js-compat@^3.25.1:
   dependencies:
     browserslist "^4.21.3"
 
-core-js@^3.29.0:
-  version "3.29.0"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.29.0.tgz#0273e142b67761058bcde5615c503c7406b572d6"
-  integrity sha512-VG23vuEisJNkGl6XQmFJd3rEG/so/CNatqeE+7uZAwTSwFeB/qaO0be8xZYUNWprJ/GIwL8aMt9cj1kvbpTZhg==
+core-js@^3.29.1:
+  version "3.29.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.29.1.tgz#40ff3b41588b091aaed19ca1aa5cb111803fa9a6"
+  integrity sha512-+jwgnhg6cQxKYIIjGtAHq2nwUOolo9eoFZ4sHfUH09BLXBgxnH4gA0zEd+t+BO2cNB8idaBtZFcFTRjQJRJmAw==
 
 core-util-is@~1.0.0:
   version "1.0.3"

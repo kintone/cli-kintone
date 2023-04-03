@@ -76,6 +76,8 @@ Options:
                                                  [string] [default: HTTPS_PROXY]
 ```
 
+Notes: The field in a Table cannot be specified to the `fields` option
+
 #### Import Attachment field
 
 If records contains Attachment field, `--attachments-dir` option is required.
@@ -145,6 +147,8 @@ Options:
       --proxy                The URL of a proxy server
                                                  [string] [default: HTTPS_PROXY]
 ```
+
+Notes: The field in a Table cannot be specified to the `fields` option
 
 #### `--condition` and `--order-by` options
 

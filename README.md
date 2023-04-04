@@ -76,6 +76,10 @@ Options:
                                                  [string] [default: HTTPS_PROXY]
 ```
 
+##### Notes
+
+- The field in a Table cannot be specified to the `fields` option.
+
 #### Import Attachment field
 
 If records contains Attachment field, `--attachments-dir` option is required.
@@ -97,7 +101,9 @@ The field specified as "Key to Bulk Update" should meet the following requiremen
   - Text
   - Number
 
-NOTE: When the field specified as "Key to Bulk Update" is Record Number, the value of the field may have app code of the target app.
+##### Notes
+
+- When the field specified as "Key to Bulk Update" is Record Number, the value of the field may have app code of the target app.
 
 ### export
 
@@ -145,6 +151,10 @@ Options:
       --proxy                The URL of a proxy server
                                                  [string] [default: HTTPS_PROXY]
 ```
+
+##### Notes
+
+- The field in a Table cannot be specified to the `fields` option.
 
 #### `--condition` and `--order-by` options
 

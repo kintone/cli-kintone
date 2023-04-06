@@ -26,6 +26,8 @@ A CLI tool to import/export records to/from [Kintone](https://www.kintone.com/).
 3. Extract the downloaded zip file and move the `cli-kintone` files to the `/usr/local/bin`.
 4. Run `cli-kintone` command and confirm that the command is available.
 
+Note: If the terminal responds stating that the command could not be found, the PATH environment variables may need to be edited to use cli-kintone.
+
 ## Usage
 
 ### import

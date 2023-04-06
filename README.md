@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A CLI tool to import/export records to/from [kintone](https://www.kintone.com/).
+A CLI tool to import/export records to/from [Kintone](https://www.kintone.com/).
 
 ---
 
@@ -29,7 +29,7 @@ A CLI tool to import/export records to/from [kintone](https://www.kintone.com/).
 
 ### import
 
-The `import` command allows you to import record data into a specified kintone app.
+The `import` command allows you to import record data into a specified Kintone app.
 
 ```
 $ cli-kintone record import \
@@ -86,7 +86,7 @@ If records contains Attachment field, `--attachments-dir` option is required.
 
 - the local file path in record is treated as relative path from `--attachments-dir`
   - upload the file there
-- file name on kintone is same as local
+- file name on Kintone is same as local
 
 #### Upsert records
 
@@ -107,7 +107,7 @@ The field specified as "Key to Bulk Update" should meet the following requiremen
 
 ### export
 
-The `export` command allows you to export record data from a specified kintone app.
+The `export` command allows you to export record data from a specified Kintone app.
 
 ```
 $ cli-kintone record export \
@@ -174,7 +174,7 @@ If set `--attachments-dir` option, attachment files will be downloaded to local 
 
 ### delete
 
-The `delete` command allows you to delete records of a specified kintone app.
+The `delete` command allows you to delete records of a specified Kintone app.
 
 **Notice**
 

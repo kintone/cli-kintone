@@ -24,9 +24,9 @@ A CLI tool to import/export records to/from [Kintone](https://www.kintone.com/).
    - Linux: `cli-kintone-linux.zip`
    - macOS: `cli-kintone-macos.zip`
 3. Extract the downloaded zip file and move the `cli-kintone` files to the `/usr/local/bin`.
-4. Run `cli-kintone` command and confirm that the command is available.
+4. Run the `cli-kintone` command and confirm that the command is available.
 
-Note: If the terminal responds stating that the command could not be found, the PATH environment variables may need to be edited to use cli-kintone.
+Note: If the terminal responds with an error stating that the command could not be found, the PATH environment variables may need to be edited to use cli-kintone.
 
 ## Usage
 
@@ -81,32 +81,32 @@ Options:
 
 ##### Notes
 
-- The field in a Table cannot be specified to the `fields` option.
+- Field within a Table cannot be specified to the `fields` option.
 
 #### Import Attachment field
 
-If records contains Attachment field, `--attachments-dir` option is required.
+If records contain an Attachment field, `--attachments-dir` option is required.
 
-- the local file path in record is treated as relative path from `--attachments-dir`
-  - upload the file there
-- file name on Kintone is same as local
+- The local file path in the record is treated as a relative path from `--attachments-dir`.
+  - Upload the file there.
+- The file names on Kintone will be the same as the local.
 
 #### Upsert records
 
 When `--update-key` option is set, the option value is used as "Key to Bulk Update" to import (upsert) records.
 
-"Upsert" means updating and/or inserting records at the same time. Data containing keys that match existing record values is used to update those records accordingly, and the remaining data is added to the specified app as new records.
+"Upsert" means updating and/or inserting records simultaneously. Data containing keys that match existing record values is used to update those records accordingly, and the remaining data is added to the specified app as new records.
 
-The field specified as "Key to Bulk Update" should meet the following requirements:
+The field specified as "Key to Bulk Update" must meet one of the following requirements:
 
-- be Record Number field
-- be one of the following field types with "Prohibit duplicate values" enabled
+- Be the Record Number field.
+- Be one of the following field types with the "Prohibit duplicate values" option enabled:
   - Text
   - Number
 
 ##### Notes
 
-- When the field specified as "Key to Bulk Update" is Record Number, the value of the field may have app code of the target app.
+- When the Record Number field is specified as the "Key to Bulk Update", the field's value may have the target app's code.
 
 ### export
 
@@ -157,7 +157,7 @@ Options:
 
 ##### Notes
 
-- The field in a Table cannot be specified to the `fields` option.
+- A field in a Table cannot be specified with the `fields` option.
 
 #### `--condition` and `--order-by` options
 
@@ -169,11 +169,11 @@ Refer to the [`getAllRecords()`](https://github.com/kintone/js-sdk/blob/master/p
 
 #### Download attachment files
 
-If set `--attachments-dir` option, attachment files will be downloaded to local directory.
+If the `--attachments-dir` option is set, attachment files will be downloaded to the local directory.
 
-- the file path is `<attachmentsDir>/<fieldCode>-<recordId>/<filename>`
-  - as for attachments in Table, the file path is `<attachmentsDir>/<fieldCode>-<recordId>-<tableRowIndex>/<filename>`
-- if same name files exist in same Attachment field, renamed to `<filename> (<index>).<ext>`
+- The file path is `<attachmentsDir>/<fieldCode>-<recordId>/<filename>`.
+  - For attachment fields in a Table, the file path is `<attachmentsDir>/<fieldCode>-<recordId>-<tableRowIndex>/<filename>`.
+- Files with the same name in the same Attachment field, the files would be renamed to `<filename> (<index>).<ext>`.
 
 ### delete
 
@@ -181,7 +181,7 @@ The `delete` command allows you to delete records of a specified Kintone app.
 
 **Notice**
 
-- This command only supports API token authentication
+- This command only supports API token authentication.
 - This action cannot be rollback.
 
 ```shell
@@ -192,7 +192,7 @@ $ cli-kintone record delete \
 --file-path ${filepath}
 ```
 
-You can use the option `--yes` or `-y` to bypass the confirmation step.
+You can bypass the confirmation step by using the options `--yes` or `-y`.
 
 #### Options
 
@@ -229,25 +229,25 @@ All records of the target app will be deleted if the option `--file-path` is not
 
 #### Delete specific records
 
-The specific records can be deleted by specifying the option `--file-path`.
+Specific records can be deleted by specifying the option `--file-path`.
 
 The value of the `--file-path` must be the path to the CSV file and should meet the following requirements:
 
-- The file extension should be ".csv"
+- The file extension should be ".csv".
 - The header row of the record number column must be the record number field code which is defined in the target app.
-- If using the app code in the record number,
-  - Every row should contain the same app code (not mix)
+- If using the app code in the record number:
+  - Every row should contain the same app code (not mixed).
   - The app code is equal to the target app's one.
 
 ## Supported file formats
 
-cli-kintone supports following formats for both import/export commands.
+cli-kintone supports the following formats for both import & export commands.
 
 - CSV
 
-When importing, it determines the format automatically by the extension of the file (specified by `--file-path` option).
+When importing, it automatically determines the format by the file extension (specified by `--file-path` option).
 
-The detailed formats are as follows:
+More information regarding the formats is as follows:
 
 ### CSV format
 
@@ -264,7 +264,7 @@ Here are considerations for some field types:
 
 #### Text area
 
-If the value contains line break, enclose the value in double quotes.
+If the value contains a line break, enclose the value in double quotes.
 
 ```csv
 "TextAreaField"
@@ -275,7 +275,7 @@ text"
 
 #### Check box, Multi-choice
 
-Specify multiple values divided by line break (\n).
+Specify multiple values by separating them with line breaks (\n).
 
 ```csv
 "CheckboxField"
@@ -285,7 +285,7 @@ value2"
 
 #### User Selection, Department Selection, Group Selection
 
-If multiple value is selected, separated with line break (\n). (equivalent to `value.code` in REST API).
+If multiple values are selected, they will be separated with a line break (\n) (equivalent to `value.code` in REST API).
 
 ```csv
 "userSelectionField","departmentSelectionField","groupSelectionField"
@@ -304,7 +304,7 @@ Specify the user's login name (equivalent to `value.code` in REST API).
 
 #### Attachment
 
-Files in same Attachment field (in same Table row) are separated with line break (\n).
+Files in the same Attachment field (in the same Table row) are separated with line breaks (\n).
 
 ```csv
 "file"
@@ -318,7 +318,7 @@ file-9/test (1).txt"
 fileInTable-1-0/test (1).txt"
 ```
 
-When export, if NOT set `--attachments-dir` option, only the file name will be output.
+When exporting, if NOT set the `--attachments-dir` option, only the file name will be outputted.
 
 ```csv
 "fileFieldCode"
@@ -329,10 +329,10 @@ test.txt"
 #### Table
 
 - The row where a record begins has a PRIMARY_MARK(`*`) on the "`*`" field.
-- The data of fields outside the Table are specified in the row with PRIMARY_MARK(`*`)
+- The data of fields outside the Table are specified in the row with PRIMARY_MARK(`*`).
   - The data of fields outside the Table in other rows will be ignored.
-- The data of fields inside the Table are specified with one or multiple rows
-  - If there is no data about the Table in the row, the row is ignored
+- The data of fields inside the Table are specified with one or more rows.
+  - If there is no data about the Table in the row, the row is ignored.
 
 ```csv
 "*","Text","Table","TextInTable"
@@ -352,13 +352,13 @@ with multiple Table fields
 
 ## Command completion
 
-cli-kintone provides a command-completion feature that enables you to use the **Tab** key to complete a partially entered command.
+cli-kintone provides a command-completion feature that lets you use the **Tab** key to complete a partially entered command.
 
-cli-kintone command completion is now supported only for `bash` and `zsh` shell.
+cli-kintone command completion is now supported for `bash` and `zsh` shells.
 
 ### zsh
 
-To enable it in `zsh`, `cd` to the directory that contains the cli-kintone executable file, then run the below commands:
+To enable it in `zsh`, `cd` to the directory that contains the cli-kintone executable file, then run the following commands:
 
 ```shell
 # 1. Set PATH environment variables
@@ -381,7 +381,7 @@ source ~/.zshrc
 
 ### bash
 
-To enable it in `bash`, `cd` to the directory that contains the cli-kintone executable file, then run the below commands:
+To enable it in `bash`, `cd` to the directory that contains the cli-kintone executable file, then run the following commands:
 
 ```shell
 # 1. Create command completion script
@@ -407,10 +407,10 @@ For Windows OS, you can use cli-kintone command completion via `bash` on [WSL2](
 
 Steps:
 
-1. Install Linux on Windows with WSL. Ref: [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
-2. Open a new Linux Terminal
+1. Install Linux on Windows with WSL. Ref: [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install).
+2. Open a new Linux Terminal.
 3. Download and extract executables from the [linux package](https://github.com/kintone/cli-kintone/releases).
-4. Run the same commands as [bash section](#bash)
+4. Run the same commands as [bash section](#bash).
 
 ## LICENSE
 

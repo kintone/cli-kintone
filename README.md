@@ -23,7 +23,8 @@ A CLI tool to import/export records to/from [Kintone](https://www.kintone.com/).
    - Windows: `cli-kintone-win.zip`
    - Linux: `cli-kintone-linux.zip`
    - macOS: `cli-kintone-macos.zip`
-3. Extract executables from the ZIP file and run it.
+3. Extract the downloaded zip file and move the `cli-kintone` files to the `/usr/local/bin`.
+4. Run `cli-kintone` command and confirm that the command is available.
 
 ## Usage
 

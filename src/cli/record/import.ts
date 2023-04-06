@@ -120,9 +120,7 @@ type Args = yargs.Arguments<
 
 const handler = (args: Args) => {
   return run({
-    // TODO: remove non-null assertion after the following issue fixed
-    // https://github.com/DefinitelyTyped/DefinitelyTyped/discussions/64785
-    baseUrl: args["base-url"]!,
+    baseUrl: args["base-url"],
     username: args.username,
     password: args.password,
     apiToken: args["api-token"],

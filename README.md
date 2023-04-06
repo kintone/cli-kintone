@@ -93,7 +93,7 @@ If records contains Attachment field, `--attachments-dir` option is required.
 
 #### Upsert records
 
-When `--update-key` option is set, the option value is used as “Key to Bulk Update” to import (upsert) records.
+When `--update-key` option is set, the option value is used as "Key to Bulk Update" to import (upsert) records.
 
 "Upsert" means updating and/or inserting records at the same time. Data containing keys that match existing record values is used to update those records accordingly, and the remaining data is added to the specified app as new records.
 
@@ -328,7 +328,7 @@ test.txt"
 
 #### Table
 
-- The row where a record begins has a PRIMARY_MARK(`*`) on the “`*`“ field.
+- The row where a record begins has a PRIMARY_MARK(`*`) on the "`*`" field.
 - The data of fields outside the Table are specified in the row with PRIMARY_MARK(`*`)
   - The data of fields outside the Table in other rows will be ignored.
 - The data of fields inside the Table are specified with one or multiple rows

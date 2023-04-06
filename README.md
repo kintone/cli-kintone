@@ -31,7 +31,7 @@ A CLI tool to import/export records to/from [Kintone](https://www.kintone.com/).
 
 The `import` command allows you to import record data into a specified Kintone app.
 
-```
+```shell
 $ cli-kintone record import \
 --base-url https://${yourDomain} \
 --api-token ${apiToken} \
@@ -43,7 +43,7 @@ $ cli-kintone record import \
 
 Some options use environment variables starting `KINTONE_` as default values.
 
-```
+```text
 Options:
       --version              Show version number                       [boolean]
       --help                 Show help                                 [boolean]
@@ -109,7 +109,7 @@ The field specified as "Key to Bulk Update" should meet the following requiremen
 
 The `export` command allows you to export record data from a specified Kintone app.
 
-```
+```shell
 $ cli-kintone record export \
 --base-url https://${yourDomain} \
 --api-token ${apiToken} \
@@ -121,7 +121,7 @@ $ cli-kintone record export \
 
 Some options use environment variables starting `KINTONE_` as default values.
 
-```
+```text
 Options:
       --version              Show version number                       [boolean]
       --help                 Show help                                 [boolean]
@@ -181,7 +181,7 @@ The `delete` command allows you to delete records of a specified Kintone app.
 - This command only supports API token authentication
 - This action cannot be rollback.
 
-```
+```shell
 $ cli-kintone record delete \
 --base-url https://${yourDomain} \
 --api-token ${apiToken} \
@@ -195,7 +195,7 @@ You can use the option `--yes` or `-y` to bypass the confirmation step.
 
 Some options use environment variables starting `KINTONE_` as default values.
 
-```
+```text
 Options:
       --version              Show version number                       [boolean]
       --help                 Show help                                 [boolean]

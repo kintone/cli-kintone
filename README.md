@@ -173,7 +173,7 @@ If the `--attachments-dir` option is set, attachment files will be downloaded to
 
 - The file path is `<attachmentsDir>/<fieldCode>-<recordId>/<filename>`.
   - For attachment fields in a Table, the file path is `<attachmentsDir>/<fieldCode>-<recordId>-<tableRowIndex>/<filename>`.
-- Files with the same name in the same Attachment field, the files would be renamed to `<filename> (<index>).<ext>`.
+- For files with the same name in the same Attachment field, the files will be renamed to `<filename> (<index>).<ext>`.
 
 ### delete
 
@@ -318,7 +318,7 @@ file-9/test (1).txt"
 fileInTable-1-0/test (1).txt"
 ```
 
-When exporting, if NOT set the `--attachments-dir` option, only the file name will be outputted.
+When exporting, if the `--attachments-dir` option is NOT set, only the file name will be outputted.
 
 ```csv
 "fileFieldCode"

@@ -157,7 +157,7 @@ Options:
 
 ##### Notes
 
-- A field in a Table cannot be specified with the `fields` option.
+- Field within a Table cannot be specified to the `fields` option.
 
 #### `--condition` and `--order-by` options
 

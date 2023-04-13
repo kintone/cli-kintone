@@ -52,7 +52,7 @@ $ cli-kintone record import \
 
 #### Options
 
-Some options use environment variables starting `KINTONE_` as default values.
+Some options use environment variables starting with `KINTONE_` as default values.
 
 ```text
 Options:
@@ -73,7 +73,7 @@ Options:
       --guest-space-id       The ID of guest space
                                       [string] [default: KINTONE_GUEST_SPACE_ID]
       --attachments-dir      Attachment file directory                  [string]
-      --file-path            The path to source file.
+      --file-path            The path to the source file.
                              The file extension should be ".csv"
                                                              [string] [required]
       --encoding             Character encoding
@@ -81,19 +81,19 @@ Options:
       --update-key           The key to Bulk Update                     [string]
       --fields               The fields to be imported in comma-separated
                                                                         [string]
-      --pfx-file-path        The path to client certificate file        [string]
-      --pfx-file-password    The password of client certificate file    [string]
+      --pfx-file-path        The path to the client certificate file        [string]
+      --pfx-file-password    The password of the client certificate file    [string]
       --proxy                The URL of a proxy server
                                                  [string] [default: HTTPS_PROXY]
 ```
 
 ##### Notes
 
-- Field within a Table cannot be specified to the `fields` option.
+- A field within a Table cannot be specified to the `fields` option.
 
 #### Import Attachment field
 
-If records contain an Attachment field, `--attachments-dir` option is required.
+The `--attachments-dir` option is required if records contain an Attachment field.
 
 - The local file path in the record is treated as a relative path from `--attachments-dir`.
   - Upload the file there.
@@ -101,9 +101,9 @@ If records contain an Attachment field, `--attachments-dir` option is required.
 
 #### Upsert records
 
-When `--update-key` option is set, the option value is used as "Key to Bulk Update" to import (upsert) records.
+When the `--update-key` option is set, the option value is used as "Key to Bulk Update" to import (upsert) records.
 
-"Upsert" means updating and/or inserting records simultaneously. Data containing keys that match existing record values is used to update those records accordingly, and the remaining data is added to the specified app as new records.
+"Upsert" means updating and/or inserting records simultaneously. Data containing keys that match existing record values are used to update those records accordingly, and the remaining data is added to the specified app as new records.
 
 The field specified as "Key to Bulk Update" must meet one of the following requirements:
 
@@ -130,7 +130,7 @@ $ cli-kintone record export \
 
 #### Options
 
-Some options use environment variables starting `KINTONE_` as default values.
+Some options use environment variables starting with `KINTONE_` as default values.
 
 ```text
 Options:
@@ -157,15 +157,15 @@ Options:
       --order-by             The sort order as a query                  [string]
       --fields               The fields to be exported in comma-separated
                                                                         [string]
-      --pfx-file-path        The path to client certificate file        [string]
-      --pfx-file-password    The password of client certificate file    [string]
+      --pfx-file-path        The path to the client certificate file        [string]
+      --pfx-file-password    The password of the client certificate file    [string]
       --proxy                The URL of a proxy server
                                                  [string] [default: HTTPS_PROXY]
 ```
 
 ##### Notes
 
-- Field within a Table cannot be specified to the `fields` option.
+- A field within a Table cannot be specified to the `fields` option.
 
 #### `--condition` and `--order-by` options
 
@@ -204,7 +204,7 @@ You can bypass the confirmation step by using the options `--yes` or `-y`.
 
 #### Options
 
-Some options use environment variables starting `KINTONE_` as default values.
+Some options use environment variables starting with `KINTONE_` as default values.
 
 ```text
 Options:
@@ -218,14 +218,14 @@ Options:
       --basic-auth-password  Kintone Basic Auth Password
                                  [string] [default: KINTONE_BASIC_AUTH_PASSWORD]
       --app                  The ID of the app               [string] [required]
-      --file-path            The path to source file.
+      --file-path            The path to the source file.
                              The file extension should be ".csv"        [string]
       --encoding             Character encoding
                                      [choices: "utf8", "sjis"] [default: "utf8"]
       --guest-space-id       The ID of guest space
                                       [string] [default: KINTONE_GUEST_SPACE_ID]
-      --pfx-file-path        The path to client certificate file        [string]
-      --pfx-file-password    The password of client certificate file    [string]
+      --pfx-file-path        The path to the client certificate file        [string]
+      --pfx-file-password    The password of the client certificate file    [string]
       --proxy                The URL of a proxy server
                                                  [string] [default: HTTPS_PROXY]
   -y, --yes                  Force to delete records                   [boolean]
@@ -253,7 +253,7 @@ cli-kintone supports the following formats for both import & export commands.
 
 - CSV
 
-When importing, it automatically determines the format by the file extension (specified by `--file-path` option).
+When importing, it automatically determines the format by the file extension (specified by the `--file-path` option).
 
 More information regarding the formats is as follows:
 
@@ -326,7 +326,7 @@ file-9/test (1).txt"
 fileInTable-1-0/test (1).txt"
 ```
 
-When exporting, if the `--attachments-dir` option is NOT set, only the file name will be outputted.
+When exporting, only the file name will be outputted if the `--attachments-dir` option is NOT set.
 
 ```csv
 "fileFieldCode"
@@ -417,8 +417,8 @@ Steps:
 
 1. Install Linux on Windows with WSL. Ref: [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install).
 2. Open a new Linux Terminal.
-3. Download and extract executables from the [linux package](https://github.com/kintone/cli-kintone/releases).
-4. Run the same commands as [bash section](#bash).
+3. Download and extract executables from the [Linux package](https://github.com/kintone/cli-kintone/releases).
+4. Run the same commands as the [bash section](#bash).
 
 ## LICENSE
 

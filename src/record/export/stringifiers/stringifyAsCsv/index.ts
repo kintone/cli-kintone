@@ -1,4 +1,4 @@
-import type { KintoneRecord } from "../../types/record";
+import type { LocalRecord } from "../../types/record";
 import type { CsvRow } from "../../../../kintone/types";
 import type { RecordSchema } from "../../types/schema";
 
@@ -9,7 +9,7 @@ import { LINE_BREAK, SEPARATOR } from "./constants";
 import { buildHeaderFields } from "./header";
 
 export const stringifyAsCsv = (
-  records: KintoneRecord[],
+  records: LocalRecord[],
   schema: RecordSchema,
   useLocalFilePath: boolean
 ): string => {

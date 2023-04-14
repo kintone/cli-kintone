@@ -1,4 +1,4 @@
-import type { KintoneRecord } from "../../types/record";
+import type { LocalRecord } from "../../types/record";
 import type * as Fields from "../../types/field";
 import type { RecordSchema } from "../../types/schema";
 
@@ -18,7 +18,7 @@ export const convertField = (
 
 // eslint-disable-next-line func-style
 export function* fieldReader(
-  record: KintoneRecord,
+  record: LocalRecord,
   schema: RecordSchema
 ): Generator<Field, void, undefined> {
   for (const field of schema.fields) {

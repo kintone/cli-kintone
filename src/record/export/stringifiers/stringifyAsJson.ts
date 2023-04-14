@@ -1,6 +1,6 @@
-import type { KintoneRecord } from "../types/record";
+import type { LocalRecord } from "../types/record";
 
-export const stringifyAsJson: (records: KintoneRecord[]) => string = (
+export const stringifyAsJson: (records: LocalRecord[]) => string = (
   records
 ) => {
   return JSON.stringify(records, null, 2);

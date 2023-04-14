@@ -1,4 +1,4 @@
-import type { KintoneRecord } from "../types/record";
+import type { LocalRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
 
 import { stringifyAsJson } from "./stringifyAsJson";
@@ -6,7 +6,7 @@ import { stringifyAsCsv } from "./stringifyAsCsv";
 
 export type ExportFileFormat = "csv" | "json";
 
-type Stringifier = (records: KintoneRecord[]) => string;
+type Stringifier = (records: LocalRecord[]) => string;
 
 type FactoryOptions =
   | {

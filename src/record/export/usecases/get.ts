@@ -1,5 +1,5 @@
 import type { KintoneRecordForResponse } from "../../../kintone/types";
-import type { KintoneRecord } from "../types/record";
+import type { LocalRecord } from "../types/record";
 import type * as Fields from "../types/field";
 import type { FieldSchema, RecordSchema } from "../types/schema";
 import type {
@@ -20,7 +20,7 @@ export const getRecords: (
     orderBy?: string;
     attachmentsDir?: string;
   }
-) => Promise<KintoneRecord[]> = async (apiClient, app, schema, options) => {
+) => Promise<LocalRecord[]> = async (apiClient, app, schema, options) => {
   const { condition, orderBy, attachmentsDir } = options;
   const kintoneRecords = await apiClient.record.getAllRecords({
     app,
@@ -46,8 +46,8 @@ const recordsReducer: (
     field: KintoneRecordField.OneOf,
     fieldSchema: FieldSchema
   ) => Promise<Fields.OneOf>
-) => Promise<KintoneRecord[]> = async (kintoneRecords, schema, task) => {
-  const records: KintoneRecord[] = [];
+) => Promise<LocalRecord[]> = async (kintoneRecords, schema, task) => {
+  const records: LocalRecord[] = [];
   for (const kintoneRecord of kintoneRecords) {
     const record = await recordReducer(
       kintoneRecord,
@@ -67,8 +67,8 @@ const recordReducer: (
     field: KintoneRecordField.OneOf,
     fieldSchema: FieldSchema
   ) => Promise<Fields.OneOf>
-) => Promise<KintoneRecord> = async (record, schema, task) => {
-  const newRecord: KintoneRecord = {};
+) => Promise<LocalRecord> = async (record, schema, task) => {
+  const newRecord: LocalRecord = {};
   // This step filters fields implicitly
   for (const fieldSchema of schema.fields) {
     if (!(fieldSchema.code in record)) {

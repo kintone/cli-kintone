@@ -1,4 +1,4 @@
-import type { KintoneRecord } from "../../../types/record";
+import type { LocalRecord } from "../../../types/record";
 import type { RecordSchema } from "../../../types/schema";
 
 import { stringifyAsCsv } from "../index";
@@ -12,7 +12,7 @@ import { pattern as withEmptySubtable } from "./fixtures/index/withEmptySubtable
 
 export type TestPattern = {
   description: string;
-  input: KintoneRecord[];
+  input: LocalRecord[];
   schema: RecordSchema;
   useLocalFilePath: boolean;
   expected: string;

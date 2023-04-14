@@ -1,6 +1,6 @@
-import type { KintoneRecord } from "../../../../../../types/record";
+import type { LocalRecord } from "../../../../../../types/record";
 
-export const input: KintoneRecord[] = [
+export const input: LocalRecord[] = [
   {
     recordNumber: {
       type: "RECORD_NUMBER",

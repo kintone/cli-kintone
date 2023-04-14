@@ -1,5 +1,5 @@
 import type { CsvRow } from "../../../../kintone/types";
-import type { KintoneRecord } from "../../types/record";
+import type { LocalRecord } from "../../types/record";
 
 import { convertField, fieldReader } from "./field";
 import { convertSubtableField, subtableFieldReader } from "./subtable";
@@ -9,7 +9,7 @@ import type { RecordSchema } from "../../types/schema";
 export type RecordAsCsvRows = CsvRow[];
 
 export const convertRecord = (
-  record: KintoneRecord,
+  record: LocalRecord,
   schema: RecordSchema,
   useLocalFilePath: boolean
 ): RecordAsCsvRows => {
@@ -45,7 +45,7 @@ export const convertRecord = (
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style
 export function* recordReader(
-  records: KintoneRecord[]
-): Generator<KintoneRecord, void, undefined> {
+  records: LocalRecord[]
+): Generator<LocalRecord, void, undefined> {
   yield* records;
 }

@@ -1,5 +1,5 @@
 import type * as Fields from "../../types/field";
-import type { KintoneRecord } from "../../types/record";
+import type { LocalRecord } from "../../types/record";
 import type { CsvRow, FieldsJson } from "../../../../kintone/types";
 import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
 import type { RecordSchema } from "../../types/schema";
@@ -32,7 +32,7 @@ export const convertSubtableField = (
 
 // eslint-disable-next-line func-style
 export function* subtableFieldReader(
-  record: KintoneRecord,
+  record: LocalRecord,
   schema: RecordSchema
 ): Generator<SubtableField, void, undefined> {
   for (const field of schema.fields) {

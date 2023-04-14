@@ -10,6 +10,7 @@ import type {
 import path from "path";
 
 import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { getAllRecords } from "./get/getAllRecords";
 
 export const getRecords: (
   apiClient: KintoneRestAPIClient,
@@ -37,6 +38,36 @@ export const getRecords: (
       })
   );
 };
+
+// eslint-disable-next-line func-style
+export async function* getRecordsGenerator(
+  apiClient: KintoneRestAPIClient,
+  app: string,
+  schema: RecordSchema,
+  options: {
+    condition?: string;
+    orderBy?: string;
+    attachmentsDir?: string;
+  }
+): AsyncGenerator<LocalRecord[], void, undefined> {
+  const { condition, orderBy, attachmentsDir } = options;
+  for await (const kintoneRecords of getAllRecords({
+    apiClient,
+    app,
+    condition,
+    orderBy,
+  })) {
+    yield recordsReducer(
+      kintoneRecords,
+      schema,
+      (recordId, field, fieldSchema) =>
+        fieldProcessor(recordId, field, fieldSchema, {
+          apiClient,
+          attachmentsDir,
+        })
+    );
+  }
+}
 
 const recordsReducer: (
   records: KintoneRecordForResponse[],

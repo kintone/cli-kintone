@@ -32,7 +32,9 @@ A CLI tool to import/export records to/from [Kintone](https://www.kintone.com/).
    - Linux & macOS: `./cli-kintone` on terminal
 
 ### Notes
+
 To run the `cli-kintone` command from any directory, do one of the following:
+
 - Run the command while specifying the absolute path
 - Set the PATH environment
 - Move the `cli-kintone` file to the `/usr/local/bin` directory (for Linux & macOS)

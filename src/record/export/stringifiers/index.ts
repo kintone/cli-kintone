@@ -1,12 +1,14 @@
 import type { LocalRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
 
-import { stringifyAsJson } from "./stringifyAsJson";
-import { stringifyAsCsv } from "./stringifyAsCsv";
+import { jsonStringifier } from "./JsonStringifier";
+import { CsvStringifier } from "./csvStringifier";
 
 export type ExportFileFormat = "csv" | "json";
 
-type Stringifier = (records: LocalRecord[]) => string;
+export type Stringifier = {
+  readonly stringify: (input: LocalRecord[]) => Promise<string>;
+};
 
 type FactoryOptions =
   | {
@@ -21,10 +23,9 @@ type FactoryOptions =
 export const stringifierFactory = (options: FactoryOptions): Stringifier => {
   switch (options.format) {
     case "json":
-      return stringifyAsJson;
+      return jsonStringifier;
     case "csv":
-      return (records) =>
-        stringifyAsCsv(records, options.schema, options.useLocalFilePath);
+      return new CsvStringifier(options.schema, options.useLocalFilePath);
     default:
       throw new Error(`Unknown format type.`);
   }

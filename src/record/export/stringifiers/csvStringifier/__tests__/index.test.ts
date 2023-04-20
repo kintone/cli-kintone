@@ -1,7 +1,7 @@
 import type { LocalRecord } from "../../../types/record";
 import type { RecordSchema } from "../../../types/schema";
 
-import { stringifyAsCsv } from "../index";
+import { CsvStringifier } from "../index";
 
 import { pattern as common } from "./fixtures/index/common";
 import { pattern as withFileAndAttachmentsDir } from "./fixtures/index/withFileAndAttachmentsDir";
@@ -18,7 +18,7 @@ export type TestPattern = {
   expected: string;
 };
 
-describe("stringifyAsCsv", () => {
+describe("csvStringifier", () => {
   const patterns: TestPattern[] = [
     common,
     withFileAndAttachmentsDir,
@@ -27,9 +27,12 @@ describe("stringifyAsCsv", () => {
     withSubtableAndFileAndNoAttachmentsDir,
     withEmptySubtable,
   ];
-  it.each(patterns)("$description", (pattern) => {
-    expect(
-      stringifyAsCsv(pattern.input, pattern.schema, pattern.useLocalFilePath)
-    ).toEqual(pattern.expected);
+  it.each(patterns)("$description", async (pattern) => {
+    const csvStringifier = new CsvStringifier(
+      pattern.schema,
+      pattern.useLocalFilePath
+    );
+    const actual = await csvStringifier.stringify(pattern.input);
+    expect(actual).toEqual(pattern.expected);
   });
 });

@@ -60,7 +60,7 @@ export const run: (
       orderBy,
       attachmentsDir,
     })) {
-      const stringifiedRecords = stringifier(records);
+      const stringifiedRecords = await stringifier.stringify(records);
       process.stdout.write(iconv.encode(stringifiedRecords, encoding));
       //   repository.write(records);
     }

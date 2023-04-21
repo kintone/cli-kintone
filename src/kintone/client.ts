@@ -73,14 +73,17 @@ const buildHttpsAgent = (options: {
 
   if (username.length > 0 && password.length > 0) {
     proxyOptions.headers = {
-      "Proxy-Authorization": generateProxyAuthorizationStr(username, password),
+      "Proxy-Authorization": generateProxyAuthorizationHeaderValue(
+        username,
+        password
+      ),
     };
   }
 
   return httpsProxyAgent(proxyOptions);
 };
 
-const generateProxyAuthorizationStr = (
+const generateProxyAuthorizationHeaderValue = (
   username: string,
   password: string
 ): string => {

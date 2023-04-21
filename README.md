@@ -255,7 +255,7 @@ The value of the `--file-path` must be the path to the CSV file and should meet 
 cli-kintone supports proxy authentication via proxy url by the following format:
 
 ```
-http://user:pass@domain:port
+http://username:password@domain:port
 ```
 
 ## Supported file formats

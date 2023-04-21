@@ -35,27 +35,10 @@ jest.mock("https", () => {
 });
 
 jest.mock("https-proxy-agent", () => {
-  return jest.fn().mockImplementation(
-    (opts: {
-      protocol?: string;
-      host?: string;
-      port?: string;
-      pfx?: Buffer | string;
-      passphrase?: string;
-      headers?: {
-        "Proxy-Authorization"?: string;
-      };
-    }) => {
-      const agentInstance: {
-        protocol?: string;
-        host?: string;
-        port?: string;
-        pfx?: Buffer | string;
-        passphrase?: string;
-        headers?: {
-          "Proxy-Authorization"?: string;
-        };
-      } = {};
+  return jest
+    .fn()
+    .mockImplementation((opts: httpsProxyAgent.HttpsProxyAgentOptions) => {
+      const agentInstance: httpsProxyAgent.HttpsProxyAgentOptions = {};
 
       if (opts.protocol) {
         agentInstance.protocol = opts.protocol;
@@ -76,8 +59,7 @@ jest.mock("https-proxy-agent", () => {
         agentInstance.headers = opts.headers;
       }
       return agentInstance;
-    }
-  );
+    });
 });
 
 describe("api", () => {
@@ -91,7 +73,7 @@ describe("api", () => {
 
   const PROXY_USERNAME = "proxyUser";
   const PROXY_PASSWORD = "proxyPass";
-  const AUTHN_HTTPS_PROXY = `http://${PROXY_USERNAME}:${PROXY_PASSWORD}@proxy.example.com:3128`;
+  const HTTPS_PROXY_WITH_AUTHN = `http://${PROXY_USERNAME}:${PROXY_PASSWORD}@proxy.example.com:3128`;
 
   it("should pass username and password to the apiClient correctly", () => {
     const apiClient = buildRestAPIClient({
@@ -275,9 +257,9 @@ describe("api", () => {
       baseUrl: BASE_URL,
       username: USERNAME,
       password: PASSWORD,
-      httpsProxy: AUTHN_HTTPS_PROXY,
+      httpsProxy: HTTPS_PROXY_WITH_AUTHN,
     });
-    const proxyAuthorizationStr =
+    const proxyAuthorizationHeaderValue =
       "Basic " +
       Buffer.from(`${PROXY_USERNAME}:${PROXY_PASSWORD}`).toString("base64");
     expect(apiClient).toBeInstanceOf(KintoneRestAPIClient);
@@ -293,7 +275,7 @@ describe("api", () => {
         host: "proxy.example.com",
         port: "3128",
         headers: {
-          "Proxy-Authorization": proxyAuthorizationStr,
+          "Proxy-Authorization": proxyAuthorizationHeaderValue,
         },
       }),
       proxy: false,

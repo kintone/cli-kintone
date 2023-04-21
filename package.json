@@ -59,7 +59,7 @@
     "@babel/preset-typescript": "^7.21.4",
     "@cybozu/eslint-config": "^18.0.3",
     "@types/inquirer": "^8.2.6",
-    "@types/jest": "^29.5.0",
+    "@types/jest": "^29.5.1",
     "@types/node": "^18.15.11",
     "@types/rollup-plugin-auto-external": "^2.0.2",
     "@types/yargs": "^17.0.24",

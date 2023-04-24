@@ -3,7 +3,7 @@ import { buildRestAPIClient } from "../kintone/client";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import * as https from "https";
 import fs from "fs";
-import HttpsProxyAgent from "https-proxy-agent";
+import httpsProxyAgent from "https-proxy-agent";
 const packageJson = require("../../package.json");
 const expectedUa = `${packageJson.name}@${packageJson.version}`;
 
@@ -37,40 +37,29 @@ jest.mock("https", () => {
 jest.mock("https-proxy-agent", () => {
   return jest
     .fn()
-    .mockImplementation(
-      (opts: {
-        protocol?: string;
-        host?: string;
-        port?: string;
-        pfx?: Buffer | string;
-        passphrase?: string;
-      }) => {
-        const agentInstance: {
-          protocol?: string;
-          host?: string;
-          port?: string;
-          pfx?: Buffer | string;
-          passphrase?: string;
-        } = {};
+    .mockImplementation((opts: httpsProxyAgent.HttpsProxyAgentOptions) => {
+      const agentInstance: httpsProxyAgent.HttpsProxyAgentOptions = {};
 
-        if (opts.protocol) {
-          agentInstance.protocol = opts.protocol;
-        }
-        if (opts.host) {
-          agentInstance.host = opts.host;
-        }
-        if (opts.port) {
-          agentInstance.port = opts.port;
-        }
-        if (opts.pfx) {
-          agentInstance.pfx = opts.pfx;
-        }
-        if (opts.passphrase) {
-          agentInstance.passphrase = opts.passphrase;
-        }
-        return agentInstance;
+      if (opts.protocol) {
+        agentInstance.protocol = opts.protocol;
       }
-    );
+      if (opts.host) {
+        agentInstance.host = opts.host;
+      }
+      if (opts.port) {
+        agentInstance.port = opts.port;
+      }
+      if (opts.pfx) {
+        agentInstance.pfx = opts.pfx;
+      }
+      if (opts.passphrase) {
+        agentInstance.passphrase = opts.passphrase;
+      }
+      if (opts.headers) {
+        agentInstance.headers = opts.headers;
+      }
+      return agentInstance;
+    });
 });
 
 describe("api", () => {
@@ -81,6 +70,10 @@ describe("api", () => {
   const PFX_FILE_PATH = "./dummy.pfx";
   const PFX_FILE_PASSWORD = "pfx_password";
   const HTTPS_PROXY = "http://proxy.example.com:3128";
+
+  const PROXY_USERNAME = "proxyUser";
+  const PROXY_PASSWORD = "proxyPass";
+  const HTTPS_PROXY_WITH_AUTHN = `http://${PROXY_USERNAME}:${PROXY_PASSWORD}@proxy.example.com:3128`;
 
   it("should pass username and password to the apiClient correctly", () => {
     const apiClient = buildRestAPIClient({
@@ -223,7 +216,7 @@ describe("api", () => {
         password: PASSWORD,
       },
       userAgent: expectedUa,
-      httpsAgent: HttpsProxyAgent({
+      httpsAgent: httpsProxyAgent({
         protocol: "http:",
         host: "proxy.example.com",
         port: "3128",
@@ -248,12 +241,42 @@ describe("api", () => {
         password: PASSWORD,
       },
       userAgent: expectedUa,
-      httpsAgent: HttpsProxyAgent({
+      httpsAgent: httpsProxyAgent({
         protocol: "http:",
         host: "proxy.example.com",
         port: "3128",
         pfx: "dummy",
         passphrase: PFX_FILE_PASSWORD,
+      }),
+      proxy: false,
+    });
+  });
+
+  it("should pass information of proxy authentication to the apiClient correctly", () => {
+    const apiClient = buildRestAPIClient({
+      baseUrl: BASE_URL,
+      username: USERNAME,
+      password: PASSWORD,
+      httpsProxy: HTTPS_PROXY_WITH_AUTHN,
+    });
+    const proxyAuthorizationHeaderValue =
+      "Basic " +
+      Buffer.from(`${PROXY_USERNAME}:${PROXY_PASSWORD}`).toString("base64");
+    expect(apiClient).toBeInstanceOf(KintoneRestAPIClient);
+    expect(KintoneRestAPIClient).toHaveBeenCalledWith({
+      baseUrl: BASE_URL,
+      auth: {
+        username: USERNAME,
+        password: PASSWORD,
+      },
+      userAgent: expectedUa,
+      httpsAgent: httpsProxyAgent({
+        protocol: "http:",
+        host: "proxy.example.com",
+        port: "3128",
+        headers: {
+          "Proxy-Authorization": proxyAuthorizationHeaderValue,
+        },
       }),
       proxy: false,
     });

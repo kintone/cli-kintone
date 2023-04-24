@@ -250,6 +250,14 @@ The value of the `--file-path` must be the path to the CSV file and should meet 
   - Every row should contain the same app code (not mixed).
   - The app code is equal to the target app's one.
 
+## Proxy Authentication
+
+cli-kintone supports proxy authentication via proxy url by the following format:
+
+```
+http://username:password@domain:port
+```
+
 ## Supported file formats
 
 cli-kintone supports the following formats for both import & export commands.

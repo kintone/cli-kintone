@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.0](https://github.com/kintone/cli-kintone/compare/v1.3.3...v1.4.0) (2023-04-24)
+
+
+### Features
+
+* support proxy authentication ([#314](https://github.com/kintone/cli-kintone/issues/314)) ([6e69b3a](https://github.com/kintone/cli-kintone/commit/6e69b3ab246a06883105c359128455b1e0096cc1))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.10 ([#317](https://github.com/kintone/cli-kintone/issues/317)) ([09d9b92](https://github.com/kintone/cli-kintone/commit/09d9b92691f8c882fb0f6574ccd9f780f43286a9))
+
 ## [1.3.3](https://github.com/kintone/cli-kintone/compare/v1.3.2...v1.3.3) (2023-04-18)
 
 

@@ -3,13 +3,13 @@ import { kintoneAllRecordsErrorToString } from "../../../error";
 import type { LocalRecord } from "../../types/record";
 import type { RecordSchema } from "../../types/schema";
 import { ErrorParser } from "../../utils/error";
+import { CliKintoneError } from "../../../../utils/error";
 
 // Magic number from @kintone/rest-api-client
 // https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L16
 const ADD_RECORDS_LIMIT = 100;
 
-export class AddRecordsError extends Error {
-  private readonly cause: unknown;
+export class AddRecordsError extends CliKintoneError {
   private readonly chunkSize: number = ADD_RECORDS_LIMIT;
   private readonly records: LocalRecord[];
   private readonly numOfSuccess: number;
@@ -23,11 +23,9 @@ export class AddRecordsError extends Error {
     recordSchema: RecordSchema
   ) {
     const message = "Failed to add all records.";
-    super(message);
+    super(message, cause);
 
     this.name = "AddRecordsError";
-    this.message = message;
-    this.cause = cause;
     this.records = records;
     this.recordSchema = recordSchema;
 
@@ -37,8 +35,6 @@ export class AddRecordsError extends Error {
       this.numOfSuccess += this.cause.numOfProcessedRecords;
     }
 
-    // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
-    // Set the prototype explicitly.
     Object.setPrototypeOf(this, AddRecordsError.prototype);
   }
 

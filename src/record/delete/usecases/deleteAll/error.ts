@@ -2,20 +2,18 @@ import { KintoneAllRecordsError } from "@kintone/rest-api-client";
 import type { KintoneRecordForDeleteAllParameter } from "../../../../kintone/types";
 import { kintoneAllRecordsErrorToString } from "../../../error";
 import { ErrorParser } from "../../utils/error";
+import { CliKintoneError } from "../../../../utils/error";
 
-export class DeleteAllRecordsError extends Error {
-  private readonly cause: unknown;
+export class DeleteAllRecordsError extends CliKintoneError {
   private readonly records: KintoneRecordForDeleteAllParameter[];
   private readonly numOfSuccess: number;
   private readonly numOfTotal: number;
 
   constructor(cause: unknown, records: KintoneRecordForDeleteAllParameter[]) {
     const message = "Failed to delete all records.";
-    super(message);
+    super(message, cause);
 
     this.name = "DeleteAllRecordsError";
-    this.message = message;
-    this.cause = cause;
     this.records = records;
     this.numOfTotal = this.records.length;
     this.numOfSuccess = 0;

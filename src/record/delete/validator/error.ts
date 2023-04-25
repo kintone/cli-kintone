@@ -1,13 +1,11 @@
-export class ValidatorError extends Error {
-  private readonly cause: unknown;
+import { CliKintoneError } from "../../../utils/error";
 
+export class ValidatorError extends CliKintoneError {
   constructor(cause: unknown) {
     const message = "Failed to delete records";
-    super(message);
+    super(message, cause);
 
     this.name = "ValidatorError";
-    this.message = message;
-    this.cause = cause;
 
     // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
     // Set the prototype explicitly.

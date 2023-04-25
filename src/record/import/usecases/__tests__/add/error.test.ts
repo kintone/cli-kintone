@@ -6,6 +6,7 @@ import {
 } from "@kintone/rest-api-client";
 import { AddRecordsError } from "../../add/error";
 import type { RecordSchema } from "../../../types/schema";
+import { CliKintoneError } from "../../../../../utils/error";
 
 const CHUNK_SIZE = 100;
 const schema: RecordSchema = {
@@ -59,6 +60,14 @@ describe("AddRecordsError", () => {
       numOfAlreadyImportedRecords,
       schema
     );
+    if (upsertRecordsError instanceof CliKintoneError) {
+      console.error("そうですよ！！");
+    }
+    if (upsertRecordsError instanceof AddRecordsError) {
+      console.error("そうですよ！！");
+    }
+    console.error(upsertRecordsError);
+
     expect(upsertRecordsError.toString()).toBe(
       "Failed to add all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n  An error occurred on number at row 46.\n    Cause: invalid value\n"
     );

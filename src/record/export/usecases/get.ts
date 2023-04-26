@@ -11,53 +11,30 @@ import path from "path";
 
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { getAllRecords } from "./get/getAllRecords";
+import type { LocalRecordRepository } from "./interface";
 
-export const getRecords: (
+export const getRecords = async (
   apiClient: KintoneRestAPIClient,
   app: string,
+  recordDestination: LocalRecordRepository,
   schema: RecordSchema,
   options: {
     condition?: string;
     orderBy?: string;
     attachmentsDir?: string;
-  }
-) => Promise<LocalRecord[]> = async (apiClient, app, schema, options) => {
+  },
+  getAllRecordsFn = getAllRecords
+) => {
   const { condition, orderBy, attachmentsDir } = options;
-  const kintoneRecords = await apiClient.record.getAllRecords({
-    app,
-    condition,
-    orderBy,
-  });
-  return recordsReducer(
-    kintoneRecords,
-    schema,
-    (recordId, field, fieldSchema) =>
-      fieldProcessor(recordId, field, fieldSchema, {
-        apiClient,
-        attachmentsDir,
-      })
-  );
-};
+  const writer = recordDestination.writer();
 
-// eslint-disable-next-line func-style
-export async function* getRecordsGenerator(
-  apiClient: KintoneRestAPIClient,
-  app: string,
-  schema: RecordSchema,
-  options: {
-    condition?: string;
-    orderBy?: string;
-    attachmentsDir?: string;
-  }
-): AsyncGenerator<LocalRecord[], void, undefined> {
-  const { condition, orderBy, attachmentsDir } = options;
-  for await (const kintoneRecords of getAllRecords({
+  for await (const kintoneRecords of getAllRecordsFn({
     apiClient,
     app,
     condition,
     orderBy,
   })) {
-    yield recordsReducer(
+    const localRecords = await recordsReducer(
       kintoneRecords,
       schema,
       (recordId, field, fieldSchema) =>
@@ -66,8 +43,9 @@ export async function* getRecordsGenerator(
           attachmentsDir,
         })
     );
+    await writer.write(localRecords);
   }
-}
+};
 
 const recordsReducer: (
   records: KintoneRecordForResponse[],

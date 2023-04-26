@@ -8,6 +8,8 @@ import { formLayout as defaultTransformer } from "./schema/transformers/formLayo
 import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
 import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
+import { ReadableStream } from "stream/web";
+import { Duplex, Readable } from "stream";
 
 export type ExportFileEncoding = "utf8" | "sjis";
 
@@ -44,7 +46,11 @@ export const run: (
     );
 
     const repository = new LocalRecordRepositoryFromStream(
-      () => iconv.encodeStream(encoding).pipe(process.stdout),
+      () => {
+        const stream = iconv.encodeStream(encoding);
+        stream.pipe(process.stdout);
+        return stream;
+      },
       schema,
       !!attachmentsDir
     );

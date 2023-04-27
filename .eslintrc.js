@@ -19,6 +19,8 @@ const config = {
         prefer: "type-imports",
       },
     ],
+    "unused-imports/no-unused-imports": "warn",
   },
+  plugins: ["unused-imports"],
 };
 module.exports = config;

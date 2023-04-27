@@ -9,14 +9,10 @@ export class ParserError extends CliKintoneError {
     Object.setPrototypeOf(this, ParserError.prototype);
   }
 
-  toString(): string {
-    let errorMessage = "";
-    errorMessage += this.message + "\n";
+  protected _toStringCause(): string {
     if (this.cause instanceof CsvError) {
-      errorMessage += `${this.cause.code}: ${this.cause.message}\n`;
-    } else {
-      errorMessage += this.cause + "\n";
+      return `${this.cause.code}: ${this.cause.message}\n`;
     }
-    return errorMessage;
+    return super._toStringCause();
   }
 }

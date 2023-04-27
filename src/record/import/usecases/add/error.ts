@@ -10,6 +10,8 @@ import { CliKintoneError } from "../../../../utils/error";
 const ADD_RECORDS_LIMIT = 100;
 
 export class AddRecordsError extends CliKintoneError {
+  readonly detail: string;
+
   private readonly chunkSize: number = ADD_RECORDS_LIMIT;
   private readonly records: LocalRecord[];
   private readonly numOfSuccess: number;
@@ -35,24 +37,21 @@ export class AddRecordsError extends CliKintoneError {
       this.numOfSuccess += this.cause.numOfProcessedRecords;
     }
 
+    if (this.numOfSuccess === 0) {
+      this.detail = `No records are processed successfully.`;
+    } else {
+      const lastSucceededRecord = this.records[this.numOfSuccess - 1];
+      this.detail = `Rows from 1 to ${
+        lastSucceededRecord.metadata.format.lastRowIndex + 1
+      } are processed successfully.`;
+    }
+
     Object.setPrototypeOf(this, AddRecordsError.prototype);
   }
 
-  toString(): string {
-    let errorMessage = "";
-    errorMessage += this.message + "\n";
-
-    if (this.numOfSuccess === 0) {
-      errorMessage += `No records are processed successfully.\n`;
-    } else {
-      const lastSucceededRecord = this.records[this.numOfSuccess - 1];
-      errorMessage += `Rows from 1 to ${
-        lastSucceededRecord.metadata.format.lastRowIndex + 1
-      } are processed successfully.\n`;
-    }
-
+  protected _toStringCause(): string {
     if (this.cause instanceof KintoneAllRecordsError) {
-      errorMessage += kintoneAllRecordsErrorToString(
+      return kintoneAllRecordsErrorToString(
         new ErrorParser(
           this.cause,
           this.chunkSize,
@@ -61,11 +60,7 @@ export class AddRecordsError extends CliKintoneError {
           this.recordSchema
         )
       );
-    } else if (this.cause instanceof AddRecordsError) {
-      errorMessage += this.cause.toString();
-    } else {
-      errorMessage += this.cause + "\n";
     }
-    return errorMessage;
+    return super._toStringCause();
   }
 }

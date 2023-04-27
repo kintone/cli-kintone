@@ -1,6 +1,8 @@
 export abstract class CliKintoneError extends Error {
-  protected readonly cause: unknown;
-  constructor(message: string, cause: unknown) {
+  readonly message: string;
+  readonly detail: string = "";
+  readonly cause: unknown;
+  protected constructor(message: string, cause: unknown) {
     super(message);
 
     this.name = "CliKintoneError";
@@ -12,14 +14,19 @@ export abstract class CliKintoneError extends Error {
     Object.setPrototypeOf(this, CliKintoneError.prototype);
   }
 
-  toString(): string {
-    let errorMessage = "";
-    errorMessage += this.message + "\n";
+  protected _toStringCause(): string {
     if (this.cause instanceof CliKintoneError) {
-      errorMessage += this.cause.toString();
-    } else {
-      errorMessage += this.cause + "\n";
+      return this.cause.toString();
     }
+    return this.cause + "\n";
+  }
+
+  toString(): string {
+    let errorMessage = this.message + "\n";
+    if (this.detail.length > 0) {
+      errorMessage += this.detail + "\n";
+    }
+    errorMessage += this._toStringCause();
     return errorMessage;
   }
 }

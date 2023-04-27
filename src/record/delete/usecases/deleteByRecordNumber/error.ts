@@ -5,6 +5,8 @@ import { ErrorParser } from "../../utils/error";
 import { CliKintoneError } from "../../../../utils/error";
 
 export class DeleteSpecifiedRecordsError extends CliKintoneError {
+  readonly detail: string;
+
   private readonly records: KintoneRecordForDeleteAllParameter[];
   private readonly numOfSuccess: number;
   private readonly numOfTotal: number;
@@ -21,30 +23,19 @@ export class DeleteSpecifiedRecordsError extends CliKintoneError {
       this.numOfSuccess = this.cause.numOfProcessedRecords;
     }
 
-    // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
-    // Set the prototype explicitly.
+    if (this.numOfSuccess === 0) {
+      this.detail = `No records are deleted.`;
+    } else {
+      this.detail = `${this.numOfSuccess}/${this.numOfTotal} records are deleted successfully.`;
+    }
+
     Object.setPrototypeOf(this, DeleteSpecifiedRecordsError.prototype);
   }
 
-  toString(): string {
-    let errorMessage = "";
-    errorMessage += this.message + "\n";
-
-    if (this.numOfSuccess === 0) {
-      errorMessage += `No records are deleted.\n`;
-    } else {
-      errorMessage += `${this.numOfSuccess}/${this.numOfTotal} records are deleted successfully.\n`;
-    }
-
+  protected _toStringCause(): string {
     if (this.cause instanceof KintoneAllRecordsError) {
-      errorMessage += kintoneAllRecordsErrorToString(
-        new ErrorParser(this.cause)
-      );
-    } else if (this.cause instanceof DeleteSpecifiedRecordsError) {
-      errorMessage += this.cause.toString();
-    } else {
-      errorMessage += this.cause + "\n";
+      return kintoneAllRecordsErrorToString(new ErrorParser(this.cause));
     }
-    return errorMessage;
+    return super._toStringCause();
   }
 }

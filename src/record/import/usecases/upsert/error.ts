@@ -10,6 +10,8 @@ import { CliKintoneError } from "../../../../utils/error";
 const UPDATE_RECORDS_LIMIT = 100;
 
 export class UpsertRecordsError extends CliKintoneError {
+  readonly detail: string;
+
   private readonly chunkSize: number = UPDATE_RECORDS_LIMIT;
   private readonly records: LocalRecord[];
   private readonly numOfSuccess: number;
@@ -35,26 +37,21 @@ export class UpsertRecordsError extends CliKintoneError {
       this.numOfSuccess += this.cause.numOfProcessedRecords;
     }
 
-    // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
-    // Set the prototype explicitly.
+    if (this.numOfSuccess === 0) {
+      this.detail = `No records are processed successfully.`;
+    } else {
+      const lastSucceededRecord = this.records[this.numOfSuccess - 1];
+      this.detail = `Rows from 1 to ${
+        lastSucceededRecord.metadata.format.lastRowIndex + 1
+      } are processed successfully.`;
+    }
+
     Object.setPrototypeOf(this, UpsertRecordsError.prototype);
   }
 
-  toString(): string {
-    let errorMessage = "";
-    errorMessage += this.message + "\n";
-
-    if (this.numOfSuccess === 0) {
-      errorMessage += `No records are processed successfully.\n`;
-    } else {
-      const lastSucceededRecord = this.records[this.numOfSuccess - 1];
-      errorMessage += `Rows from 1 to ${
-        lastSucceededRecord.metadata.format.lastRowIndex + 1
-      } are processed successfully.\n`;
-    }
-
+  protected _toStringCause(): string {
     if (this.cause instanceof KintoneAllRecordsError) {
-      errorMessage += kintoneAllRecordsErrorToString(
+      return kintoneAllRecordsErrorToString(
         new ErrorParser(
           this.cause,
           this.chunkSize,
@@ -63,11 +60,7 @@ export class UpsertRecordsError extends CliKintoneError {
           this.recordSchema
         )
       );
-    } else if (this.cause instanceof UpsertRecordsError) {
-      errorMessage += this.cause.toString();
-    } else {
-      errorMessage += this.cause + "\n";
     }
-    return errorMessage;
+    return super._toStringCause();
   }
 }

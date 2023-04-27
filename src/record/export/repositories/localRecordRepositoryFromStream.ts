@@ -3,10 +3,11 @@ import type { RecordSchema } from "../types/schema";
 import { stringifierFactory } from "./stringifiers";
 
 export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
-  private readonly destination: () => NodeJS.WritableStream;
   readonly format = "csv";
-  readonly schema: RecordSchema;
-  readonly useLocalFilePath: boolean;
+
+  private readonly destination: () => NodeJS.WritableStream;
+  private readonly schema: RecordSchema;
+  private readonly useLocalFilePath: boolean;
 
   constructor(
     destination: () => NodeJS.WritableStream,

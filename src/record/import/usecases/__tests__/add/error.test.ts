@@ -6,7 +6,6 @@ import {
 } from "@kintone/rest-api-client";
 import { AddRecordsError } from "../../add/error";
 import type { RecordSchema } from "../../../types/schema";
-import { CliKintoneError } from "../../../../../utils/error";
 
 const CHUNK_SIZE = 100;
 const schema: RecordSchema = {

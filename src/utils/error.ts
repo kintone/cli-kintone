@@ -1,5 +1,3 @@
-import { ParserError } from "../record/import/repositories/parsers/error";
-
 export abstract class CliKintoneError extends Error {
   protected readonly cause: unknown;
   constructor(message: string, cause: unknown) {

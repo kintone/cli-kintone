@@ -9,7 +9,6 @@ import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
 import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
 import { Transform } from "stream";
-import Pumpify from "pumpify";
 
 export type ExportFileEncoding = "utf8" | "sjis";
 

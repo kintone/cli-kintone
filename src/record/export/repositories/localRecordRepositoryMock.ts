@@ -1,7 +1,5 @@
 import type { LocalRecordRepository } from "../usecases/interface";
 import type { LocalRecord } from "../types/record";
-import type { RecordSchema } from "../types/schema";
-import { stringifierFactory } from "./stringifiers";
 import { Writable } from "stream";
 
 export class LocalRecordRepositoryMock implements LocalRecordRepository {

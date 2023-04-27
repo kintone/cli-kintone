@@ -1,7 +1,6 @@
 import { pattern as canStringifyRecordsCorrectly } from "./fixtures/canStringifyRecordsCorrectly";
 import { pattern as canStringifyRecordsCorrectlyIterative } from "./fixtures/canStringifyRecordsCorrectlyIterative";
 import { stringifierFactory } from "../index";
-import Pumpify from "pumpify";
 
 describe("stringifier", () => {
   it("should stringify records as csv correctly", async () => {

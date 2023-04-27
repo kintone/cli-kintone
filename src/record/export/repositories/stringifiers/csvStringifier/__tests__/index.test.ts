@@ -9,6 +9,7 @@ import { pattern as withFileAndNoAttachmentsDir } from "./fixtures/index/withFil
 import { pattern as withSubtableAndFileAndAttachmentsDir } from "./fixtures/index/withSubtableAndFileAndAttachmentsDir";
 import { pattern as withSubtableAndFileAndNoAttachmentsDir } from "./fixtures/index/withSubtableAndFileAndNoAttachmentsDir";
 import { pattern as withEmptySubtable } from "./fixtures/index/withEmptySubtable";
+import { pattern as withNoRecord } from "./fixtures/index/withNoRecord";
 import { Readable } from "stream";
 
 export type TestPattern = {
@@ -27,6 +28,7 @@ describe("csvStringifier", () => {
     withSubtableAndFileAndAttachmentsDir,
     withSubtableAndFileAndNoAttachmentsDir,
     withEmptySubtable,
+    withNoRecord,
   ];
   it.each(patterns)("$description", async (pattern) => {
     const csvStringifier = new CsvStringifier(

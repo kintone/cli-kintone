@@ -5,16 +5,16 @@ import { stringifierFactory } from "./stringifiers";
 export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
   readonly format = "csv";
 
-  private readonly destination: () => NodeJS.WritableStream;
+  private readonly openWritableSink: () => NodeJS.WritableStream;
   private readonly schema: RecordSchema;
   private readonly useLocalFilePath: boolean;
 
   constructor(
-    destination: () => NodeJS.WritableStream,
+    openWritableSink: () => NodeJS.WritableStream,
     schema: RecordSchema,
     useLocalFilePath: boolean
   ) {
-    this.destination = destination;
+    this.openWritableSink = openWritableSink;
     this.schema = schema;
     this.useLocalFilePath = useLocalFilePath;
   }
@@ -24,7 +24,7 @@ export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
       schema: this.schema,
       useLocalFilePath: this.useLocalFilePath,
     });
-    stringifier.pipe(this.destination());
+    stringifier.pipe(this.openWritableSink());
     return stringifier;
   }
 }

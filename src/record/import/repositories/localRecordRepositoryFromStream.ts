@@ -11,16 +11,16 @@ export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
   readonly reader: () => AsyncGenerator<LocalRecord, void, undefined>;
 
   constructor(
-    source: () => NodeJS.ReadableStream,
+    openReadableSource: () => NodeJS.ReadableStream,
     format: string,
     schema: RecordSchema
   ) {
     this.format = format;
-    this.length = () => countRecordsFromCsv(source());
+    this.length = () => countRecordsFromCsv(openReadableSource());
 
     switch (format) {
       case "csv":
-        this.reader = () => csvReader(source, schema);
+        this.reader = () => csvReader(openReadableSource, schema);
         break;
       default:
         throw new RepositoryError(

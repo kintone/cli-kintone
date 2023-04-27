@@ -1,6 +1,6 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import * as packageJson from "../../package.json";
-import HttpsProxyAgent from "https-proxy-agent";
+import httpsProxyAgent from "https-proxy-agent";
 import * as https from "https";
 import fs from "fs";
 
@@ -61,13 +61,33 @@ const buildHttpsAgent = (options: {
     return new https.Agent({ ...clientAuth });
   }
 
-  const { protocol, hostname, port } = new URL(options.proxy);
-  return HttpsProxyAgent({
+  const { protocol, hostname, port, username, password } = new URL(
+    options.proxy
+  );
+  const proxyOptions: httpsProxyAgent.HttpsProxyAgentOptions = {
     protocol: protocol,
     host: hostname,
     port: port,
     ...clientAuth,
-  });
+  };
+
+  if (username.length > 0 && password.length > 0) {
+    proxyOptions.headers = {
+      "Proxy-Authorization": generateProxyAuthorizationHeaderValue(
+        username,
+        password
+      ),
+    };
+  }
+
+  return httpsProxyAgent(proxyOptions);
+};
+
+const generateProxyAuthorizationHeaderValue = (
+  username: string,
+  password: string
+): string => {
+  return "Basic " + Buffer.from(`${username}:${password}`).toString("base64");
 };
 
 export const buildRestAPIClient = (options: RestAPIClientOptions) => {

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.0](https://github.com/kintone/cli-kintone/compare/v1.3.3...v1.4.0) (2023-04-24)
+
+
+### Features
+
+* support proxy authentication ([#314](https://github.com/kintone/cli-kintone/issues/314)) ([6e69b3a](https://github.com/kintone/cli-kintone/commit/6e69b3ab246a06883105c359128455b1e0096cc1))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.10 ([#317](https://github.com/kintone/cli-kintone/issues/317)) ([09d9b92](https://github.com/kintone/cli-kintone/commit/09d9b92691f8c882fb0f6574ccd9f780f43286a9))
+
+## [1.3.3](https://github.com/kintone/cli-kintone/compare/v1.3.2...v1.3.3) (2023-04-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.4 ([#265](https://github.com/kintone/cli-kintone/issues/265)) ([35f2810](https://github.com/kintone/cli-kintone/commit/35f2810cff16ba5b77d2e031b450d469029aea8d))
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.5 ([#275](https://github.com/kintone/cli-kintone/issues/275)) ([764f789](https://github.com/kintone/cli-kintone/commit/764f7898761c989e650b6e4075087e74ffdb3b06))
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.6 ([#285](https://github.com/kintone/cli-kintone/issues/285)) ([9f7346b](https://github.com/kintone/cli-kintone/commit/9f7346b005086cd3f198ac0a185df24883ae74dc))
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.7 ([#293](https://github.com/kintone/cli-kintone/issues/293)) ([bb9d366](https://github.com/kintone/cli-kintone/commit/bb9d3662c816f0a092816be84a6163563f27686a))
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.8 ([#300](https://github.com/kintone/cli-kintone/issues/300)) ([c604709](https://github.com/kintone/cli-kintone/commit/c604709e06a01ee6861a11ceb3f68bbcb57a18d9))
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.9 ([#304](https://github.com/kintone/cli-kintone/issues/304)) ([ca85cea](https://github.com/kintone/cli-kintone/commit/ca85ceadf80fc27e2305c7bb643f830911aa5a66))
+
 ## [1.3.2](https://github.com/kintone/cli-kintone/compare/v1.3.1...v1.3.2) (2023-03-06)
 
 

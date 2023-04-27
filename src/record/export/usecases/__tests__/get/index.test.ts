@@ -36,10 +36,7 @@ describe("getRecords", () => {
         },
       ] as KintoneRecord[];
     });
-    const repositoryMock = new LocalRecordRepositoryMock(
-      caseCanGetRecords.schema,
-      false
-    );
+    const repositoryMock = new LocalRecordRepositoryMock();
     return expect(
       getRecords(
         apiClient,
@@ -56,7 +53,7 @@ describe("getRecords", () => {
     const records = caseCanGetRecords.input;
     const expectedRecords = caseCanGetRecords.expected;
     const schema = caseCanGetRecords.schema;
-    const repositoryMock = new LocalRecordRepositoryMock(schema, false);
+    const repositoryMock = new LocalRecordRepositoryMock();
     const getAllRecordsMockFn = jest.fn(async function* () {
       yield records;
     });
@@ -68,14 +65,14 @@ describe("getRecords", () => {
       {},
       getAllRecordsMockFn
     );
-    expect(repositoryMock.receivedRecords).toStrictEqual(expectedRecords);
+    expect(repositoryMock.receivedRecords()).toStrictEqual(expectedRecords);
   });
 
   it("can download files to a specified directory", async () => {
     const kintoneRecords = caseCanDownloadFiles.input;
     const expectedRecords = caseCanDownloadFiles.expected;
     const schema = caseCanDownloadFiles.schema;
-    const repositoryMock = new LocalRecordRepositoryMock(schema, true);
+    const repositoryMock = new LocalRecordRepositoryMock();
 
     const testFileData = "test data";
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
@@ -93,7 +90,7 @@ describe("getRecords", () => {
       },
       getAllRecordsMockFn
     );
-    expect(repositoryMock.receivedRecords).toStrictEqual(expectedRecords);
+    expect(repositoryMock.receivedRecords()).toStrictEqual(expectedRecords);
 
     const attachmentValue = (expectedRecords[0].attachment as Fields.File)
       .value;
@@ -109,7 +106,7 @@ describe("getRecords", () => {
     const kintoneRecords = caseCanDownloadFilesInSubtable.input;
     const expectedRecords = caseCanDownloadFilesInSubtable.expected;
     const schema = caseCanDownloadFilesInSubtable.schema;
-    const repositoryMock = new LocalRecordRepositoryMock(schema, true);
+    const repositoryMock = new LocalRecordRepositoryMock();
 
     const testFileData = "test data";
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
@@ -127,7 +124,7 @@ describe("getRecords", () => {
       },
       getAllRecordsMockFn
     );
-    expect(repositoryMock.receivedRecords).toStrictEqual(expectedRecords);
+    expect(repositoryMock.receivedRecords()).toStrictEqual(expectedRecords);
 
     const attachmentValue = (
       (expectedRecords[0].subTable as Fields.Subtable).value[0].value
@@ -144,10 +141,7 @@ describe("getRecords", () => {
     }
   });
   it("should throw error when API response is error", () => {
-    const repositoryMock = new LocalRecordRepositoryMock(
-      caseCanGetRecords.schema,
-      false
-    );
+    const repositoryMock = new LocalRecordRepositoryMock();
 
     const error = new Error("error for test");
     // eslint-disable-next-line require-yield

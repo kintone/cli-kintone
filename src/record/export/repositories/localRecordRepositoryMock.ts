@@ -2,31 +2,28 @@ import type { LocalRecordRepository } from "../usecases/interface";
 import type { LocalRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
 import { stringifierFactory } from "./stringifiers";
+import { Writable } from "stream";
 
 export class LocalRecordRepositoryMock implements LocalRecordRepository {
-  destination: string = "";
-  receivedRecords: LocalRecord[] = [];
+  private underlyingSink: WritableMock = new WritableMock();
 
   readonly format = "csv";
-  readonly schema: RecordSchema;
-  readonly useLocalFilePath: boolean;
 
-  constructor(schema: RecordSchema, useLocalFilePath: boolean) {
-    this.schema = schema;
-    this.useLocalFilePath = useLocalFilePath;
-  }
   writer() {
-    const stringifier = stringifierFactory({
-      format: this.format,
-      schema: this.schema,
-      useLocalFilePath: this.useLocalFilePath,
-    });
-    return {
-      write: async (input: LocalRecord[]) => {
-        this.receivedRecords.push(...input);
-        const recordsString = await stringifier.stringify(input);
-        this.destination += recordsString;
-      },
-    };
+    this.underlyingSink = new WritableMock();
+    return this.underlyingSink;
+  }
+  receivedRecords() {
+    return this.underlyingSink.underlyingSink;
+  }
+}
+
+class WritableMock extends Writable {
+  public underlyingSink: LocalRecord[] = [];
+  constructor() {
+    super({ objectMode: true });
+  }
+  _write(chunk: LocalRecord[]) {
+    this.underlyingSink.push(...chunk);
   }
 }

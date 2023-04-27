@@ -1,16 +1,41 @@
-import { input } from "./fixtures/input";
-import { schema } from "./fixtures/schema";
+import { pattern as canStringifyRecordsCorrectly } from "./fixtures/canStringifyRecordsCorrectly";
+import { pattern as canStringifyRecordsCorrectlyIterative } from "./fixtures/canStringifyRecordsCorrectlyIterative";
 import { stringifierFactory } from "../index";
+import Pumpify from "pumpify";
 
 describe("stringifier", () => {
-  it("should print records as csv correctly", async () => {
-    const { expected } = await import("./fixtures/expected_csv");
+  it("should stringify records as csv correctly", async () => {
+    const { input, expected, schema } = canStringifyRecordsCorrectly;
     const stringifier = stringifierFactory({
       format: "csv",
       schema,
       useLocalFilePath: false,
     });
-    const records = await stringifier.stringify(input);
-    expect(records).toBe(expected);
+    stringifier.write(input);
+    stringifier.end();
+
+    let actual = "";
+    for await (const chunk of stringifier) {
+      actual += chunk;
+    }
+    expect(actual).toBe(expected);
+  });
+
+  it("should stringify records as csv correctly (iterative)", async () => {
+    const { input, expected, schema } = canStringifyRecordsCorrectlyIterative;
+    const stringifier = stringifierFactory({
+      format: "csv",
+      schema,
+      useLocalFilePath: false,
+    });
+    for (const localRecord of input) {
+      stringifier.write([localRecord]);
+    }
+    stringifier.end();
+    let actual = "";
+    for await (const chunk of stringifier) {
+      actual += chunk;
+    }
+    expect(actual).toBe(expected);
   });
 });

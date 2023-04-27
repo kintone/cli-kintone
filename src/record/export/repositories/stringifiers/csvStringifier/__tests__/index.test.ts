@@ -9,6 +9,7 @@ import { pattern as withFileAndNoAttachmentsDir } from "./fixtures/index/withFil
 import { pattern as withSubtableAndFileAndAttachmentsDir } from "./fixtures/index/withSubtableAndFileAndAttachmentsDir";
 import { pattern as withSubtableAndFileAndNoAttachmentsDir } from "./fixtures/index/withSubtableAndFileAndNoAttachmentsDir";
 import { pattern as withEmptySubtable } from "./fixtures/index/withEmptySubtable";
+import { Readable } from "stream";
 
 export type TestPattern = {
   description: string;
@@ -32,7 +33,12 @@ describe("csvStringifier", () => {
       pattern.schema,
       pattern.useLocalFilePath
     );
-    const actual = await csvStringifier.stringify(pattern.input);
+    const source = Readable.from(pattern.input.map((record) => [record]));
+    source.pipe(csvStringifier);
+    let actual = "";
+    for await (const chunk of csvStringifier) {
+      actual += chunk;
+    }
     expect(actual).toEqual(pattern.expected);
   });
 });

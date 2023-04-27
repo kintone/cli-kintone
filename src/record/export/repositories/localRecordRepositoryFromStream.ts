@@ -1,5 +1,4 @@
 import type { LocalRecordRepository } from "../usecases/interface";
-import type { LocalRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
 import { stringifierFactory } from "./stringifiers";
 
@@ -19,17 +18,12 @@ export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
     this.useLocalFilePath = useLocalFilePath;
   }
   writer() {
-    const dest = this.destination();
     const stringifier = stringifierFactory({
       format: this.format,
       schema: this.schema,
       useLocalFilePath: this.useLocalFilePath,
     });
-    return {
-      write: async (input: LocalRecord[]) => {
-        const recordsString = await stringifier.stringify(input);
-        dest.write(recordsString);
-      },
-    };
+    stringifier.pipe(this.destination());
+    return stringifier;
   }
 }

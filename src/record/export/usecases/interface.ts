@@ -1,10 +1,8 @@
-import type { LocalRecord } from "../types/record";
+import type { Writable } from "stream";
 
 export type LocalRecordRepository = {
   readonly format: string;
   readonly writer: () => Writer;
 };
 
-type Writer = {
-  write: (input: LocalRecord[]) => Promise<void>;
-};
+type Writer = Writable;

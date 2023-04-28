@@ -1,10 +1,7 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { getAllRecords } from "../getAllRecords";
 import type { LocalRecord } from "../../../types/record";
-
-type Record = Awaited<
-  ReturnType<KintoneRestAPIClient["record"]["getAllRecords"]>
->[number];
+import type { KintoneRecordForResponse } from "../../../../../kintone/types";
 
 describe("getAllRecords", () => {
   let apiClient: KintoneRestAPIClient;
@@ -27,13 +24,13 @@ describe("getAllRecords", () => {
     const chunkSize = 500;
     const chunks = Array.from(
       { length: 1200 },
-      (v, k): Record => ({
+      (v, k): KintoneRecordForResponse => ({
         $id: { type: "__ID__", value: `${k + 1}` },
       })
     ).reduce(
       (acc, _, i, arr) =>
         i % chunkSize === 0 ? [...acc, arr.slice(i, i + chunkSize)] : acc,
-      [] as Record[][]
+      [] as KintoneRecordForResponse[][]
     );
     const mockResponse: Response[] = chunks.map((chunk) => ({
       records: chunk,
@@ -71,13 +68,13 @@ describe("getAllRecords", () => {
     const chunkSize = 500;
     const chunks = Array.from(
       { length: 1200 },
-      (v, k): Record => ({
+      (v, k): KintoneRecordForResponse => ({
         $id: { type: "__ID__", value: `${k + 1}` },
       })
     ).reduce(
       (acc, _, i, arr) =>
         i % chunkSize === 0 ? [...acc, arr.slice(i, i + chunkSize)] : acc,
-      [] as Record[][]
+      [] as KintoneRecordForResponse[][]
     );
     const mockResponse: Response[] = chunks.map((chunk) => ({
       records: chunk,

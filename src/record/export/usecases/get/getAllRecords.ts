@@ -1,8 +1,5 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-
-type Record = Awaited<
-  ReturnType<KintoneRestAPIClient["record"]["getAllRecords"]>
->[number];
+import type { KintoneRecordForResponse } from "../../../../kintone/types";
 
 // TODO: replace this function after @kintone/rest-api-client supports generator/stream
 // eslint-disable-next-line func-style
@@ -12,7 +9,7 @@ export async function* getAllRecords(params: {
   fields?: string[];
   condition?: string;
   orderBy?: string;
-}): AsyncGenerator<Record[], void, undefined> {
+}): AsyncGenerator<KintoneRecordForResponse[], void, undefined> {
   const { condition, orderBy, ...rest } = params;
   if (!orderBy) {
     yield* getAllRecordsWithId({ ...rest, condition });
@@ -29,7 +26,7 @@ async function* getAllRecordsWithId(params: {
   app: string;
   fields?: string[];
   condition?: string;
-}): AsyncGenerator<Record[], void, undefined> {
+}): AsyncGenerator<KintoneRecordForResponse[], void, undefined> {
   const { fields: originalFields, ...rest } = params;
   let fields = originalFields;
   // Append $id if $id doesn't exist in fields
@@ -48,7 +45,7 @@ async function* getAllRecordsRecursiveWithId(
     condition?: string;
   },
   id: string
-): AsyncGenerator<Record[], void, undefined> {
+): AsyncGenerator<KintoneRecordForResponse[], void, undefined> {
   const GET_RECORDS_LIMIT = 500;
 
   const { apiClient, condition, ...rest } = params;
@@ -77,7 +74,7 @@ async function* getAllRecordsWithCursor(params: {
   app: string;
   fields?: string[];
   query?: string;
-}): AsyncGenerator<Record[], void, undefined> {
+}): AsyncGenerator<KintoneRecordForResponse[], void, undefined> {
   const { apiClient, ...rest } = params;
   const { id } = await apiClient.record.createCursor(rest);
   try {
@@ -92,7 +89,7 @@ async function* getAllRecordsWithCursor(params: {
 async function* getAllRecordsRecursiveByCursor(params: {
   apiClient: KintoneRestAPIClient;
   id: string;
-}): AsyncGenerator<Record[], void, undefined> {
+}): AsyncGenerator<KintoneRecordForResponse[], void, undefined> {
   const { apiClient, id } = params;
   const result = await apiClient.record.getRecordsByCursor({ id });
   yield result.records;

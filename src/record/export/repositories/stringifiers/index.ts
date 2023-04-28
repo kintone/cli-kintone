@@ -3,8 +3,6 @@ import type { RecordSchema } from "../../types/schema";
 import { CsvStringifier } from "./csvStringifier";
 import type { Duplex } from "stream";
 
-export type ExportFileFormat = "csv";
-
 export type Stringifier = Duplex;
 
 type FactoryOptions = {

@@ -57,7 +57,7 @@
     "@babel/core": "^7.21.5",
     "@babel/preset-env": "^7.21.5",
     "@babel/preset-typescript": "^7.21.5",
-    "@cybozu/eslint-config": "^18.0.3",
+    "@cybozu/eslint-config": "^19.0.0",
     "@types/inquirer": "^8.2.6",
     "@types/jest": "^29.5.1",
     "@types/node": "^18.16.3",

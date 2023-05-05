@@ -16,10 +16,10 @@
   "scripts": {
     "start": "yarn build --watch",
     "prebuild": "yarn clean",
-    "build": "vite build --force",
+    "build": "ncc build ./src/cli/main.ts -m",
     "postbuild": "yarn pkg",
     "build:artifacts": "run-s build licensed compress",
-    "pkg": "pkg ./dist/cli-kintone.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
+    "pkg": "pkg ./dist/index.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
     "licensed": "zx ./scripts/generate-license-notice.mjs",
     "compress": "zx ./scripts/compress-to-zip-file.mjs",
     "typecheck": "tsc --pretty --noEmit",
@@ -76,7 +76,8 @@
     "typescript": "^5.0.4",
     "vite": "^4.2.2",
     "vite-plugin-checker": "^0.6.0",
-    "zx": "^7.2.2"
+    "zx": "^7.2.2",
+    "@vercel/ncc": "^0.36.1"
   },
   "dependencies": {
     "@kintone/rest-api-client": "^3.3.11",

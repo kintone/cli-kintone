@@ -54,7 +54,7 @@
     "node": ">=16"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.5",
+    "@babel/core": "^7.21.8",
     "@babel/preset-env": "^7.21.5",
     "@babel/preset-typescript": "^7.21.5",
     "@cybozu/eslint-config": "^18.0.3",

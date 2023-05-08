@@ -19,8 +19,15 @@ const config = {
         prefer: "type-imports",
       },
     ],
-    "unused-imports/no-unused-imports": "warn",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+        destructuredArrayIgnorePattern: "^_",
+      },
+    ],
   },
-  plugins: ["unused-imports"],
 };
 module.exports = config;

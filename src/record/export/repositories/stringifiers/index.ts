@@ -1,9 +1,15 @@
 import type { RecordSchema } from "../../types/schema";
 
 import { CsvStringifier } from "./csvStringifier";
-import type { Duplex } from "stream";
+import type { LocalRecord } from "../../types/record";
 
-export type Stringifier = Duplex;
+export type Stringifier = {
+  write(records: LocalRecord[]): Promise<void>;
+  read(size?: number): string;
+  end(): Promise<void>;
+  pipe<T extends NodeJS.WritableStream>(destination: T): void;
+  [Symbol.asyncIterator](): AsyncIterableIterator<string>;
+};
 
 type FactoryOptions = {
   format: "csv";

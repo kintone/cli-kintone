@@ -3,7 +3,6 @@ import type { CsvRow } from "../../../../../kintone/types";
 import type { RecordSchema } from "../../../types/schema";
 
 import stringify from "csv-stringify";
-import Pumpify from "pumpify";
 
 import { convertRecord, recordReader } from "./record";
 import { LINE_BREAK, SEPARATOR } from "./constants";
@@ -12,9 +11,10 @@ import type { TransformCallback } from "stream";
 import { PassThrough, Transform } from "stream";
 import type { Stringifier } from "../index";
 
-export class CsvStringifier extends Pumpify.obj implements Stringifier {
+export class CsvStringifier implements Stringifier {
   private readonly recordTransformer: Transform;
   private readonly csvStringifier: stringify.Stringifier;
+  private readonly encoder: PassThrough;
 
   constructor(schema: RecordSchema, useLocalFilePath: boolean) {
     const recordTransform = new RecordTransform(schema, useLocalFilePath);
@@ -29,11 +29,35 @@ export class CsvStringifier extends Pumpify.obj implements Stringifier {
       quoted_empty: false,
     });
 
-    const encoder = new PassThrough({ encoding: "utf-8" });
-
-    super(recordTransform, csvStringifier, encoder);
     this.recordTransformer = recordTransform;
     this.csvStringifier = csvStringifier;
+    this.encoder = new PassThrough({ encoding: "utf-8" });
+    this.recordTransformer.pipe(this.csvStringifier).pipe(this.encoder);
+  }
+
+  async write(records: LocalRecord[]) {
+    return new Promise<void>((resolve, reject) => {
+      this.recordTransformer.write(records, (e) => {
+        if (e) {
+          reject(e);
+        }
+        resolve();
+      });
+    });
+  }
+  read(size?: number) {
+    return this.encoder.read(size);
+  }
+  async end() {
+    return new Promise<void>((resolve) => {
+      this.recordTransformer.end(resolve);
+    });
+  }
+  pipe<T extends NodeJS.WritableStream>(destination: T) {
+    this.encoder.pipe(destination);
+  }
+  async *[Symbol.asyncIterator](): AsyncGenerator<string, void, undefined> {
+    yield* this.encoder;
   }
 }
 

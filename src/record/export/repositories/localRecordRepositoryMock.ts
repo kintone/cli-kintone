@@ -1,6 +1,5 @@
-import type { LocalRecordRepository } from "../usecases/interface";
+import type { LocalRecordRepository, Writer } from "../usecases/interface";
 import type { LocalRecord } from "../types/record";
-import { Writable } from "stream";
 
 export class LocalRecordRepositoryMock implements LocalRecordRepository {
   readonly format = "csv";
@@ -16,12 +15,12 @@ export class LocalRecordRepositoryMock implements LocalRecordRepository {
   }
 }
 
-class WritableMock extends Writable {
+class WritableMock implements Writer {
   public underlyingSink: LocalRecord[] = [];
-  constructor() {
-    super({ objectMode: true });
-  }
-  _write(chunk: LocalRecord[]) {
+  async write(chunk: LocalRecord[]) {
     this.underlyingSink.push(...chunk);
+  }
+  async end() {
+    /* noop */
   }
 }

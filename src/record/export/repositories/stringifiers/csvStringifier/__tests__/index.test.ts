@@ -36,7 +36,10 @@ describe("csvStringifier", () => {
       pattern.useLocalFilePath
     );
     const source = Readable.from(pattern.input.map((record) => [record]));
-    source.pipe(csvStringifier);
+    for await (const chunk of source) {
+      await csvStringifier.write(chunk);
+    }
+    await csvStringifier.end();
     let actual = "";
     for await (const chunk of csvStringifier) {
       actual += chunk;

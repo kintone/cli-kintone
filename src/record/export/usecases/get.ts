@@ -43,9 +43,9 @@ export const getRecords = async (
           attachmentsDir,
         })
     );
-    writer.write(localRecords);
+    await writer.write(localRecords);
   }
-  writer.end();
+  await writer.end();
 };
 
 const recordsReducer: (

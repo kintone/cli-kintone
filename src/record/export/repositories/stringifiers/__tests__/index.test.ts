@@ -10,8 +10,8 @@ describe("stringifier", () => {
       schema,
       useLocalFilePath: false,
     });
-    stringifier.write(input);
-    stringifier.end();
+    await stringifier.write(input);
+    await stringifier.end();
 
     let actual = "";
     for await (const chunk of stringifier) {
@@ -28,9 +28,9 @@ describe("stringifier", () => {
       useLocalFilePath: false,
     });
     for (const localRecord of input) {
-      stringifier.write([localRecord]);
+      await stringifier.write([localRecord]);
     }
-    stringifier.end();
+    await stringifier.end();
     let actual = "";
     for await (const chunk of stringifier) {
       actual += chunk;

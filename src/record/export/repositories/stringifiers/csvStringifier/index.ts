@@ -17,7 +17,7 @@ export class CsvStringifier implements Stringifier {
   private readonly encoder: PassThrough;
 
   constructor(schema: RecordSchema, useLocalFilePath: boolean) {
-    const recordTransform = new RecordTransform(schema, useLocalFilePath);
+    const recordTransform = new RecordsTransform(schema, useLocalFilePath);
 
     const headerFields = buildHeaderFields(schema);
     const csvStringifier = stringify({
@@ -61,7 +61,7 @@ export class CsvStringifier implements Stringifier {
   }
 }
 
-class RecordTransform extends Transform {
+class RecordsTransform extends Transform {
   private readonly schema: RecordSchema;
   private readonly useLocalFilePath: boolean;
   constructor(schema: RecordSchema, useLocalFilePath: boolean) {

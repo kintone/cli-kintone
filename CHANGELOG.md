@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.0](https://github.com/kintone/cli-kintone/compare/v1.4.0...v1.5.0) (2023-05-10)
+
+
+### Features
+
+* improve memory usage of record export ([#311](https://github.com/kintone/cli-kintone/issues/311)) ([1c545c7](https://github.com/kintone/cli-kintone/commit/1c545c76cbfb4389ad8cd6972950a155eba834c3))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.11 ([#323](https://github.com/kintone/cli-kintone/issues/323)) ([8ae01f0](https://github.com/kintone/cli-kintone/commit/8ae01f0b689f2c45b42a3ccad66e16d90ca7b078))
+* **deps:** update dependency yargs to ^17.7.2 ([#325](https://github.com/kintone/cli-kintone/issues/325)) ([4c0b59b](https://github.com/kintone/cli-kintone/commit/4c0b59bc94ba50d94836ad1bacdb38e5e440cab0))
+
 ## [1.4.0](https://github.com/kintone/cli-kintone/compare/v1.3.3...v1.4.0) (2023-04-24)
 
 

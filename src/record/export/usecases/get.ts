@@ -1,5 +1,5 @@
 import type { KintoneRecordForResponse } from "../../../kintone/types";
-import type { KintoneRecord } from "../types/record";
+import type { LocalRecord } from "../types/record";
 import type * as Fields from "../types/field";
 import type { FieldSchema, RecordSchema } from "../types/schema";
 import type {
@@ -10,32 +10,42 @@ import type {
 import path from "path";
 
 import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { getAllRecords } from "./get/getAllRecords";
+import type { LocalRecordRepository } from "./interface";
 
-export const getRecords: (
+export const getRecords = async (
   apiClient: KintoneRestAPIClient,
   app: string,
+  recordDestination: LocalRecordRepository,
   schema: RecordSchema,
   options: {
     condition?: string;
     orderBy?: string;
     attachmentsDir?: string;
-  }
-) => Promise<KintoneRecord[]> = async (apiClient, app, schema, options) => {
+  },
+  getAllRecordsFn = getAllRecords
+) => {
   const { condition, orderBy, attachmentsDir } = options;
-  const kintoneRecords = await apiClient.record.getAllRecords({
+  const writer = recordDestination.writer();
+
+  for await (const kintoneRecords of getAllRecordsFn({
+    apiClient,
     app,
     condition,
     orderBy,
-  });
-  return recordsReducer(
-    kintoneRecords,
-    schema,
-    (recordId, field, fieldSchema) =>
-      fieldProcessor(recordId, field, fieldSchema, {
-        apiClient,
-        attachmentsDir,
-      })
-  );
+  })) {
+    const localRecords = await recordsReducer(
+      kintoneRecords,
+      schema,
+      (recordId, field, fieldSchema) =>
+        fieldProcessor(recordId, field, fieldSchema, {
+          apiClient,
+          attachmentsDir,
+        })
+    );
+    await writer.write(localRecords);
+  }
+  await writer.end();
 };
 
 const recordsReducer: (
@@ -46,8 +56,8 @@ const recordsReducer: (
     field: KintoneRecordField.OneOf,
     fieldSchema: FieldSchema
   ) => Promise<Fields.OneOf>
-) => Promise<KintoneRecord[]> = async (kintoneRecords, schema, task) => {
-  const records: KintoneRecord[] = [];
+) => Promise<LocalRecord[]> = async (kintoneRecords, schema, task) => {
+  const records: LocalRecord[] = [];
   for (const kintoneRecord of kintoneRecords) {
     const record = await recordReducer(
       kintoneRecord,
@@ -67,8 +77,8 @@ const recordReducer: (
     field: KintoneRecordField.OneOf,
     fieldSchema: FieldSchema
   ) => Promise<Fields.OneOf>
-) => Promise<KintoneRecord> = async (record, schema, task) => {
-  const newRecord: KintoneRecord = {};
+) => Promise<LocalRecord> = async (record, schema, task) => {
+  const newRecord: LocalRecord = {};
   // This step filters fields implicitly
   for (const fieldSchema of schema.fields) {
     if (!(fieldSchema.code in record)) {

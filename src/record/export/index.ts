@@ -3,11 +3,12 @@ import iconv from "iconv-lite";
 import type { RestAPIClientOptions } from "../../kintone/client";
 import { buildRestAPIClient } from "../../kintone/client";
 import { getRecords } from "./usecases/get";
-import { stringifierFactory } from "./stringifiers";
 import { createSchema } from "./schema";
 import { formLayout as defaultTransformer } from "./schema/transformers/formLayout";
 import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
+import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
+import { Transform } from "stream";
 
 export type ExportFileEncoding = "utf8" | "sjis";
 
@@ -42,18 +43,22 @@ export const run: (
         ? userSelected(fields, fieldsJson, layoutJson)
         : defaultTransformer(layoutJson)
     );
-    const records = await getRecords(apiClient, app, schema, {
+
+    const repository = new LocalRecordRepositoryFromStream(
+      () => {
+        const encodeStream = Transform.from(iconv.encodeStream(encoding));
+        encodeStream.pipe(process.stdout);
+        return encodeStream;
+      },
+      schema,
+      !!attachmentsDir
+    );
+
+    await getRecords(apiClient, app, repository, schema, {
       condition,
       orderBy,
       attachmentsDir,
     });
-    const stringifier = stringifierFactory({
-      format: "csv",
-      schema,
-      useLocalFilePath: !!attachmentsDir,
-    });
-    const stringifiedRecords = stringifier(records);
-    process.stdout.write(iconv.encode(stringifiedRecords, encoding));
   } catch (e) {
     logger.error(e);
     // eslint-disable-next-line no-process-exit

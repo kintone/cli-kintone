@@ -20,7 +20,7 @@ export const validateRecordNumbers: (
   const errorHandler = new ErrorHandler();
   const hasAppCodePrevious = hasAppCode(recordNumbers[0].value, appCode);
   const allRecordIds = await getAllRecordIds(apiClient, app);
-  recordNumbers.forEach((recordNumber, index) => {
+  recordNumbers.forEach((recordNumber) => {
     const value = recordNumber.value;
     if (value.length === 0 || !isValidRecordNumber(value, appCode)) {
       errorHandler.addInvalidValueError(recordNumber);

@@ -1,5 +1,5 @@
 import type { KintoneRecordForResponse } from "../../../../../../kintone/types";
-import type { KintoneRecord } from "../../../../types/record";
+import type { LocalRecord } from "../../../../types/record";
 import type { RecordSchema } from "../../../../types/schema";
 
 export const input: KintoneRecordForResponse[] = [
@@ -25,7 +25,7 @@ export const input: KintoneRecordForResponse[] = [
   },
 ];
 
-export const expected: KintoneRecord[] = [
+export const expected: LocalRecord[] = [
   {
     value1: {
       type: "SINGLE_LINE_TEXT",

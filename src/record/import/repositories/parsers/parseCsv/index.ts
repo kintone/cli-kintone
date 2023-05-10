@@ -50,7 +50,7 @@ export const countRecordsFromCsv = async (
     });
 
     let count = 0;
-    for await (const recordRows of recordReader(csvStream)) {
+    for await (const _ of recordReader(csvStream)) {
       count++;
     }
     return count;

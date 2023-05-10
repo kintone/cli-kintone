@@ -14,10 +14,6 @@ body:
       description: Please describe what the bug is
     validations:
       required: true
-  - type: markdown
-    attributes:
-      value: |
-        ## Environment
   - type: input
     id: version
     attributes:
@@ -26,22 +22,6 @@ body:
       description: Which version of cli-kintone do you want to report a bug for? 
     validations:
       required: true
-  - type: input
-    id: os
-    attributes:
-      label: Operation System (if relevant)
-      placeholder: e.g. Windows 10
-      description: What Operating system did the bug occur on?
-    validations:
-      required: false
-  - type: input
-    id: shell
-    attributes:
-      label: Shell (if relevant)
-      placeholder: e.g. zsh 5.9
-      description: What shell did the bug occur on?
-    validations:
-      required: false
   - type: input
     id: reproduction
     attributes:
@@ -65,3 +45,23 @@ body:
       description: What is the actual behavior you saw?
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: |
+        ## Environment
+  - type: input
+    id: os
+    attributes:
+      label: Operation System (if relevant)
+      placeholder: e.g. Windows 10
+      description: What Operating system did the bug occur on?
+    validations:
+      required: false
+  - type: input
+    id: shell
+    attributes:
+      label: Shell (if relevant)
+      placeholder: e.g. zsh 5.9
+      description: What shell did the bug occur on?
+    validations:
+      required: false

@@ -7,6 +7,13 @@ body:
     attributes:
       value: |
         Thank you for reporting a bug! Please fill out the following.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Please describe what the bug is
+    validations:
+      required: true
   - type: input
     id: version
     attributes:

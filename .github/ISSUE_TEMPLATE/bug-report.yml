@@ -20,7 +20,7 @@ body:
     id: os
     attributes:
       label: Operation System
-      placeholder: Windows 10
+      placeholder: e.g. Windows 10
       description: What Operating system did the bug occur on?
     validations:
       required: true
@@ -28,7 +28,7 @@ body:
     id: shell
     attributes:
       label: Shell
-      placeholder: zsh 5.9
+      placeholder: e.g. zsh 5.9
       description: If the bug seems depends on shell, please tell us your shell and its version
     validations:
       required: false

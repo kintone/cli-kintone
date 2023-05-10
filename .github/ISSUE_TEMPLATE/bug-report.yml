@@ -19,17 +19,17 @@ body:
   - type: input
     id: os
     attributes:
-      label: Operation System
+      label: Operation System (if relevant)
       placeholder: e.g. Windows 10
       description: What Operating system did the bug occur on?
     validations:
-      required: true
+      required: false
   - type: input
     id: shell
     attributes:
-      label: Shell
+      label: Shell (if relevant)
       placeholder: e.g. zsh 5.9
-      description: If the bug seems depends on shell, please tell us your shell and its version
+      description: What shell did the bug occur on?
     validations:
       required: false
   - type: input

@@ -1,0 +1,16 @@
+name: "🐛 Bug report"
+description: Report for reproducible bug
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug!
+  - type: input
+    id: version
+    attributes:
+      label: Target Version
+      placeholder: e.g. vX.Y.Z
+      description: Which version do you want to report a bug for? 
+    validations:
+      required: true

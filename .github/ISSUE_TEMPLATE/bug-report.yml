@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for reporting a bug!
-        Please fill out the following.
+        Thank you for reporting a bug! Please fill out the following.
+        日本語での対応を希望される場合は[kintone/js-sdk-ja](https://github.com/kintone/js-sdk-ja)でIssueを登録してください。
   - type: input
     id: version
     attributes:

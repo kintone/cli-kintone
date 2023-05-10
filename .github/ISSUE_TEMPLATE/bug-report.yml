@@ -7,7 +7,6 @@ body:
     attributes:
       value: |
         Thank you for reporting a bug! Please fill out the following.
-        # Summary
   - type: textarea
     id: summary
     attributes:
@@ -15,6 +14,10 @@ body:
       description: Please describe what the bug is
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: |
+        # Environment
   - type: input
     id: version
     attributes:

@@ -29,9 +29,7 @@ body:
     attributes:
       label: Link To Reproduction
       description: |
-        Please provide a link to a [minimum reproduction](https://stackoverflow.com/help/minimal-reproducible-example).
-        1. Creating minimum repository
-        2. Creating minimum code snippet on [GitHub Gist](https://gist.github.com/)
+        Please provide a link to a [minimum reproduction](https://stackoverflow.com/help/minimal-reproducible-example). A repo or [GitHub Gist](https://gist.github.com/) is preferred.
       placeholder: Reproduction URL
     validations:
       required: true

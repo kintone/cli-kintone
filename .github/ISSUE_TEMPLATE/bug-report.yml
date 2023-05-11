@@ -11,7 +11,7 @@ body:
     id: summary
     attributes:
       label: Summary
-      description: Please describe what the bug is
+      description: Please describe what the bug is.
     validations:
       required: true
   - type: input

@@ -22,13 +22,17 @@ body:
       description: Which version of cli-kintone do you want to report a bug for? 
     validations:
       required: true
-  - type: input
+  - type: textarea
     id: reproduction
     attributes:
-      label: Link To Reproduction
+      label: Reproduction
       description: |
-        Please provide a link to a [minimum reproduction](https://stackoverflow.com/help/minimal-reproducible-example). A repository or [GitHub Gist](https://gist.github.com/) is preferred.
-      placeholder: Reproduction URL
+        Please provide [minimum reproduction](https://stackoverflow.com/help/minimal-reproducible-example) steps of the bug.
+        If you have a reproduction repository, [GitHub Gist](https://gist.github.com/) snippet, or some external pages, please share the links.
+      placeholder: |
+        1. Prepare a Kintone App with following fields...
+        2. Run cli-kintone with the following options...
+        ...
     validations:
       required: true
   - type: textarea

@@ -16,10 +16,10 @@
   "scripts": {
     "start": "yarn build --watch",
     "prebuild": "yarn clean",
-    "build": "vite build --force",
+    "build": "ncc build ./src/cli/main.ts -m",
     "postbuild": "yarn pkg",
     "build:artifacts": "run-s build licensed compress",
-    "pkg": "pkg ./dist/cli-kintone.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
+    "pkg": "pkg ./dist/index.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
     "licensed": "zx ./scripts/generate-license-notice.mjs",
     "compress": "zx ./scripts/compress-to-zip-file.mjs",
     "typecheck": "tsc --pretty --noEmit",
@@ -31,7 +31,7 @@
     "fix": "run-p fix:*",
     "fix:lint": "run-s 'lint:eslint --fix'",
     "fix:md": "run-s 'lint:md --write'",
-    "clean": "rimraf lib bin artifacts"
+    "clean": "rimraf lib bin artifacts dist"
   },
   "repository": {
     "type": "git",
@@ -63,6 +63,7 @@
     "@types/node": "^18.16.9",
     "@types/rollup-plugin-auto-external": "^2.0.2",
     "@types/yargs": "^17.0.24",
+    "@vercel/ncc": "^0.36.1",
     "babel-jest": "^29.5.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.40.0",
@@ -71,11 +72,7 @@
     "pkg": "^5.8.1",
     "prettier": "^2.8.8",
     "rimraf": "^4.4.1",
-    "rollup-plugin-auto-external": "^2.0.0",
-    "rollup-plugin-visualizer": "^5.9.0",
     "typescript": "^5.0.4",
-    "vite": "^4.2.2",
-    "vite-plugin-checker": "^0.6.0",
     "zx": "^7.2.2"
   },
   "dependencies": {

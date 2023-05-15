@@ -68,6 +68,6 @@
     "forceConsistentCasingInFileNames": true,  /* Disallow inconsistently-cased references to the same file. */
     "resolveJsonModule": true
   },
-  "include": ["src/**/*", "package.json", "vite.config.ts"],
+  "include": ["src/**/*", "package.json"],
   "exclude": ["node_modules"]
 }

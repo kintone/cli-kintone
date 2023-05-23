@@ -1,5 +1,7 @@
 import { stderr as chalkStderr } from "chalk";
 import { CliKintoneError } from "./error";
+import { KintoneRestAPIError } from "@kintone/rest-api-client";
+import { KintoneRestAPIErrorParser } from "../record/error";
 
 const currentISOString = () => new Date().toISOString();
 
@@ -45,6 +47,8 @@ const parseErrorMessage = (error: unknown): string => {
   if (error instanceof Error) {
     if (error instanceof CliKintoneError) {
       return error.toString();
+    } else if (error instanceof KintoneRestAPIError) {
+      return KintoneRestAPIErrorParser.toString(error);
     }
     return "" + error;
   }

@@ -2,6 +2,7 @@ import type { KintoneAllRecordsErrorParser } from "../../error/types/parser";
 import type { KintoneAllRecordsError } from "@kintone/rest-api-client";
 import type { LocalRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
+import { KintoneRestAPIErrorParser } from "../../error";
 
 export class ErrorParser implements KintoneAllRecordsErrorParser {
   private readonly error: KintoneAllRecordsError;
@@ -25,7 +26,7 @@ export class ErrorParser implements KintoneAllRecordsErrorParser {
   }
 
   toString(): string {
-    let errorMessage: string = `${this.error.error.message}\n`;
+    let errorMessage:string = KintoneRestAPIErrorParser.toString(this.error.error);
 
     if (this.error.error.errors !== undefined) {
       const errors = this.error.error.errors as {

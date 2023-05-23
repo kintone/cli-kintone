@@ -1,3 +1,4 @@
+import { KintoneRestAPIErrorParser } from "../../error";
 import type { KintoneAllRecordsErrorParser } from "../../error/types/parser";
 import type { KintoneAllRecordsError } from "@kintone/rest-api-client";
 
@@ -9,6 +10,6 @@ export class ErrorParser implements KintoneAllRecordsErrorParser {
   }
 
   toString(): string {
-    return this.error.error.message;
+    return KintoneRestAPIErrorParser.toString(this.error.error);
   }
 }

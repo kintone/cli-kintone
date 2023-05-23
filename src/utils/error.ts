@@ -1,3 +1,6 @@
+import { KintoneRestAPIError } from "@kintone/rest-api-client";
+import { KintoneRestAPIErrorParser } from "../record/error";
+
 export abstract class CliKintoneError extends Error {
   readonly message: string;
   readonly detail: string = "";
@@ -17,6 +20,8 @@ export abstract class CliKintoneError extends Error {
   protected _toStringCause(): string {
     if (this.cause instanceof CliKintoneError) {
       return this.cause.toString();
+    } else if (this.cause instanceof KintoneRestAPIError) {
+      return KintoneRestAPIErrorParser.toString(this.cause);
     }
     return this.cause + "\n";
   }

@@ -6,6 +6,8 @@ import {
 } from "@kintone/rest-api-client";
 import { AddRecordsError } from "../../add/error";
 import type { RecordSchema } from "../../../types/schema";
+import { kintoneAllRecordsErrorToString } from "../../../../error";
+import { ErrorParser } from "../../../utils/error";
 
 const CHUNK_SIZE = 100;
 const schema: RecordSchema = {
@@ -61,6 +63,50 @@ describe("AddRecordsError", () => {
     );
     expect(upsertRecordsError.toString()).toBe(
       "Failed to add all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n  An error occurred on number at row 46.\n    Cause: invalid value\n"
+    );
+  });
+});
+
+describe("kintoneAllRecordsErrorToString", () => {
+  it("should return error message", () => {
+    const numOfAllRecords = 60;
+    const numOfProcessedRecords = 40;
+    const errorIndex = 44;
+    // const numOfAlreadyImportedRecords = 10;
+    const numOfAlreadyImportedRecords = 3;
+    const errorFieldCode = "number";
+    const errorRowIndex = errorIndex + 2;
+    const records: LocalRecord[] = [...Array(numOfAllRecords).keys()].map(
+      (index) => ({
+        data: {},
+        metadata: {
+          recordIndex: index,
+          format: {
+            type: "csv",
+            firstRowIndex: index + 1,
+            lastRowIndex: index + 1,
+          },
+        },
+      })
+    );
+    const kintoneAllRecordsError = buildKintoneAllRecordsError(
+      numOfAllRecords,
+      numOfProcessedRecords,
+      numOfAlreadyImportedRecords,
+      errorIndex
+    );
+
+    const errorMessage = kintoneAllRecordsErrorToString(
+      new ErrorParser(
+        kintoneAllRecordsError,
+        CHUNK_SIZE,
+        records,
+        numOfProcessedRecords,
+        schema
+      )
+    );
+    expect(errorMessage).toBe(
+      `An error occurred while processing records.\n[500] [some code] some error message (some id)\n  An error occurred on ${errorFieldCode} at row ${errorRowIndex}.\n    Cause: invalid value\n`
     );
   });
 });

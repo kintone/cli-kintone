@@ -9,6 +9,7 @@ import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
 import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
 import { Transform } from "stream";
+import { RunError } from "../error";
 
 export type ExportFileEncoding = "utf8" | "sjis";
 
@@ -60,7 +61,8 @@ export const run: (
       attachmentsDir,
     });
   } catch (e) {
-    logger.error(e);
+    // logger.error(e);
+    logger.error(new RunError(e));
     // eslint-disable-next-line no-process-exit
     process.exit(1);
   }

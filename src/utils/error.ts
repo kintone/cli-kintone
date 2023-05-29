@@ -1,3 +1,8 @@
+import {
+  KintoneAllRecordsError,
+  KintoneRestAPIError,
+} from "@kintone/rest-api-client";
+
 export abstract class CliKintoneError extends Error {
   readonly message: string;
   readonly detail: string = "";
@@ -17,12 +22,35 @@ export abstract class CliKintoneError extends Error {
   protected _toStringCause(): string {
     if (this.cause instanceof CliKintoneError) {
       return this.cause.toString();
+    } else if (this.cause instanceof KintoneAllRecordsError) {
+      return this._toStringKintoneAllRecordsError(this.cause);
+    } else if (this.cause instanceof KintoneRestAPIError) {
+      return this._toStringKintoneRestAPIError(this.cause);
     }
     return this.cause + "\n";
   }
 
+  protected _toStringKintoneAllRecordsError(
+    error: KintoneAllRecordsError
+  ): string {
+    return this._toStringKintoneRestAPIError(error.error);
+  }
+
+  protected _toStringKintoneRestAPIError(error: KintoneRestAPIError): string {
+    switch (error.code) {
+      case "GAIA_IL23":
+        return "please specify --guest-space-id option. \n";
+      default:
+        return `${error.message}\n`;
+    }
+  }
+
   toString(): string {
-    let errorMessage = this.message + "\n";
+    let errorMessage = "";
+    if (this.message.length > 0) {
+      errorMessage = this.message + "\n";
+    }
+
     if (this.detail.length > 0) {
       errorMessage += this.detail + "\n";
     }

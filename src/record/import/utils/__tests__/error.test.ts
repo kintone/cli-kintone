@@ -30,47 +30,6 @@ const schema: RecordSchema = {
   ],
 };
 
-describe("kintoneAllRecordsErrorToString", () => {
-  it("should return error message", () => {
-    const numOfAllRecords = 60;
-    const numOfProcessedRecords = 40;
-    const errorIndex = 44;
-    const errorFieldCode = "number";
-    const errorRowIndex = errorIndex + 2;
-    const records: LocalRecord[] = [...Array(numOfAllRecords).keys()].map(
-      (index) => ({
-        data: {},
-        metadata: {
-          recordIndex: index,
-          format: {
-            type: "csv",
-            firstRowIndex: index + 1,
-            lastRowIndex: index + 1,
-          },
-        },
-      })
-    );
-    const kintoneAllRecordsError = buildKintoneAllRecordsError(
-      numOfAllRecords,
-      numOfProcessedRecords,
-      errorIndex,
-      errorFieldCode
-    );
-    const errorMessage = kintoneAllRecordsErrorToString(
-      new ErrorParser(
-        kintoneAllRecordsError,
-        CHUNK_SIZE,
-        records,
-        numOfProcessedRecords,
-        schema
-      )
-    );
-    expect(errorMessage).toBe(
-      `An error occurred while processing records.\n[500] [some code] some error message (some id)\n  An error occurred on ${errorFieldCode} at row ${errorRowIndex}.\n    Cause: invalid value\n`
-    );
-  });
-});
-
 export const buildKintoneRestAPIError = (
   errorIndex: number,
   errorFieldCode: string,

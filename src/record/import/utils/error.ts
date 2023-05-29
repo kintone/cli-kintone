@@ -52,7 +52,6 @@ export class ErrorParser implements KintoneAllRecordsErrorParser {
           Number(indexMatch?.groups?.index) +
           bulkRequestIndex * this.chunkSize +
           this.offset;
-
         const formatInfo = this.records[index].metadata.format;
         const fieldCode = this._getFieldCodeByErrorKeyWithSchema(
           key,

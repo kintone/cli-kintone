@@ -1,3 +1,4 @@
+import { CliKintoneError } from "../../utils/error";
 import type { KintoneAllRecordsErrorParser } from "./types/parser";
 
 export const kintoneAllRecordsErrorToString = (
@@ -11,3 +12,9 @@ export const kintoneAllRecordsErrorToString = (
 
   return errorMessage;
 };
+
+export class RunError extends CliKintoneError {
+  constructor(error: unknown) {
+    super("", error);
+  }
+}

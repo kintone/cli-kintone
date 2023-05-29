@@ -9,6 +9,7 @@ import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
 import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
+import { RunError } from "../error";
 
 export type Options = {
   app: string;
@@ -74,7 +75,7 @@ export const run: (
       });
     }
   } catch (e) {
-    logger.error(e);
+    logger.error(new RunError(e));
     // eslint-disable-next-line no-process-exit
     process.exit(1);
   }

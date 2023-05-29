@@ -9,6 +9,7 @@ import { logger } from "../../utils/log";
 import type { SupportedImportEncoding } from "../../utils/file";
 import { readFile } from "../../utils/file";
 import { parseRecords } from "./parsers";
+import { RunError } from "../error";
 
 export type Options = {
   app: string;
@@ -28,7 +29,7 @@ export const run: (
     }
     await deleteAllRecords(apiClient, app);
   } catch (e) {
-    logger.error(e);
+    logger.error(new RunError(e));
     // eslint-disable-next-line no-process-exit
     process.exit(1);
   }

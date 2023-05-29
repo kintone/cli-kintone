@@ -1,5 +1,4 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import { kintoneAllRecordsErrorToString } from "../../../error";
 import type { LocalRecord } from "../../types/record";
 import type { RecordSchema } from "../../types/schema";
 import { ErrorParser } from "../../utils/error";
@@ -49,18 +48,20 @@ export class AddRecordsError extends CliKintoneError {
     Object.setPrototypeOf(this, AddRecordsError.prototype);
   }
 
-  protected _toStringCause(): string {
-    if (this.cause instanceof KintoneAllRecordsError) {
-      return kintoneAllRecordsErrorToString(
-        new ErrorParser(
-          this.cause,
-          this.chunkSize,
-          this.records,
-          this.numOfSuccess,
-          this.recordSchema
-        )
-      );
-    }
-    return super._toStringCause();
+  protected _toStringKintoneAllRecordsError(
+    error: KintoneAllRecordsError
+  ): string {
+    let errorMessage = "An error occurred while processing records.\n";
+    const errorParser = new ErrorParser(
+      error,
+      this.chunkSize,
+      this.records,
+      this.numOfSuccess,
+      this.recordSchema
+    );
+
+    errorMessage += errorParser.toString();
+
+    return errorMessage;
   }
 }

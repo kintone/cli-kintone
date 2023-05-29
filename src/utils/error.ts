@@ -41,7 +41,7 @@ export abstract class CliKintoneError extends Error {
   protected _toStringKintoneRestAPIError(error: KintoneRestAPIError): string {
     switch (error.code) {
       case "GAIA_IL23":
-        return "please specify --guest-space-id option. \n";
+        return "Please specify --guest-space-id option to access an App in Guest Spaces.\n";
       default:
         return `${error.message}\n`;
     }

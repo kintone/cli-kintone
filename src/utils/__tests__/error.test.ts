@@ -51,8 +51,7 @@ describe("CliKintoneError", () => {
     const runError = new CliKintoneErrorForTest(kintoneRestAPIError);
 
     expect(runError.toString()).toBe(
-      // TODO: Fix error message for GAIA_IL23
-      "Error occurred\nplease specify --guest-space-id option. \n"
+      "Error occurred\nPlease specify --guest-space-id option to access an App in Guest Spaces.\n"
     );
   });
 });

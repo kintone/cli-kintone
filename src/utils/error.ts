@@ -40,6 +40,8 @@ export abstract class CliKintoneError extends Error {
 
   protected _toStringKintoneRestAPIError(error: KintoneRestAPIError): string {
     switch (error.code) {
+      // HACK: Currently, there is no official way to detect if the App is in Guest Spaces, so we use an error code.
+      // That error code could be changed without announcement.
       case "GAIA_IL23":
         return "Please specify --guest-space-id option to access an App in Guest Spaces.\n";
       default:

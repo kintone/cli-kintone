@@ -4,7 +4,7 @@ import type { RecordSchema } from "../../types/schema";
 import type { LocalRecord } from "../../types/record";
 import { parseKintoneRestAPIError } from "../error";
 
-const CHUNK_SIZE = 20;
+const CHUNK_SIZE = 100;
 
 const schema: RecordSchema = {
   fields: [

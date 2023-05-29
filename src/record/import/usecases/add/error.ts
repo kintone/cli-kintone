@@ -2,7 +2,7 @@ import type { KintoneRestAPIError } from "@kintone/rest-api-client";
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
 import type { LocalRecord } from "../../types/record";
 import type { RecordSchema } from "../../types/schema";
-import { KintoneRestAPIErrorParser } from "../../utils/error";
+import { parseKintoneRestAPIError } from "../../utils/error";
 import { CliKintoneError } from "../../../../utils/error";
 
 // Magic number from @kintone/rest-api-client
@@ -50,7 +50,7 @@ export class AddRecordsError extends CliKintoneError {
   }
 
   protected _toStringKintoneRestAPIError(error: KintoneRestAPIError): string {
-    return KintoneRestAPIErrorParser.toString(
+    return parseKintoneRestAPIError(
       error,
       this.chunkSize,
       this.records,

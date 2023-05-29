@@ -24,7 +24,7 @@ describe("DeleteAllRecordsError", () => {
       recordsId
     );
     expect(deleteAllRecordsError.toString()).toBe(
-      `Failed to delete all records.\n${numOfProcessedRecords}/${numOfAllRecords} records are deleted successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)`
+      `Failed to delete all records.\n${numOfProcessedRecords}/${numOfAllRecords} records are deleted successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n`
     );
   });
 });

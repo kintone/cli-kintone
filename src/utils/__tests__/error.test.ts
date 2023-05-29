@@ -4,10 +4,6 @@ import {
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
 import { CliKintoneError } from "../error";
-import { RunError } from "../../record/error";
-import type { LocalRecord } from "../../record/import/types/record";
-import { AddRecordsError } from "../../record/import/usecases/add/error";
-import type { RecordSchema } from "../../record/import/types/schema";
 
 const CHUNK_SIZE = 100;
 
@@ -17,7 +13,7 @@ describe("CliKintoneError", () => {
       new CliKintoneErrorForTest("This is a root cause.")
     );
     expect(cliKintoneError.toString()).toBe(
-      "Error ocurred\nError ocurred\nThis is a root cause.\n"
+      "Error occurred\nError occurred\nThis is a root cause.\n"
     );
   });
 
@@ -37,32 +33,33 @@ describe("CliKintoneError", () => {
     const error = new CliKintoneErrorForTest(kintoneAllRecordsError);
 
     expect(error.toString()).toBe(
-      "Error ocurred\n[500] [some code] some error message (some id)\n"
+      "Error occurred\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n"
     );
   });
 
   it("toStringCause should output the correct sentence. (inner: KintoneRestAPIError)", () => {
     const kintoneRestAPIError = buildKintoneRestAPIError();
-    const runError = new RunError(kintoneRestAPIError);
+    const runError = new CliKintoneErrorForTest(kintoneRestAPIError);
 
     expect(runError.toString()).toBe(
-      "[500] [some code] some error message (some id)\n"
+      "Error occurred\n[500] [some code] some error message (some id)\n"
     );
   });
 
   it("toStringCause should output the correct sentence. (inner: KintoneRestAPIError with GAIA_IL23)", () => {
     const kintoneRestAPIError = buildKintoneRestAPIError("GAIA_IL23");
-    const runError = new RunError(kintoneRestAPIError);
+    const runError = new CliKintoneErrorForTest(kintoneRestAPIError);
 
     expect(runError.toString()).toBe(
-      "please specify --guest-space-id option. \n"
+      // TODO: Fix error message for GAIA_IL23
+      "Error occurred\nplease specify --guest-space-id option. \n"
     );
   });
 });
 
 class CliKintoneErrorForTest extends CliKintoneError {
   constructor(cause: unknown) {
-    super("Error ocurred", cause);
+    super("Error occurred", cause);
   }
 }
 

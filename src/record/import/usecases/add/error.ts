@@ -1,7 +1,8 @@
+import type { KintoneRestAPIError } from "@kintone/rest-api-client";
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
 import type { LocalRecord } from "../../types/record";
 import type { RecordSchema } from "../../types/schema";
-import { ErrorParser } from "../../utils/error";
+import { KintoneRestAPIErrorParser } from "../../utils/error";
 import { CliKintoneError } from "../../../../utils/error";
 
 // Magic number from @kintone/rest-api-client
@@ -48,20 +49,13 @@ export class AddRecordsError extends CliKintoneError {
     Object.setPrototypeOf(this, AddRecordsError.prototype);
   }
 
-  protected _toStringKintoneAllRecordsError(
-    error: KintoneAllRecordsError
-  ): string {
-    let errorMessage = "An error occurred while processing records.\n";
-    const errorParser = new ErrorParser(
+  protected _toStringKintoneRestAPIError(error: KintoneRestAPIError): string {
+    return KintoneRestAPIErrorParser.toString(
       error,
       this.chunkSize,
       this.records,
       this.numOfSuccess,
       this.recordSchema
     );
-
-    errorMessage += errorParser.toString();
-
-    return errorMessage;
   }
 }

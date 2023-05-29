@@ -1,34 +1,22 @@
-import type { KintoneAllRecordsErrorParser } from "../../error/types/parser";
-import type { KintoneAllRecordsError } from "@kintone/rest-api-client";
+import type {
+  KintoneAllRecordsError,
+  KintoneRestAPIError,
+} from "@kintone/rest-api-client";
 import type { LocalRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
 
-export class ErrorParser implements KintoneAllRecordsErrorParser {
-  private readonly error: KintoneAllRecordsError;
-  private readonly chunkSize: number;
-  private readonly records: LocalRecord[];
-  private readonly offset: number;
-  private readonly recordSchema: RecordSchema;
-
-  constructor(
-    error: KintoneAllRecordsError,
+export class KintoneRestAPIErrorParser {
+  static toString(
+    error: KintoneRestAPIError,
     chunkSize: number,
     records: LocalRecord[],
     offset: number,
     recordSchema: RecordSchema
-  ) {
-    this.error = error;
-    this.chunkSize = chunkSize;
-    this.records = records;
-    this.offset = offset;
-    this.recordSchema = recordSchema;
-  }
+  ): string {
+    let errorMessage: string = `${error.message}\n`;
 
-  toString(): string {
-    let errorMessage: string = `${this.error.error.message}\n`;
-
-    if (this.error.error.errors !== undefined) {
-      const errors = this.error.error.errors as {
+    if (error.errors !== undefined) {
+      const errors = error.errors as {
         [k: string]: { messages: string[] };
       };
       const orderedErrors = Object.entries(errors).sort((error1, error2) => {
@@ -46,16 +34,16 @@ export class ErrorParser implements KintoneAllRecordsErrorParser {
       });
 
       for (const [key, value] of orderedErrors) {
-        const bulkRequestIndex = this.error.error.bulkRequestIndex ?? 0;
+        const bulkRequestIndex = error.bulkRequestIndex ?? 0;
         const indexMatch = key.match(/records\[(?<index>\d+)\]/);
         const index =
           Number(indexMatch?.groups?.index) +
-          bulkRequestIndex * this.chunkSize +
-          this.offset;
-        const formatInfo = this.records[index].metadata.format;
+          bulkRequestIndex * chunkSize +
+          offset;
+        const formatInfo = records[index].metadata.format;
         const fieldCode = this._getFieldCodeByErrorKeyWithSchema(
           key,
-          this.recordSchema
+          recordSchema
         );
         if (formatInfo.firstRowIndex === formatInfo.lastRowIndex) {
           errorMessage += `  An error occurred on ${fieldCode} at row ${
@@ -75,7 +63,7 @@ export class ErrorParser implements KintoneAllRecordsErrorParser {
     return errorMessage;
   }
 
-  private _getFieldCodeByErrorKeyWithSchema(
+  static _getFieldCodeByErrorKeyWithSchema(
     errorKey: string,
     schema: RecordSchema
   ): string {

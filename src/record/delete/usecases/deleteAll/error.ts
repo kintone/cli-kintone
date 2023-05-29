@@ -1,7 +1,7 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
 import type { KintoneRecordForDeleteAllParameter } from "../../../../kintone/types";
-import { ErrorParser } from "../../utils/error";
 import { CliKintoneError } from "../../../../utils/error";
+import { RunError } from "../../../error";
 
 export class DeleteAllRecordsError extends CliKintoneError {
   readonly detail: string;
@@ -29,16 +29,5 @@ export class DeleteAllRecordsError extends CliKintoneError {
     }
 
     Object.setPrototypeOf(this, DeleteAllRecordsError.prototype);
-  }
-
-  protected _toStringKintoneAllRecordsError(
-    error: KintoneAllRecordsError
-  ): string {
-    let errorMessage = "An error occurred while processing records.\n";
-    const errorParser = new ErrorParser(error);
-
-    errorMessage += errorParser.toString();
-
-    return errorMessage;
   }
 }

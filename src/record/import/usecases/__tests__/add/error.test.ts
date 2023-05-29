@@ -6,8 +6,6 @@ import {
 } from "@kintone/rest-api-client";
 import { AddRecordsError } from "../../add/error";
 import type { RecordSchema } from "../../../types/schema";
-import { kintoneAllRecordsErrorToString } from "../../../../error";
-import { ErrorParser } from "../../../utils/error";
 
 const CHUNK_SIZE = 100;
 const schema: RecordSchema = {
@@ -32,10 +30,23 @@ const schema: RecordSchema = {
 
 describe("AddRecordsError", () => {
   it("should return error message", () => {
-    const numOfAllRecords = 60;
-    const numOfAlreadyImportedRecords = 10;
-    const numOfProcessedRecords = 30;
-    const errorIndex = 44;
+    // 10000件のレコードをインポートします = numOfAllRecords
+    // cli-kintoneのaddRecords()で2000件ずつrest-api-clientに送信
+    // rest-api-clientはレコードを100件ずつkintoneに送信
+    // 全体の5008件目でエラーが発生した = errorIndex
+    // 先頭の4000件はすでにインポート済み（2000*2） = numOfAlreadyImportedRecords
+    // 処理中の2000件のうち、1000件はインポート済み（100*10） = numOfProcessedRecords
+    //
+    // 60件のレコードをインポートします = numOfAllRecords
+    // cli-kintoneのaddRecords()でn件ずつrest-api-clientに送信
+    // rest-api-clientはレコードをm件ずつkintoneに送信
+    // 全体の44件目でエラーが発生した = errorIndex CSV上の46行目
+    // 先頭の10件はすでにインポート済み = numOfAlreadyImportedRecords
+    // 処理中のn件のうち、30件はインポート済み = numOfProcessedRecords
+    const numOfAllRecords = 60; // インポート処理対象のレコード全件 60件 CSV上の1行目-61行目
+    const numOfAlreadyImportedRecords = 10; // cli-kintone内で処理に成功したレコードの件数 10件
+    const numOfProcessedRecords = 30; // 現在処理中のチャンクのうち、処理に成功したレコードの件数 30件
+    const errorIndex = 44; // インポート対象のレコード全件のうち、エラーが発生したレコードのインデックス
     const records: LocalRecord[] = [...Array(numOfAllRecords).keys()].map(
       (index) => ({
         data: {},
@@ -68,12 +79,11 @@ describe("AddRecordsError", () => {
 });
 
 describe("kintoneAllRecordsErrorToString", () => {
-  it("should return error message", () => {
+  it("should return error message 2", () => {
     const numOfAllRecords = 60;
-    const numOfProcessedRecords = 40;
+    const numOfProcessedRecords = 3;
     const errorIndex = 44;
-    // const numOfAlreadyImportedRecords = 10;
-    const numOfAlreadyImportedRecords = 3;
+    const numOfAlreadyImportedRecords = 40; // 20*2
     const errorFieldCode = "number";
     const errorRowIndex = errorIndex + 2;
     const records: LocalRecord[] = [...Array(numOfAllRecords).keys()].map(

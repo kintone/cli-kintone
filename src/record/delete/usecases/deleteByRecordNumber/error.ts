@@ -1,7 +1,5 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
 import type { KintoneRecordForDeleteAllParameter } from "../../../../kintone/types";
-import { kintoneAllRecordsErrorToString } from "../../../error";
-import { ErrorParser } from "../../utils/error";
 import { CliKintoneError } from "../../../../utils/error";
 
 export class DeleteSpecifiedRecordsError extends CliKintoneError {
@@ -30,12 +28,5 @@ export class DeleteSpecifiedRecordsError extends CliKintoneError {
     }
 
     Object.setPrototypeOf(this, DeleteSpecifiedRecordsError.prototype);
-  }
-
-  protected _toStringCause(): string {
-    if (this.cause instanceof KintoneAllRecordsError) {
-      return kintoneAllRecordsErrorToString(new ErrorParser(this.cause));
-    }
-    return super._toStringCause();
   }
 }

@@ -1,13 +1,7 @@
-import type { KintoneAllRecordsErrorParser } from "./types/parser";
+import { CliKintoneError } from "../../utils/error";
 
-export const kintoneAllRecordsErrorToString = (
-  errorParser?: KintoneAllRecordsErrorParser
-): string => {
-  let errorMessage = "An error occurred while processing records.\n";
-
-  if (errorParser) {
-    errorMessage += errorParser.toString();
+export class RunError extends CliKintoneError {
+  constructor(error: unknown) {
+    super("", error);
   }
-
-  return errorMessage;
-};
+}

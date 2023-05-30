@@ -12,6 +12,7 @@ import path from "path";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { getAllRecords } from "./get/getAllRecords";
 import type { LocalRecordRepository } from "./interface";
+import { replaceFilename, splitFilepath } from "../utils/operateFilename";
 
 export const getRecords = async (
   apiClient: KintoneRestAPIClient,
@@ -228,7 +229,13 @@ const saveFileWithoutOverwrite: (
   filePath: string,
   file: ArrayBuffer
 ) => string = (filePath, file) => {
-  const uniqueFilePath = generateUniqueLocalFilePath(filePath);
+  let normalizedFilepath = filePath;
+  if (process.platform === "win32") {
+    const [filename, dir] = splitFilepath(filePath);
+    const normalizedFilename = replaceFilename(filename);
+    normalizedFilepath = dir + "\\" + normalizedFilename;
+  }
+  const uniqueFilePath = generateUniqueLocalFilePath(normalizedFilepath);
   mkdirSync(path.dirname(uniqueFilePath), { recursive: true });
   writeFileSync(uniqueFilePath, Buffer.from(file));
   return uniqueFilePath;

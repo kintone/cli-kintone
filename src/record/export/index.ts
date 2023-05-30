@@ -61,7 +61,6 @@ export const run: (
       attachmentsDir,
     });
   } catch (e) {
-    // logger.error(e);
     logger.error(new RunError(e));
     // eslint-disable-next-line no-process-exit
     process.exit(1);

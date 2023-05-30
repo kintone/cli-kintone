@@ -30,7 +30,7 @@ export abstract class CliKintoneError extends Error {
     return this.cause + "\n";
   }
 
-  protected _toStringKintoneAllRecordsError(
+  private _toStringKintoneAllRecordsError(
     error: KintoneAllRecordsError
   ): string {
     let errorMessage = "An error occurred while processing records.\n";

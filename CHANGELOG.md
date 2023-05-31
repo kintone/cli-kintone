@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.3](https://github.com/kintone/cli-kintone/compare/v1.5.2...v1.5.3) (2023-05-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.14 ([#350](https://github.com/kintone/cli-kintone/issues/350)) ([aa4ba94](https://github.com/kintone/cli-kintone/commit/aa4ba948f309d4059e465621a33fd09e6452361d))
+* show correct error message when `--guest-space-id` option is missing ([#356](https://github.com/kintone/cli-kintone/issues/356)) ([b993c81](https://github.com/kintone/cli-kintone/commit/b993c81670ac479a70e30217b6aa9a61f12cd526))
+
 ## [1.5.2](https://github.com/kintone/cli-kintone/compare/v1.5.1...v1.5.2) (2023-05-24)
 
 

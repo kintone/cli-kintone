@@ -191,7 +191,9 @@ const fieldProcessorInSubtable: (
           const localFilePath = path.join(
             attachmentsDir,
             `${fieldCode}-${recordId}-${rowIndex}`,
-            fileInfo.name
+            process.platform === "win32"
+              ? sanitizeFilename(fileInfo.name)
+              : fileInfo.name
           );
 
           const savedFilePath = await downloadAndSaveFile(

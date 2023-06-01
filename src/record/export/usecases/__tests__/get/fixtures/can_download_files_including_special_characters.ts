@@ -133,5 +133,5 @@ export const schema: RecordSchema = {
       ],
     },
   ],
-  hasSubtable: false,
+  hasSubtable: true,
 };

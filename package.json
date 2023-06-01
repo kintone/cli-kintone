@@ -51,7 +51,7 @@
   },
   "homepage": "https://github.com/kintone/cli-kintone/#readme",
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "devDependencies": {
     "@babel/core": "^7.22.1",

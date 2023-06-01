@@ -139,7 +139,10 @@ export const expected: LocalRecord[] = [
               value: [
                 {
                   ...fileInfo,
-                  localFilePath: path.join("subTableFile-3-0", "test.txt"),
+                  localFilePath: path.join(
+                    "subTableFile-3-0",
+                    "__t_e__s__t__.txt"
+                  ),
                 },
               ],
             },

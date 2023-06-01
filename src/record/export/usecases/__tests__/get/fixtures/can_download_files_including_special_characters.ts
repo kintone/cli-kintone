@@ -34,9 +34,19 @@ export const input: KintoneRecordForResponse[] = [
       type: "SINGLE_LINE_TEXT",
       value: "value1",
     },
-    attachment: {
-      type: "FILE",
-      value: [fileInfo],
+    subTable: {
+      type: "SUBTABLE",
+      value: [
+        {
+          id: "537307",
+          value: {
+            subTableFile: {
+              type: "FILE",
+              value: [fileInfo],
+            },
+          },
+        },
+      ],
     },
   },
 ];
@@ -66,12 +76,25 @@ export const expected: LocalRecord[] = [
       type: "SINGLE_LINE_TEXT",
       value: "value1",
     },
-    attachment: {
-      type: "FILE",
+    subTable: {
+      type: "SUBTABLE",
       value: [
         {
-          ...fileInfo,
-          localFilePath: path.join("attachment-3", "__t_e__s__t__.txt"),
+          id: "537308",
+          value: {
+            subTableFile: {
+              type: "FILE",
+              value: [
+                {
+                  ...fileInfo,
+                  localFilePath: path.join(
+                    "subTableFile-3-0",
+                    "__t_e__s__t__.txt"
+                  ),
+                },
+              ],
+            },
+          },
         },
       ],
     },

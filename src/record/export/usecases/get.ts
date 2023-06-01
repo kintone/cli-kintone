@@ -12,7 +12,7 @@ import path from "path";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { getAllRecords } from "./get/getAllRecords";
 import type { LocalRecordRepository } from "./interface";
-import { sanitizeFilename } from "../utils/operateFilename";
+import { sanitizeFilename } from "../utils/file";
 
 export const getRecords = async (
   apiClient: KintoneRestAPIClient,

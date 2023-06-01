@@ -1,4 +1,4 @@
-import { sanitizeFilename } from "../operateFilename";
+import { sanitizeFilename } from "../file";
 
 describe("utils/operateFilename.ts", () => {
   it("should replace a special character", () => {

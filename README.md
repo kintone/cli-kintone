@@ -345,6 +345,8 @@ When exporting, only the file name will be outputted if the `--attachments-dir` 
 test.txt"
 ```
 
+If running on Windows environment and the filename contains Windows prohibited characters, replace them with `_` .
+
 #### Table
 
 - The row where a record begins has a PRIMARY_MARK(`*`) on the "`*`" field.

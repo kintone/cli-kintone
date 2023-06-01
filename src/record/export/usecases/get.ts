@@ -12,7 +12,7 @@ import path from "path";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { getAllRecords } from "./get/getAllRecords";
 import type { LocalRecordRepository } from "./interface";
-import { sanitizeFilename } from "../utils/file";
+import { replaceSpecialCharacters } from "../utils/file";
 
 export const getRecords = async (
   apiClient: KintoneRestAPIClient,
@@ -113,7 +113,7 @@ const fieldProcessor: (
             attachmentsDir,
             `${fieldSchema.code}-${recordId}`,
             process.platform === "win32"
-              ? sanitizeFilename(fileInfo.name)
+              ? replaceSpecialCharacters(fileInfo.name)
               : fileInfo.name
           );
 
@@ -192,7 +192,7 @@ const fieldProcessorInSubtable: (
             attachmentsDir,
             `${fieldCode}-${recordId}-${rowIndex}`,
             process.platform === "win32"
-              ? sanitizeFilename(fileInfo.name)
+              ? replaceSpecialCharacters(fileInfo.name)
               : fileInfo.name
           );
 

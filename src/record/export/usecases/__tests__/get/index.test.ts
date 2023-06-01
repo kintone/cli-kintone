@@ -11,6 +11,7 @@ import * as caseCanGetRecords from "./fixtures/can_get_records";
 import * as caseCanDownloadFiles from "./fixtures/can_download_files";
 import * as caseCanDownloadFilesInSubtable from "./fixtures/can_download_files_in_subtable";
 import * as caseCanDownloadFilesIncludingSpecialCharacters from "./fixtures/can_download_files_including_special_characters";
+import * as caseCanDownloadFilesIncludingSpecialCharactersInSubTable from "./fixtures/can_download_files_including_special_characters_in_subtable";
 import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock";
 
 type KintoneRecord = Awaited<
@@ -150,6 +151,46 @@ describe("getRecords", () => {
       const expectedRecords =
         caseCanDownloadFilesIncludingSpecialCharacters.expected;
       const schema = caseCanDownloadFilesIncludingSpecialCharacters.schema;
+      const repositoryMock = new LocalRecordRepositoryMock();
+
+      const testFileData = "test data";
+      const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
+      const getAllRecordsMockFn = jest.fn(async function* () {
+        yield kintoneRecords;
+      });
+      apiClient.file.downloadFile = jest.fn().mockResolvedValue(testFileData);
+      await getRecords(
+        apiClient,
+        "1",
+        repositoryMock,
+        schema,
+        {
+          attachmentsDir: tempDir,
+        },
+        getAllRecordsMockFn
+      );
+      expect(repositoryMock.receivedRecords()).toStrictEqual(expectedRecords);
+
+      const attachmentValue = (expectedRecords[0].attachment as Fields.File)
+        .value;
+      for (const attachment of attachmentValue) {
+        const downloadFile = await fs.readFile(
+          path.join(tempDir, attachment.localFilePath!)
+        );
+        expect(downloadFile.toString()).toBe(testFileData);
+      }
+    }
+  );
+
+  (process.platform === "win32" ? it : it.skip)(
+    "can download files including special characters in subTable",
+    async () => {
+      const kintoneRecords =
+        caseCanDownloadFilesIncludingSpecialCharactersInSubTable.input;
+      const expectedRecords =
+        caseCanDownloadFilesIncludingSpecialCharactersInSubTable.expected;
+      const schema =
+        caseCanDownloadFilesIncludingSpecialCharactersInSubTable.schema;
       const repositoryMock = new LocalRecordRepositoryMock();
 
       const testFileData = "test data";

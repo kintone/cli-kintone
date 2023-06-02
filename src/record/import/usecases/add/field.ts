@@ -20,11 +20,15 @@ export const fieldProcessor: (
       if (!attachmentsDir) {
         throw new Error("--attachments-dir option is required.");
       }
-      return fileFieldProcessor(field, apiClient, attachmentsDir);
+      return fileFieldProcessor(
+        field as Fields.File,
+        apiClient,
+        attachmentsDir
+      );
     }
     case "SUBTABLE": {
       return subtableFieldProcessor(
-        field,
+        field as Fields.Subtable,
         fieldSchema,
         skipMissingFields,
         apiClient,
@@ -37,12 +41,12 @@ export const fieldProcessor: (
 };
 
 const fileFieldProcessor = async (
-  field: Fields.OneOf,
+  field: Fields.File,
   apiClient: KintoneRestAPIClient,
   attachmentsDir: string
 ) => {
   const uploadedList: Array<{ fileKey: string }> = [];
-  for (const fileInfo of (field as Fields.File).value) {
+  for (const fileInfo of field.value) {
     if (!fileInfo.localFilePath) {
       throw new Error("local file path not defined.");
     }
@@ -61,15 +65,15 @@ const fileFieldProcessor = async (
 };
 
 const subtableFieldProcessor = async (
-  field: Fields.OneOf,
-  fieldSchema: FieldSchema,
+  field: Fields.Subtable,
+  fieldSchema: Extract<FieldSchema, { type: "SUBTABLE" }>,
   skipMissingFields: boolean,
   apiClient: KintoneRestAPIClient,
   attachmentsDir?: string
 ) => {
   const newRows = [];
 
-  const subtableValue = (field as Fields.Subtable).value;
+  const subtableValue = field.value;
   for (const row of subtableValue) {
     const fieldsInRow: KintoneRecordForParameter = {};
     for (const fieldInSubtableSchema of fieldSchema.fields) {

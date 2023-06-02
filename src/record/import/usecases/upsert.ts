@@ -118,7 +118,19 @@ const convertToKintoneRecordForUpdate = async (
     const updateKeyField = updateKey.getUpdateKeyField();
     const updateKeyValue = updateKey.findUpdateKeyValueFromRecord(record);
 
+    // Delete update key field
     delete kintoneRecord[updateKeyField.code];
+    // Delete non-updatable fields
+    for (const fieldSchema of schema.fields) {
+      if (
+        fieldSchema.type === "CREATOR" ||
+        fieldSchema.type === "CREATED_TIME" ||
+        fieldSchema.type === "MODIFIER" ||
+        fieldSchema.type === "UPDATED_TIME"
+      ) {
+        delete kintoneRecord[fieldSchema.code];
+      }
+    }
     kintoneRecords.push(
       updateKeyField.type === "RECORD_NUMBER"
         ? {

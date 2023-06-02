@@ -6,7 +6,8 @@ import type {
 } from "../../../kintone/types";
 import type { RecordSchema } from "../types/schema";
 
-import { fieldProcessor, recordReducer } from "./add/record";
+import { fieldProcessor } from "./add/field";
+import { recordReducer } from "./add/record";
 import { UpdateKey } from "./upsert/updateKey";
 import { UpsertRecordsError } from "./upsert/error";
 import { logger } from "../../../utils/log";

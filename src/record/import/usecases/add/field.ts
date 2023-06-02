@@ -20,7 +20,7 @@ export const fieldProcessor: (
       if (!attachmentsDir) {
         throw new Error("--attachments-dir option is required.");
       }
-      return fileFileldProcessor(field, apiClient, attachmentsDir);
+      return fileFieldProcessor(field, apiClient, attachmentsDir);
     }
     case "SUBTABLE": {
       return subtableFieldProcessor(
@@ -36,7 +36,7 @@ export const fieldProcessor: (
   }
 };
 
-const fileFileldProcessor = async (
+const fileFieldProcessor = async (
   field: Fields.OneOf,
   apiClient: KintoneRestAPIClient,
   attachmentsDir: string

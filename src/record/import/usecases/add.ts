@@ -4,7 +4,7 @@ import type { KintoneRecordForParameter } from "../../../kintone/types";
 import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor } from "./add/field";
-import { recordReducer } from "./add/record";
+import { recordConverter } from "./add/record";
 import { AddRecordsError } from "./add/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
@@ -80,7 +80,7 @@ const convertRecordsToApiRequestParameter = async (
 
   const kintoneRecords: KintoneRecordForParameter[] = [];
   for (const record of records) {
-    const kintoneRecord = await recordReducer(
+    const kintoneRecord = await recordConverter(
       record,
       schema,
       skipMissingFields,

@@ -3,7 +3,7 @@ import type { LocalRecord } from "../../types/record";
 import type * as Fields from "../../types/field";
 import type { FieldSchema, RecordSchema } from "../../types/schema";
 
-export const recordReducer: (
+export const recordConverter: (
   record: LocalRecord,
   schema: RecordSchema,
   skipMissingFields: boolean,

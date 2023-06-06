@@ -97,9 +97,7 @@ export const buildRestAPIClient = (options: RestAPIClientOptions) => {
     ...buildBasicAuthParam(options),
     ...(options.guestSpaceId ? { guestSpaceId: options.guestSpaceId } : {}),
     userAgent: `${packageJson.name}@${packageJson.version}`,
-    // TODO: fix type definition of @kintone/rest-api-client
-    // Currently, the proxy property doesn't accept false
-    proxy: false as any,
+    proxy: false,
     httpsAgent: buildHttpsAgent({
       proxy: options.httpsProxy,
       pfxFilePath: options.pfxFilePath,

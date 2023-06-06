@@ -97,8 +97,11 @@ describe("getRecords", () => {
     const attachmentValue = (expectedRecords[0].attachment as Fields.File)
       .value;
     for (const attachment of attachmentValue) {
+      if (!attachment.localFilePath) {
+        throw new Error("attachment.localFilePath is null or undefined");
+      }
       const downloadFile = await fs.readFile(
-        path.join(tempDir, attachment.localFilePath!)
+        path.join(tempDir, attachment.localFilePath)
       );
       expect(downloadFile.toString()).toBe(testFileData);
     }
@@ -174,8 +177,11 @@ describe("getRecords", () => {
       const attachmentValue = (expectedRecords[0].attachment as Fields.File)
         .value;
       for (const attachment of attachmentValue) {
+        if (!attachment.localFilePath) {
+          throw new Error("attachment.localFilePath is null or undefined");
+        }
         const downloadFile = await fs.readFile(
-          path.join(tempDir, attachment.localFilePath!)
+          path.join(tempDir, attachment.localFilePath)
         );
         expect(downloadFile.toString()).toBe(testFileData);
       }

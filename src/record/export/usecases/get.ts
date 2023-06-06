@@ -60,7 +60,7 @@ const recordsReducer: (
 ) => Promise<LocalRecord[]> = async (kintoneRecords, schema, task) => {
   const records: LocalRecord[] = [];
   for (const kintoneRecord of kintoneRecords) {
-    const record = await recordReducer(
+    const record = await recordConverter(
       kintoneRecord,
       schema,
       (field, fieldSchema) =>
@@ -71,7 +71,7 @@ const recordsReducer: (
   return records;
 };
 
-const recordReducer: (
+const recordConverter: (
   record: KintoneRecordForResponse,
   schema: RecordSchema,
   task: (

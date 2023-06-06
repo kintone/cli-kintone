@@ -6,7 +6,8 @@ import type {
 } from "../../../kintone/types";
 import type { RecordSchema } from "../types/schema";
 
-import { fieldProcessor, recordReducer } from "./add/record";
+import { fieldProcessor } from "./add/field";
+import { recordConverter } from "./add/record";
 import { UpdateKey } from "./upsert/updateKey";
 import { UpsertRecordsError } from "./upsert/error";
 import { logger } from "../../../utils/log";
@@ -104,7 +105,7 @@ const convertToKintoneRecordForUpdate = async (
 
   const kintoneRecords: KintoneRecordForUpdateParameter[] = [];
   for (const record of records) {
-    const kintoneRecord = await recordReducer(
+    const kintoneRecord = await recordConverter(
       record,
       schema,
       skipMissingFields,
@@ -163,7 +164,7 @@ const convertToKintoneRecordForAdd = async (
 
   const kintoneRecords: KintoneRecordForParameter[] = [];
   for (const record of records) {
-    const kintoneRecord = await recordReducer(
+    const kintoneRecord = await recordConverter(
       record,
       schema,
       skipMissingFields,

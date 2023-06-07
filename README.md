@@ -118,6 +118,11 @@ The field specified as "Key to Bulk Update" must meet one of the following requi
 ##### Notes
 
 - When the Record Number field is specified as the "Key to Bulk Update", the field's value may have the target app's code.
+- The following fields in records to be updated are ignored.
+  - Created by
+  - Created datetime
+  - Updated by
+  - Updated datetime
 
 ### export
 

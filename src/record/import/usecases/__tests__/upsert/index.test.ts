@@ -18,6 +18,8 @@ import { pattern as upsertWithMissingFieldFromRecord } from "./fixtures/upsertWi
 import { pattern as upsertWithMissingFieldInTableFromRecord } from "./fixtures/upsertWithMissingFieldInTableFromRecord";
 import { pattern as upsertByRecordNumberWithMixedRecordNumber } from "./fixtures/upsertByRecordNumberWithInvalidRecordNumber";
 import { pattern as upsertByRecordNumberWithInvalidRecordNumber } from "./fixtures/upsertByRecordNumberWithMixedRecordNumber";
+import { pattern as upsertWithNonUpdatableFields } from "./fixtures/upsertWithNonUpdatableFields";
+
 import { UpsertRecordsError } from "../../upsert/error";
 import type { LocalRecordRepository } from "../../interface";
 
@@ -83,6 +85,7 @@ describe("upsertRecords", () => {
     upsertWithMissingFieldInTableFromRecord,
     upsertByRecordNumberWithMixedRecordNumber,
     upsertByRecordNumberWithInvalidRecordNumber,
+    upsertWithNonUpdatableFields,
   ];
 
   it.each(patterns)(

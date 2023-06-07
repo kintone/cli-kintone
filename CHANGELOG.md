@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.0](https://github.com/kintone/cli-kintone/compare/v1.5.3...v1.6.0) (2023-06-07)
+
+
+### Features
+
+* enable upsert with non-updatable fields ([#366](https://github.com/kintone/cli-kintone/issues/366)) ([0e5f1d2](https://github.com/kintone/cli-kintone/commit/0e5f1d2504b05b1e9370fe721999d943cb211f02))
+
+
+### Bug Fixes
+
+* allow users to export an attachment with filename including a special character ([#358](https://github.com/kintone/cli-kintone/issues/358)) ([40a9c6f](https://github.com/kintone/cli-kintone/commit/40a9c6fa8eac7e923d566e3dfdd2eaebe020bea4))
+* **deps:** update dependency @kintone/rest-api-client to ^3.3.15 ([#359](https://github.com/kintone/cli-kintone/issues/359)) ([beaa913](https://github.com/kintone/cli-kintone/commit/beaa91384ac1b4dcc9d3f551f283b54431aeb7dc))
+
 ## [1.5.3](https://github.com/kintone/cli-kintone/compare/v1.5.2...v1.5.3) (2023-05-30)
 
 

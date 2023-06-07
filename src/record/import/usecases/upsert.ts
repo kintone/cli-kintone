@@ -103,6 +103,8 @@ const convertToKintoneRecordForUpdate = async (
 ): Promise<KintoneRecordForUpdateParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
 
+  const updateKeyField = updateKey.getUpdateKeyField();
+
   const kintoneRecords: KintoneRecordForUpdateParameter[] = [];
   for (const record of records) {
     const kintoneRecord = await recordConverter(
@@ -116,7 +118,6 @@ const convertToKintoneRecordForUpdate = async (
         })
     );
 
-    const updateKeyField = updateKey.getUpdateKeyField();
     const updateKeyValue = updateKey.findUpdateKeyValueFromRecord(record);
 
     // Delete update key field
@@ -160,7 +161,6 @@ const convertToKintoneRecordForAdd = async (
   }
 ): Promise<KintoneRecordForParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
-  const updateKeyField = updateKey.getUpdateKeyField();
 
   const kintoneRecords: KintoneRecordForParameter[] = [];
   for (const record of records) {
@@ -174,10 +174,6 @@ const convertToKintoneRecordForAdd = async (
           skipMissingFields,
         })
     );
-
-    if (updateKeyField.type === "RECORD_NUMBER") {
-      delete kintoneRecord[updateKeyField.code];
-    }
 
     kintoneRecords.push(kintoneRecord);
   }

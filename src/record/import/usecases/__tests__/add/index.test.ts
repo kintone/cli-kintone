@@ -78,6 +78,53 @@ describe("addRecords", () => {
     });
   });
 
+  it("should ignore a Record Number field", async () => {
+    const addAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
+    apiClient.record.addAllRecords = addAllRecordsMockFn;
+    const APP_ID = "1";
+    const RECORDS: LocalRecord[] = [
+      {
+        data: { recordNumber: { value: "1" }, number: { value: "1" } },
+        metadata: {
+          format: { type: "csv", firstRowIndex: 0, lastRowIndex: 0 },
+        },
+      },
+    ];
+    const SCHEMA: RecordSchema = {
+      fields: [
+        {
+          type: "RECORD_NUMBER",
+          code: "recordNumber",
+          label: "recordNumber",
+          noLabel: false,
+        },
+        {
+          type: "NUMBER",
+          code: "number",
+          label: "number",
+          noLabel: false,
+          required: true,
+          minValue: "",
+          maxValue: "",
+          digit: false,
+          unique: true,
+          defaultValue: "",
+          displayScale: "",
+          unit: "",
+          unitPosition: "BEFORE",
+        },
+      ],
+    };
+    const repository = new LocalRecordRepositoryMock(RECORDS, "csv");
+
+    await addRecords(apiClient, APP_ID, repository, SCHEMA, {});
+
+    expect(addAllRecordsMockFn.mock.calls[0][0]).toStrictEqual({
+      app: APP_ID,
+      records: [{ number: { value: "1" } }],
+    });
+  });
+
   it("should throw error when attachmentsDir is NOT given", () => {
     const APP_ID = "1";
 

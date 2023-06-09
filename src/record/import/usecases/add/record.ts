@@ -19,10 +19,6 @@ export const recordConverter: (
 ) => {
   const newRecord: KintoneRecordForParameter = {};
   for (const fieldSchema of schema.fields) {
-    // Ignore a Record Number field
-    if (fieldSchema.type === "RECORD_NUMBER") {
-      continue;
-    }
     if (!(fieldSchema.code in record.data)) {
       if (skipMissingFields) {
         continue;

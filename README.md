@@ -93,7 +93,6 @@ Options:
 ##### Notes
 
 - A field within a Table cannot be specified to the `fields` option.
-- A Record Number field is ignored
 
 #### Import Attachment field
 

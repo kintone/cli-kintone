@@ -78,7 +78,7 @@ describe("addRecords", () => {
     });
   });
 
-  it("should ignore a Record Number field", async () => {
+  it("should includes a Record Number field", async () => {
     const addAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
     apiClient.record.addAllRecords = addAllRecordsMockFn;
     const APP_ID = "1";
@@ -121,7 +121,7 @@ describe("addRecords", () => {
 
     expect(addAllRecordsMockFn.mock.calls[0][0]).toStrictEqual({
       app: APP_ID,
-      records: [{ number: { value: "1" } }],
+      records: [{ recordNumber: { value: "1" }, number: { value: "1" } }],
     });
   });
 

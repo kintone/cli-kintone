@@ -103,6 +103,28 @@ const convertToKintoneRecordForUpdate = async (
 ): Promise<KintoneRecordForUpdateParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
 
+  const updateKeyField = updateKey.getUpdateKeyField();
+
+  // Ignore the following fields
+  // - Record number field
+  // - Non-updatable fields
+  //   - Created by
+  //   - Created datetime
+  //   - Updated by
+  //   - Updated datetime
+  // - The field specified as "Key to Bulk Update"
+  const fieldCodesToBeIgnored = schema.fields
+    .filter(
+      (fieldSchema) =>
+        fieldSchema.type === "RECORD_NUMBER" ||
+        fieldSchema.type === "CREATOR" ||
+        fieldSchema.type === "CREATED_TIME" ||
+        fieldSchema.type === "MODIFIER" ||
+        fieldSchema.type === "UPDATED_TIME"
+    )
+    .map((fieldSchema) => fieldSchema.code)
+    .concat(updateKeyField.code);
+
   const kintoneRecords: KintoneRecordForUpdateParameter[] = [];
   for (const record of records) {
     const kintoneRecord = await recordConverter(
@@ -116,22 +138,12 @@ const convertToKintoneRecordForUpdate = async (
         })
     );
 
-    const updateKeyField = updateKey.getUpdateKeyField();
     const updateKeyValue = updateKey.findUpdateKeyValueFromRecord(record);
 
-    // Delete update key field
-    delete kintoneRecord[updateKeyField.code];
-    // Delete non-updatable fields
-    for (const fieldSchema of schema.fields) {
-      if (
-        fieldSchema.type === "CREATOR" ||
-        fieldSchema.type === "CREATED_TIME" ||
-        fieldSchema.type === "MODIFIER" ||
-        fieldSchema.type === "UPDATED_TIME"
-      ) {
-        delete kintoneRecord[fieldSchema.code];
-      }
+    for (const fieldCode of fieldCodesToBeIgnored) {
+      delete kintoneRecord[fieldCode];
     }
+
     kintoneRecords.push(
       updateKeyField.type === "RECORD_NUMBER"
         ? {
@@ -160,7 +172,11 @@ const convertToKintoneRecordForAdd = async (
   }
 ): Promise<KintoneRecordForParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
-  const updateKeyField = updateKey.getUpdateKeyField();
+
+  // Ignore a Record number field
+  const recordNumberFieldCode = schema.fields.find(
+    (fieldSchema) => fieldSchema.type === "RECORD_NUMBER"
+  )?.code;
 
   const kintoneRecords: KintoneRecordForParameter[] = [];
   for (const record of records) {
@@ -175,8 +191,8 @@ const convertToKintoneRecordForAdd = async (
         })
     );
 
-    if (updateKeyField.type === "RECORD_NUMBER") {
-      delete kintoneRecord[updateKeyField.code];
+    if (recordNumberFieldCode !== undefined) {
+      delete kintoneRecord[recordNumberFieldCode];
     }
 
     kintoneRecords.push(kintoneRecord);

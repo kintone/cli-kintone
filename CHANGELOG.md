@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.0](https://github.com/kintone/cli-kintone/compare/v1.6.0...v1.7.0) (2023-06-10)
+
+
+### Features
+
+* enable record import with a Record Number field ([#368](https://github.com/kintone/cli-kintone/issues/368)) ([ae4846e](https://github.com/kintone/cli-kintone/commit/ae4846e610d3d70c8c0052239d1d9597061b16c3))
+
 ## [1.6.0](https://github.com/kintone/cli-kintone/compare/v1.5.3...v1.6.0) (2023-06-07)
 
 

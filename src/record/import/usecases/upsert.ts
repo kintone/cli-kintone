@@ -51,7 +51,7 @@ export const upsertRecords = async (
       (record) => (updateKey.isUpdate(record) ? "update" : "add"),
       CHUNK_SIZE
     )) {
-      currentRecords = recordsByChunk.data;
+      currentRecords = currentRecords.concat(recordsByChunk.data);
 
       if (recordsByChunk.key === "update") {
         const recordsToUpload = await convertToKintoneRecordForUpdate(

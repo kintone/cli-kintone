@@ -30,27 +30,40 @@ export const parseKintoneRestAPIError = (
     for (const [key, value] of orderedErrors) {
       const bulkRequestIndex = error.bulkRequestIndex ?? 0;
       const indexMatch = key.match(/records\[(?<index>\d+)\]/);
-      const index =
+      const recordIndex =
         Number(indexMatch?.groups?.index) +
         bulkRequestIndex * chunkSize +
         offset;
-      const formatInfo = records[index].metadata.format;
       const fieldCode = getFieldCodeByErrorKeyWithSchema(key, recordSchema);
-      if (formatInfo.firstRowIndex === formatInfo.lastRowIndex) {
-        errorMessage += `  An error occurred on ${fieldCode} at row ${
-          formatInfo.lastRowIndex + 1
-        }.\n`;
-      } else {
-        errorMessage += `  An error occurred on ${fieldCode} at rows from ${
-          formatInfo.firstRowIndex + 1
-        } to ${formatInfo.lastRowIndex + 1}.\n`;
-      }
+      const errorIndexMessage = generateErrorIndexMessage(records, recordIndex);
+      errorMessage += `  An error occurred on ${fieldCode} ${errorIndexMessage}\n`;
 
       for (const message of value.messages) {
         errorMessage += `    Cause: ${message}\n`;
       }
     }
   }
+  return errorMessage;
+};
+
+const generateErrorIndexMessage = (
+  records: LocalRecord[],
+  recordIndex: number
+): string => {
+  let errorMessage = "";
+  if (!records[recordIndex]) {
+    return errorMessage;
+  }
+
+  const formatInfo = records[recordIndex].metadata.format;
+  if (formatInfo.firstRowIndex === formatInfo.lastRowIndex) {
+    errorMessage += `at row ${formatInfo.lastRowIndex + 1}.`;
+  } else {
+    errorMessage += `at rows from ${formatInfo.firstRowIndex + 1} to ${
+      formatInfo.lastRowIndex + 1
+    }.`;
+  }
+
   return errorMessage;
 };
 

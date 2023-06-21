@@ -5,7 +5,7 @@ import path from "path";
 const projectRoot = path.resolve(__dirname, "../../../");
 const exec = promisify(childProcess.exec);
 const packageJson = require(path.resolve(projectRoot, "package.json"));
-const mainFilePath = path.resolve(projectRoot, packageJson.bin["cli-kintone"]);
+const mainFilePath = path.resolve(projectRoot, packageJson.bin);
 
 jest.setTimeout(30000);
 

@@ -60,8 +60,7 @@ describe("parseKintoneRestAPIError", () => {
     const errorMessage = parseKintoneRestAPIError(
       kintoneRestAPIError,
       CHUNK_SIZE,
-      records,
-      numOfProcessedRecords + numOfAlreadyImportedRecords,
+      records.slice(numOfAlreadyImportedRecords + numOfProcessedRecords),
       schema
     );
     expect(errorMessage).toBe(

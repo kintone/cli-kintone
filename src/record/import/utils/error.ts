@@ -2,11 +2,16 @@ import type { KintoneRestAPIError } from "@kintone/rest-api-client";
 import type { LocalRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
 
+/** *
+ * @param error
+ * @param chunkSize Chunk size of a single request. See https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L16
+ * @param records Record of current chunk divided by rest-api-client
+ * @param recordSchema
+ */
 export const parseKintoneRestAPIError = (
   error: KintoneRestAPIError,
   chunkSize: number,
   records: LocalRecord[],
-  offset: number,
   recordSchema: RecordSchema
 ): string => {
   let errorMessage: string = `${error.message}\n`;
@@ -31,9 +36,7 @@ export const parseKintoneRestAPIError = (
       const bulkRequestIndex = error.bulkRequestIndex ?? 0;
       const indexMatch = key.match(/records\[(?<index>\d+)\]/);
       const recordIndex =
-        Number(indexMatch?.groups?.index) +
-        bulkRequestIndex * chunkSize +
-        offset;
+        Number(indexMatch?.groups?.index) + bulkRequestIndex * chunkSize;
       const fieldCode = getFieldCodeByErrorKeyWithSchema(key, recordSchema);
       const errorIndexMessage = generateErrorIndexMessage(records, recordIndex);
       errorMessage += `  An error occurred on ${fieldCode} ${errorIndexMessage}\n`;

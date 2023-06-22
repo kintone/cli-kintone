@@ -55,7 +55,7 @@ describe("AddRecordsError", () => {
     );
     const upsertRecordsError = new AddRecordsError(
       kintoneAllRecordsError,
-      records,
+      records.slice(numOfAlreadyImportedRecords),
       numOfAlreadyImportedRecords,
       schema
     );

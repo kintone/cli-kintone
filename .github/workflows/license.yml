@@ -47,7 +47,7 @@ jobs:
         uses: pnpm/action-setup@v2
 
       - name: Install Node modules
-        run: pnpm install --frozen-lockfile
+        run: pnpm recursive install --frozen-lockfile
 
       - name: Check licenses
         run: |

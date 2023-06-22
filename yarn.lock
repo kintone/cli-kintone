@@ -1841,6 +1841,7 @@ __metadata:
     "@types/node": ^18.16.18
     "@types/rollup-plugin-auto-external": ^2.0.2
     "@types/yargs": ^17.0.24
+    "@typescript-eslint/eslint-plugin": ^5.60.0
     "@vercel/ncc": ^0.36.1
     babel-jest: ^29.5.0
     chalk: 4
@@ -1848,6 +1849,10 @@ __metadata:
     csv-parse: ^4.16.3
     csv-stringify: 5.6.5
     eslint: ^8.42.0
+    eslint-config-prettier: ^8.8.0
+    eslint-plugin-import: ^2.27.5
+    eslint-plugin-node: ^11.1.0
+    eslint-plugin-prettier: ^4.2.1
     https-proxy-agent: ^5.0.1
     iconv-lite: ^0.6.3
     inquirer: ^8.2.5
@@ -2171,7 +2176,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^5.57.1":
+"@typescript-eslint/eslint-plugin@npm:^5.57.1, @typescript-eslint/eslint-plugin@npm:^5.60.0":
   version: 5.60.0
   resolution: "@typescript-eslint/eslint-plugin@npm:5.60.0"
   dependencies:

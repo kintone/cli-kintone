@@ -14,6 +14,7 @@
   },
   "types": "lib/index.d.ts",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "start": "pnpm build:prod --watch",
     "build": "pnpm clean && pnpm build:prod && pnpm package",
     "build:prod": "ncc build ./src/cli/main.ts -m",

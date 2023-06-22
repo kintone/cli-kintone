@@ -19,6 +19,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+
       - name: Install Node modules
         run: pnpm install --frozen-lockfile
 
@@ -39,6 +42,9 @@ jobs:
 
       - name: Check out repository
         uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
 
       - name: Install Node modules
         run: pnpm install --frozen-lockfile

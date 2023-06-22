@@ -16,11 +16,12 @@ jobs:
           version: '3.x'
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: yarn
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:artifacts
       - name: Upload artifacts

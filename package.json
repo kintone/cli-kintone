@@ -14,7 +14,7 @@
   "scripts": {
     "start": "yarn build --watch",
     "prebuild": "yarn clean",
-    "build": "ncc build ./src/cli/main.ts -m",
+    "build": "yarn clean && ncc build ./src/cli/main.ts -m && yarn pkg",
     "postbuild": "yarn pkg",
     "build:artifacts": "run-s build licensed compress",
     "pkg": "pkg ./dist/index.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",

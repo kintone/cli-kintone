@@ -53,21 +53,18 @@ const generateErrorIndexMessage = (
   records: LocalRecord[],
   recordIndex: number
 ): string => {
-  let errorMessage = "";
-  if (!records[recordIndex]) {
-    return errorMessage;
+  const formatInfo = records.at(index)?.metadata.format;
+  if (!formatInfo) {
+    return "";
   }
-
-  const formatInfo = records[recordIndex].metadata.format;
+  
   if (formatInfo.firstRowIndex === formatInfo.lastRowIndex) {
-    errorMessage += `at row ${formatInfo.lastRowIndex + 1}.`;
+    return `at row ${formatInfo.lastRowIndex + 1}.`;
   } else {
-    errorMessage += `at rows from ${formatInfo.firstRowIndex + 1} to ${
+    return `at rows from ${formatInfo.firstRowIndex + 1} to ${
       formatInfo.lastRowIndex + 1
     }.`;
   }
-
-  return errorMessage;
 };
 
 const getFieldCodeByErrorKeyWithSchema = (

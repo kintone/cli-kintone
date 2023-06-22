@@ -37,6 +37,7 @@ export class AddRecordsError extends CliKintoneError {
     super(message, cause);
 
     this.name = "AddRecordsError";
+    this.detail = "";
     this.records = records;
     this.recordSchema = recordSchema;
 
@@ -58,8 +59,6 @@ export class AddRecordsError extends CliKintoneError {
         this.detail = `Rows from 1 to ${
           (_lastSucceededRecord.metadata.format.lastRowIndex ?? 0) + 1
         } are processed successfully.`;
-      } else {
-        this.detail = `The first row is processed successfully.`;
       }
     }
 

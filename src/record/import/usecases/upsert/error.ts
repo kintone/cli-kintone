@@ -37,6 +37,7 @@ export class UpsertRecordsError extends CliKintoneError {
     super(message, cause);
 
     this.name = "UpsertRecordsError";
+    this.detail = "";
     this.records = currentRecords;
     this.recordSchema = recordSchema;
 
@@ -58,8 +59,6 @@ export class UpsertRecordsError extends CliKintoneError {
         this.detail = `Rows from 1 to ${
           (_lastSucceededRecord.metadata.format.lastRowIndex ?? 0) + 1
         } are processed successfully.`;
-      } else {
-        this.detail = `The first row is processed successfully.`;
       }
     }
 

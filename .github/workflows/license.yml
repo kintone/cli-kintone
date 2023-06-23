@@ -52,6 +52,5 @@ jobs:
 
       - name: Check licenses
         run: |
-          licensed cache
           licensed status
           licensed notices

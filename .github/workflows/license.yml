@@ -43,11 +43,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-
       - name: Install Node modules
-        run: pnpm recursive install --frozen-lockfile
+        uses: pnpm/action-setup@v2
+        with:
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile, --strict-peer-dependencies]
 
       - name: Check licenses
         run: |

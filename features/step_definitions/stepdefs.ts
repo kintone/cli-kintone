@@ -1,7 +1,7 @@
-const assert = require("assert");
-const { Given, When, Then } = require("@cucumber/cucumber");
+import * as assert from "assert";
+import { Given, When, Then } from "@cucumber/cucumber";
 
-const isItFriday = (today) => {
+const isItFriday = (today: string) => {
   if (today === "Friday") {
     return "TGIF";
   }

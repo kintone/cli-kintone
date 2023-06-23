@@ -40,7 +40,7 @@ jobs:
       - uses: pnpm/action-setup@v2
       - name: Install Node modules
         run: pnpm install --frozen-lockfile
-      - uses: ruby/setup-ruby@v3
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0'
       - name: Setup Licensed

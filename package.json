@@ -65,7 +65,7 @@
     "@vercel/ncc": "^0.36.1",
     "babel-jest": "^29.5.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.42.0",
+    "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",

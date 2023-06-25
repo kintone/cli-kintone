@@ -2,11 +2,16 @@ import type { KintoneRestAPIError } from "@kintone/rest-api-client";
 import type { LocalRecord } from "../types/record";
 import type { RecordSchema } from "../types/schema";
 
+/** *
+ * @param error
+ * @param chunkSize Chunk size of a single request. See https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L16
+ * @param records Record of current chunk divided by rest-api-client
+ * @param recordSchema
+ */
 export const parseKintoneRestAPIError = (
   error: KintoneRestAPIError,
   chunkSize: number,
   records: LocalRecord[],
-  offset: number,
   recordSchema: RecordSchema
 ): string => {
   let errorMessage: string = `${error.message}\n`;
@@ -30,21 +35,11 @@ export const parseKintoneRestAPIError = (
     for (const [key, value] of orderedErrors) {
       const bulkRequestIndex = error.bulkRequestIndex ?? 0;
       const indexMatch = key.match(/records\[(?<index>\d+)\]/);
-      const index =
-        Number(indexMatch?.groups?.index) +
-        bulkRequestIndex * chunkSize +
-        offset;
-      const formatInfo = records[index].metadata.format;
+      const recordIndex =
+        Number(indexMatch?.groups?.index) + bulkRequestIndex * chunkSize;
       const fieldCode = getFieldCodeByErrorKeyWithSchema(key, recordSchema);
-      if (formatInfo.firstRowIndex === formatInfo.lastRowIndex) {
-        errorMessage += `  An error occurred on ${fieldCode} at row ${
-          formatInfo.lastRowIndex + 1
-        }.\n`;
-      } else {
-        errorMessage += `  An error occurred on ${fieldCode} at rows from ${
-          formatInfo.firstRowIndex + 1
-        } to ${formatInfo.lastRowIndex + 1}.\n`;
-      }
+      const errorIndexMessage = generateErrorIndexMessage(records, recordIndex);
+      errorMessage += `  An error occurred on ${fieldCode} ${errorIndexMessage}\n`;
 
       for (const message of value.messages) {
         errorMessage += `    Cause: ${message}\n`;
@@ -52,6 +47,23 @@ export const parseKintoneRestAPIError = (
     }
   }
   return errorMessage;
+};
+
+const generateErrorIndexMessage = (
+  records: LocalRecord[],
+  recordIndex: number
+): string => {
+  const formatInfo = records.at(recordIndex)?.metadata.format;
+  if (!formatInfo) {
+    return "";
+  }
+
+  if (formatInfo.firstRowIndex === formatInfo.lastRowIndex) {
+    return `at row ${formatInfo.lastRowIndex + 1}.`;
+  }
+  return `at rows from ${formatInfo.firstRowIndex + 1} to ${
+    formatInfo.lastRowIndex + 1
+  }.`;
 };
 
 const getFieldCodeByErrorKeyWithSchema = (

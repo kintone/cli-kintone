@@ -31,6 +31,7 @@ export const addRecords: (
 ) => {
   let currentIndex = 0;
   let currentRecords: LocalRecord[] = [];
+  let lastSucceededRecord: LocalRecord | undefined;
   const progressLogger = new ProgressLogger(
     logger,
     await recordSource.length()
@@ -57,12 +58,19 @@ export const addRecords: (
         records: recordsToUpload,
       });
       currentIndex += recordsByChunk.length;
+      lastSucceededRecord = recordsByChunk.slice(-1)[0];
       progressLogger.update(currentIndex);
     }
     progressLogger.done();
   } catch (e) {
     progressLogger.abort(currentIndex);
-    throw new AddRecordsError(e, currentRecords, currentIndex, schema);
+    throw new AddRecordsError(
+      e,
+      currentRecords,
+      currentIndex,
+      schema,
+      lastSucceededRecord
+    );
   }
 };
 

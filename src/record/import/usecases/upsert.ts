@@ -30,6 +30,7 @@ export const upsertRecords = async (
 ): Promise<void> => {
   let currentIndex = 0;
   let currentRecords: LocalRecord[] = [];
+  let lastSucceededRecord: LocalRecord | undefined;
   const progressLogger = new ProgressLogger(
     logger,
     await recordSource.length()
@@ -81,12 +82,19 @@ export const upsertRecords = async (
         });
       }
       currentIndex += recordsByChunk.data.length;
+      lastSucceededRecord = recordsByChunk.data.slice(-1)[0];
       progressLogger.update(currentIndex);
     }
     progressLogger.done();
   } catch (e) {
     progressLogger.abort(currentIndex);
-    throw new UpsertRecordsError(e, currentRecords, currentIndex, schema);
+    throw new UpsertRecordsError(
+      e,
+      currentRecords,
+      currentIndex,
+      schema,
+      lastSucceededRecord
+    );
   }
 };
 

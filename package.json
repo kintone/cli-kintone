@@ -14,10 +14,10 @@
   },
   "types": "lib/index.d.ts",
   "scripts": {
-    "start": "yarn build --watch",
-    "prebuild": "yarn clean",
+    "start": "npm run build --watch",
+    "prebuild": "npm run clean",
     "build": "ncc build ./src/cli/main.ts -m",
-    "postbuild": "yarn pkg",
+    "postbuild": "npm run pkg",
     "build:artifacts": "run-s build licensed compress",
     "pkg": "pkg ./dist/index.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
     "licensed": "zx ./scripts/generate-license-notice.mjs",
@@ -84,5 +84,6 @@
     "iconv-lite": "^0.6.3",
     "inquirer": "^8.2.5",
     "yargs": "^17.7.2"
-  }
+  },
+  "packageManager": "npm@9.7.2"
 }

@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - yamory-*
+      - debug/yamory-*
 jobs:
   yamory:
     name: Yamory

@@ -44,3 +44,21 @@ reviewed:
     - readable-stream # MIT
     - lodash # MIT
     - ieee754 # BSD-3-Clause
+    - "@npmcli/fs" # ISC
+    - "@pkgjs/parseargs" # apache-2.0
+    - abbrev # ISC
+    - are-we-there-yet # ISC
+    - cacache # ISC
+    - encoding # MIT
+    - gauge # ISC
+    - glob # ISC
+    - http-cache-semantics # BSD 2-Clause
+    - jackspeak # BlueOak-1.0.0
+    - make-fetch-happen # ISC
+    - minipass-fetch # MIT
+    - minizlib
+    - npmlog # ISC
+    - path-scurry # BlueOak-1.0.0
+    - retry # apache-2.0
+    - ssri # ISC
+    - fs.realpath # ISC

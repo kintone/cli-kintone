@@ -68,6 +68,6 @@
     "forceConsistentCasingInFileNames": true,  /* Disallow inconsistently-cased references to the same file. */
     "resolveJsonModule": true
   },
-  "include": ["src/**/*", "package.json"],
+  "include": ["src/**/*", "features/**/*", "package.json"],
   "exclude": ["node_modules"]
 }

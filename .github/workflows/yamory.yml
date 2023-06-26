@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: 16.x
           cache: yarn
+      - run: yarn install --immutable
       - name: download and validate Yamory script
         working-directory: /tmp
         run: |

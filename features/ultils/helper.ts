@@ -1,20 +1,8 @@
-import type { ExecException } from "child_process";
-import { exec } from "child_process";
+import { spawnSync } from "child_process";
 import path from "path";
 
-export const executeCommand = (
-  cmd: string,
-  throwError: boolean = true
-): Promise<{ error: ExecException | null; stderr: string; stdout: string }> => {
-  return new Promise((resolve, reject) => {
-    exec(cmd, (error, stdout, stderr) => {
-      if (error && throwError) {
-        reject(error);
-      } else {
-        resolve({ error, stderr, stdout });
-      }
-    });
-  });
+export const execCliKintoneSync = (args: string) => {
+  return spawnSync(getCliKintoneBinary(), [args], { encoding: "utf-8" });
 };
 
 export const getCliKintoneBinary = (): string => {

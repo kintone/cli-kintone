@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/kintone/cli-kintone/compare/v1.7.0...v1.7.1) (2023-06-26)
+
+
+### Bug Fixes
+
+* `undefined` error message of the upsert command ([#376](https://github.com/kintone/cli-kintone/issues/376)) ([1f922ca](https://github.com/kintone/cli-kintone/commit/1f922cae93f97546466019840ac2a217ccbbc0bb))
+
 ## [1.7.0](https://github.com/kintone/cli-kintone/compare/v1.6.0...v1.7.0) (2023-06-10)
 
 

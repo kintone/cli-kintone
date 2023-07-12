@@ -86,6 +86,10 @@ const patterns: Array<{
     input: { type: "DATE", value: "2012-01-11" },
     expected: { value: "2012-01-11" },
   },
+  {
+    input: { type: "DATE", value: "2012/01/11" },
+    expected: { value: "2012-01-11" },
+  },
   { input: { type: "DATE", value: "" }, expected: { value: "" } },
   { input: { type: "TIME", value: "11:30" }, expected: { value: "11:30" } },
   { input: { type: "TIME", value: "" }, expected: { value: "" } },

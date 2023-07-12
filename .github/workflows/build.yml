@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          pnpm: pnpm
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:artifacts
       - name: Upload artifacts

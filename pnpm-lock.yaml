@@ -4,101 +4,99 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-importers:
+dependencies:
+  '@kintone/rest-api-client':
+    specifier: ^3.3.15
+    version: 3.3.15
+  chalk:
+    specifier: '4'
+    version: 4.1.2
+  csv-parse:
+    specifier: ^4.16.3
+    version: 4.16.3
+  csv-stringify:
+    specifier: 5.6.5
+    version: 5.6.5
+  https-proxy-agent:
+    specifier: ^5.0.1
+    version: 5.0.1
+  iconv-lite:
+    specifier: ^0.6.3
+    version: 0.6.3
+  inquirer:
+    specifier: ^8.2.5
+    version: 8.2.5
+  yargs:
+    specifier: ^17.7.2
+    version: 17.7.2
 
-  .:
-    dependencies:
-      '@kintone/rest-api-client':
-        specifier: ^3.3.15
-        version: 3.3.15
-      chalk:
-        specifier: '4'
-        version: 4.1.2
-      csv-parse:
-        specifier: ^4.16.3
-        version: 4.16.3
-      csv-stringify:
-        specifier: 5.6.5
-        version: 5.6.5
-      https-proxy-agent:
-        specifier: ^5.0.1
-        version: 5.0.1
-      iconv-lite:
-        specifier: ^0.6.3
-        version: 0.6.3
-      inquirer:
-        specifier: ^8.2.5
-        version: 8.2.5
-      yargs:
-        specifier: ^17.7.2
-        version: 17.7.2
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.22.8
-        version: 7.22.8
-      '@babel/preset-env':
-        specifier: ^7.22.7
-        version: 7.22.7(@babel/core@7.22.8)
-      '@babel/preset-typescript':
-        specifier: ^7.22.5
-        version: 7.22.5(@babel/core@7.22.8)
-      '@cucumber/cucumber':
-        specifier: ^9.2.0
-        version: 9.2.0
-      '@cybozu/eslint-config':
-        specifier: ^18.0.3
-        version: 18.0.3(eslint@8.44.0)(prettier@2.8.8)(typescript@5.1.6)
-      '@types/inquirer':
-        specifier: ^8.2.6
-        version: 8.2.6
-      '@types/jest':
-        specifier: ^29.5.2
-        version: 29.5.2
-      '@types/node':
-        specifier: ^18.16.19
-        version: 18.16.19
-      '@types/rollup-plugin-auto-external':
-        specifier: ^2.0.2
-        version: 2.0.2
-      '@types/yargs':
-        specifier: ^17.0.24
-        version: 17.0.24
-      '@vercel/ncc':
-        specifier: ^0.36.1
-        version: 0.36.1
-      babel-jest:
-        specifier: ^29.6.1
-        version: 29.6.1(@babel/core@7.22.8)
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
-      eslint:
-        specifier: ^8.44.0
-        version: 8.44.0
-      jest:
-        specifier: ^29.6.1
-        version: 29.6.1(@types/node@18.16.19)(ts-node@10.9.1)
-      npm-run-all:
-        specifier: ^4.1.5
-        version: 4.1.5
-      pkg:
-        specifier: ^5.8.1
-        version: 5.8.1
-      prettier:
-        specifier: ^2.8.8
-        version: 2.8.8
-      rimraf:
-        specifier: ^4.4.1
-        version: 4.4.1
-      ts-node:
-        specifier: ^10.9.1
-        version: 10.9.1(@types/node@18.16.19)(typescript@5.1.6)
-      typescript:
-        specifier: ^5.1.6
-        version: 5.1.6
-      zx:
-        specifier: ^7.2.3
-        version: 7.2.3
+devDependencies:
+  '@babel/core':
+    specifier: ^7.22.8
+    version: 7.22.8
+  '@babel/preset-env':
+    specifier: ^7.22.7
+    version: 7.22.7(@babel/core@7.22.8)
+  '@babel/preset-typescript':
+    specifier: ^7.22.5
+    version: 7.22.5(@babel/core@7.22.8)
+  '@cucumber/cucumber':
+    specifier: ^9.2.0
+    version: 9.2.0
+  '@cybozu/eslint-config':
+    specifier: ^18.0.3
+    version: 18.0.3(eslint@8.44.0)(prettier@2.8.8)(typescript@5.1.6)
+  '@types/inquirer':
+    specifier: ^8.2.6
+    version: 8.2.6
+  '@types/jest':
+    specifier: ^29.5.3
+    version: 29.5.3
+  '@types/node':
+    specifier: ^18.16.19
+    version: 18.16.19
+  '@types/rollup-plugin-auto-external':
+    specifier: ^2.0.2
+    version: 2.0.2
+  '@types/yargs':
+    specifier: ^17.0.24
+    version: 17.0.24
+  '@vercel/ncc':
+    specifier: ^0.36.1
+    version: 0.36.1
+  babel-jest:
+    specifier: ^29.6.1
+    version: 29.6.1(@babel/core@7.22.8)
+  cross-env:
+    specifier: ^7.0.3
+    version: 7.0.3
+  eslint:
+    specifier: ^8.44.0
+    version: 8.44.0
+  jest:
+    specifier: ^29.6.1
+    version: 29.6.1(@types/node@18.16.19)(ts-node@10.9.1)
+  npm-run-all:
+    specifier: ^4.1.5
+    version: 4.1.5
+  pkg:
+    specifier: ^5.8.1
+    version: 5.8.1
+  prettier:
+    specifier: ^2.8.8
+    version: 2.8.8
+  rimraf:
+    specifier: ^4.4.1
+    version: 4.4.1
+  ts-node:
+    specifier: ^10.9.1
+    version: 10.9.1(@types/node@18.16.19)(typescript@5.1.6)
+  typescript:
+    specifier: ^5.1.6
+    version: 5.1.6
+  zx:
+    specifier: ^7.2.3
+    version: 7.2.3
 
 packages:
 
@@ -2055,8 +2053,8 @@ packages:
       '@types/istanbul-lib-report': 3.0.0
     dev: true
 
-  /@types/jest@29.5.2:
-    resolution: {integrity: sha512-mSoZVJF5YzGVCk+FsDxzDuH7s+SCkzrgKZzf0Z0T2WudhBUPoF6ktoTPC4R0ZoCPCV5xUvuU6ias5NvxcBcMMg==}
+  /@types/jest@29.5.3:
+    resolution: {integrity: sha512-1Nq7YrO/vJE/FYnqYyw0FS8LdrjExSgIiHyKg7xPpn+yi8Q4huZryKnkJatN1ZRH89Kw2v33/8ZMB7DuZeSLlA==}
     dependencies:
       expect: 29.6.1
       pretty-format: 29.6.1

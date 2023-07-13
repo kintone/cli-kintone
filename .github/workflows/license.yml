@@ -19,7 +19,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
@@ -28,7 +27,7 @@ jobs:
       - name: Install pnpm
         run:  npm install -g pnpm@8.6.5
 
-      - name: Install Node modules
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Check licenses

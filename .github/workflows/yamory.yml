@@ -15,7 +15,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: pnpm
       - name: Install pnpm
         run:  npm install -g pnpm@8.6.5
       - name: download and validate Yamory script

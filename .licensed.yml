@@ -4,7 +4,7 @@ name: 'cli-kintone'
 
 # Sources of metadata
 sources:
-  npm: true
+  pnpm: true
 
 # Dependencies with these licenses are allowed and will not raise errors or warnings.
 # This list does not have a default value and is required for `licensed status`
@@ -34,7 +34,7 @@ allowed:
 # non-allowed license.  Dependencies on this list will still raise errors if
 # license text cannot be found for the dependency.
 reviewed:
-  npm:
+  pnpm:
     - color-convert # MIT
     - bl # MIT
     - wcwidth # MIT

@@ -15,8 +15,10 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "start": "pnpm build --watch",
-    "build": "pnpm clean && ncc build ./src/cli/main.ts -m && pnpm package",
+    "start": "pnpm dev --watch",
+    "build-ts": "ncc build ./src/cli/main.ts -m",
+    "dev": "pnpm clean && pnpm build-ts",
+    "build": "pnpm clean && pnpm build-ts && pnpm package",
     "build:artifacts": "run-s build licensed compress",
     "package": "pkg ./dist/index.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
     "licensed": "zx ./scripts/generate-license-notice.mjs",

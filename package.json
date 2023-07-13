@@ -1,6 +1,6 @@
 {
   "name": "@kintone/cli-kintone",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "publishConfig": {
     "access": "public"
   },
@@ -62,7 +62,7 @@
     "@cucumber/cucumber": "^9.2.0",
     "@cybozu/eslint-config": "^18.0.3",
     "@types/inquirer": "^8.2.6",
-    "@types/jest": "^29.5.2",
+    "@types/jest": "^29.5.3",
     "@types/node": "^18.16.19",
     "@types/rollup-plugin-auto-external": "^2.0.2",
     "@types/yargs": "^17.0.24",

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.2](https://github.com/kintone/cli-kintone/compare/v1.7.1...v1.7.2) (2023-07-12)
+
+
+### Bug Fixes
+
+* allow Date field format is yyyy/mm/dd ([#390](https://github.com/kintone/cli-kintone/issues/390)) ([f9af100](https://github.com/kintone/cli-kintone/commit/f9af1005281955232c8ae7a067d4e834e9ee82a1))
+
 ## [1.7.1](https://github.com/kintone/cli-kintone/compare/v1.7.0...v1.7.1) (2023-06-26)
 
 

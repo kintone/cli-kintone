@@ -48,17 +48,15 @@ jobs:
           version: '3.x'
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v3
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7
-          run_install: false
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
+      - name: Install pnpm
+        run:  npm install -g pnpm@8.6.5
+      - name: Install dependencies
+        run:  pnpm install --frozen-lockfile
       - run: pnpm build:artifacts
       - name: Upload executables
         env:

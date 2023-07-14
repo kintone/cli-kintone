@@ -11,12 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v2
         with:
-          node-version: 16.x
-      - name: Install pnpm
-        run:  npm install -g pnpm@8.6.5
+          version: 8.6.5
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'pnpm'
+
       - name: download and validate Yamory script
         working-directory: /tmp
         run: |

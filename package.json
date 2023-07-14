@@ -58,7 +58,7 @@
     "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-typescript": "^7.22.5",
-    "@cucumber/cucumber": "^9.2.0",
+    "@cucumber/cucumber": "^9.3.0",
     "@cybozu/eslint-config": "^18.0.3",
     "@types/inquirer": "^8.2.6",
     "@types/jest": "^29.5.3",

@@ -41,8 +41,8 @@ devDependencies:
     specifier: ^7.22.5
     version: 7.22.5(@babel/core@7.22.9)
   '@cucumber/cucumber':
-    specifier: ^9.2.0
-    version: 9.2.0
+    specifier: ^9.3.0
+    version: 9.3.0
   '@cybozu/eslint-config':
     specifier: ^18.0.3
     version: 18.0.3(eslint@8.44.0)(prettier@2.8.8)(typescript@5.1.6)
@@ -1456,8 +1456,8 @@ packages:
       regexp-match-indices: 1.0.2
     dev: true
 
-  /@cucumber/cucumber@9.2.0:
-    resolution: {integrity: sha512-b6zBxCU/4b6QK3OaitnZq/PfNd5tnODVuwlSHb5N76hCRhkG23FT42lGuj4E+r9TNs7QkgDjdPD28ZYMdi3rfQ==}
+  /@cucumber/cucumber@9.3.0:
+    resolution: {integrity: sha512-8QvcQVJzRra3pZpV0dITPcFuT2yYH0C1fEgzDlqe6+Zpz9k3z+ov9xUWEYgKp0VMx65JxNKAYYYWmG6cWOiYQQ==}
     engines: {node: 14 || 16 || >=18}
     hasBin: true
     dependencies:
@@ -1466,7 +1466,7 @@ packages:
       '@cucumber/gherkin': 26.2.0
       '@cucumber/gherkin-streams': 5.0.1(@cucumber/gherkin@26.2.0)(@cucumber/message-streams@4.0.1)(@cucumber/messages@22.0.0)
       '@cucumber/gherkin-utils': 8.0.2
-      '@cucumber/html-formatter': 20.3.0(@cucumber/messages@22.0.0)
+      '@cucumber/html-formatter': 20.4.0(@cucumber/messages@22.0.0)
       '@cucumber/message-streams': 4.0.1(@cucumber/messages@22.0.0)
       '@cucumber/messages': 22.0.0
       '@cucumber/tag-expressions': 5.0.1
@@ -1491,7 +1491,7 @@ packages:
       mz: 2.7.0
       progress: 2.0.3
       resolve-pkg: 2.0.0
-      semver: 7.3.8
+      semver: 7.5.3
       string-argv: 0.3.2
       strip-ansi: 6.0.1
       supports-color: 8.1.1
@@ -1541,8 +1541,8 @@ packages:
       '@cucumber/messages': 22.0.0
     dev: true
 
-  /@cucumber/html-formatter@20.3.0(@cucumber/messages@22.0.0):
-    resolution: {integrity: sha512-4DOuA2jmw2WqK63HxCWoXmyozGCrKeCddQ2wHWsQaAVP8YxWyzzY6azFJaByqvZW45WdaQ/5aMJWvEy+XAEXJg==}
+  /@cucumber/html-formatter@20.4.0(@cucumber/messages@22.0.0):
+    resolution: {integrity: sha512-TnLSXC5eJd8AXHENo69f5z+SixEVtQIf7Q2dZuTpT/Y8AOkilGpGl1MQR1Vp59JIw+fF3EQSUKdf+DAThCxUNg==}
     peerDependencies:
       '@cucumber/messages': '>=18'
     dependencies:
@@ -3267,7 +3267,7 @@ packages:
       minimatch: 3.1.2
       object.values: 1.1.6
       resolve: 1.22.1
-      semver: 6.3.0
+      semver: 6.3.1
       tsconfig-paths: 3.14.1
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
@@ -3297,7 +3297,7 @@ packages:
       minimatch: 3.1.2
       object.entries: 1.1.6
       object.fromentries: 2.0.6
-      semver: 6.3.0
+      semver: 6.3.1
     dev: true
 
   /eslint-plugin-node@11.1.0(eslint@8.44.0):
@@ -3312,7 +3312,7 @@ packages:
       ignore: 5.2.0
       minimatch: 3.1.2
       resolve: 1.22.1
-      semver: 6.3.0
+      semver: 6.3.1
     dev: true
 
   /eslint-plugin-prettier@4.2.1(eslint-config-prettier@8.8.0)(eslint@8.44.0)(prettier@2.8.8):
@@ -3361,7 +3361,7 @@ packages:
       object.values: 1.1.6
       prop-types: 15.8.1
       resolve: 2.0.0-next.4
-      semver: 6.3.0
+      semver: 6.3.1
       string.prototype.matchall: 4.0.8
     dev: true
 
@@ -4277,7 +4277,7 @@ packages:
       '@babel/parser': 7.22.7
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.0
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4926,7 +4926,7 @@ packages:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
     engines: {node: '>=8'}
     dependencies:
-      semver: 6.3.0
+      semver: 6.3.1
     dev: true
 
   /make-error@1.3.6:
@@ -5823,22 +5823,9 @@ packages:
     hasBin: true
     dev: true
 
-  /semver@6.3.0:
-    resolution: {integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==}
-    hasBin: true
-    dev: true
-
   /semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
-    dev: true
-
-  /semver@7.3.8:
-    resolution: {integrity: sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      lru-cache: 6.0.0
     dev: true
 
   /semver@7.5.3:

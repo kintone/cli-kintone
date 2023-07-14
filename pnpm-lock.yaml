@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@kintone/rest-api-client':
-    specifier: ^3.3.15
-    version: 3.3.15
+    specifier: ^4.0.3
+    version: 4.0.3
   chalk:
     specifier: '4'
     version: 4.1.2
@@ -1911,9 +1911,9 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@kintone/rest-api-client@3.3.15:
-    resolution: {integrity: sha512-fhfRqifov5p+1tBeDOW+03W7fnDZ4hxsgyy3nUb0HNCyBeuHXZHxDWO0wKQ7PoGwdjyFyVzvZuWxQs4jjmHoAA==}
-    engines: {node: '>=14'}
+  /@kintone/rest-api-client@4.0.3:
+    resolution: {integrity: sha512-8RTI64WHNUH7PLRslat8wQSzjl4r5R1ghdzHBnOad8tDxI7FZAv+46cWh8wPwpfcUE72QLmi0No4jp4JbfQUkQ==}
+    engines: {node: '>=16'}
     dependencies:
       axios: 0.27.2
       core-js: 3.29.1

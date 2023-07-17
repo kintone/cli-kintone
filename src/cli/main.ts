@@ -10,3 +10,5 @@ yargs
   .version(packageJson.version)
   .help()
   .completion().argv;
+
+// This is nothing comment

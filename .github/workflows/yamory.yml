@@ -18,6 +18,8 @@ jobs:
         with:
           node-version: '16'
           cache: 'pnpm'
+      - name: Install dependencies
+        run:  pnpm install --frozen-lockfile
 
       - name: download and validate Yamory script
         working-directory: /tmp

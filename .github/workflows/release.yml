@@ -47,10 +47,13 @@ jobs:
         with:
           version: '3.x'
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/checkout@v3
+
       - uses: pnpm/action-setup@v2
         with:
           version: 8.6.5
+
       - uses: actions/setup-node@v3
         with:
           node-version: '16'

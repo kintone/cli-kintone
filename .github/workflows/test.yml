@@ -22,9 +22,11 @@ jobs:
     steps:
     - run: git config --global core.autocrlf false
     - uses: actions/checkout@v3
+
     - uses: pnpm/action-setup@v2
       with:
         version: 8.6.5
+
     - uses: actions/setup-node@v3
       with:
         node-version: '16'

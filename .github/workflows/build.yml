@@ -15,14 +15,18 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ruby
+
       - uses: jonabc/setup-licensed@d6b3a6f7058c2b40c06d205e13e15c2418977566 # renovate: tag=v1.1.4
         with:
           version: '4.x'
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/checkout@v3
+
       - uses: pnpm/action-setup@v2
         with:
           version: 8.6.5
+
       - uses: actions/setup-node@v3
         with:
           node-version: '16'

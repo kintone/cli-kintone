@@ -22,6 +22,7 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8.6.5
+
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
@@ -53,13 +54,15 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.5
+
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-
-      - name: Install pnpm
-        run:  npm install -g pnpm@8.6.5
+          cache: 'pnpm'
 
       - name: Install dependencies
         run:  pnpm install --frozen-lockfile

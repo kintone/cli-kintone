@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - debug/test-licensed
   pull_request:
 
 jobs:
@@ -48,7 +49,7 @@ jobs:
       - name: Setup Licensed
         uses: jonabc/setup-licensed@d6b3a6f7058c2b40c06d205e13e15c2418977566 # renovate: tag=v1.1.4
         with:
-          version: '4.x'
+          version: '3.x'
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check out repository

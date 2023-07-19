@@ -45,7 +45,7 @@ jobs:
     steps:
       - uses: jonabc/setup-licensed@d6b3a6f7058c2b40c06d205e13e15c2418977566 # renovate: tag=v1.1.4
         with:
-          version: '3.x'
+          version: '4.x'
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/checkout@v3

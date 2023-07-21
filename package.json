@@ -29,9 +29,11 @@
     "lint": "run-p -l lint:*",
     "lint:eslint": "eslint --ext .js,.mjs,.cjs,.ts,.mts,.cts ./",
     "lint:md": "prettier --check ./**/*.md",
+    "lint:yml": "prettier --check ./**/*.yml",
     "fix": "run-p fix:*",
     "fix:lint": "run-s 'lint:eslint --fix'",
     "fix:md": "run-s 'lint:md --write'",
+    "fix:yml": "run-s 'lint:yml --write'",
     "clean": "rimraf lib bin artifacts dist"
   },
   "repository": {

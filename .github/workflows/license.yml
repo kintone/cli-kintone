@@ -25,8 +25,8 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: 'pnpm'
+          node-version: "16"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -48,7 +48,7 @@ jobs:
       - name: Setup Licensed
         uses: jonabc/setup-licensed@d6b3a6f7058c2b40c06d205e13e15c2418977566 # renovate: tag=v1.1.4
         with:
-          version: '4.x'
+          version: "4.x"
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check out repository
@@ -62,10 +62,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
-        run:  pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Check licenses
         run: |

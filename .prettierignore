@@ -2,9 +2,14 @@
 lib
 dist
 coverage
+.licenses/
 
 # Ignore all HTML files:
 *.html
 
-# Ignore CHANGELOG.md (because it is auto generated)
+# Ignore tsconfig file
+tsconfig.json
+
+# Ignore auto generated files
+pnpm-lock.yaml
 CHANGELOG.md

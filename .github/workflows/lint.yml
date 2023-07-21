@@ -1,11 +1,10 @@
-
 name: lint
 
 on:
   push:
     branches:
       - main
-      - 'renovate/**'
+      - "renovate/**"
   pull_request:
 
 jobs:
@@ -13,18 +12,18 @@ jobs:
     name: Node.js ubuntu-latest 16.x
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - uses: pnpm/action-setup@v2
-      with:
-        version: 8.6.5
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.5
 
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-        cache: 'pnpm'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "pnpm"
 
-    - name: Install dependencies
-      run:  pnpm install --frozen-lockfile
-    - run:  pnpm build
-    - run:  pnpm lint
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm lint

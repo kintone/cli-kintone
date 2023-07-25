@@ -3,6 +3,8 @@ import {
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
 
+type NetworkError = { code?: string; message?: string };
+
 export abstract class CliKintoneError extends Error {
   readonly message: string;
   readonly detail: string = "";
@@ -52,11 +54,16 @@ export abstract class CliKintoneError extends Error {
     }
   }
 
-  private _networkError(error: any): boolean {
-    return error && error.code === "ECONNABORTED";
+  private _networkError(error: unknown): error is NetworkError {
+    return (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === "ECONNABORTED"
+    );
   }
 
-  private _toStringNetworkError(error: any): string {
+  private _toStringNetworkError(error: NetworkError): string {
     let errorMessage = `[${error.code}] ${error.message}\n`;
     errorMessage += "The cli-kintone aborted due to a network error.\n";
     errorMessage += "Please check your network connection.\n";

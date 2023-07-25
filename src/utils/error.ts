@@ -26,7 +26,10 @@ export abstract class CliKintoneError extends Error {
       return this._toStringKintoneAllRecordsError(this.cause);
     } else if (this.cause instanceof KintoneRestAPIError) {
       return this._toStringKintoneRestAPIError(this.cause);
+    } else if (this._networkError(this.cause)) {
+      return this._toStringNetworkError(this.cause);
     }
+
     return this.cause + "\n";
   }
 
@@ -47,6 +50,17 @@ export abstract class CliKintoneError extends Error {
       default:
         return `${error.message}\n`;
     }
+  }
+
+  private _networkError(error: any): boolean {
+    return error && error.code === "ECONNABORTED";
+  }
+
+  private _toStringNetworkError(error: any): string {
+    let errorMessage = `[${error.code}] ${error.message}\n`;
+    errorMessage += "The cli-kintone aborted due to a network error.\n";
+    errorMessage += "Please check your network connection.\n";
+    return errorMessage;
   }
 
   toString(): string {

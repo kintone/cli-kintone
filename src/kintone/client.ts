@@ -18,6 +18,8 @@ export type RestAPIClientOptions = {
   httpsProxy?: string;
 };
 
+const DEFAULT_SOCKET_TIMEOUT = 60000;
+
 const buildAuthParam = (options: RestAPIClientOptions) => {
   const passwordAuthParam = {
     username: options.username,
@@ -103,5 +105,6 @@ export const buildRestAPIClient = (options: RestAPIClientOptions) => {
       pfxFilePath: options.pfxFilePath,
       pfxFilePassword: options.pfxFilePassword,
     }),
+    socketTimeout: DEFAULT_SOCKET_TIMEOUT,
   });
 };

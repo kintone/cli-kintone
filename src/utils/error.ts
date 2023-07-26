@@ -28,7 +28,7 @@ export abstract class CliKintoneError extends Error {
       return this._toStringKintoneAllRecordsError(this.cause);
     } else if (this.cause instanceof KintoneRestAPIError) {
       return this._toStringKintoneRestAPIError(this.cause);
-    } else if (this._networkError(this.cause)) {
+    } else if (this._isNetworkError(this.cause)) {
       return this._toStringNetworkError(this.cause);
     }
 
@@ -54,7 +54,7 @@ export abstract class CliKintoneError extends Error {
     }
   }
 
-  private _networkError(error: unknown): error is NetworkError {
+  private _isNetworkError(error: unknown): error is NetworkError {
     return (
       typeof error === "object" &&
       error !== null &&

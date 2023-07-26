@@ -144,7 +144,7 @@ const handler = async (args: Args) => {
       name: FORCE_DELETE_KEY,
       type: "confirm",
       message: "Are you sure want to delete records?",
-      default: true,
+      default: false,
     },
   ];
 

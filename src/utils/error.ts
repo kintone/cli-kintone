@@ -55,6 +55,7 @@ export abstract class CliKintoneError extends Error {
   }
 
   private _isNetworkError(error: unknown): error is NetworkError {
+    // TODO: once @kintone/rest-api-client officially exports the socket timeout error, we can use it instead.
     return (
       typeof error === "object" &&
       error !== null &&

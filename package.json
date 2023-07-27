@@ -62,7 +62,7 @@
     "@cybozu/eslint-config": "^18.0.3",
     "@types/inquirer": "^8.2.6",
     "@types/jest": "^29.5.3",
-    "@types/node": "^18.17.0",
+    "@types/node": "^18.17.1",
     "@types/rollup-plugin-auto-external": "^2.0.2",
     "@types/yargs": "^17.0.24",
     "@vercel/ncc": "^0.36.1",
@@ -87,5 +87,6 @@
     "iconv-lite": "^0.6.3",
     "inquirer": "^8.2.5",
     "yargs": "^17.7.2"
-  }
+  },
+  "packageManager": "pnpm@8.6.10"
 }

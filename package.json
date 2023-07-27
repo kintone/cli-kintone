@@ -87,5 +87,6 @@
     "iconv-lite": "^0.6.3",
     "inquirer": "^8.2.5",
     "yargs": "^17.7.2"
-  }
+  },
+  "packageManager": "pnpm@8.6.10"
 }

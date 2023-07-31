@@ -74,6 +74,7 @@ describe("api", () => {
   const PROXY_USERNAME = "proxyUser";
   const PROXY_PASSWORD = "proxyPass";
   const HTTPS_PROXY_WITH_AUTHN = `http://${PROXY_USERNAME}:${PROXY_PASSWORD}@proxy.example.com:3128`;
+  const DEFAULT_SOCKET_TIMEOUT = 60000;
 
   it("should pass username and password to the apiClient correctly", () => {
     const apiClient = buildRestAPIClient({
@@ -91,6 +92,7 @@ describe("api", () => {
       userAgent: expectedUa,
       httpsAgent: new https.Agent(),
       proxy: false,
+      socketTimeout: DEFAULT_SOCKET_TIMEOUT,
     });
   });
 
@@ -114,6 +116,7 @@ describe("api", () => {
       userAgent: expectedUa,
       httpsAgent: new https.Agent(),
       proxy: false,
+      socketTimeout: DEFAULT_SOCKET_TIMEOUT,
     });
   });
 
@@ -129,6 +132,7 @@ describe("api", () => {
       userAgent: expectedUa,
       httpsAgent: new https.Agent(),
       proxy: false,
+      socketTimeout: DEFAULT_SOCKET_TIMEOUT,
     });
   });
 
@@ -149,6 +153,7 @@ describe("api", () => {
       userAgent: expectedUa,
       httpsAgent: new https.Agent(),
       proxy: false,
+      socketTimeout: DEFAULT_SOCKET_TIMEOUT,
     });
   });
 
@@ -176,6 +181,7 @@ describe("api", () => {
       userAgent: expectedUa,
       httpsAgent: new https.Agent(),
       proxy: false,
+      socketTimeout: DEFAULT_SOCKET_TIMEOUT,
     });
   });
   it("should pass information of client certificate to the apiClient correctly", () => {
@@ -199,6 +205,7 @@ describe("api", () => {
         passphrase: PFX_FILE_PASSWORD,
       }),
       proxy: false,
+      socketTimeout: DEFAULT_SOCKET_TIMEOUT,
     });
   });
   it("should pass information of proxy server to the apiClient correctly", () => {
@@ -222,6 +229,7 @@ describe("api", () => {
         port: "3128",
       }),
       proxy: false,
+      socketTimeout: DEFAULT_SOCKET_TIMEOUT,
     });
   });
   it("should pass information of client certificate and proxy server to the apiClient correctly", () => {
@@ -249,6 +257,7 @@ describe("api", () => {
         passphrase: PFX_FILE_PASSWORD,
       }),
       proxy: false,
+      socketTimeout: DEFAULT_SOCKET_TIMEOUT,
     });
   });
 
@@ -279,6 +288,7 @@ describe("api", () => {
         },
       }),
       proxy: false,
+      socketTimeout: DEFAULT_SOCKET_TIMEOUT,
     });
   });
 });

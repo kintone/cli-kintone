@@ -19,7 +19,7 @@ body:
     attributes:
       label: Target Version
       placeholder: e.g. vX.Y.Z
-      description: Which version of cli-kintone do you want to report a bug for? 
+      description: Which version of cli-kintone do you want to report a bug for?
     validations:
       required: true
   - type: textarea
@@ -29,7 +29,7 @@ body:
       description: |
         Please provide [minimum reproduction](https://stackoverflow.com/help/minimal-reproducible-example) steps of the bug.
         If you have a reproduction repository, [GitHub Gist](https://gist.github.com/) snippet, or some external pages, please share the links.
-        
+
         :warning: DO NOT SUBMIT CONFIDENTIAL INFORMATION SUCH AS YOUR SUBDOMAIN AND PASSWORD
       placeholder: |
         1. Prepare a Kintone App with the following fields...

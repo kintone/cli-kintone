@@ -1,6 +1,6 @@
 # See for https://github.com/github/licensed/blob/master/docs/configuration.md for more details.
 # If not set, defaults to the directory name of `source_path`
-name: 'cli-kintone'
+name: "cli-kintone"
 
 # Sources of metadata
 sources:

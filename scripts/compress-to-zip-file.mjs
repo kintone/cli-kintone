@@ -3,7 +3,7 @@ import { $, cd } from "zx";
 import fs from "fs/promises";
 import path from "path";
 import os from "os";
-import rimraf from "rimraf";
+import { rimraf } from "rimraf";
 import { fileURLToPath } from "url";
 import packageJson from "../package.json" assert { type: "json" };
 

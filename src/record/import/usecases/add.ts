@@ -21,26 +21,26 @@ export const addRecords: (
   options: {
     attachmentsDir?: string;
     skipMissingFields?: boolean;
-  }
+  },
 ) => Promise<void> = async (
   apiClient,
   app,
   recordSource: LocalRecordRepository,
   schema,
-  { attachmentsDir, skipMissingFields = true }
+  { attachmentsDir, skipMissingFields = true },
 ) => {
   let currentIndex = 0;
   let currentRecords: LocalRecord[] = [];
   let lastSucceededRecord: LocalRecord | undefined;
   const progressLogger = new ProgressLogger(
     logger,
-    await recordSource.length()
+    await recordSource.length(),
   );
   try {
     logger.info("Starting to import records...");
     for await (const recordsByChunk of chunked(
       recordSource.reader(),
-      CHUNK_SIZE
+      CHUNK_SIZE,
     )) {
       currentRecords = recordsByChunk;
       const recordsToUpload = await convertRecordsToApiRequestParameter(
@@ -51,7 +51,7 @@ export const addRecords: (
         {
           attachmentsDir,
           skipMissingFields,
-        }
+        },
       );
       await apiClient.record.addAllRecords({
         app,
@@ -69,7 +69,7 @@ export const addRecords: (
       currentRecords,
       currentIndex,
       schema,
-      lastSucceededRecord
+      lastSucceededRecord,
     );
   }
 };
@@ -82,7 +82,7 @@ const convertRecordsToApiRequestParameter = async (
   options: {
     attachmentsDir?: string;
     skipMissingFields: boolean;
-  }
+  },
 ): Promise<KintoneRecordForParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
 
@@ -96,7 +96,7 @@ const convertRecordsToApiRequestParameter = async (
         fieldProcessor(apiClient, field, fieldSchema, {
           attachmentsDir,
           skipMissingFields,
-        })
+        }),
     );
     kintoneRecords.push(kintoneRecord);
   }

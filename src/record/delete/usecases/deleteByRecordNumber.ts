@@ -12,7 +12,7 @@ import {
 export const deleteByRecordNumber: (
   apiClient: KintoneRestAPIClient,
   app: string,
-  recordNumbers: RecordNumber[]
+  recordNumbers: RecordNumber[],
 ) => Promise<void> = async (apiClient, app, recordNumbers) => {
   logger.info("Starting to delete records...");
   const appCode = await getAppCode(apiClient, app);
@@ -30,7 +30,7 @@ export const deleteByRecordNumber: (
 
 const generateRecordsParam = (
   recordNumbers: RecordNumber[],
-  appCode: string
+  appCode: string,
 ): KintoneRecordForDeleteAllParameter[] => {
   const recordIds = convertRecordNumberToRecordId(recordNumbers, appCode);
 

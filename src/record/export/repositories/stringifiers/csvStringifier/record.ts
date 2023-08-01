@@ -11,7 +11,7 @@ export type RecordAsCsvRows = CsvRow[];
 export const convertRecord = (
   record: LocalRecord,
   schema: RecordSchema,
-  useLocalFilePath: boolean
+  useLocalFilePath: boolean,
 ): RecordAsCsvRows => {
   const primaryRow: CsvRow = {};
   for (const field of fieldReader(record, schema)) {
@@ -45,7 +45,7 @@ export const convertRecord = (
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style
 export function* recordReader(
-  records: LocalRecord[]
+  records: LocalRecord[],
 ): Generator<LocalRecord, void, undefined> {
   yield* records;
 }

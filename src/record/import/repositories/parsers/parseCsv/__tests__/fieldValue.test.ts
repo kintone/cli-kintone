@@ -143,6 +143,6 @@ describe("convertFieldValue", () => {
     "[$#] convert $input.type field correctly",
     ({ input, expected }) => {
       expect(convertFieldValue(input)).toStrictEqual(expected);
-    }
+    },
   );
 });

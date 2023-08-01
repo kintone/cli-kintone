@@ -17,7 +17,7 @@ const checkRejectArg = ({
   errorMessage: string | RegExp;
 }) => {
   return expect(
-    exec(`cross-env LC_ALL='en_US' node ${mainFilePath} ${arg}`)
+    exec(`cross-env LC_ALL='en_US' node ${mainFilePath} ${arg}`),
   ).rejects.toThrow(errorMessage);
 };
 

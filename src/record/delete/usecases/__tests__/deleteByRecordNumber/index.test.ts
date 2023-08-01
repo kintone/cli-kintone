@@ -19,7 +19,7 @@ describe("deleteRecords", () => {
       },
     ]);
     return expect(
-      deleteByRecordNumber(apiClient, "1", [{ value: "appcode-1" }])
+      deleteByRecordNumber(apiClient, "1", [{ value: "appcode-1" }]),
     ).resolves.not.toThrow();
   });
 
@@ -54,7 +54,7 @@ describe("deleteRecords", () => {
     apiClient.record.deleteAllRecords = jest.fn().mockRejectedValueOnce(error);
     apiClient.record.getAllRecordsWithId = jest.fn().mockResolvedValue([]);
     return expect(
-      deleteByRecordNumber(apiClient, "1", [{ value: "appcode-1" }])
+      deleteByRecordNumber(apiClient, "1", [{ value: "appcode-1" }]),
     ).rejects.toThrow(error);
   });
 });

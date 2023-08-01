@@ -4,7 +4,7 @@ import { LINE_BREAK } from "./constants";
 
 export const convertFieldValue = (
   field: Fields.OneOf,
-  useLocalFilePath: boolean
+  useLocalFilePath: boolean,
 ): string => {
   switch (field.type) {
     case "RECORD_NUMBER":

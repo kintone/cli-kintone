@@ -8,12 +8,12 @@ export const fieldProcessor: (
   apiClient: KintoneRestAPIClient,
   field: Fields.OneOf,
   fieldSchema: FieldSchema,
-  options: { attachmentsDir?: string; skipMissingFields: boolean }
+  options: { attachmentsDir?: string; skipMissingFields: boolean },
 ) => Promise<KintoneRecordForParameter[string]> = async (
   apiClient,
   field,
   fieldSchema,
-  { attachmentsDir, skipMissingFields }
+  { attachmentsDir, skipMissingFields },
 ) => {
   switch (fieldSchema.type) {
     case "FILE": {
@@ -23,7 +23,7 @@ export const fieldProcessor: (
       return fileFieldProcessor(
         field as Fields.File,
         apiClient,
-        attachmentsDir
+        attachmentsDir,
       );
     }
     case "SUBTABLE": {
@@ -32,7 +32,7 @@ export const fieldProcessor: (
         fieldSchema,
         skipMissingFields,
         apiClient,
-        attachmentsDir
+        attachmentsDir,
       );
     }
     default:
@@ -43,7 +43,7 @@ export const fieldProcessor: (
 const fileFieldProcessor = async (
   field: Fields.File,
   apiClient: KintoneRestAPIClient,
-  attachmentsDir: string
+  attachmentsDir: string,
 ) => {
   const uploadedList: Array<{ fileKey: string }> = [];
   for (const fileInfo of field.value) {
@@ -69,7 +69,7 @@ const subtableFieldProcessor = async (
   fieldSchema: Extract<FieldSchema, { type: "SUBTABLE" }>,
   skipMissingFields: boolean,
   apiClient: KintoneRestAPIClient,
-  attachmentsDir?: string
+  attachmentsDir?: string,
 ) => {
   const newRows = [];
 
@@ -82,7 +82,7 @@ const subtableFieldProcessor = async (
           continue;
         } else {
           throw new Error(
-            `The specified field "${fieldInSubtableSchema.code}" does not exist on the CSV`
+            `The specified field "${fieldInSubtableSchema.code}" does not exist on the CSV`,
           );
         }
       }
@@ -90,7 +90,7 @@ const subtableFieldProcessor = async (
         apiClient,
         row.value[fieldInSubtableSchema.code],
         fieldInSubtableSchema,
-        { attachmentsDir, skipMissingFields }
+        { attachmentsDir, skipMissingFields },
       );
     }
     newRows.push({ id: row.id, value: fieldsInRow });

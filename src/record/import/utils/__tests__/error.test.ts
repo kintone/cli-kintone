@@ -49,22 +49,22 @@ describe("parseKintoneRestAPIError", () => {
             lastRowIndex: index + 1,
           },
         },
-      })
+      }),
     );
     const kintoneRestAPIError = buildKintoneRestAPIError(
       errorIndex,
       errorFieldCode,
       numOfProcessedRecords,
-      numOfAlreadyImportedRecords
+      numOfAlreadyImportedRecords,
     );
     const errorMessage = parseKintoneRestAPIError(
       kintoneRestAPIError,
       CHUNK_SIZE,
       records.slice(numOfAlreadyImportedRecords + numOfProcessedRecords),
-      schema
+      schema,
     );
     expect(errorMessage).toBe(
-      `[500] [some code] some error message (some id)\n  An error occurred on ${errorFieldCode} at row ${errorRowIndex}.\n    Cause: invalid value\n`
+      `[500] [some code] some error message (some id)\n  An error occurred on ${errorFieldCode} at row ${errorRowIndex}.\n    Cause: invalid value\n`,
     );
   });
 });
@@ -73,7 +73,7 @@ export const buildKintoneRestAPIError = (
   errorIndex: number,
   errorFieldCode: string,
   numOfProcessedRecords: number,
-  numOfAlreadyImportedRecords: number
+  numOfAlreadyImportedRecords: number,
 ): KintoneRestAPIError => {
   const errorIndexRelative =
     errorIndex - numOfProcessedRecords - numOfAlreadyImportedRecords;

@@ -7,11 +7,11 @@ export type SupportedImportEncoding = "utf8" | "sjis";
 
 export const openFsStreamWithEncode: (
   filePath: string,
-  encoding?: SupportedImportEncoding
+  encoding?: SupportedImportEncoding,
 ) => NodeJS.ReadableStream = (filePath, encoding = "utf8") => {
   const stream = fs.createReadStream(filePath);
   const decodedStream = stream.pipe(
-    Transform.from(iconv.decodeStream(encoding))
+    Transform.from(iconv.decodeStream(encoding)),
   );
   stream.on("error", (e) => {
     decodedStream.destroy(e);
@@ -21,10 +21,10 @@ export const openFsStreamWithEncode: (
 
 export const readFile: (
   filePath: string,
-  encoding?: SupportedImportEncoding
+  encoding?: SupportedImportEncoding,
 ) => Promise<{ content: string; format: string }> = async (
   filePath,
-  encoding = "utf8"
+  encoding = "utf8",
 ) => {
   const format = extractFileFormat(filePath);
   if (format === "json" && encoding !== "utf8") {
@@ -44,7 +44,7 @@ export const readFile: (
 };
 
 const readStream: (stream: NodeJS.ReadWriteStream) => Promise<string> = async (
-  stream
+  stream,
 ) => {
   let content = "";
   for await (const chunk of stream) {

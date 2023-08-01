@@ -70,7 +70,7 @@ describe("groupByKey", () => {
     const actual = [];
     for await (const chunk of groupByKey(
       arrayToAsyncIter(source),
-      (el) => el.type
+      (el) => el.type,
     )) {
       actual.push(chunk);
     }
@@ -131,7 +131,7 @@ describe("groupByKeyChunked", () => {
     for await (const chunk of groupByKeyChunked(
       arrayToAsyncIter(source),
       (el) => el.type,
-      chunkSize
+      chunkSize,
     )) {
       actual.push(chunk);
     }

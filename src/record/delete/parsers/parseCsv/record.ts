@@ -4,7 +4,7 @@ import type { RecordNumber } from "../../types/field";
 
 export const getRecordNumberFromCsvRows = (
   rows: CsvRow[],
-  recordNumberFieldCode: string
+  recordNumberFieldCode: string,
 ): RecordNumber[] => {
   if (rows.length === 0) {
     return [];

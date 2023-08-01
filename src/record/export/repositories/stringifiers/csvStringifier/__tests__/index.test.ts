@@ -33,7 +33,7 @@ describe("csvStringifier", () => {
   it.each(patterns)("$description", async (pattern) => {
     const csvStringifier = new CsvStringifier(
       pattern.schema,
-      pattern.useLocalFilePath
+      pattern.useLocalFilePath,
     );
     const source = Readable.from(pattern.input.map((record) => [record]));
     for await (const chunk of source) {

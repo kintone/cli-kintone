@@ -14,17 +14,17 @@ type SubtableField = {
 
 export const hasSubtable = (fieldsJson: FieldsJson) =>
   Object.values(fieldsJson.properties).some(
-    (field) => field.type === "SUBTABLE"
+    (field) => field.type === "SUBTABLE",
   );
 
 export const convertSubtableField = (
   field: SubtableField,
-  useLocalFilePath: boolean
+  useLocalFilePath: boolean,
 ): CsvRow[] => {
   const subtableRows: CsvRow[] = [];
   for (const row of subtableRowReader(field)) {
     subtableRows.push(
-      convertSubtableRow(row, field.code, field.fields, useLocalFilePath)
+      convertSubtableRow(row, field.code, field.fields, useLocalFilePath),
     );
   }
   return subtableRows;
@@ -33,7 +33,7 @@ export const convertSubtableField = (
 // eslint-disable-next-line func-style
 export function* subtableFieldReader(
   record: LocalRecord,
-  schema: RecordSchema
+  schema: RecordSchema,
 ): Generator<SubtableField, void, undefined> {
   for (const field of schema.fields) {
     if (field.type !== "SUBTABLE") {
@@ -57,7 +57,7 @@ const convertSubtableRow = (
   subtableRow: SubtableRow,
   subtableFieldCode: string,
   subtableFields: SubtableField["fields"],
-  useLocalFilePath: boolean
+  useLocalFilePath: boolean,
 ): CsvRow => {
   const newRow: CsvRow = {
     [subtableFieldCode]: subtableRow.id,
@@ -65,11 +65,11 @@ const convertSubtableRow = (
   for (const fieldsInSubtable of fieldsInSubtableReader(
     subtableRow,
     subtableFieldCode,
-    subtableFields
+    subtableFields,
   )) {
     newRow[fieldsInSubtable.code] = convertFieldInSubtable(
       fieldsInSubtable,
-      useLocalFilePath
+      useLocalFilePath,
     );
   }
   return newRow;
@@ -77,7 +77,7 @@ const convertSubtableRow = (
 
 // eslint-disable-next-line func-style
 function* subtableRowReader(
-  subtableField: SubtableField
+  subtableField: SubtableField,
 ): Generator<SubtableRow, void, undefined> {
   yield* subtableField.value.value;
 }
@@ -89,7 +89,7 @@ type FieldInSubtable = {
 
 const convertFieldInSubtable = (
   fieldInSubtable: FieldInSubtable,
-  useLocalFilePath: boolean
+  useLocalFilePath: boolean,
 ): string => {
   return convertFieldValue(fieldInSubtable.value, useLocalFilePath);
 };
@@ -98,7 +98,7 @@ const convertFieldInSubtable = (
 function* fieldsInSubtableReader(
   subtableRow: SubtableRow,
   subtableFieldCode: string,
-  subtableFields: SubtableField["fields"]
+  subtableFields: SubtableField["fields"],
 ): Generator<FieldInSubtable, void, undefined> {
   for (const fieldPropertyInSubtable of subtableFields) {
     if (!(fieldPropertyInSubtable.code in subtableRow.value)) {

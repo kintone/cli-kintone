@@ -59,21 +59,21 @@ export const fieldsJson: FieldsJson = {
 describe("userSelected", () => {
   it("should throw an Error if specified field is in a Table field", () => {
     expect(() =>
-      userSelected(["richText", "subTableText"], fieldsJson)
+      userSelected(["richText", "subTableText"], fieldsJson),
     ).toThrow(
-      'The field in a Table cannot be specified to the fields option ("subTableText")\nPlease specify the Table field instead'
+      'The field in a Table cannot be specified to the fields option ("subTableText")\nPlease specify the Table field instead',
     );
   });
   it("should throw an Error if specified field does not exist", () => {
     expect(() =>
-      userSelected(["richText", "HyperKintoneText"], fieldsJson)
+      userSelected(["richText", "HyperKintoneText"], fieldsJson),
     ).toThrow(
-      'The specified field "HyperKintoneText" does not exist on the app'
+      'The specified field "HyperKintoneText" does not exist on the app',
     );
   });
   it("should throw an Error if specified field is not supported", () => {
     expect(() => userSelected(["richText", "Categories"], fieldsJson)).toThrow(
-      'The specified field "Categories" is not supported'
+      'The specified field "Categories" is not supported',
     );
   });
 });

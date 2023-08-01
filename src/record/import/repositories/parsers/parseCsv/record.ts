@@ -17,7 +17,7 @@ type RecordCsv = {
 
 export const convertRecord = (
   recordCsv: RecordCsv,
-  schema: RecordSchema
+  schema: RecordSchema,
 ): LocalRecord => {
   const recordData: LocalRecord["data"] = {};
   for (const field of fieldReader(recordCsv.rows[0], schema)) {
@@ -41,7 +41,7 @@ export const convertRecord = (
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style
 export async function* recordReader(
-  csvStream: csvParse.Parser
+  csvStream: csvParse.Parser,
 ): AsyncGenerator<RecordCsv, void, undefined> {
   const lineOffset = 1; // offset the header row
 
@@ -101,5 +101,5 @@ const unshiftToStream = (stream: Readable, element: unknown) =>
     (async function* () {
       yield element;
       yield* stream;
-    })()
+    })(),
   );

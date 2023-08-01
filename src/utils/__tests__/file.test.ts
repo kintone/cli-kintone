@@ -14,7 +14,7 @@ describe("readFile", () => {
   it("throws error if format is JSON and encoding is not 'utf8'", async () => {
     const INPUT_FILENAME = path.join(__dirname, "./fixtures/input_utf8.json");
     await expect(readFile(INPUT_FILENAME, "sjis")).rejects.toThrow(
-      "source file is JSON and JSON MUST be encoded with UTF-8"
+      "source file is JSON and JSON MUST be encoded with UTF-8",
     );
   });
 
@@ -24,10 +24,10 @@ describe("readFile", () => {
     async (encoding) => {
       const INPUT_FILENAME = path.join(
         __dirname,
-        `./fixtures/input_${encoding}.csv`
+        `./fixtures/input_${encoding}.csv`,
       );
       const { content } = await readFile(INPUT_FILENAME, encoding);
       expect(content).toBe(expected);
-    }
+    },
   );
 });

@@ -12,7 +12,7 @@ export const parseKintoneRestAPIError = (
   error: KintoneRestAPIError,
   chunkSize: number,
   records: LocalRecord[],
-  recordSchema: RecordSchema
+  recordSchema: RecordSchema,
 ): string => {
   let errorMessage: string = `${error.message}\n`;
 
@@ -51,7 +51,7 @@ export const parseKintoneRestAPIError = (
 
 const generateErrorIndexMessage = (
   records: LocalRecord[],
-  recordIndex: number
+  recordIndex: number,
 ): string => {
   const formatInfo = records.at(recordIndex)?.metadata.format;
   if (!formatInfo) {
@@ -68,7 +68,7 @@ const generateErrorIndexMessage = (
 
 const getFieldCodeByErrorKeyWithSchema = (
   errorKey: string,
-  schema: RecordSchema
+  schema: RecordSchema,
 ): string => {
   /**
    * Parse error key to string array. For example:

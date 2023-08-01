@@ -8,7 +8,7 @@ import { ParserError } from "../error";
 
 export const parseCsv: (
   csv: string,
-  recordNumberFieldCode: string
+  recordNumberFieldCode: string,
 ) => RecordNumber[] = (csv, recordNumberFieldCode) => {
   let rows: CsvRow[] = [];
   try {
@@ -26,7 +26,7 @@ export const parseCsv: (
   }
   if (!isMatchedRecordNumberFieldCode(rows[0], recordNumberFieldCode)) {
     throw new ParserError(
-      `The record number field code (${recordNumberFieldCode}) is not found.`
+      `The record number field code (${recordNumberFieldCode}) is not found.`,
     );
   }
 
@@ -35,5 +35,5 @@ export const parseCsv: (
 
 const isMatchedRecordNumberFieldCode = (
   row: CsvRow,
-  recordNumberFieldCode: string
+  recordNumberFieldCode: string,
 ): boolean => !!row[recordNumberFieldCode];

@@ -25,7 +25,7 @@ export class ProgressLogger {
 
   abort(succeededCount: number) {
     this.logger.info(
-      `Imported ${succeededCount} of ${this.length} records successfully`
+      `Imported ${succeededCount} of ${this.length} records successfully`,
     );
   }
 
@@ -37,7 +37,7 @@ export class ProgressLogger {
 const printProgress = (
   logger: Logger,
   current: number,
-  length: number
+  length: number,
 ): void => {
   logger.info(`Imported ${current} of ${length} records`);
 };

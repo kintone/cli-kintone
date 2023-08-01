@@ -45,22 +45,22 @@ describe("AddRecordsError", () => {
             lastRowIndex: index + 1,
           },
         },
-      })
+      }),
     );
     const kintoneAllRecordsError = buildKintoneAllRecordsError(
       numOfAllRecords,
       numOfProcessedRecords,
       numOfAlreadyImportedRecords,
-      errorIndex
+      errorIndex,
     );
     const upsertRecordsError = new AddRecordsError(
       kintoneAllRecordsError,
       records.slice(numOfAlreadyImportedRecords),
       numOfAlreadyImportedRecords,
-      schema
+      schema,
     );
     expect(upsertRecordsError.toString()).toBe(
-      "Failed to add all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n  An error occurred on number at row 46.\n    Cause: invalid value\n"
+      "Failed to add all records.\nRows from 1 to 41 are processed successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n  An error occurred on number at row 46.\n    Cause: invalid value\n",
     );
   });
 });
@@ -68,7 +68,7 @@ describe("AddRecordsError", () => {
 export const buildKintoneRestAPIError = (
   errorIndex: number,
   numOfProcessedRecords: number,
-  numOfAlreadyImportedRecords: number
+  numOfAlreadyImportedRecords: number,
 ): KintoneRestAPIError => {
   const errorIndexRelative =
     errorIndex - numOfProcessedRecords - numOfAlreadyImportedRecords;
@@ -96,7 +96,7 @@ export const buildKintoneAllRecordsError = (
   numOfAllRecords: number,
   numOfProcessedRecords: number,
   numOfAlreadyImportedRecords: number,
-  errorIndex: number
+  errorIndex: number,
 ): KintoneAllRecordsError => {
   const processedRecordsResult = {
     records: Array(numOfProcessedRecords).map(() => ({})),
@@ -107,13 +107,13 @@ export const buildKintoneAllRecordsError = (
   const kintoneRestAPIError = buildKintoneRestAPIError(
     errorIndex,
     numOfProcessedRecords,
-    numOfAlreadyImportedRecords
+    numOfAlreadyImportedRecords,
   );
   return new KintoneAllRecordsError(
     processedRecordsResult,
     unprocessedRecords,
     numOfAllRecords - numOfAlreadyImportedRecords,
     kintoneRestAPIError,
-    CHUNK_SIZE
+    CHUNK_SIZE,
   );
 };

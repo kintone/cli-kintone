@@ -21,7 +21,7 @@ export class UpdateKey {
   constructor(
     field: UpdateKeyField,
     appCode: string,
-    existingUpdateKeyValues: Set<string>
+    existingUpdateKeyValues: Set<string>,
   ) {
     this.field = field;
     this.appCode = appCode;
@@ -32,7 +32,7 @@ export class UpdateKey {
     apiClient: KintoneRestAPIClient,
     app: string,
     updateKeyCode: string,
-    schema: RecordSchema
+    schema: RecordSchema,
   ): Promise<UpdateKey> => {
     const updateKeyField = findUpdateKeyInSchema(updateKeyCode, schema);
     const appCode = (await apiClient.app.getApp({ id: app })).code;
@@ -47,7 +47,7 @@ export class UpdateKey {
           return removeAppCode(updateKeyValue, appCode);
         }
         return updateKeyValue;
-      })
+      }),
     );
 
     return new UpdateKey(updateKeyField, appCode, existingUpdateKeyValues);
@@ -80,10 +80,10 @@ export class UpdateKey {
 
 const findUpdateKeyInSchema = (
   updateKey: string,
-  schema: RecordSchema
+  schema: RecordSchema,
 ): UpdateKeyField => {
   const updateKeySchema = schema.fields.find(
-    (fieldSchema) => fieldSchema.code === updateKey
+    (fieldSchema) => fieldSchema.code === updateKey,
   );
 
   if (updateKeySchema === undefined) {
@@ -112,7 +112,7 @@ type SupportedUpdateKeyFieldType =
   | KintoneFormFieldProperty.Number;
 
 const isSupportedUpdateKeyFieldType = (
-  fieldSchema: FieldSchema
+  fieldSchema: FieldSchema,
 ): fieldSchema is SupportedUpdateKeyFieldType => {
   const supportedUpdateKeyFieldTypes = [
     "RECORD_NUMBER",
@@ -125,21 +125,21 @@ const isSupportedUpdateKeyFieldType = (
 const validateUpdateKeyInRecords = async (
   updateKey: UpdateKeyField,
   appCode: string,
-  recordRepository: LocalRecordRepository
+  recordRepository: LocalRecordRepository,
 ) => {
   let hasAppCodePrevious: boolean = false;
   for await (const { data: record, index } of withIndex(
-    recordRepository.reader()
+    recordRepository.reader(),
   )) {
     if (!(updateKey.code in record.data)) {
       throw new Error(
-        `The field specified as "Key to Bulk Update" (${updateKey.code}) does not exist on the input`
+        `The field specified as "Key to Bulk Update" (${updateKey.code}) does not exist on the input`,
       );
     }
     const value = record.data[updateKey.code].value;
     if (typeof value !== "string") {
       throw new Error(
-        `The value of the "Key to Bulk Update" (${updateKey.code}) on the input is invalid`
+        `The value of the "Key to Bulk Update" (${updateKey.code}) on the input is invalid`,
       );
     }
 
@@ -151,7 +151,7 @@ const validateUpdateKeyInRecords = async (
       const _hasAppCode = hasAppCode(value, appCode);
       if (index !== 0 && _hasAppCode !== hasAppCodePrevious) {
         throw new Error(
-          `The "Key to Bulk Update" should not be mixed with those with and without app code`
+          `The "Key to Bulk Update" should not be mixed with those with and without app code`,
         );
       }
       hasAppCodePrevious = _hasAppCode;

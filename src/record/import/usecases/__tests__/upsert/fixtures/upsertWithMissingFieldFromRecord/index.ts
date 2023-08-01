@@ -21,7 +21,7 @@ export const pattern: TestPattern = {
   expected: {
     failure: {
       cause: new Error(
-        'The specified field "singleLineText_nonExistentOnInput" does not exist on the CSV'
+        'The specified field "singleLineText_nonExistentOnInput" does not exist on the CSV',
       ),
     },
   },

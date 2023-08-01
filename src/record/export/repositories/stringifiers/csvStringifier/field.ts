@@ -11,7 +11,7 @@ type Field = {
 
 export const convertField = (
   field: Field,
-  useLocalFilePath: boolean
+  useLocalFilePath: boolean,
 ): string => {
   return convertFieldValue(field.value, useLocalFilePath);
 };
@@ -19,7 +19,7 @@ export const convertField = (
 // eslint-disable-next-line func-style
 export function* fieldReader(
   record: LocalRecord,
-  schema: RecordSchema
+  schema: RecordSchema,
 ): Generator<Field, void, undefined> {
   for (const field of schema.fields) {
     if (field.type === "SUBTABLE") {

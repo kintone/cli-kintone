@@ -11,7 +11,7 @@ import { tableLayoutComparator } from "./helpers/table";
 export const userSelected = (
   userSelectedFields: string[],
   fieldsJson: FieldsJson,
-  layoutJson: LayoutJson
+  layoutJson: LayoutJson,
 ): SchemaTransformer => {
   validateFields(userSelectedFields, fieldsJson);
   return (fields: FieldSchema[]) => {
@@ -40,13 +40,13 @@ const validateFields = (fields: string[], fieldsJson: FieldsJson) => {
     for (const property of Object.values(fieldsJson.properties)) {
       if (property.type === "SUBTABLE" && field in property.fields) {
         throw new Error(
-          `The field in a Table cannot be specified to the fields option ("${field}")\nPlease specify the Table field instead`
+          `The field in a Table cannot be specified to the fields option ("${field}")\nPlease specify the Table field instead`,
         );
       }
     }
     if (!(field in fieldsJson.properties)) {
       throw new Error(
-        `The specified field "${field}" does not exist on the app`
+        `The specified field "${field}" does not exist on the app`,
       );
     }
     if (!isSupportedField(fieldsJson.properties[field])) {

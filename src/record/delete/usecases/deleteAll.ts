@@ -8,7 +8,7 @@ import { DeleteAllRecordsError } from "./deleteAll/error";
 
 export const deleteAllRecords: (
   apiClient: KintoneRestAPIClient,
-  app: string
+  app: string,
 ) => Promise<void> = async (apiClient, app) => {
   logger.info("Starting to delete all records...");
   const records = await generateRecordsParamForDeleteAll(apiClient, app);
@@ -28,7 +28,7 @@ export const deleteAllRecords: (
 
 const generateRecordsParamForDeleteAll: (
   apiClient: KintoneRestAPIClient,
-  app: string
+  app: string,
 ) => Promise<KintoneRecordForDeleteAllParameter[]> = async (apiClient, app) => {
   const params = { app, fields: ["$id"] };
   const kintoneRecords = await apiClient.record.getAllRecordsWithId(params);
@@ -42,7 +42,7 @@ const generateRecordsParamForDeleteAll: (
       return {
         id: parseInt(idValue, 10),
       };
-    }
+    },
   );
 
   return records;

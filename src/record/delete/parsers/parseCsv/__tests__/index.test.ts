@@ -8,8 +8,8 @@ describe("ParserError", () => {
 
     return expect(() => parseCsv(csvContent, recordNumberFieldCode)).toThrow(
       new ParserError(
-        `The record number field code (${recordNumberFieldCode}) is not found.`
-      )
+        `The record number field code (${recordNumberFieldCode}) is not found.`,
+      ),
     );
   });
 });

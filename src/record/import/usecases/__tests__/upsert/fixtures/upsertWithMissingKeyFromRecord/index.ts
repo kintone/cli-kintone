@@ -21,7 +21,7 @@ export const pattern: TestPattern = {
   expected: {
     failure: {
       cause: new Error(
-        'The field specified as "Key to Bulk Update" (singleLineText_nonExistentOnInput) does not exist on the input'
+        'The field specified as "Key to Bulk Update" (singleLineText_nonExistentOnInput) does not exist on the input',
       ),
     },
   },

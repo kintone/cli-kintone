@@ -64,7 +64,7 @@ const buildHttpsAgent = (options: {
   }
 
   const { protocol, hostname, port, username, password } = new URL(
-    options.proxy
+    options.proxy,
   );
   const proxyOptions: httpsProxyAgent.HttpsProxyAgentOptions = {
     protocol: protocol,
@@ -77,7 +77,7 @@ const buildHttpsAgent = (options: {
     proxyOptions.headers = {
       "Proxy-Authorization": generateProxyAuthorizationHeaderValue(
         username,
-        password
+        password,
       ),
     };
   }
@@ -87,7 +87,7 @@ const buildHttpsAgent = (options: {
 
 const generateProxyAuthorizationHeaderValue = (
   username: string,
-  password: string
+  password: string,
 ): string => {
   return "Basic " + Buffer.from(`${username}:${password}`).toString("base64");
 };

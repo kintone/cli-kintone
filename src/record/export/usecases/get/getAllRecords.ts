@@ -44,7 +44,7 @@ async function* getAllRecordsRecursiveWithId(
     fields?: string[];
     condition?: string;
   },
-  id: string
+  id: string,
 ): AsyncGenerator<KintoneRecordForResponse[], void, undefined> {
   const GET_RECORDS_LIMIT = 500;
 
@@ -64,7 +64,7 @@ async function* getAllRecordsRecursiveWithId(
     return;
   }
   throw new Error(
-    "Missing `$id` in `getRecords` response. This error is likely caused by a bug in Kintone REST API Client. Please file an issue."
+    "Missing `$id` in `getRecords` response. This error is likely caused by a bug in Kintone REST API Client. Please file an issue.",
   );
 }
 

@@ -21,7 +21,7 @@ try {
 } catch (e) {
   console.error(
     "Error: The executables of cli-kintone are not found at",
-    executableDir
+    executableDir,
   );
   // eslint-disable-next-line no-process-exit
   process.exit(1);

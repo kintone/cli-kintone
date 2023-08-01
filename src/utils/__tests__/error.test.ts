@@ -10,10 +10,10 @@ const CHUNK_SIZE = 100;
 describe("CliKintoneError", () => {
   it("toStringCause should output the correct sentence. (inner: CliKintoneError)", () => {
     const cliKintoneError = new CliKintoneErrorForTest(
-      new CliKintoneErrorForTest("This is a root cause.")
+      new CliKintoneErrorForTest("This is a root cause."),
     );
     expect(cliKintoneError.toString()).toBe(
-      "Error occurred\nError occurred\nThis is a root cause.\n"
+      "Error occurred\nError occurred\nThis is a root cause.\n",
     );
   });
 
@@ -27,13 +27,13 @@ describe("CliKintoneError", () => {
       numOfAllRecords,
       numOfProcessedRecords,
       numOfAlreadyImportedRecords,
-      errorIndex
+      errorIndex,
     );
 
     const error = new CliKintoneErrorForTest(kintoneAllRecordsError);
 
     expect(error.toString()).toBe(
-      "Error occurred\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n"
+      "Error occurred\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n",
     );
   });
 
@@ -42,7 +42,7 @@ describe("CliKintoneError", () => {
     const runError = new CliKintoneErrorForTest(kintoneRestAPIError);
 
     expect(runError.toString()).toBe(
-      "Error occurred\n[500] [some code] some error message (some id)\n"
+      "Error occurred\n[500] [some code] some error message (some id)\n",
     );
   });
 
@@ -51,7 +51,7 @@ describe("CliKintoneError", () => {
     const runError = new CliKintoneErrorForTest(kintoneRestAPIError);
 
     expect(runError.toString()).toBe(
-      "Error occurred\nPlease specify --guest-space-id option to access an App in Guest Spaces.\n"
+      "Error occurred\nPlease specify --guest-space-id option to access an App in Guest Spaces.\n",
     );
   });
 });
@@ -81,7 +81,7 @@ const buildKintoneRestAPIError = (code?: string): KintoneRestAPIError => {
 const buildKintoneRestAPIErrorByDefault = (
   errorIndex: number,
   numOfProcessedRecords: number,
-  numOfAlreadyImportedRecords: number
+  numOfAlreadyImportedRecords: number,
 ): KintoneRestAPIError => {
   const errorIndexRelative =
     errorIndex - numOfProcessedRecords - numOfAlreadyImportedRecords;
@@ -109,7 +109,7 @@ const buildKintoneAllRecordsError = (
   numOfAllRecords: number,
   numOfProcessedRecords: number,
   numOfAlreadyImportedRecords: number,
-  errorIndex: number
+  errorIndex: number,
 ): KintoneAllRecordsError => {
   const processedRecordsResult = {
     records: Array(numOfProcessedRecords).map(() => ({})),
@@ -120,13 +120,13 @@ const buildKintoneAllRecordsError = (
   const kintoneRestAPIError = buildKintoneRestAPIErrorByDefault(
     errorIndex,
     numOfProcessedRecords,
-    numOfAlreadyImportedRecords
+    numOfAlreadyImportedRecords,
   );
   return new KintoneAllRecordsError(
     processedRecordsResult,
     unprocessedRecords,
     numOfAllRecords - numOfAlreadyImportedRecords,
     kintoneRestAPIError,
-    CHUNK_SIZE
+    CHUNK_SIZE,
   );
 };

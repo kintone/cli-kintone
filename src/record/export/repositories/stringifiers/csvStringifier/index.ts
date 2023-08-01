@@ -72,12 +72,12 @@ class RecordsTransform extends Transform {
   _transform(
     chunk: LocalRecord[],
     encoding: BufferEncoding,
-    done: TransformCallback
+    done: TransformCallback,
   ) {
     const csvRows: CsvRow[] = [];
     for (const record of recordReader(chunk)) {
       csvRows.push(
-        ...convertRecord(record, this.schema, this.useLocalFilePath)
+        ...convertRecord(record, this.schema, this.useLocalFilePath),
       );
     }
     for (const csvRow of csvRows) {

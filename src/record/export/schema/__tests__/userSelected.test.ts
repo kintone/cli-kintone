@@ -64,21 +64,25 @@ const layoutJson: LayoutJson = {
 describe("userSelected", () => {
   it("should throw an Error if specified field is in a Table field", () => {
     expect(() =>
-      userSelected(["recordNumber", "subTableText"], fieldsJson, layoutJson)
+      userSelected(["recordNumber", "subTableText"], fieldsJson, layoutJson),
     ).toThrow(
-      'The field in a Table cannot be specified to the fields option ("subTableText")\nPlease specify the Table field instead'
+      'The field in a Table cannot be specified to the fields option ("subTableText")\nPlease specify the Table field instead',
     );
   });
   it("should throw an Error if specified field does not exist", () => {
     expect(() =>
-      userSelected(["recordNumber", "HyperKintoneText"], fieldsJson, layoutJson)
+      userSelected(
+        ["recordNumber", "HyperKintoneText"],
+        fieldsJson,
+        layoutJson,
+      ),
     ).toThrow(
-      'The specified field "HyperKintoneText" does not exist on the app'
+      'The specified field "HyperKintoneText" does not exist on the app',
     );
   });
   it("should throw an Error if specified field is not supported", () => {
     expect(() =>
-      userSelected(["recordNumber", "Categories"], fieldsJson, layoutJson)
+      userSelected(["recordNumber", "Categories"], fieldsJson, layoutJson),
     ).toThrow('The specified field "Categories" is not supported');
   });
 });

@@ -36,7 +36,7 @@ export abstract class CliKintoneError extends Error {
   }
 
   private _toStringKintoneAllRecordsError(
-    error: KintoneAllRecordsError
+    error: KintoneAllRecordsError,
   ): string {
     let errorMessage = "An error occurred while processing records.\n";
     errorMessage += this._toStringKintoneRestAPIError(error.error);

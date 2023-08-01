@@ -21,21 +21,21 @@ describe("ProgressLogger", () => {
     expect(mockLogger.info).toHaveBeenCalledTimes(1);
     expect(mockLogger.info).toHaveBeenNthCalledWith(
       1,
-      "Imported 2000 of 5000 records"
+      "Imported 2000 of 5000 records",
     );
 
     progressLogger.update(4100);
     expect(mockLogger.info).toHaveBeenCalledTimes(2);
     expect(mockLogger.info).toHaveBeenNthCalledWith(
       2,
-      "Imported 4000 of 5000 records"
+      "Imported 4000 of 5000 records",
     );
 
     progressLogger.done();
     expect(mockLogger.info).toHaveBeenCalledTimes(3);
     expect(mockLogger.info).toHaveBeenNthCalledWith(
       3,
-      "Imported 5000 records successfully"
+      "Imported 5000 records successfully",
     );
   });
 
@@ -50,14 +50,14 @@ describe("ProgressLogger", () => {
     expect(mockLogger.info).toHaveBeenCalledTimes(1);
     expect(mockLogger.info).toHaveBeenNthCalledWith(
       1,
-      "Imported 2000 of 3000 records"
+      "Imported 2000 of 3000 records",
     );
 
     progressLogger.abort(2500);
     expect(mockLogger.info).toHaveBeenCalledTimes(2);
     expect(mockLogger.info).toHaveBeenNthCalledWith(
       2,
-      "Imported 2500 of 3000 records successfully"
+      "Imported 2500 of 3000 records successfully",
     );
   });
 });

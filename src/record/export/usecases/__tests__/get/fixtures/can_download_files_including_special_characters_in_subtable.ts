@@ -89,14 +89,14 @@ export const expected: LocalRecord[] = [
                   ...fileInfo,
                   localFilePath: path.join(
                     "subTableFile-2-0",
-                    "__t_e__s__t__.txt"
+                    "__t_e__s__t__.txt",
                   ),
                 },
                 {
                   ...fileInfo,
                   localFilePath: path.join(
                     "subTableFile-2-0",
-                    "__t_e__s__t__ (1).txt"
+                    "__t_e__s__t__ (1).txt",
                   ),
                 },
               ],
@@ -113,7 +113,7 @@ export const expected: LocalRecord[] = [
                   ...fileInfo,
                   localFilePath: path.join(
                     "subTableFile-2-1",
-                    "__t_e__s__t__.txt"
+                    "__t_e__s__t__.txt",
                   ),
                 },
               ],
@@ -141,7 +141,7 @@ export const expected: LocalRecord[] = [
                   ...fileInfo,
                   localFilePath: path.join(
                     "subTableFile-3-0",
-                    "__t_e__s__t__.txt"
+                    "__t_e__s__t__.txt",
                   ),
                 },
               ],

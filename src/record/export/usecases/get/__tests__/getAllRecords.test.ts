@@ -26,11 +26,11 @@ describe("getAllRecords", () => {
       { length: 1200 },
       (v, k): KintoneRecordForResponse => ({
         $id: { type: "__ID__", value: `${k + 1}` },
-      })
+      }),
     ).reduce(
       (acc, _, i, arr) =>
         i % chunkSize === 0 ? [...acc, arr.slice(i, i + chunkSize)] : acc,
-      [] as KintoneRecordForResponse[][]
+      [] as KintoneRecordForResponse[][],
     );
     const mockResponse: Response[] = chunks.map((chunk) => ({
       records: chunk,
@@ -38,7 +38,7 @@ describe("getAllRecords", () => {
     }));
     apiClient.record.getRecords = mockResponse.reduce(
       (acc, value) => acc.mockResolvedValueOnce(value),
-      jest.fn().mockResolvedValue(mockDefaultResponse)
+      jest.fn().mockResolvedValue(mockDefaultResponse),
     );
 
     const expected: LocalRecord[] = mockResponse
@@ -70,11 +70,11 @@ describe("getAllRecords", () => {
       { length: 1200 },
       (v, k): KintoneRecordForResponse => ({
         $id: { type: "__ID__", value: `${k + 1}` },
-      })
+      }),
     ).reduce(
       (acc, _, i, arr) =>
         i % chunkSize === 0 ? [...acc, arr.slice(i, i + chunkSize)] : acc,
-      [] as KintoneRecordForResponse[][]
+      [] as KintoneRecordForResponse[][],
     );
     const mockResponse: Response[] = chunks.map((chunk) => ({
       records: chunk,
@@ -86,7 +86,7 @@ describe("getAllRecords", () => {
       .mockResolvedValue({ id: "1", totalCount: "" });
     apiClient.record.getRecordsByCursor = mockResponse.reduce(
       (acc, value) => acc.mockResolvedValueOnce(value),
-      jest.fn().mockResolvedValue(mockDefaultResponse)
+      jest.fn().mockResolvedValue(mockDefaultResponse),
     );
     apiClient.record.deleteCursor = jest.fn().mockResolvedValue({});
 

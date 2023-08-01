@@ -13,14 +13,14 @@ describe("DeleteRecordsError", () => {
     }));
     const kintoneAllRecordsError = buildKintoneAllRecordsError(
       numOfAllRecords,
-      numOfProcessedRecords
+      numOfProcessedRecords,
     );
     const deleteSpecifiedRecordsError = new DeleteSpecifiedRecordsError(
       kintoneAllRecordsError,
-      recordsId
+      recordsId,
     );
     expect(deleteSpecifiedRecordsError.toString()).toBe(
-      `Failed to delete records.\n${numOfProcessedRecords}/${numOfAllRecords} records are deleted successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n`
+      `Failed to delete records.\n${numOfProcessedRecords}/${numOfAllRecords} records are deleted successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n`,
     );
   });
 });

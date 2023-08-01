@@ -24,7 +24,7 @@ export const getRecords = async (
     orderBy?: string;
     attachmentsDir?: string;
   },
-  getAllRecordsFn = getAllRecords
+  getAllRecordsFn = getAllRecords,
 ) => {
   const { condition, orderBy, attachmentsDir } = options;
   const writer = recordDestination.writer();
@@ -42,7 +42,7 @@ export const getRecords = async (
         fieldProcessor(recordId, field, fieldSchema, {
           apiClient,
           attachmentsDir,
-        })
+        }),
     );
     await writer.write(localRecords);
   }
@@ -55,8 +55,8 @@ const recordsReducer: (
   task: (
     recordId: string,
     field: KintoneRecordField.OneOf,
-    fieldSchema: FieldSchema
-  ) => Promise<Fields.OneOf>
+    fieldSchema: FieldSchema,
+  ) => Promise<Fields.OneOf>,
 ) => Promise<LocalRecord[]> = async (kintoneRecords, schema, task) => {
   const records: LocalRecord[] = [];
   for (const kintoneRecord of kintoneRecords) {
@@ -64,7 +64,7 @@ const recordsReducer: (
       kintoneRecord,
       schema,
       (field, fieldSchema) =>
-        task(kintoneRecord.$id.value as string, field, fieldSchema)
+        task(kintoneRecord.$id.value as string, field, fieldSchema),
     );
     records.push(record);
   }
@@ -76,8 +76,8 @@ const recordConverter: (
   schema: RecordSchema,
   task: (
     field: KintoneRecordField.OneOf,
-    fieldSchema: FieldSchema
-  ) => Promise<Fields.OneOf>
+    fieldSchema: FieldSchema,
+  ) => Promise<Fields.OneOf>,
 ) => Promise<LocalRecord> = async (record, schema, task) => {
   const newRecord: LocalRecord = {};
   // This step filters fields implicitly
@@ -87,7 +87,7 @@ const recordConverter: (
     }
     newRecord[fieldSchema.code] = await task(
       record[fieldSchema.code],
-      fieldSchema
+      fieldSchema,
     );
   }
   return newRecord;
@@ -100,7 +100,7 @@ const fieldProcessor: (
   options: {
     apiClient: KintoneRestAPIClient;
     attachmentsDir?: string;
-  }
+  },
 ) => Promise<Fields.OneOf> = async (recordId, field, fieldSchema, options) => {
   const { apiClient, attachmentsDir } = options;
 
@@ -114,13 +114,13 @@ const fieldProcessor: (
             `${fieldSchema.code}-${recordId}`,
             process.platform === "win32"
               ? replaceSpecialCharacters(fileInfo.name)
-              : fileInfo.name
+              : fileInfo.name,
           );
 
           const savedFilePath = await downloadAndSaveFile(
             apiClient,
             fileInfo.fileKey,
-            localFilePath
+            localFilePath,
           );
 
           downloadedList.push({
@@ -141,7 +141,7 @@ const fieldProcessor: (
       ).value.entries()) {
         const fieldsInRow: Fields.Subtable["value"][number]["value"] = {};
         for (const [fieldCodeInSubtable, fieldInSubtable] of Object.entries(
-          row.value
+          row.value,
         )) {
           fieldsInRow[fieldCodeInSubtable] = await fieldProcessorInSubtable(
             recordId,
@@ -149,7 +149,7 @@ const fieldProcessor: (
             rowIndex,
             fieldCodeInSubtable,
             fieldInSubtable,
-            { apiClient, attachmentsDir }
+            { apiClient, attachmentsDir },
           );
         }
         newRows.push({ id: row.id, value: fieldsInRow });
@@ -173,14 +173,14 @@ const fieldProcessorInSubtable: (
   options: {
     apiClient: KintoneRestAPIClient;
     attachmentsDir?: string;
-  }
+  },
 ) => Promise<Fields.InSubtable> = async (
   recordId,
   rowId,
   rowIndex,
   fieldCode,
   field,
-  options
+  options,
 ) => {
   const { apiClient, attachmentsDir } = options;
   switch (field.type) {
@@ -193,13 +193,13 @@ const fieldProcessorInSubtable: (
             `${fieldCode}-${recordId}-${rowIndex}`,
             process.platform === "win32"
               ? replaceSpecialCharacters(fileInfo.name)
-              : fileInfo.name
+              : fileInfo.name,
           );
 
           const savedFilePath = await downloadAndSaveFile(
             apiClient,
             fileInfo.fileKey,
-            localFilePath
+            localFilePath,
           );
 
           downloadedList.push({
@@ -221,7 +221,7 @@ const fieldProcessorInSubtable: (
 const downloadAndSaveFile: (
   apiClient: KintoneRestAPIClient,
   fileKey: string,
-  localFilePath: string
+  localFilePath: string,
 ) => Promise<string> = async (apiClient, fileKey, localFilePath) => {
   const file = await apiClient.file.downloadFile({
     fileKey,
@@ -231,7 +231,7 @@ const downloadAndSaveFile: (
 
 const saveFileWithoutOverwrite: (
   filePath: string,
-  file: ArrayBuffer
+  file: ArrayBuffer,
 ) => string = (filePath, file) => {
   const uniqueFilePath = generateUniqueLocalFilePath(filePath);
   mkdirSync(path.dirname(uniqueFilePath), { recursive: true });
@@ -240,7 +240,7 @@ const saveFileWithoutOverwrite: (
 };
 
 const generateUniqueLocalFilePath: (filePath: string) => string = (
-  filePath
+  filePath,
 ) => {
   const internal: (index: number) => string = (index) => {
     const newFileName =
@@ -248,7 +248,7 @@ const generateUniqueLocalFilePath: (filePath: string) => string = (
         ? path.basename(filePath)
         : `${path.basename(
             filePath,
-            path.extname(filePath)
+            path.extname(filePath),
           )} (${index})${path.extname(filePath)}`;
     const newFilePath = path.join(path.dirname(filePath), newFileName);
     if (existsSync(newFilePath)) {

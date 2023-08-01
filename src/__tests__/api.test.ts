@@ -29,7 +29,7 @@ jest.mock("https", () => {
             agentInstance.passphrase = opts.passphrase;
           }
           return agentInstance;
-        }
+        },
       ),
   };
 });

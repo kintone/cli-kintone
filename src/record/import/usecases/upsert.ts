@@ -26,14 +26,14 @@ export const upsertRecords = async (
   {
     attachmentsDir,
     skipMissingFields = true,
-  }: { attachmentsDir?: string; skipMissingFields?: boolean }
+  }: { attachmentsDir?: string; skipMissingFields?: boolean },
 ): Promise<void> => {
   let currentIndex = 0;
   let currentRecords: LocalRecord[] = [];
   let lastSucceededRecord: LocalRecord | undefined;
   const progressLogger = new ProgressLogger(
     logger,
-    await recordSource.length()
+    await recordSource.length(),
   );
   try {
     logger.info("Preparing to import records...");
@@ -41,7 +41,7 @@ export const upsertRecords = async (
       apiClient,
       app,
       updateKeyCode,
-      schema
+      schema,
     );
 
     await updateKey.validateUpdateKeyInRecords(recordSource);
@@ -50,7 +50,7 @@ export const upsertRecords = async (
     for await (const recordsByChunk of groupByKeyChunked(
       recordSource.reader(),
       (record) => (updateKey.isUpdate(record) ? "update" : "add"),
-      CHUNK_SIZE
+      CHUNK_SIZE,
     )) {
       currentRecords = recordsByChunk.data;
 
@@ -61,7 +61,7 @@ export const upsertRecords = async (
           recordsByChunk.data,
           schema,
           updateKey,
-          { attachmentsDir, skipMissingFields }
+          { attachmentsDir, skipMissingFields },
         );
         await apiClient.record.updateAllRecords({
           app,
@@ -74,7 +74,7 @@ export const upsertRecords = async (
           recordsByChunk.data,
           schema,
           updateKey,
-          { attachmentsDir, skipMissingFields }
+          { attachmentsDir, skipMissingFields },
         );
         await apiClient.record.addAllRecords({
           app,
@@ -93,7 +93,7 @@ export const upsertRecords = async (
       currentRecords,
       currentIndex,
       schema,
-      lastSucceededRecord
+      lastSucceededRecord,
     );
   }
 };
@@ -107,7 +107,7 @@ const convertToKintoneRecordForUpdate = async (
   options: {
     attachmentsDir?: string;
     skipMissingFields: boolean;
-  }
+  },
 ): Promise<KintoneRecordForUpdateParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
 
@@ -128,7 +128,7 @@ const convertToKintoneRecordForUpdate = async (
         fieldSchema.type === "CREATOR" ||
         fieldSchema.type === "CREATED_TIME" ||
         fieldSchema.type === "MODIFIER" ||
-        fieldSchema.type === "UPDATED_TIME"
+        fieldSchema.type === "UPDATED_TIME",
     )
     .map((fieldSchema) => fieldSchema.code)
     .concat(updateKeyField.code);
@@ -143,7 +143,7 @@ const convertToKintoneRecordForUpdate = async (
         fieldProcessor(apiClient, field, fieldSchema, {
           attachmentsDir,
           skipMissingFields,
-        })
+        }),
     );
 
     const updateKeyValue = updateKey.findUpdateKeyValueFromRecord(record);
@@ -161,7 +161,7 @@ const convertToKintoneRecordForUpdate = async (
         : {
             updateKey: { field: updateKeyField.code, value: updateKeyValue },
             record: kintoneRecord,
-          }
+          },
     );
   }
 
@@ -177,13 +177,13 @@ const convertToKintoneRecordForAdd = async (
   options: {
     attachmentsDir?: string;
     skipMissingFields: boolean;
-  }
+  },
 ): Promise<KintoneRecordForParameter[]> => {
   const { attachmentsDir, skipMissingFields } = options;
 
   // Ignore a Record number field
   const recordNumberFieldCode = schema.fields.find(
-    (fieldSchema) => fieldSchema.type === "RECORD_NUMBER"
+    (fieldSchema) => fieldSchema.type === "RECORD_NUMBER",
   )?.code;
 
   const kintoneRecords: KintoneRecordForParameter[] = [];
@@ -196,7 +196,7 @@ const convertToKintoneRecordForAdd = async (
         fieldProcessor(apiClient, field, fieldSchema, {
           attachmentsDir,
           skipMissingFields,
-        })
+        }),
     );
 
     if (recordNumberFieldCode !== undefined) {

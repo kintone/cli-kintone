@@ -3,7 +3,7 @@ type AsyncIterators<T> = AsyncIterableIterator<T> | AsyncGenerator<T>;
 
 // eslint-disable-next-line func-style
 export async function* iterToAsyncIter<T>(
-  source: Iterators<T>
+  source: Iterators<T>,
 ): AsyncIterators<T> {
   for (const element of source) {
     yield element;
@@ -13,7 +13,7 @@ export async function* iterToAsyncIter<T>(
 // eslint-disable-next-line func-style
 export async function* chunked<T>(
   source: AsyncIterators<T>,
-  size: number
+  size: number,
 ): AsyncGenerator<T[]> {
   let chunk = [];
   for await (const element of source) {
@@ -31,7 +31,7 @@ export async function* chunked<T>(
 // eslint-disable-next-line func-style
 export async function* groupByKey<T, K>(
   source: AsyncIterableIterator<T> | AsyncGenerator<T>,
-  keyFn: (element: T) => K
+  keyFn: (element: T) => K,
 ): AsyncGenerator<{ key: K; data: T[] }, void, undefined> {
   let array = [];
   for await (const { current, next } of withNext(source)) {
@@ -48,12 +48,12 @@ export async function* groupByKey<T, K>(
 export async function* groupByKeyChunked<T, K>(
   source: AsyncIterators<T>,
   keyFn: (element: T) => K,
-  size: number
+  size: number,
 ): AsyncGenerator<{ key: K; data: T[] }, void, undefined> {
   for await (const { key, data } of groupByKey(source, keyFn)) {
     for await (const chunk of chunked(
       iterToAsyncIter(data[Symbol.iterator]()),
-      size
+      size,
     )) {
       yield { key, data: chunk };
     }
@@ -62,7 +62,7 @@ export async function* groupByKeyChunked<T, K>(
 
 // eslint-disable-next-line func-style
 export async function* withNext<T>(
-  source: AsyncIterators<T>
+  source: AsyncIterators<T>,
 ): AsyncGenerator<{ current: T; next?: T }> {
   let { value: prev, done } = await source.next();
   if (done) {
@@ -77,7 +77,7 @@ export async function* withNext<T>(
 
 // eslint-disable-next-line func-style
 export async function* withIndex<T>(
-  source: AsyncIterators<T>
+  source: AsyncIterators<T>,
 ): AsyncGenerator<{ data: T; index: number }> {
   let index = 0;
   for await (const value of source) {

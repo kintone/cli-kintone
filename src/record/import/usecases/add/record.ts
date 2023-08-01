@@ -9,13 +9,13 @@ export const recordConverter: (
   skipMissingFields: boolean,
   task: (
     field: Fields.OneOf,
-    fieldSchema: FieldSchema
-  ) => Promise<KintoneRecordForParameter[string]>
+    fieldSchema: FieldSchema,
+  ) => Promise<KintoneRecordForParameter[string]>,
 ) => Promise<KintoneRecordForParameter> = async (
   record,
   schema,
   skipMissingFields,
-  task
+  task,
 ) => {
   const newRecord: KintoneRecordForParameter = {};
   for (const fieldSchema of schema.fields) {
@@ -24,13 +24,13 @@ export const recordConverter: (
         continue;
       } else {
         throw new Error(
-          `The specified field "${fieldSchema.code}" does not exist on the CSV`
+          `The specified field "${fieldSchema.code}" does not exist on the CSV`,
         );
       }
     }
     newRecord[fieldSchema.code] = await task(
       record.data[fieldSchema.code],
-      fieldSchema
+      fieldSchema,
     );
   }
   return newRecord;

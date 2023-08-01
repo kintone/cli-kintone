@@ -31,7 +31,7 @@ export class AddRecordsError extends CliKintoneError {
     records: LocalRecord[],
     currentIndex: number,
     recordSchema: RecordSchema,
-    lastSucceededRecord?: LocalRecord
+    lastSucceededRecord?: LocalRecord,
   ) {
     const message = "Failed to add all records.";
     super(message, cause);
@@ -70,7 +70,7 @@ export class AddRecordsError extends CliKintoneError {
       error,
       this.chunkSize,
       this.records.slice(this.numOfSuccessInCurrentChunk),
-      this.recordSchema
+      this.recordSchema,
     );
   }
 }

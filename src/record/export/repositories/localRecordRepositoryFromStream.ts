@@ -12,7 +12,7 @@ export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
   constructor(
     openWritableSink: () => NodeJS.WritableStream,
     schema: RecordSchema,
-    useLocalFilePath: boolean
+    useLocalFilePath: boolean,
   ) {
     this.openWritableSink = openWritableSink;
     this.schema = schema;

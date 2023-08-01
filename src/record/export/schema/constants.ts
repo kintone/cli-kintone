@@ -37,10 +37,10 @@ const supportedFieldTypes: Array<SupportedFieldType["type"]> = [
 ];
 
 export const isSupportedField = (
-  field: KintoneFormFieldProperty.OneOf
+  field: KintoneFormFieldProperty.OneOf,
 ): field is SupportedFieldType =>
   supportedFieldTypes.some(
-    (supportedFieldType) => field.type === supportedFieldType
+    (supportedFieldType) => field.type === supportedFieldType,
   );
 
 type SupportedFieldTypeInSubtable = Exclude<
@@ -71,8 +71,8 @@ const supportedFieldTypesInSubtable: Array<
 ];
 
 export const isSupportedFieldInSubtable = (
-  field: KintoneFormFieldProperty.InSubtable
+  field: KintoneFormFieldProperty.InSubtable,
 ): field is SupportedFieldTypeInSubtable =>
   supportedFieldTypesInSubtable.some(
-    (supportedFieldType) => field.type === supportedFieldType
+    (supportedFieldType) => field.type === supportedFieldType,
   );

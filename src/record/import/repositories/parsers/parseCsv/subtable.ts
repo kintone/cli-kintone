@@ -11,7 +11,7 @@ type SubtableField = {
 };
 
 export const convertSubtableField = (
-  subtableField: SubtableField
+  subtableField: SubtableField,
 ): Fields.Subtable => {
   const field: Fields.Subtable = { value: [] };
   for (const subtableRow of subtableRowReader(subtableField)) {
@@ -23,10 +23,10 @@ export const convertSubtableField = (
 // eslint-disable-next-line func-style
 export function* subtableFieldReader(
   rows: CsvRow[],
-  schema: RecordSchema
+  schema: RecordSchema,
 ): Generator<SubtableField, void, undefined> {
   const subtableFields = schema.fields.flatMap((field) =>
-    field.type === "SUBTABLE" ? [field] : []
+    field.type === "SUBTABLE" ? [field] : [],
   );
 
   for (const subtableField of subtableFields) {
@@ -35,8 +35,8 @@ export function* subtableFieldReader(
       (row) =>
         (subtableField.code in row && row[subtableField.code].length > 0) ||
         subtableField.fields.some(
-          ({ code }) => code in row && row[code].length > 0
-        )
+          ({ code }) => code in row && row[code].length > 0,
+        ),
     );
 
     if (subtableRows.length > 0) {
@@ -56,7 +56,7 @@ type SubtableRow = {
 };
 
 const convertSubtableRow = (
-  subtableRow: SubtableRow
+  subtableRow: SubtableRow,
 ): Fields.Subtable["value"][number] => {
   const newRow: Fields.Subtable["value"][number] = {
     id: subtableRow.id,
@@ -71,7 +71,7 @@ const convertSubtableRow = (
 
 // eslint-disable-next-line func-style
 function* subtableRowReader(
-  subtableField: SubtableField
+  subtableField: SubtableField,
 ): Generator<SubtableRow, void, undefined> {
   for (const row of subtableField.rows) {
     yield { id: row[subtableField.code], row, fields: subtableField.fields };
@@ -84,7 +84,7 @@ type FieldInSubtable = {
   type: InSubtable["type"];
 };
 const convertFieldInSubtable = (
-  fieldInSubtable: FieldInSubtable
+  fieldInSubtable: FieldInSubtable,
 ): Fields.InSubtable => {
   return convertFieldValue(fieldInSubtable) as Fields.InSubtable;
 };

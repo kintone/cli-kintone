@@ -21,7 +21,7 @@ export type Options = {
 };
 
 export const run: (
-  argv: RestAPIClientOptions & Options
+  argv: RestAPIClientOptions & Options,
 ) => Promise<void> = async (argv) => {
   try {
     const {
@@ -41,13 +41,13 @@ export const run: (
       fieldsJson,
       fields
         ? userSelected(fields, fieldsJson, updateKey)
-        : defaultTransformer()
+        : defaultTransformer(),
     );
     const format = extractFileFormat(filePath);
     const localRecordRepository = new LocalRecordRepositoryFromStream(
       () => openFsStreamWithEncode(filePath, encoding),
       format,
-      schema
+      schema,
     );
 
     if ((await localRecordRepository.length()) === 0) {
@@ -66,7 +66,7 @@ export const run: (
         {
           attachmentsDir,
           skipMissingFields,
-        }
+        },
       );
     } else {
       await addRecords(apiClient, app, localRecordRepository, schema, {

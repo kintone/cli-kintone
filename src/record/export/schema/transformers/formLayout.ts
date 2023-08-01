@@ -28,7 +28,7 @@ export const formLayout = (layoutJson: LayoutJson): SchemaTransformer => {
 };
 
 export const formLayoutComparator = (
-  layoutJson: LayoutJson
+  layoutJson: LayoutJson,
 ): ((fieldA: FieldSchema, fieldB: FieldSchema) => number) => {
   const flatLayout = flattenLayout(layoutJson.layout);
   return (fieldA, fieldB) => {
@@ -66,7 +66,7 @@ export const formLayoutComparator = (
 };
 
 const flattenLayout = (
-  layout: LayoutJson["layout"]
+  layout: LayoutJson["layout"],
 ): Array<{
   code: string;
   type: KintoneFormFieldProperty.OneOf["type"];

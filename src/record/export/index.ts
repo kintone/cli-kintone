@@ -23,7 +23,7 @@ export type Options = {
 };
 
 export const run: (
-  argv: RestAPIClientOptions & Options
+  argv: RestAPIClientOptions & Options,
 ) => Promise<void> = async (options) => {
   try {
     const {
@@ -42,7 +42,7 @@ export const run: (
       fieldsJson,
       fields
         ? userSelected(fields, fieldsJson, layoutJson)
-        : defaultTransformer(layoutJson)
+        : defaultTransformer(layoutJson),
     );
 
     const repository = new LocalRecordRepositoryFromStream(
@@ -52,7 +52,7 @@ export const run: (
         return encodeStream;
       },
       schema,
-      !!attachmentsDir
+      !!attachmentsDir,
     );
 
     await getRecords(apiClient, app, repository, schema, {

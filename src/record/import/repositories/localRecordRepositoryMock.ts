@@ -16,7 +16,7 @@ export class LocalRecordRepositoryMock implements LocalRecordRepository {
 
 // eslint-disable-next-line func-style
 async function* asyncGeneratorFromStream(
-  source: LocalRecord[]
+  source: LocalRecord[],
 ): AsyncGenerator<LocalRecord, void, undefined> {
   yield* source;
 }

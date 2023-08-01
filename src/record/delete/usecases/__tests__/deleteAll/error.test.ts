@@ -17,14 +17,14 @@ describe("DeleteAllRecordsError", () => {
     }));
     const kintoneAllRecordsError = buildKintoneAllRecordsError(
       numOfAllRecords,
-      numOfProcessedRecords
+      numOfProcessedRecords,
     );
     const deleteAllRecordsError = new DeleteAllRecordsError(
       kintoneAllRecordsError,
-      recordsId
+      recordsId,
     );
     expect(deleteAllRecordsError.toString()).toBe(
-      `Failed to delete all records.\n${numOfProcessedRecords}/${numOfAllRecords} records are deleted successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n`
+      `Failed to delete all records.\n${numOfProcessedRecords}/${numOfAllRecords} records are deleted successfully.\nAn error occurred while processing records.\n[500] [some code] some error message (some id)\n`,
     );
   });
 });
@@ -47,7 +47,7 @@ export const buildKintoneRestAPIError = (): KintoneRestAPIError => {
 
 export const buildKintoneAllRecordsError = (
   numOfAllRecords: number,
-  numOfProcessedRecords: number
+  numOfProcessedRecords: number,
 ): KintoneAllRecordsError => {
   const processedRecordsResult = {
     records: Array(numOfProcessedRecords).map(() => ({})),
@@ -61,6 +61,6 @@ export const buildKintoneAllRecordsError = (
     unprocessedRecords,
     numOfAllRecords,
     kintoneRestAPIError,
-    CHUNK_SIZE
+    CHUNK_SIZE,
   );
 };

@@ -17,7 +17,7 @@ export const convertField = (field: Field): Fields.OneOf => {
 // eslint-disable-next-line func-style
 export function* fieldReader(
   row: CsvRow,
-  schema: RecordSchema
+  schema: RecordSchema,
 ): Generator<Field, void, undefined> {
   for (const field of schema.fields) {
     if (field.type === "SUBTABLE") {

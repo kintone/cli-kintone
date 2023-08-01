@@ -11,7 +11,7 @@ import type { LocalRecordRepository } from "../../../usecases/interface";
 // eslint-disable-next-line func-style
 export async function* csvReader(
   source: () => NodeJS.ReadableStream,
-  schema: RecordSchema
+  schema: RecordSchema,
 ): ReturnType<LocalRecordRepository["reader"]> {
   try {
     const sourceStream = source();
@@ -20,7 +20,7 @@ export async function* csvReader(
         columns: true,
         skip_empty_lines: true,
         delimiter: SEPARATOR,
-      })
+      }),
     );
     sourceStream.on("error", (e) => {
       csvStream.destroy(e);
@@ -35,7 +35,7 @@ export async function* csvReader(
 }
 
 export const countRecordsFromCsv = async (
-  source: NodeJS.ReadableStream
+  source: NodeJS.ReadableStream,
 ): Promise<number> => {
   try {
     const csvStream = source.pipe(
@@ -43,7 +43,7 @@ export const countRecordsFromCsv = async (
         columns: true,
         skip_empty_lines: true,
         delimiter: SEPARATOR,
-      })
+      }),
     );
     source.on("error", (e) => {
       csvStream.destroy(e);

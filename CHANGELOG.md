@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/kintone/cli-kintone/compare/v1.8.0...v1.8.1) (2023-08-02)
+
+
+### Bug Fixes
+
+* making false the default value of the delete command prompt ([#411](https://github.com/kintone/cli-kintone/issues/411)) ([2641ec3](https://github.com/kintone/cli-kintone/commit/2641ec33c68f906292053003294d86e81ea22802))
+
 ## [1.8.0](https://github.com/kintone/cli-kintone/compare/v1.7.2...v1.8.0) (2023-07-26)
 
 

@@ -8,6 +8,7 @@ import { deleteByRecordNumber } from "./usecases/deleteByRecordNumber";
 import { logger } from "../../utils/log";
 import type { SupportedImportEncoding } from "../../utils/file";
 import { readFile } from "../../utils/file";
+import { isMismatchEncoding } from "../../utils/encoding";
 import { parseRecords } from "./parsers";
 import { RunError } from "../error";
 
@@ -41,6 +42,13 @@ const deleteRecordsByFile = async (
   filePath: string,
   encoding?: SupportedImportEncoding,
 ): Promise<void> => {
+  if (encoding && (await isMismatchEncoding(filePath, encoding))) {
+    logger.error(
+      `Failed to decode the specified CSV file.\nThe specified encoding (${encoding}) might mismatch the actual encoding of the CSV file.`,
+    );
+    return;
+  }
+
   const recordNumbers = await getRecordNumbersFromFile(
     apiClient,
     app,

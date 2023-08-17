@@ -9,14 +9,12 @@ export const isMismatchEncoding = async (
   encoding: SupportedImportEncoding,
 ): Promise<boolean> => {
   const format = extractFileFormat(filePath);
-  let isMismatch = false;
   switch (format) {
     case "csv":
-      isMismatch = await isMismatchEncodingOfCsvFile(filePath, encoding);
-      break;
+      return isMismatchEncodingOfCsvFile(filePath, encoding);
   }
 
-  return isMismatch;
+  return false;
 };
 
 const isMismatchEncodingOfCsvFile: (
@@ -24,7 +22,7 @@ const isMismatchEncodingOfCsvFile: (
   encoding: SupportedImportEncoding,
 ) => Promise<boolean> = async (filePath, encoding) => {
   const decodedFirstLine = await getDecodedFirstLine(filePath, encoding);
-  return isContainUntranslatableChars(decodedFirstLine);
+  return containsUntranslatableChars(decodedFirstLine);
 };
 
 const getDecodedFirstLine: (
@@ -48,9 +46,7 @@ const getDecodedFirstLine: (
   });
 };
 
-const isContainUntranslatableChars: (content: string) => boolean = (
-  content,
-) => {
+const containsUntranslatableChars: (content: string) => boolean = (content) => {
   const untranslatableChars = ["�", "?"];
   return untranslatableChars.some((char) => content.includes(char));
 };

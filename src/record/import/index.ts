@@ -35,11 +35,8 @@ export const run: (
       ...restApiClientOptions
     } = argv;
 
-    if (encoding && (await isMismatchEncoding(filePath, encoding))) {
-      logger.error(
-        `Failed to decode the specified CSV file.\nThe specified encoding (${encoding}) might mismatch the actual encoding of the CSV file.`,
-      );
-      return;
+    if (encoding) {
+      await validateEncoding(filePath, encoding);
     }
     const apiClient = buildRestAPIClient(restApiClientOptions);
     const fieldsJson = await apiClient.app.getFormFields({ app });
@@ -84,5 +81,16 @@ export const run: (
     logger.error(new RunError(e));
     // eslint-disable-next-line no-process-exit
     process.exit(1);
+  }
+};
+
+const validateEncoding: (
+  filePath: string,
+  encoding: SupportedImportEncoding,
+) => Promise<void> = async (filePath, encoding) => {
+  if (await isMismatchEncoding(filePath, encoding)) {
+    throw new Error(
+      `Failed to decode the specified CSV file.\nThe specified encoding (${encoding}) might mismatch the actual encoding of the CSV file.`,
+    );
   }
 };

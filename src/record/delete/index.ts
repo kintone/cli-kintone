@@ -42,11 +42,8 @@ const deleteRecordsByFile = async (
   filePath: string,
   encoding?: SupportedImportEncoding,
 ): Promise<void> => {
-  if (encoding && (await isMismatchEncoding(filePath, encoding))) {
-    logger.error(
-      `Failed to decode the specified CSV file.\nThe specified encoding (${encoding}) might mismatch the actual encoding of the CSV file.`,
-    );
-    return;
+  if (encoding) {
+    await validateEncoding(filePath, encoding);
   }
 
   const recordNumbers = await getRecordNumbersFromFile(
@@ -92,4 +89,15 @@ const getRecordNumberFieldCode = (
   }
 
   return recordNumberFieldCode;
+};
+
+const validateEncoding: (
+  filePath: string,
+  encoding: SupportedImportEncoding,
+) => Promise<void> = async (filePath, encoding) => {
+  if (await isMismatchEncoding(filePath, encoding)) {
+    throw new Error(
+      `Failed to decode the specified CSV file.\nThe specified encoding (${encoding}) might mismatch the actual encoding of the CSV file.`,
+    );
+  }
 };

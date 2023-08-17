@@ -35,15 +35,8 @@ const getDecodedFirstLine: (
     input: readWriteStream,
   });
 
-  return new Promise((resolve, reject) => {
-    reader.on("line", (line: string) => {
-      reader.close();
-      resolve(line);
-    });
-
-    reader.on("error", reject);
-    stream.on("error", reject);
-  });
+  const { value: firstRow } = await reader[Symbol.asyncIterator]().next();
+  return firstRow;
 };
 
 const containsUntranslatableChars: (content: string) => boolean = (content) => {

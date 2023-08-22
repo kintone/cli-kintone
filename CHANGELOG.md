@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.3](https://github.com/kintone/cli-kintone/compare/v1.8.2...v1.8.3) (2023-08-22)
+
+
+### Bug Fixes
+
+* improve an error message when process failed due to the wrong encoding ([#437](https://github.com/kintone/cli-kintone/issues/437)) ([a195670](https://github.com/kintone/cli-kintone/commit/a1956702de0b30d76bc4cac10c86107be3605bae))
+
 ## [1.8.2](https://github.com/kintone/cli-kintone/compare/v1.8.1...v1.8.2) (2023-08-07)
 
 

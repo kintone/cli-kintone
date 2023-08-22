@@ -10,6 +10,7 @@ import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
 import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
 import { RunError } from "../error";
+import { isMismatchEncoding } from "../../utils/encoding";
 
 export type Options = {
   app: string;
@@ -34,8 +35,10 @@ export const run: (
       ...restApiClientOptions
     } = argv;
 
+    if (encoding) {
+      await validateEncoding(filePath, encoding);
+    }
     const apiClient = buildRestAPIClient(restApiClientOptions);
-
     const fieldsJson = await apiClient.app.getFormFields({ app });
     const schema = createSchema(
       fieldsJson,
@@ -78,5 +81,16 @@ export const run: (
     logger.error(new RunError(e));
     // eslint-disable-next-line no-process-exit
     process.exit(1);
+  }
+};
+
+const validateEncoding: (
+  filePath: string,
+  encoding: SupportedImportEncoding,
+) => Promise<void> = async (filePath, encoding) => {
+  if (await isMismatchEncoding(filePath, encoding)) {
+    throw new Error(
+      `Failed to decode the specified CSV file.\nThe specified encoding (${encoding}) might mismatch the actual encoding of the CSV file.`,
+    );
   }
 };

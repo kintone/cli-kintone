@@ -3,6 +3,7 @@ import iconv from "iconv-lite";
 import readline from "readline";
 import { extractFileFormat } from "./file";
 import type { SupportedImportEncoding } from "./file";
+import { Transform } from "stream";
 
 export const isMismatchEncoding = async (
   filePath: string,
@@ -30,12 +31,20 @@ const getDecodedFirstLine: (
   encoding: SupportedImportEncoding,
 ) => Promise<string> = async (filePath, encoding) => {
   const stream = fs.createReadStream(filePath);
-  const readWriteStream = stream.pipe(iconv.decodeStream(encoding));
+  const decodedStream = stream.pipe(
+    Transform.from(iconv.decodeStream(encoding)),
+  );
+  stream.on("error", (e) => {
+    decodedStream.destroy(e);
+  });
+
   const reader = readline.createInterface({
-    input: readWriteStream,
+    input: decodedStream,
   });
 
   const { value: firstRow } = await reader[Symbol.asyncIterator]().next();
+  reader.close();
+
   return firstRow;
 };
 

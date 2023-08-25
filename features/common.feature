@@ -8,5 +8,5 @@ Feature: common test cases
   Scenario: @CliKintoneTest-4 Should return the help description by --help
     When I run the command with args "--help"
     Then I should get the exit code is zero
-    And The output message should contain "cli-kintone-macos <command>"
+    And The output message should contain "cli-kintone-(macos|win|linux) <command>"
 

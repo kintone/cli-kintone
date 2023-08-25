@@ -17,10 +17,12 @@ Then("I should get the exit code is zero", function () {
 Then(
   "The output error message should contain {string}",
   function (errorMessage: string) {
-    assert.ok(this.response.stderr.toString().includes(errorMessage));
+    const reg = new RegExp(errorMessage);
+    assert.match(this.response.stderr, reg);
   },
 );
 
 Then("The output message should contain {string}", function (message: string) {
-  assert.ok(this.response.stdout.toString().includes(message));
+  const reg = new RegExp(message);
+  assert.match(this.response.stdout, reg);
 });

@@ -15,14 +15,17 @@ Then("I should get the exit code is zero", function () {
 });
 
 Then(
-  "The output error message should contain {string}",
+  "The output error message should match with the pattern: {string}",
   function (errorMessage: string) {
     const reg = new RegExp(errorMessage);
     assert.match(this.response.stderr, reg);
   },
 );
 
-Then("The output message should contain {string}", function (message: string) {
-  const reg = new RegExp(message);
-  assert.match(this.response.stdout, reg);
-});
+Then(
+  "The output message should match with the pattern: {string}",
+  function (message: string) {
+    const reg = new RegExp(message);
+    assert.match(this.response.stdout, reg);
+  },
+);

@@ -14,10 +14,13 @@ Then("I should get the exit code is zero", function () {
   assert.equal(this.response.status, 0);
 });
 
-Then("The out error message is {string}", function (errorMessage: string) {
-  assert.ok(this.response.stderr.toString().includes(errorMessage));
-});
+Then(
+  "The output error message should contain {string}",
+  function (errorMessage: string) {
+    assert.ok(this.response.stderr.toString().includes(errorMessage));
+  },
+);
 
-Then("The output message is {string}", function (message: string) {
+Then("The output message should contain {string}", function (message: string) {
   assert.ok(this.response.stdout.toString().includes(message));
 });

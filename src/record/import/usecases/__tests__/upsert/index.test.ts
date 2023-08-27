@@ -117,7 +117,7 @@ describe("upsertRecords", () => {
           input.repository,
           input.schema,
           input.updateKey,
-          input.options
+          input.options,
         );
         for (const request of expected.success.requests) {
           if (request.type === "update") {
@@ -135,17 +135,17 @@ describe("upsertRecords", () => {
             input.repository,
             input.schema,
             input.updateKey,
-            input.options
-          )
+            input.options,
+          ),
         ).rejects.toThrow(
           new UpsertRecordsError(
             expected.failure.cause,
             input.records,
             0,
-            input.schema
-          )
+            input.schema,
+          ),
         );
       }
-    }
+    },
   );
 });

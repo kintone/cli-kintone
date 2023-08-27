@@ -3,17 +3,17 @@ import type { FieldSchema, RecordSchema } from "../types/schema";
 import { isSupportedField, isSupportedFieldInSubtable } from "./constants";
 
 export type SchemaTransformer = (
-  fields: RecordSchema["fields"]
+  fields: RecordSchema["fields"],
 ) => RecordSchema["fields"];
 
 export const createSchema = (
   fieldsJson: FieldsJson,
-  transformer: SchemaTransformer
+  transformer: SchemaTransformer,
 ): RecordSchema => {
   const fields: FieldSchema[] = transformer(convert(fieldsJson.properties));
 
   const hasSubtable: boolean = fields.some(
-    (field) => field.type === "SUBTABLE"
+    (field) => field.type === "SUBTABLE",
   );
 
   return {
@@ -32,7 +32,7 @@ const convert = (properties: FieldsJson["properties"]): FieldSchema[] => {
       const { fields: fieldsInSubtable, ...others } = property;
       fields.push({
         fields: Object.values(fieldsInSubtable).filter(
-          isSupportedFieldInSubtable
+          isSupportedFieldInSubtable,
         ),
         ...others,
       });

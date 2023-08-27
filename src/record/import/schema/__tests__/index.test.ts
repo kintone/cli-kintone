@@ -18,7 +18,7 @@ describe("createSchema", () => {
   const patterns = [common, userSelected, userSelectedWithUpdateKey];
   it.each(patterns)("$description", (pattern) => {
     expect(createSchema(pattern.input, pattern.transformer)).toStrictEqual(
-      pattern.expected
+      pattern.expected,
     );
   });
 });

@@ -20,7 +20,7 @@ describe("hasAppCode", () => {
       result: boolean;
     }) => {
       expect(hasAppCode(input, appCode)).toBe(result);
-    }
+    },
   );
 
   it.each`
@@ -32,8 +32,8 @@ describe("hasAppCode", () => {
     "should throw with invalid error (input: $input, appCode: $appCode)",
     ({ input, appCode }: { input: string; appCode: string }) => {
       expect(() => hasAppCode(input, appCode)).toThrow(
-        `The "Key to Bulk Update" value is invalid (${input})`
+        `The "Key to Bulk Update" value is invalid (${input})`,
       );
-    }
+    },
   );
 });

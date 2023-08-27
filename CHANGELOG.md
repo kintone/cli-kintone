@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.3](https://github.com/kintone/cli-kintone/compare/v1.8.2...v1.8.3) (2023-08-22)
+
+
+### Bug Fixes
+
+* improve an error message when process failed due to the wrong encoding ([#437](https://github.com/kintone/cli-kintone/issues/437)) ([a195670](https://github.com/kintone/cli-kintone/commit/a1956702de0b30d76bc4cac10c86107be3605bae))
+
+## [1.8.2](https://github.com/kintone/cli-kintone/compare/v1.8.1...v1.8.2) (2023-08-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency inquirer to ^8.2.6 ([#422](https://github.com/kintone/cli-kintone/issues/422)) ([615a576](https://github.com/kintone/cli-kintone/commit/615a5761a9dd5680d823046e6cbf321b66455c76))
+
+## [1.8.1](https://github.com/kintone/cli-kintone/compare/v1.8.0...v1.8.1) (2023-08-02)
+
+
+### Bug Fixes
+
+* making false the default value of the delete command prompt ([#411](https://github.com/kintone/cli-kintone/issues/411)) ([2641ec3](https://github.com/kintone/cli-kintone/commit/2641ec33c68f906292053003294d86e81ea22802))
+
 ## [1.8.0](https://github.com/kintone/cli-kintone/compare/v1.7.2...v1.8.0) (2023-07-26)
 
 

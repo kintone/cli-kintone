@@ -31,7 +31,7 @@ export class UpsertRecordsError extends CliKintoneError {
     currentRecords: LocalRecord[],
     currentIndex: number,
     recordSchema: RecordSchema,
-    lastSucceededRecord?: LocalRecord
+    lastSucceededRecord?: LocalRecord,
   ) {
     const message = "Failed to upsert all records.";
     super(message, cause);
@@ -70,7 +70,7 @@ export class UpsertRecordsError extends CliKintoneError {
       error,
       this.chunkSize,
       this.records.slice(this.numOfSuccessInCurrentChunk),
-      this.recordSchema
+      this.recordSchema,
     );
   }
 }

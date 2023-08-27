@@ -213,8 +213,8 @@ describe("convertFieldValue", () => {
     "[$#] convert $input.type field correctly",
     ({ input, expected, useLocalFilePath = false }) => {
       expect(convertFieldValue(input, useLocalFilePath)).toStrictEqual(
-        expected
+        expected,
       );
-    }
+    },
   );
 });

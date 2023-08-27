@@ -53,14 +53,14 @@ describe("validateRecordNumbers", () => {
 
     if (pattern.expected.failure !== undefined) {
       return expect(
-        validateRecordNumbers(apiClient, "1", pattern.appCode, pattern.input)
+        validateRecordNumbers(apiClient, "1", pattern.appCode, pattern.input),
       ).rejects.toThrow(
-        new ValidatorError(pattern.expected.failure.errorMessage)
+        new ValidatorError(pattern.expected.failure.errorMessage),
       );
     }
 
     return expect(
-      validateRecordNumbers(apiClient, "1", pattern.appCode, pattern.input)
+      validateRecordNumbers(apiClient, "1", pattern.appCode, pattern.input),
     ).resolves.not.toThrow();
   });
 });

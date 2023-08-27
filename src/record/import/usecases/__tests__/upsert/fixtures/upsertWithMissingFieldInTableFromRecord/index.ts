@@ -21,7 +21,7 @@ export const pattern: TestPattern = {
   expected: {
     failure: {
       cause: new Error(
-        'The specified field "numberInTable" does not exist on the CSV'
+        'The specified field "numberInTable" does not exist on the CSV',
       ),
     },
   },

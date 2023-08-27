@@ -13,7 +13,7 @@ export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
   constructor(
     openReadableSource: () => NodeJS.ReadableStream,
     format: string,
-    schema: RecordSchema
+    schema: RecordSchema,
   ) {
     this.format = format;
     this.length = () => countRecordsFromCsv(openReadableSource());
@@ -24,7 +24,7 @@ export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
         break;
       default:
         throw new RepositoryError(
-          `Unexpected file type: ${format} is unacceptable.`
+          `Unexpected file type: ${format} is unacceptable.`,
         );
     }
   }

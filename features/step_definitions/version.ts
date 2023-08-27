@@ -6,5 +6,5 @@ Then(
   function (versionFormat: string) {
     const reg = new RegExp(versionFormat);
     assert.match(this.response.stdout, reg);
-  }
+  },
 );

@@ -29,8 +29,8 @@ describe("addRecords", () => {
         "1",
         new LocalRecordRepositoryMock([], "csv"),
         { fields: [] },
-        { attachmentsDir: "" }
-      )
+        { attachmentsDir: "" },
+      ),
     ).resolves.not.toThrow();
   });
 
@@ -134,15 +134,15 @@ describe("addRecords", () => {
         APP_ID,
         canUploadFiles.input,
         canUploadFiles.schema,
-        {}
-      )
+        {},
+      ),
     ).rejects.toThrow(
       new AddRecordsError(
         new Error("--attachments-dir option is required."),
         inputRecords,
         0,
-        canUploadFiles.schema
-      )
+        canUploadFiles.schema,
+      ),
     );
   });
 
@@ -165,7 +165,7 @@ describe("addRecords", () => {
       canUploadFiles.schema,
       {
         attachmentsDir: ATTACHMENTS_DIR,
-      }
+      },
     );
 
     // apiClient.file.uploadFile should be called with correct filePath
@@ -210,7 +210,7 @@ describe("addRecords", () => {
       canUploadFilesInSubtable.schema,
       {
         attachmentsDir: ATTACHMENTS_DIR,
-      }
+      },
     );
 
     // apiClient.file.uploadFile should be called with correct filePath

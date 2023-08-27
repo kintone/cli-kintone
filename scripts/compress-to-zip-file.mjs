@@ -3,7 +3,7 @@ import { $, cd } from "zx";
 import fs from "fs/promises";
 import path from "path";
 import os from "os";
-import rimraf from "rimraf";
+import { rimraf } from "rimraf";
 import { fileURLToPath } from "url";
 import packageJson from "../package.json" assert { type: "json" };
 
@@ -21,7 +21,7 @@ try {
 } catch (e) {
   console.error(
     "Error: The executables of cli-kintone are not found at",
-    executableDir
+    executableDir,
   );
   // eslint-disable-next-line no-process-exit
   process.exit(1);

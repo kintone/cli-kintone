@@ -16,7 +16,7 @@ describe("parseCsv", () => {
   const patterns = [withoutSubtable, withSubtable];
   it.each(patterns)("$description", (pattern) => {
     expect(
-      getRecordNumberFromCsvRows(pattern.input, pattern.recordNumberFieldCode)
+      getRecordNumberFromCsvRows(pattern.input, pattern.recordNumberFieldCode),
     ).toStrictEqual(pattern.expected);
   });
 });

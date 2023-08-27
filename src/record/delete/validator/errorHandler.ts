@@ -29,19 +29,19 @@ export class ErrorHandler {
 
     if (this.invalidValue.length > 0) {
       errorMessage += `  Invalid record number. ID: ${this.generateReportedId(
-        this.invalidValue
+        this.invalidValue,
       )}\n`;
     }
 
     if (this.notExists.length > 0) {
       errorMessage += `  Not exists record number. ID: ${this.generateReportedId(
-        this.notExists
+        this.notExists,
       )}\n`;
     }
 
     if (this.duplicated.length > 0) {
       errorMessage += `  Duplicated record number. ID: ${this.generateReportedId(
-        this.duplicated
+        this.duplicated,
       )}\n`;
     }
 

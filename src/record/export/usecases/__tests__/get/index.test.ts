@@ -46,8 +46,8 @@ describe("getRecords", () => {
         repositoryMock,
         caseCanGetRecords.schema,
         {},
-        getAllRecordsMockFn
-      )
+        getAllRecordsMockFn,
+      ),
     ).resolves.not.toThrow();
   });
 
@@ -65,7 +65,7 @@ describe("getRecords", () => {
       repositoryMock,
       schema,
       {},
-      getAllRecordsMockFn
+      getAllRecordsMockFn,
     );
     expect(repositoryMock.receivedRecords()).toStrictEqual(expectedRecords);
   });
@@ -90,7 +90,7 @@ describe("getRecords", () => {
       {
         attachmentsDir: tempDir,
       },
-      getAllRecordsMockFn
+      getAllRecordsMockFn,
     );
     expect(repositoryMock.receivedRecords()).toStrictEqual(expectedRecords);
 
@@ -101,7 +101,7 @@ describe("getRecords", () => {
         throw new Error("attachment.localFilePath is null or undefined");
       }
       const downloadFile = await fs.readFile(
-        path.join(tempDir, attachment.localFilePath)
+        path.join(tempDir, attachment.localFilePath),
       );
       expect(downloadFile.toString()).toBe(testFileData);
     }
@@ -127,7 +127,7 @@ describe("getRecords", () => {
       {
         attachmentsDir: tempDir,
       },
-      getAllRecordsMockFn
+      getAllRecordsMockFn,
     );
     expect(repositoryMock.receivedRecords()).toStrictEqual(expectedRecords);
 
@@ -140,7 +140,7 @@ describe("getRecords", () => {
         throw new Error("attachment.localFilePath is null or undefined");
       }
       const downloadFile = await fs.readFile(
-        path.join(tempDir, attachment.localFilePath)
+        path.join(tempDir, attachment.localFilePath),
       );
       expect(downloadFile.toString()).toBe(testFileData);
     }
@@ -170,7 +170,7 @@ describe("getRecords", () => {
         {
           attachmentsDir: tempDir,
         },
-        getAllRecordsMockFn
+        getAllRecordsMockFn,
       );
       expect(repositoryMock.receivedRecords()).toStrictEqual(expectedRecords);
 
@@ -181,11 +181,11 @@ describe("getRecords", () => {
           throw new Error("attachment.localFilePath is null or undefined");
         }
         const downloadFile = await fs.readFile(
-          path.join(tempDir, attachment.localFilePath)
+          path.join(tempDir, attachment.localFilePath),
         );
         expect(downloadFile.toString()).toBe(testFileData);
       }
-    }
+    },
   );
 
   (process.platform === "win32" ? it : it.skip)(
@@ -213,7 +213,7 @@ describe("getRecords", () => {
         {
           attachmentsDir: tempDir,
         },
-        getAllRecordsMockFn
+        getAllRecordsMockFn,
       );
       expect(repositoryMock.receivedRecords()).toStrictEqual(expectedRecords);
 
@@ -226,11 +226,11 @@ describe("getRecords", () => {
           throw new Error("attachment.localFilePath is null or undefined");
         }
         const downloadFile = await fs.readFile(
-          path.join(tempDir, attachment.localFilePath)
+          path.join(tempDir, attachment.localFilePath),
         );
         expect(downloadFile.toString()).toBe(testFileData);
       }
-    }
+    },
   );
 
   it("should throw error when API response is error", () => {
@@ -248,8 +248,8 @@ describe("getRecords", () => {
         repositoryMock,
         caseCanGetRecords.schema,
         {},
-        getAllRecordsMockFn
-      )
+        getAllRecordsMockFn,
+      ),
     ).rejects.toThrow(error);
   });
 });

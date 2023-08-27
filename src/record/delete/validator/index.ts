@@ -14,7 +14,7 @@ export const validateRecordNumbers: (
   apiClient: KintoneRestAPIClient,
   app: string,
   appCode: string,
-  recordNumbers: RecordNumber[]
+  recordNumbers: RecordNumber[],
 ) => Promise<void> = async (apiClient, app, appCode, recordNumbers) => {
   const validValues: string[] = [];
   const errorHandler = new ErrorHandler();
@@ -30,7 +30,7 @@ export const validateRecordNumbers: (
     const _hasAppCode = hasAppCode(value, appCode);
     if (_hasAppCode !== hasAppCodePrevious) {
       throw new ValidatorError(
-        "The record number should not be mixed with those with and without app code"
+        "The record number should not be mixed with those with and without app code",
       );
     }
 
@@ -41,7 +41,7 @@ export const validateRecordNumbers: (
 
     if (
       allRecordIds.indexOf(
-        getRecordIdFromRecordNumber(recordNumber, appCode)
+        getRecordIdFromRecordNumber(recordNumber, appCode),
       ) === -1
     ) {
       errorHandler.addNotExistsError(recordNumber);

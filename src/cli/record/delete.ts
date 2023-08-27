@@ -8,7 +8,7 @@ import { logger } from "../../utils/log";
 
 const command = "delete";
 
-const describe = "delete all records";
+const describe = "delete the records of the specified app";
 
 const encoding: SupportedImportEncoding[] = ["utf8", "sjis"];
 
@@ -143,7 +143,9 @@ const handler = async (args: Args) => {
     {
       name: FORCE_DELETE_KEY,
       type: "confirm",
-      message: "Are you sure want to delete records?",
+      message: `Are you sure want to delete ${
+        args["file-path"] ? "" : "all "
+      }records?`,
       default: false,
     },
   ];

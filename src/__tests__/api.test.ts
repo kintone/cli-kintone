@@ -234,7 +234,7 @@ describe("api", () => {
       userAgent: expectedUa,
       httpsAgent: new HttpsProxyAgent(
         "http://proxy.example.com:3128",
-        proxyOptions
+        proxyOptions,
       ),
       proxy: false,
       socketTimeout: DEFAULT_SOCKET_TIMEOUT,

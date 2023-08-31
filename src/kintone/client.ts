@@ -19,11 +19,6 @@ export type RestAPIClientOptions = {
   httpsProxy?: string;
 };
 
-export type ProxyAgentOptions = {
-  pfx: string | Buffer | undefined;
-  passphrase?: string;
-};
-
 const DEFAULT_SOCKET_TIMEOUT = 60000;
 
 const buildAuthParam = (options: RestAPIClientOptions) => {
@@ -69,7 +64,7 @@ const buildHttpsAgent = (options: {
     return new https.Agent({ ...clientAuth });
   }
 
-  const proxyOptions: HttpsProxyAgentOptions<ProxyAgentOptions> = {
+  const proxyOptions: HttpsProxyAgentOptions<string> = {
     ...clientAuth,
   };
 

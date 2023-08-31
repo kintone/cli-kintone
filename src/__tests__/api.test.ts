@@ -1,5 +1,4 @@
 import { buildRestAPIClient } from "../kintone/client";
-import type { ProxyAgentOptions } from "../kintone/client";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import * as https from "https";
 import fs from "fs";
@@ -39,13 +38,18 @@ jest.mock("https-proxy-agent", () => {
   return {
     HttpsProxyAgent: jest
       .fn()
-      .mockImplementation((proxy: URL | string, opts?: ProxyAgentOptions) => {
-        if (!opts || !opts.pfx) {
-          return proxy;
-        }
+      .mockImplementation(
+        (
+          proxy: URL | string,
+          opts?: { pfx?: Buffer | string; passphrase?: string },
+        ) => {
+          if (!opts || !opts?.pfx) {
+            return { proxy };
+          }
 
-        return { proxy, opts };
-      }),
+          return { proxy, opts };
+        },
+      ),
   };
 });
 
@@ -221,7 +225,7 @@ describe("api", () => {
       httpsProxy: HTTPS_PROXY,
     });
     expect(apiClient).toBeInstanceOf(KintoneRestAPIClient);
-    const proxyOptions: HttpsProxyAgentOptions<ProxyAgentOptions> = {
+    const proxyOptions: HttpsProxyAgentOptions<string> = {
       pfx: "dummy",
       passphrase: PFX_FILE_PASSWORD,
     };

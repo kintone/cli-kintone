@@ -2,7 +2,9 @@ import { spawnSync } from "child_process";
 import path from "path";
 
 export const execCliKintoneSync = (args: string) => {
-  return spawnSync(getCliKintoneBinary(), [args], { encoding: "utf-8" });
+  return spawnSync(getCliKintoneBinary(), args.split(/\s+/), {
+    encoding: "utf-8",
+  });
 };
 
 export const getCliKintoneBinary = (): string => {

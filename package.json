@@ -1,6 +1,6 @@
 {
   "name": "@kintone/cli-kintone",
-  "version": "1.8.3",
+  "version": "1.8.4",
   "publishConfig": {
     "access": "public"
   },
@@ -27,7 +27,7 @@
     "test:ci": "jest --runInBand",
     "test:e2e": "cucumber-js",
     "lint": "run-p -l lint:*",
-    "lint:eslint": "eslint --ext .js,.mjs,.cjs,.ts,.mts,.cts ./",
+    "lint:eslint": "eslint --ext .js,.mjs,.cjs,.ts,.mts,.cts ./ --max-warnings 0",
     "lint:prettier": "prettier --check '**/*.{json,md,yml,yaml}'",
     "fix": "run-p fix:*",
     "fix:lint": "run-s 'lint:eslint --fix'",

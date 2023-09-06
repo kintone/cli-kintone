@@ -10,7 +10,7 @@ Feature: common test cases
     Then I should get the exit code is zero
     And The output message should match with the pattern: "cli-kintone-(macos|win|linux) <command>"
 
-  Scenario: CliKintoneTest-14 Should return the error message when no authorize information
+  Scenario: CliKintoneTest-14 Should return the error message when no authorized information
     When I run the command with args "record export --base-url TEST_KINTONE_BASE_URL --app 1"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[520\] \[CB_AU01\] Please login."

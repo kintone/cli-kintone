@@ -13,6 +13,10 @@ import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { getAllRecords } from "./get/getAllRecords";
 import type { LocalRecordRepository } from "./interface";
 import { replaceSpecialCharacters } from "../utils/file";
+import { logger } from "../../../utils/log";
+
+export const NO_ANY_RECORDS_WARNING =
+  "The specified app does not have any records.";
 
 export const getRecords = async (
   apiClient: KintoneRestAPIClient,
@@ -44,6 +48,11 @@ export const getRecords = async (
           attachmentsDir,
         }),
     );
+    if (localRecords.length === 0) {
+      logger.warn(NO_ANY_RECORDS_WARNING);
+      return;
+    }
+
     await writer.write(localRecords);
   }
   await writer.end();

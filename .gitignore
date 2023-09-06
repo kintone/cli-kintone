@@ -10,7 +10,6 @@ yarn-error.log*
 # testing
 coverage/
 stats.html
-.run/
 
 # licensed
 .licenses
@@ -31,6 +30,7 @@ attachments
 **/.vs
 **/.vscode
 .idea
+.run
 
 # secrets
 .env

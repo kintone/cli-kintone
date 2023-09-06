@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.4](https://github.com/kintone/cli-kintone/compare/v1.8.3...v1.8.4) (2023-09-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency https-proxy-agent to ^7.0.2 ([#464](https://github.com/kintone/cli-kintone/issues/464)) ([e5b0988](https://github.com/kintone/cli-kintone/commit/e5b09886399904eb89dac35ab18cfff64d4faa8b))
+* **deps:** update dependency https-proxy-agent to v7 ([#352](https://github.com/kintone/cli-kintone/issues/352)) ([b36fa04](https://github.com/kintone/cli-kintone/commit/b36fa04b9007b8148060acde719cdfd6f8581ec8))
+
 ## [1.8.3](https://github.com/kintone/cli-kintone/compare/v1.8.2...v1.8.3) (2023-08-22)
 
 

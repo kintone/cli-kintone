@@ -7,6 +7,7 @@ const mockLogger: Logger = {
   warn: jest.fn(),
   error: jest.fn(),
   debug: jest.fn(),
+  fatal: jest.fn(),
 };
 
 describe("ProgressLogger", () => {

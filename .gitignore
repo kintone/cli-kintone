@@ -30,6 +30,7 @@ attachments
 **/.vs
 **/.vscode
 .idea
+.run
 
 # secrets
 .env

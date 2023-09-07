@@ -4,14 +4,19 @@ import { CliKintoneError } from "./error";
 const currentISOString = () => new Date().toISOString();
 
 export type Logger = {
+  debug: (message: any) => void;
   info: (message: any) => void;
   warn: (message: any) => void;
   error: (message: any) => void;
-  debug: (message: any) => void;
   fatal: (message: any) => void;
 };
 
 export const logger: Logger = {
+  debug: (message: any) => {
+    const prefix = `[${currentISOString()}] ${chalkStderr.green("DEBUG")}:`;
+    console.error(addPrefixEachLine(message, prefix));
+  },
+
   info: (message: any) => {
     const prefix = `[${currentISOString()}] ${chalkStderr.blue("INFO")}:`;
     console.error(addPrefixEachLine(message, prefix));
@@ -26,11 +31,6 @@ export const logger: Logger = {
     const parsedMessage = parseErrorMessage(message);
     const prefix = `[${currentISOString()}] ${chalkStderr.red("ERROR")}:`;
     console.error(addPrefixEachLine(parsedMessage, prefix));
-  },
-
-  debug: (message: any) => {
-    const prefix = `[${currentISOString()}] ${chalkStderr.green("DEBUG")}:`;
-    console.error(addPrefixEachLine(message, prefix));
   },
 
   fatal: (message: any) => {

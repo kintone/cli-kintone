@@ -2,11 +2,14 @@ import type { Logger } from "../log";
 import { logger } from "../log";
 
 describe("logger", () => {
+  const mockDate = new Date(0);
+  const spy = jest.spyOn(global, "Date").mockImplementation(() => mockDate);
+
   const patternTest = [
+    ["DEBUG", "debug"],
     ["INFO", "info"],
     ["WARN", "warn"],
     ["ERROR", "error"],
-    ["DEBUG", "debug"],
     ["FATAL", "fatal"],
   ];
   it.each(patternTest)(
@@ -22,8 +25,17 @@ describe("logger", () => {
 
       expect(consoleMock).toHaveBeenCalledTimes(1);
       expect(consoleMock).toHaveBeenCalledWith(
-        expect.stringMatching(`${logDisplay}(.*) This is an example message.`),
+        expect.stringMatching(
+          new RegExp(
+            `\\[1970-01-01T00:00:00.000Z] (.*)${logDisplay}(.*): This is an example message.`,
+          ),
+        ),
       );
     },
   );
+
+  afterAll(() => {
+    spy.mockReset();
+    spy.mockRestore();
+  });
 });

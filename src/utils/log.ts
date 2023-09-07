@@ -8,6 +8,7 @@ export type Logger = {
   warn: (message: any) => void;
   error: (message: any) => void;
   debug: (message: any) => void;
+  fatal: (message: any) => void;
 };
 
 export const logger: Logger = {
@@ -28,8 +29,12 @@ export const logger: Logger = {
   },
 
   debug: (message: any) => {
-    return; // TODO: Decide how enable debug log
-    const prefix = `[${currentISOString()}] ${chalkStderr.yellow("DEBUG")}:`;
+    const prefix = `[${currentISOString()}] ${chalkStderr.green("DEBUG")}:`;
+    console.error(addPrefixEachLine(message, prefix));
+  },
+
+  fatal: (message: any) => {
+    const prefix = `[${currentISOString()}] ${chalkStderr.bgRed("FATAL")}:`;
     console.error(addPrefixEachLine(message, prefix));
   },
 };

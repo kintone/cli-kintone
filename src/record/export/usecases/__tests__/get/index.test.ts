@@ -5,7 +5,7 @@ import { promises as fs } from "fs";
 
 import os from "os";
 import path from "path";
-import { getRecords, NO_ANY_RECORDS_WARNING } from "../../get";
+import { getRecords, NO_RECORDS_WARNING } from "../../get";
 
 import * as caseCanGetRecords from "./fixtures/can_get_records";
 import * as caseCanDownloadFiles from "./fixtures/can_download_files";
@@ -275,6 +275,6 @@ describe("getRecords", () => {
     );
 
     expect(loggerWarnMock).toHaveBeenCalledTimes(1);
-    expect(loggerWarnMock).toHaveBeenCalledWith(NO_ANY_RECORDS_WARNING);
+    expect(loggerWarnMock).toHaveBeenCalledWith(NO_RECORDS_WARNING);
   });
 });

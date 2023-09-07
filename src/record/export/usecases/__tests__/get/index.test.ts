@@ -255,7 +255,7 @@ describe("getRecords", () => {
     ).rejects.toThrow(error);
   });
 
-  it("should show warning message if there is no specified records in application", async () => {
+  it("should show warning message if there is no records exist in the app or match the condition.", async () => {
     jest.spyOn(console, "error").mockImplementation(() => {
       return true;
     });

@@ -16,7 +16,7 @@ import { replaceSpecialCharacters } from "../utils/file";
 import { logger } from "../../../utils/log";
 
 export const NO_ANY_RECORDS_WARNING =
-  "The specified app does not have any records.";
+  "No records exist in the app or match the condition.";
 
 export const getRecords = async (
   apiClient: KintoneRestAPIClient,
@@ -32,6 +32,7 @@ export const getRecords = async (
 ) => {
   const { condition, orderBy, attachmentsDir } = options;
   const writer = recordDestination.writer();
+  let countRecords = 0;
 
   for await (const kintoneRecords of getAllRecordsFn({
     apiClient,
@@ -48,13 +49,17 @@ export const getRecords = async (
           attachmentsDir,
         }),
     );
-    if (localRecords.length === 0) {
-      logger.warn(NO_ANY_RECORDS_WARNING);
-      return;
+    if (localRecords.length > 0) {
+      countRecords += localRecords.length;
     }
-
     await writer.write(localRecords);
   }
+
+  if (countRecords === 0) {
+    logger.warn(NO_ANY_RECORDS_WARNING);
+    return;
+  }
+
   await writer.end();
 };
 

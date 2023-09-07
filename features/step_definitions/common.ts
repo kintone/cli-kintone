@@ -1,9 +1,9 @@
 import * as assert from "assert";
 import { Then, When } from "@cucumber/cucumber";
-import { execCliKintoneSync } from "../ultils/helper";
+import { execCliKintoneSync, replaceTokenWithEnvVars } from "../ultils/helper";
 
 When("I run the command with args {string}", function (args: string) {
-  this.response = execCliKintoneSync(args);
+  this.response = execCliKintoneSync(replaceTokenWithEnvVars(args));
 });
 
 Then("I should get the exit code is non-zero", function () {

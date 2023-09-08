@@ -26,17 +26,13 @@ export const getCliKintoneBinary = (): string => {
 };
 
 export const replaceTokenWithEnvVars = (input: string) =>
-  input
-    .replace(
-      "TEST_KINTONE_APP_ID_GUEST_SPACE",
-      process.env.TEST_KINTONE_APP_ID_GUEST_SPACE ?? "",
-    )
-    .replace("TEST_KINTONE_BASE_URL", process.env.TEST_KINTONE_BASE_URL ?? "")
-    .replace("TEST_KINTONE_API_TOKEN", process.env.TEST_KINTONE_API_TOKEN ?? "")
-    .replace("TEST_KINTONE_APP_ID", process.env.TEST_KINTONE_APP_ID ?? "")
-    .replace("TEST_KINTONE_USERNAME", process.env.TEST_KINTONE_USERNAME ?? "")
-    .replace("TEST_KINTONE_PASSWORD", process.env.TEST_KINTONE_PASSWORD ?? "")
-    .replace(
-      "TEST_KINTONE_GUEST_SPACE_ID",
-      process.env.TEST_KINTONE_GUEST_SPACE_ID ?? "",
-    );
+  input.replace(/\$\$[a-zA-Z0-9_]+/g, replacer);
+
+const replacer = (substring: string) => {
+  const key = substring.replace("$$", "");
+  const value = process.env[key];
+  if (value === undefined) {
+    throw new Error(`The env variable is missing: ${key}`);
+  }
+  return value;
+};

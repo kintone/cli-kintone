@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { Then } from "@cucumber/cucumber";
+import { Then } from "../ultils/world";
 
 Then(
   "I should get the version formatted in {string}",

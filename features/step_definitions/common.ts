@@ -1,6 +1,6 @@
 import * as assert from "assert";
-import { Then, When } from "@cucumber/cucumber";
 import { execCliKintoneSync, replaceTokenWithEnvVars } from "../ultils/helper";
+import { When, Then } from "../ultils/world";
 
 When("I run the command with args {string}", function (args: string) {
   this.response = execCliKintoneSync(replaceTokenWithEnvVars(args));

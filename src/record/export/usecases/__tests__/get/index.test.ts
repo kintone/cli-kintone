@@ -5,7 +5,7 @@ import { promises as fs } from "fs";
 
 import os from "os";
 import path from "path";
-import { getRecords } from "../../get";
+import { getRecords, NO_RECORDS_WARNING } from "../../get";
 
 import * as caseCanGetRecords from "./fixtures/can_get_records";
 import * as caseCanDownloadFiles from "./fixtures/can_download_files";
@@ -13,6 +13,8 @@ import * as caseCanDownloadFilesInSubtable from "./fixtures/can_download_files_i
 import * as caseCanDownloadFilesIncludingSpecialCharacters from "./fixtures/can_download_files_including_special_characters";
 import * as caseCanDownloadFilesIncludingSpecialCharactersInSubTable from "./fixtures/can_download_files_including_special_characters_in_subtable";
 import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock";
+import { logger } from "../../../../../utils/log";
+import type { RecordSchema } from "../../../types/schema";
 
 type KintoneRecord = Awaited<
   ReturnType<KintoneRestAPIClient["record"]["getAllRecords"]>
@@ -251,5 +253,28 @@ describe("getRecords", () => {
         getAllRecordsMockFn,
       ),
     ).rejects.toThrow(error);
+  });
+
+  it("should show warning message if there is no records exist in the app or match the condition.", async () => {
+    jest.spyOn(console, "error").mockImplementation(() => {
+      return true;
+    });
+    const loggerWarnMock = jest.spyOn(logger, "warn");
+    const repositoryMock = new LocalRecordRepositoryMock();
+    const getAllRecordsMockFn = jest.fn(async function* () {
+      yield [];
+    });
+
+    await getRecords(
+      apiClient,
+      "999",
+      repositoryMock,
+      {} as RecordSchema,
+      {},
+      getAllRecordsMockFn,
+    );
+
+    expect(loggerWarnMock).toHaveBeenCalledTimes(1);
+    expect(loggerWarnMock).toHaveBeenCalledWith(NO_RECORDS_WARNING);
   });
 });

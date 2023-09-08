@@ -13,6 +13,10 @@ import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { getAllRecords } from "./get/getAllRecords";
 import type { LocalRecordRepository } from "./interface";
 import { replaceSpecialCharacters } from "../utils/file";
+import { logger } from "../../../utils/log";
+
+export const NO_RECORDS_WARNING =
+  "No records exist in the app or match the condition.";
 
 export const getRecords = async (
   apiClient: KintoneRestAPIClient,
@@ -28,6 +32,7 @@ export const getRecords = async (
 ) => {
   const { condition, orderBy, attachmentsDir } = options;
   const writer = recordDestination.writer();
+  let numOfProcessedRecords = 0;
 
   for await (const kintoneRecords of getAllRecordsFn({
     apiClient,
@@ -44,8 +49,14 @@ export const getRecords = async (
           attachmentsDir,
         }),
     );
+    numOfProcessedRecords += localRecords.length;
     await writer.write(localRecords);
   }
+
+  if (numOfProcessedRecords === 0) {
+    logger.warn(NO_RECORDS_WARNING);
+  }
+
   await writer.end();
 };
 

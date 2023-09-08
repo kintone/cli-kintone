@@ -27,6 +27,10 @@ export const getCliKintoneBinary = (): string => {
 
 export const replaceTokenWithEnvVars = (input: string) =>
   input
+    .replace(
+      "TEST_KINTONE_APP_ID_GUEST_SPACE",
+      process.env.TEST_KINTONE_APP_ID_GUEST_SPACE ?? "",
+    )
     .replace("TEST_KINTONE_BASE_URL", process.env.TEST_KINTONE_BASE_URL ?? "")
     .replace("TEST_KINTONE_API_TOKEN", process.env.TEST_KINTONE_API_TOKEN ?? "")
     .replace("TEST_KINTONE_APP_ID", process.env.TEST_KINTONE_APP_ID ?? "")

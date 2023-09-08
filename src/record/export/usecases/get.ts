@@ -55,7 +55,6 @@ export const getRecords = async (
 
   if (numOfProcessedRecords === 0) {
     logger.warn(NO_RECORDS_WARNING);
-    return;
   }
 
   await writer.end();

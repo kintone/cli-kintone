@@ -4,6 +4,7 @@ import * as cucumber from "@cucumber/cucumber";
 import type { SpawnSyncReturns } from "child_process";
 
 export class OurWorld extends World {
+  public env: { [key: string]: string } = {};
   private _response?: SpawnSyncReturns<string>;
 
   public get response() {

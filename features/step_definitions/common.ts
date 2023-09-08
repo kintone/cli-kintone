@@ -1,9 +1,22 @@
 import * as assert from "assert";
 import { execCliKintoneSync, replaceTokenWithEnvVars } from "../ultils/helper";
-import { When, Then } from "../ultils/world";
+import { Given, When, Then } from "../ultils/world";
+
+Given(
+  "Load environment variable {string} as {string}",
+  function (srcKey: string, destKey: string) {
+    const value = process.env[srcKey];
+    if (value === undefined) {
+      throw new Error(`The env variable is missing: ${srcKey}`);
+    }
+    this.env = { [destKey]: value, ...this.env };
+  },
+);
 
 When("I run the command with args {string}", function (args: string) {
-  this.response = execCliKintoneSync(replaceTokenWithEnvVars(args));
+  this.response = execCliKintoneSync(replaceTokenWithEnvVars(args), {
+    env: this.env,
+  });
 });
 
 Then("I should get the exit code is non-zero", function () {

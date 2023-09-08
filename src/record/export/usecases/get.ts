@@ -49,9 +49,7 @@ export const getRecords = async (
           attachmentsDir,
         }),
     );
-    if (localRecords.length > 0) {
-      numOfProcessedRecords += localRecords.length;
-    }
+    numOfProcessedRecords += localRecords.length;
     await writer.write(localRecords);
   }
 

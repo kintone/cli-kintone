@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.0](https://github.com/kintone/cli-kintone/compare/v1.8.4...v1.9.0) (2023-09-12)
+
+
+### Features
+
+* Show warning when no target records exist on record exporting ([#470](https://github.com/kintone/cli-kintone/issues/470)) ([31a7fb8](https://github.com/kintone/cli-kintone/commit/31a7fb87c0d27cf2f78ec875c326f95cb2f7f270))
+* Support new log event levels (`debug` and `fatal`) ([#473](https://github.com/kintone/cli-kintone/issues/473)) ([33c4652](https://github.com/kintone/cli-kintone/commit/33c4652ce10cafd7e5fba6c63b6a19fa22347d98))
+
 ## [1.8.4](https://github.com/kintone/cli-kintone/compare/v1.8.3...v1.8.4) (2023-09-06)
 
 

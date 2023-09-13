@@ -2,6 +2,8 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import type { ExportFileEncoding } from "../../record/export";
 import { run } from "../../record/export";
+import type { LogLevel } from "../../utils/log";
+import { SUPPORTED_LOG_LEVELS } from "../../utils/log";
 
 const encodings: ExportFileEncoding[] = ["utf8", "sjis"];
 
@@ -112,6 +114,12 @@ const builder = (args: yargs.Argv) =>
       default: process.env.HTTPS_PROXY ?? process.env.https_proxy,
       defaultDescription: "HTTPS_PROXY",
       type: "string",
+    })
+    .option("log-level", {
+      describe: "The default log level",
+      default: "info" as LogLevel,
+      choices: SUPPORTED_LOG_LEVELS,
+      requiresArg: true,
     });
 
 type Args = yargs.Arguments<
@@ -136,6 +144,7 @@ const handler = (args: Args) => {
     pfxFilePath: args["pfx-file-path"],
     pfxFilePassword: args["pfx-file-password"],
     httpsProxy: args.proxy,
+    logLevel: args["log-level"],
   });
 };
 

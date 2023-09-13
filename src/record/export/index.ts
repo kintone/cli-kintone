@@ -1,8 +1,7 @@
 import iconv from "iconv-lite";
 
 import type { RestAPIClientOptions } from "../../kintone/client";
-import type { LogLevel } from "../../utils/log";
-import { setLogLevel, logger } from "../../utils/log";
+import { logger } from "../../utils/log";
 import { buildRestAPIClient } from "../../kintone/client";
 import { getRecords } from "./usecases/get";
 import { createSchema } from "./schema";
@@ -21,14 +20,11 @@ export type Options = {
   condition?: string;
   orderBy?: string;
   fields?: string[];
-  logLevel: LogLevel;
 };
 
 export const run: (
   argv: RestAPIClientOptions & Options,
 ) => Promise<void> = async (options) => {
-  setLogLevel(options.logLevel);
-
   try {
     const {
       app,

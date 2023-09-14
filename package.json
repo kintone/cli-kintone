@@ -63,7 +63,6 @@
     "@types/inquirer": "^8.2.6",
     "@types/jest": "^29.5.4",
     "@types/node": "^18.17.15",
-    "@types/std-mocks": "^1.0.1",
     "@types/rollup-plugin-auto-external": "^2.0.2",
     "@types/yargs": "^17.0.24",
     "@vercel/ncc": "^0.36.1",

@@ -61,9 +61,6 @@ devDependencies:
   '@types/rollup-plugin-auto-external':
     specifier: ^2.0.2
     version: 2.0.2
-  '@types/std-mocks':
-    specifier: ^1.0.1
-    version: 1.0.1
   '@types/yargs':
     specifier: ^17.0.24
     version: 17.0.24
@@ -2139,10 +2136,6 @@ packages:
 
   /@types/stack-utils@2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
-    dev: true
-
-  /@types/std-mocks@1.0.1:
-    resolution: {integrity: sha512-pwOrGJ6jnqb1bw9TxrmbbHTI+7ngY8yEEkrTG7lJuwplvFT9XSwOCQC3Zb4E+e6g9yDzrFX+S1ysLZuT/07WYg==}
     dev: true
 
   /@types/through@0.0.30:

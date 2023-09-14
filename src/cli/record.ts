@@ -3,6 +3,7 @@ import type yargs from "yargs";
 import { exportCommand } from "./record/export";
 import { importCommand } from "./record/import";
 import { deleteCommand } from "./record/delete";
+import { SUPPORTED_LOG_LEVELS } from "../utils/log";
 
 const command = "record";
 

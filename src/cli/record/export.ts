@@ -2,6 +2,7 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import type { ExportFileEncoding } from "../../record/export";
 import { run } from "../../record/export";
+import { helper } from "./commonOptions";
 
 const encodings: ExportFileEncoding[] = ["utf8", "sjis"];
 
@@ -112,7 +113,8 @@ const builder = (args: yargs.Argv) =>
       default: process.env.HTTPS_PROXY ?? process.env.https_proxy,
       defaultDescription: "HTTPS_PROXY",
       type: "string",
-    });
+    })
+    .options(helper(["logLevel", "logLevel1"]));
 
 type Args = yargs.Arguments<
   ReturnType<typeof builder> extends yargs.Argv<infer U> ? U : never

@@ -1,10 +1,10 @@
-import winston from "winston";
+import { stderr as chalkStderr } from "chalk";
+import { CliKintoneError } from "./error";
+import { WinstonLoggerService } from "./log.service";
 
-const { combine, timestamp, printf, splat } = winston.format;
+const currentISOString = () => new Date().toISOString();
 
 export type LogLevel = "debug" | "info" | "warn" | "error" | "fatal";
-export type Logger = winston.Logger &
-  Record<keyof typeof logLevels.levels, winston.LeveledLogMethod>;
 export const SUPPORTED_LOG_LEVELS: LogLevel[] = [
   "debug",
   "info",
@@ -13,52 +13,98 @@ export const SUPPORTED_LOG_LEVELS: LogLevel[] = [
   "fatal",
 ];
 
-export const logFormat = printf((info) => {
-  info.level = info.level.toUpperCase();
-  const transformedInfo = winston.format.colorize().transform(info, {
-    level: true,
-  }) as winston.Logform.TransformableInfo;
+export interface LoggerInterface {
+  debug: (message: any) => void;
+  info: (message: any) => void;
+  warn: (message: any) => void;
+  error: (message: any) => void;
+  fatal: (message: any) => void;
+}
 
-  if (!transformedInfo) {
-    return "";
+export interface LoggerModuleInterface {
+  setLoggerLevel(level: string): void;
+  debug: (message: any) => void;
+  info: (message: any) => void;
+  warn: (message: any) => void;
+  error: (message: any) => void;
+  fatal: (message: any) => void;
+}
+
+class Logger implements LoggerInterface {
+  constructor(
+    private logLevel: string = "info",
+    private logModule: LoggerModuleInterface = new WinstonLoggerService(),
+  ) {
+    this.logModule = logModule;
+    this.logModule.setLoggerLevel(logLevel);
   }
 
-  return `[${transformedInfo.timestamp}] ${transformedInfo.level}: ${transformedInfo.message}`;
-});
+  debug(message: any): void {
+    this.logModule.debug(message);
+  }
 
-const logLevels = {
-  levels: {
-    fatal: 0,
-    error: 1,
-    warn: 2,
-    info: 3,
-    debug: 4,
+  error(message: any): void {
+    this.logModule.error(message);
+  }
+
+  fatal(message: any): void {
+    this.logModule.fatal(message);
+  }
+
+  info(message: any): void {
+    this.logModule.info(message);
+  }
+
+  warn(message: any): void {
+    this.logModule.warn(message);
+  }
+
+  updateLogConfigLevel(level: string): void {
+    this.logModule.setLoggerLevel(level);
+  }
+}
+
+export const logger: Logger = {
+  debug: (message: any) => {
+    const prefix = `[${currentISOString()}] ${chalkStderr.green("DEBUG")}:`;
+    console.error(addPrefixEachLine(message, prefix));
   },
-  colors: {
-    fatal: "redBG",
-    error: "red",
-    warn: "yellow",
-    info: "blue",
-    debug: "green",
+
+  info: (message: any) => {
+    const prefix = `[${currentISOString()}] ${chalkStderr.blue("INFO")}:`;
+    console.error(addPrefixEachLine(message, prefix));
+  },
+
+  warn: (message: any) => {
+    const prefix = `[${currentISOString()}] ${chalkStderr.yellow("WARN")}:`;
+    console.error(addPrefixEachLine(message, prefix));
+  },
+
+  error: (message: any) => {
+    const parsedMessage = parseErrorMessage(message);
+    const prefix = `[${currentISOString()}] ${chalkStderr.red("ERROR")}:`;
+    console.error(addPrefixEachLine(parsedMessage, prefix));
+  },
+
+  fatal: (message: any) => {
+    const prefix = `[${currentISOString()}] ${chalkStderr.bgRed("FATAL")}:`;
+    console.error(addPrefixEachLine(message, prefix));
   },
 };
 
-winston.addColors(logLevels.colors);
-export const logger = winston.createLogger({
-  level: "info",
-  levels: logLevels.levels,
-  transports: [
-    new winston.transports.Console({
-      format: combine(timestamp(), splat(), logFormat),
-      stderrLevels: SUPPORTED_LOG_LEVELS,
-    }),
-  ],
-}) as Logger;
+const addPrefixEachLine = (message: any, prefix: string): string =>
+  ("" + message)
+    .split("\n")
+    .filter((line) => line.length > 0)
+    .map((line) => `${prefix} ${line}`)
+    .join("\n");
 
-export const setLogLevel = (level: LogLevel) => {
-  if (logger.levels[level] !== undefined) {
-    logger.level = level;
-  } else {
-    throw new Error(`Unsupported log level: ${level}`);
+const parseErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) {
+    if (error instanceof CliKintoneError) {
+      return error.toString();
+    }
+    return "" + error;
   }
+  return "" + error;
 };

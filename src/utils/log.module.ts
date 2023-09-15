@@ -28,13 +28,13 @@ const logLevels = {
   },
 };
 
-export const logFormat = printf((info) => {
+export const logFormat = (info: winston.Logform.TransformableInfo): string => {
   const prefix = `[${info.timestamp}] ${logLevels.colors[
     info.level as LogEventLevel
   ](info.level.toUpperCase())}:`;
 
   return addPrefixEachLine(info.message, prefix);
-});
+};
 
 const addPrefixEachLine = (message: any, prefix: string): string =>
   ("" + message)
@@ -51,7 +51,7 @@ export class WinstonLoggerModule implements LoggerModuleInterface {
       levels: logLevels.levels,
       transports: [
         new winston.transports.Console({
-          format: combine(timestamp(), logFormat),
+          format: combine(timestamp(), printf(logFormat)),
           stderrLevels: Object.keys(logLevels.levels),
         }),
       ],

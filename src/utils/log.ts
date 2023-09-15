@@ -1,11 +1,7 @@
-import { stderr as chalkStderr } from "chalk";
+import { WinstonLoggerModule } from "./log.module";
 import { CliKintoneError } from "./error";
-import { WinstonLoggerService } from "./log.service";
 
-const currentISOString = () => new Date().toISOString();
-
-export type LogLevel = "debug" | "info" | "warn" | "error" | "fatal";
-export const SUPPORTED_LOG_LEVELS: LogLevel[] = [
+export const SUPPORTED_LOG_EVENT_LEVELS = <const>[
   "debug",
   "info",
   "warn",
@@ -13,7 +9,20 @@ export const SUPPORTED_LOG_LEVELS: LogLevel[] = [
   "fatal",
 ];
 
-export interface LoggerInterface {
+export type LogEventLevel = (typeof SUPPORTED_LOG_EVENT_LEVELS)[number];
+
+export const SUPPORTED_LOG_CONFIG_LEVELS = <const>[
+  "debug",
+  "info",
+  "warn",
+  "error",
+  "fatal",
+  "none",
+];
+
+export type LogConfigLevel = (typeof SUPPORTED_LOG_CONFIG_LEVELS)[number];
+
+export interface Logger {
   debug: (message: any) => void;
   info: (message: any) => void;
   warn: (message: any) => void;
@@ -22,21 +31,22 @@ export interface LoggerInterface {
 }
 
 export interface LoggerModuleInterface {
-  setLoggerLevel(level: string): void;
   debug: (message: any) => void;
   info: (message: any) => void;
   warn: (message: any) => void;
   error: (message: any) => void;
   fatal: (message: any) => void;
+  setLogConfigLevel: (level: LogConfigLevel) => void;
+  silent: () => void;
 }
 
-class Logger implements LoggerInterface {
+class CliKintoneLogger implements Logger {
   constructor(
-    private logLevel: string = "info",
-    private logModule: LoggerModuleInterface = new WinstonLoggerService(),
+    private logConfigLevel: LogConfigLevel = "info",
+    private logModule: LoggerModuleInterface = new WinstonLoggerModule(),
   ) {
     this.logModule = logModule;
-    this.logModule.setLoggerLevel(logLevel);
+    this.setLogConfigLevel(logConfigLevel);
   }
 
   debug(message: any): void {
@@ -44,7 +54,7 @@ class Logger implements LoggerInterface {
   }
 
   error(message: any): void {
-    this.logModule.error(message);
+    this.logModule.error(this.parseErrorMessage(message));
   }
 
   fatal(message: any): void {
@@ -59,52 +69,24 @@ class Logger implements LoggerInterface {
     this.logModule.warn(message);
   }
 
-  updateLogConfigLevel(level: string): void {
-    this.logModule.setLoggerLevel(level);
+  setLogConfigLevel(level: LogConfigLevel): void {
+    if (level === "none") {
+      this.logModule.silent();
+      return;
+    }
+
+    this.logModule.setLogConfigLevel(level);
   }
-}
 
-export const logger: Logger = {
-  debug: (message: any) => {
-    const prefix = `[${currentISOString()}] ${chalkStderr.green("DEBUG")}:`;
-    console.error(addPrefixEachLine(message, prefix));
-  },
-
-  info: (message: any) => {
-    const prefix = `[${currentISOString()}] ${chalkStderr.blue("INFO")}:`;
-    console.error(addPrefixEachLine(message, prefix));
-  },
-
-  warn: (message: any) => {
-    const prefix = `[${currentISOString()}] ${chalkStderr.yellow("WARN")}:`;
-    console.error(addPrefixEachLine(message, prefix));
-  },
-
-  error: (message: any) => {
-    const parsedMessage = parseErrorMessage(message);
-    const prefix = `[${currentISOString()}] ${chalkStderr.red("ERROR")}:`;
-    console.error(addPrefixEachLine(parsedMessage, prefix));
-  },
-
-  fatal: (message: any) => {
-    const prefix = `[${currentISOString()}] ${chalkStderr.bgRed("FATAL")}:`;
-    console.error(addPrefixEachLine(message, prefix));
-  },
-};
-
-const addPrefixEachLine = (message: any, prefix: string): string =>
-  ("" + message)
-    .split("\n")
-    .filter((line) => line.length > 0)
-    .map((line) => `${prefix} ${line}`)
-    .join("\n");
-
-const parseErrorMessage = (error: unknown): string => {
-  if (error instanceof Error) {
-    if (error instanceof CliKintoneError) {
-      return error.toString();
+  parseErrorMessage(error: unknown): string {
+    if (error instanceof Error) {
+      if (error instanceof CliKintoneError) {
+        return error.toString();
+      }
+      return "" + error;
     }
     return "" + error;
   }
-  return "" + error;
-};
+}
+
+export const logger = new CliKintoneLogger();

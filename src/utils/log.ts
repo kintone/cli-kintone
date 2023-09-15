@@ -40,7 +40,7 @@ export interface LoggerModuleInterface {
   silent: () => void;
 }
 
-class CliKintoneLogger implements Logger {
+export class CliKintoneLogger implements Logger {
   constructor(
     private logConfigLevel: LogConfigLevel = "info",
     private logModule: LoggerModuleInterface = new WinstonLoggerModule(),
@@ -53,20 +53,20 @@ class CliKintoneLogger implements Logger {
     this.logModule.debug(message);
   }
 
-  error(message: any): void {
-    this.logModule.error(this.parseErrorMessage(message));
-  }
-
-  fatal(message: any): void {
-    this.logModule.fatal(message);
-  }
-
   info(message: any): void {
     this.logModule.info(message);
   }
 
   warn(message: any): void {
     this.logModule.warn(message);
+  }
+
+  error(message: any): void {
+    this.logModule.error(this.parseErrorMessage(message));
+  }
+
+  fatal(message: any): void {
+    this.logModule.fatal(message);
   }
 
   setLogConfigLevel(level: LogConfigLevel): void {

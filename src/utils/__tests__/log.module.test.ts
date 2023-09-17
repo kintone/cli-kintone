@@ -5,11 +5,11 @@ import { WinstonLoggerModule, logFormat } from "../log.module";
 jest.mock("chalk", () => {
   return {
     stderr: {
-      bgRed: jest.fn().mockImplementation((message: any) => message),
-      red: jest.fn().mockImplementation((message: any) => message),
-      yellow: jest.fn().mockImplementation((message: any) => message),
+      bgRed: jest.fn(),
+      red: jest.fn(),
+      yellow: jest.fn(),
       blue: jest.fn().mockImplementation((message: any) => message),
-      green: jest.fn().mockImplementation((message: any) => message),
+      green: jest.fn(),
     },
   };
 });

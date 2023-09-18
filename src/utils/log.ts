@@ -42,10 +42,9 @@ export interface LoggerModuleInterface {
 
 export class CliKintoneLogger implements Logger {
   constructor(
-    private logConfigLevel: LogConfigLevel = "info",
     private logModule: LoggerModuleInterface = new WinstonLoggerModule(),
+    private logConfigLevel: LogConfigLevel = "info",
   ) {
-    this.logModule = logModule;
     this.setLogConfigLevel(logConfigLevel);
   }
 

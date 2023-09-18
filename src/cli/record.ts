@@ -3,7 +3,8 @@ import type yargs from "yargs";
 import { exportCommand } from "./record/export";
 import { importCommand } from "./record/import";
 import { deleteCommand } from "./record/delete";
-import { SUPPORTED_LOG_LEVELS } from "../utils/log";
+import { logOptions } from "./record/logOption";
+import { SUPPORTED_LOG_CONFIG_LEVELS } from "../utils/log";
 
 const command = "record";
 
@@ -14,13 +15,30 @@ const builder = (args: yargs.Argv) =>
     .command(exportCommand)
     .command(importCommand)
     .command(deleteCommand)
+    .options({
+      "log-level": {
+        describe: "Log Level",
+        default: "info",
+        choices: SUPPORTED_LOG_CONFIG_LEVELS,
+        requiresArg: true,
+      },
+      verbose: {
+        describe: "Verbose mode",
+        type: "boolean",
+      },
+    })
     .demandCommand();
 
-const handler = () => {
+type Args = yargs.Arguments<
+  ReturnType<typeof builder> extends yargs.Argv<infer U> ? U : never
+>;
+
+const handler = (args: Args) => {
+  console.log("@@@@", args);
   /** noop **/
 };
 
-export const recordCommand: CommandModule = {
+export const recordCommand: CommandModule<{}, Args> = {
   command,
   describe,
   builder,

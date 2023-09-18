@@ -1,48 +1,34 @@
-import winston from "winston";
-import type { Logger } from "../log";
-import { logger, setLogLevel } from "../log";
-import { afterEach } from "node:test";
+import type { LoggerModuleInterface, Logger } from "../log";
+import { CliKintoneLogger } from "../log";
 
 describe("logger", () => {
-  const mockDate = new Date(0);
-  const spy = jest.spyOn(global, "Date").mockImplementation(() => mockDate);
-  setLogLevel("debug");
+  const mockLogModule: LoggerModuleInterface = {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    fatal: jest.fn(),
+    setLogConfigLevel: jest.fn(),
+    silent: jest.fn(),
+  };
 
-  const patternTest = [
-    ["DEBUG", "debug"],
-    ["INFO", "info"],
-    ["WARN", "warn"],
-    ["ERROR", "error"],
-    ["FATAL", "fatal"],
-  ];
+  const logger = new CliKintoneLogger(mockLogModule, "debug");
+  const patternTests = ["debug", "info", "warn", "error", "fatal"];
 
-  it.each(patternTest)(
-    `should return the %s log base on %s level`,
-    (logDisplay, logLevel) => {
-      const logSpy = jest.spyOn(winston.transports.Console.prototype, "log");
-
-      logger[logLevel as keyof Logger]("This is an example message.");
-      expect(logSpy.mock.calls[0][0]).toMatchObject({
-        timestamp: "1970-01-01T00:00:00.000Z",
-        level: expect.stringMatching(new RegExp(`(.*)${logDisplay}(.*)`)),
-        message: "This is an example message.",
-      });
-    },
-  );
-
-  it('should return warn, error, fatal log when setting log level is "warn"', () => {
-    setLogLevel("warn");
-    const logSpy = jest.spyOn(winston.transports.Console.prototype, "log");
-
-    patternTest.forEach((log) => {
-      logger[log[1] as keyof Logger]("This is an example message.");
+  patternTests.forEach((log) => {
+    it(`should call logModule.${log} when logger.${log} is called`, () => {
+      logger[log as keyof Logger]("This is an example message.");
+      expect(mockLogModule[log as keyof Logger]).toHaveBeenCalledTimes(1);
     });
-
-    expect(logSpy).toHaveBeenCalledTimes(3);
   });
 
-  afterEach(() => {
-    spy.mockReset();
-    spy.mockRestore();
+  it(`should set log config level successfully`, () => {
+    logger.setLogConfigLevel("info");
+    expect(mockLogModule.setLogConfigLevel).toHaveBeenCalled();
+  });
+
+  it(`should silent when the log config level is "none"`, () => {
+    logger.setLogConfigLevel("none");
+    expect(mockLogModule.silent).toHaveBeenCalled();
   });
 });

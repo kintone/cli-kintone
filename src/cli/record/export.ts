@@ -119,8 +119,6 @@ type Args = yargs.Arguments<
 >;
 
 const handler = (args: Args) => {
-  console.log("@@@@", args);
-
   return run({
     baseUrl: args["base-url"],
     username: args.username,

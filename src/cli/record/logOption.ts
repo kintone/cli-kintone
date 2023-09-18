@@ -1,4 +1,4 @@
-import type { Options } from "yargs";
+import type { Arguments, Options } from "yargs";
 import type { LogConfigLevel } from "../../utils/log";
 import { logger, SUPPORTED_LOG_CONFIG_LEVELS } from "../../utils/log";
 
@@ -16,7 +16,7 @@ export const logOptions: { [key: string]: Options } = {
   },
 };
 
-type LogArguments = {
+type LogArguments = Arguments & {
   verbose?: boolean;
   "log-level"?: LogConfigLevel;
 };

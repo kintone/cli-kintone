@@ -1,4 +1,4 @@
-import type { Options, Arguments } from "yargs";
+import type { Options } from "yargs";
 import type { LogConfigLevel } from "../../utils/log";
 import { logger, SUPPORTED_LOG_CONFIG_LEVELS } from "../../utils/log";
 
@@ -16,7 +16,7 @@ export const logOptions: { [key: string]: Options } = {
   },
 };
 
-type LogArguments = Arguments & {
+type LogArguments = {
   verbose?: boolean;
   "log-level"?: LogConfigLevel;
 };
@@ -28,11 +28,7 @@ export const logHandler = (args: LogArguments) => {
     return;
   }
 
-  if (!args["log-level"]) {
-    throw new Error("log-level is required");
-  }
-
-  const logLevel = args["log-level"];
+  const logLevel = args["log-level"] as LogConfigLevel;
 
   logger.setLogConfigLevel(logLevel);
 };

@@ -10,7 +10,6 @@ export const logOptions: { [key: string]: Options } = {
     requiresArg: true,
   },
   verbose: {
-    alias: "v",
     describe: "Verbose mode",
     type: "boolean",
   },

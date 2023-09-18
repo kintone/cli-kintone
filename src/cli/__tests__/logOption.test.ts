@@ -1,9 +1,8 @@
-import { CliKintoneLogger } from "../../utils/log";
+import type { LogConfigLevel } from "../../utils/log";
+import { CliKintoneLogger, SUPPORTED_LOG_CONFIG_LEVELS } from "../../utils/log";
 import { logHandler } from "../record/logOption";
 
 describe("logHandler", () => {
-  const patternTests = ["debug", "info", "warn", "error", "fatal"];
-
   it(`should set "debug" to the log config level when verbose argument is true`, () => {
     // const logger = new CliKintoneLogger(mockLogModule, "debug");
     const spyLogger = jest.spyOn(
@@ -11,21 +10,21 @@ describe("logHandler", () => {
       "setLogConfigLevel",
     );
 
-    logHandler({ $0: "", _: ["123"], verbose: true });
+    logHandler({ verbose: true, $0: "", _: [""] });
     expect(spyLogger).toHaveBeenCalledTimes(1);
     expect(spyLogger).toHaveBeenCalledWith("debug");
   });
 
-  patternTests.forEach((log) => {
+  SUPPORTED_LOG_CONFIG_LEVELS.forEach((log) => {
     it(`should set "${log}" to the log config level when log-level argument is "${log}"`, () => {
       const spyLogger = jest.spyOn(
         CliKintoneLogger.prototype,
         "setLogConfigLevel",
       );
 
-      logHandler({ $0: "", _: ["123"], verbose: false, "log-level": "warn" });
+      logHandler({ "log-level": log, verbose: false, $0: "", _: [""] });
       expect(spyLogger).toHaveBeenCalledTimes(1);
-      expect(spyLogger).toHaveBeenCalledWith("warn");
+      expect(spyLogger).toHaveBeenCalledWith(log);
     });
   });
 });

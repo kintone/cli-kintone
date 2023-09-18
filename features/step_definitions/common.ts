@@ -42,3 +42,11 @@ Then(
     assert.match(this.response.stdout, reg);
   },
 );
+
+Then(
+  "The header row of the output message should match with the pattern: {string}",
+  function (headerRow: string) {
+    const reg = new RegExp(`^${headerRow}`);
+    assert.match(this.response.stdout, reg);
+  },
+);

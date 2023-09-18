@@ -1,10 +1,8 @@
-import type { LogConfigLevel } from "../../utils/log";
 import { CliKintoneLogger, SUPPORTED_LOG_CONFIG_LEVELS } from "../../utils/log";
 import { logHandler } from "../record/logOption";
 
 describe("logHandler", () => {
   it(`should set "debug" to the log config level when verbose argument is true`, () => {
-    // const logger = new CliKintoneLogger(mockLogModule, "debug");
     const spyLogger = jest.spyOn(
       CliKintoneLogger.prototype,
       "setLogConfigLevel",

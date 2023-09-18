@@ -88,6 +88,9 @@ Options:
       --pfx-file-password    The password of the client certificate file    [string]
       --proxy                The URL of a proxy server
                                                  [string] [default: HTTPS_PROXY]
+      --log-level            Log config level
+                                     [choices: "debug", "info", "warn", "error", "fatal", "none"] [default: "info"]
+      --verbose              Verbose mode                                   [boolean]
 ```
 
 ##### Notes
@@ -170,6 +173,9 @@ Options:
       --pfx-file-password    The password of the client certificate file    [string]
       --proxy                The URL of a proxy server
                                                  [string] [default: HTTPS_PROXY]
+      --log-level            Log config level
+                                     [choices: "debug", "info", "warn", "error", "fatal", "none"] [default: "info"]
+      --verbose              Verbose mode                                   [boolean]
 ```
 
 ##### Notes
@@ -238,6 +244,9 @@ Options:
       --proxy                The URL of a proxy server
                                                  [string] [default: HTTPS_PROXY]
   -y, --yes                  Force to delete records                   [boolean]
+      --log-level            Log config level
+                                     [choices: "debug", "info", "warn", "error", "fatal", "none"] [default: "info"]
+      --verbose              Verbose mode                                   [boolean]
 ```
 
 #### Delete all records

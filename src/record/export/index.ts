@@ -26,12 +26,6 @@ export const run: (
   argv: RestAPIClientOptions & Options,
 ) => Promise<void> = async (options) => {
   try {
-    logger.debug("this is debug message");
-    logger.info("this is info message");
-    logger.warn("this is warn message");
-    logger.error("this is error message");
-    logger.fatal("this is fatal message");
-
     const {
       app,
       encoding,

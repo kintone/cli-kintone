@@ -4,7 +4,7 @@ import { logger, SUPPORTED_LOG_CONFIG_LEVELS } from "../../utils/log";
 
 export const logOptions: { [key: string]: Options } = {
   "log-level": {
-    describe: "Log Level",
+    describe: "Log config level",
     default: "info",
     choices: SUPPORTED_LOG_CONFIG_LEVELS,
     requiresArg: true,

@@ -54,17 +54,45 @@ class StandardLogger implements Logger {
   };
 
   private log = (event: LogEvent): void => {
-    const filteredEvent = this.filter(event);
-    if (!filteredEvent) {
+    if(!this.isPrintable(event)) {
       return;
     }
-    const text = this.format(filteredEvent);
-    this.print(text);
+
+    const formattedMessage = this.format(event);
+    this.print(formattedMessage);
   };
 
-  private filter = (event: LogEvent): LogEvent | undefined => {};
+  private isPrintable = (event: LogEvent): boolean => {
+    const logConfigLevelMatrix: { [configLevel in LogConfigLevel]: LogEventLevel[] } = {
+      debug: ["debug", "info", "warn", "error", "fatal"],
+      info: [ "info", "warn", "error", "fatal"],
+      warn: ["warn", "error", "fatal"],
+      error: [ "error", "fatal"],
+      fatal: ["fatal"],
+      none: [],
+    };
 
-  private format = (event: LogEvent): string => {};
+    return logConfigLevelMatrix[this.logConfigLevel].includes(event.level);
+  };
+
+  private format = (event: LogEvent): string => {
+    const timestamp = new Date().toISOString();
+    const eventLevelLabels: {[level in LogEventLevel]: string} = {
+      debug: chalkStderr.green("DEBUG"),
+      info: chalkStderr.blue("INFO"),
+      warn: chalkStderr.yellow("WARN"),
+      error: chalkStderr.red("ERROR"),
+      fatal: chalkStderr.bgRed("FATAL"),
+    };
+    const stringifiedMessage = stringifyMessage(event.message);
+    const prefix = `[${timestamp}] ${eventLevelLabels[event.level]}:`;
+
+    return stringifiedMessage
+      .split("\n")
+      .filter((line) => line.length > 0)
+      .map((line) => `${prefix} ${line}`)
+      .join("\n");
+  };
 
   private print = (text: string): void => {
     this.printer(text);
@@ -73,50 +101,13 @@ class StandardLogger implements Logger {
 
 export const logger = new StandardLogger();
 
-const currentISOString = () => new Date().toISOString();
 
-const addPrefixEachLine = (message: any, prefix: string): string =>
-  ("" + message)
-    .split("\n")
-    .filter((line) => line.length > 0)
-    .map((line) => `${prefix} ${line}`)
-    .join("\n");
-
-const parseErrorMessage = (error: unknown): string => {
-  if (error instanceof Error) {
-    if (error instanceof CliKintoneError) {
-      return error.toString();
+const stringifyMessage = (message: unknown): string => {
+  if (message instanceof Error) {
+    if (message instanceof CliKintoneError) {
+      return message.toString();
     }
-    return "" + error;
+    return "" + message;
   }
-  return "" + error;
+  return "" + message;
 };
-
-//
-// export const logger: Logger = {
-//   debug: (message: any) => {
-//     const prefix = `[${currentISOString()}] ${chalkStderr.green("DEBUG")}:`;
-//     console.error(addPrefixEachLine(message, prefix));
-//   },
-//
-//   info: (message: any) => {
-//     const prefix = `[${currentISOString()}] ${chalkStderr.blue("INFO")}:`;
-//     console.error(addPrefixEachLine(message, prefix));
-//   },
-//
-//   warn: (message: any) => {
-//     const prefix = `[${currentISOString()}] ${chalkStderr.yellow("WARN")}:`;
-//     console.error(addPrefixEachLine(message, prefix));
-//   },
-//
-//   error: (message: any) => {
-//     const parsedMessage = parseErrorMessage(message);
-//     const prefix = `[${currentISOString()}] ${chalkStderr.red("ERROR")}:`;
-//     console.error(addPrefixEachLine(parsedMessage, prefix));
-//   },
-//
-//   fatal: (message: any) => {
-//     const prefix = `[${currentISOString()}] ${chalkStderr.bgRed("FATAL")}:`;
-//     console.error(addPrefixEachLine(message, prefix));
-//   },
-// };

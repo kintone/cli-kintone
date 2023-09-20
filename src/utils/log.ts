@@ -9,18 +9,24 @@ export interface Logger {
   fatal: (message: any) => void;
 }
 
-type LogEventLevel = "debug" | "info" | "warn" | "error" | "fatal";
+export type LogEventLevel = "debug" | "info" | "warn" | "error" | "fatal";
 
-type LogEvent = {
+export type LogEvent = {
   level: LogEventLevel;
   message: any;
 };
 
-type LogConfigLevel = "debug" | "info" | "warn" | "error" | "fatal" | "none";
+export type LogConfigLevel =
+  | "debug"
+  | "info"
+  | "warn"
+  | "error"
+  | "fatal"
+  | "none";
 
-type Printer = (data: any) => void;
+export type Printer = (data: any) => void;
 
-class StandardLogger implements Logger {
+export class StandardLogger implements Logger {
   private readonly printer: Printer = console.error;
 
   private logConfigLevel: LogConfigLevel = "info";
@@ -98,6 +104,10 @@ class StandardLogger implements Logger {
 
   private print = (message: string): void => {
     this.printer(message);
+  };
+
+  public setLogConfigLevel = (logConfigLevel: LogConfigLevel): void => {
+    this.logConfigLevel = logConfigLevel;
   };
 }
 

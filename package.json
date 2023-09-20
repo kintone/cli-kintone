@@ -86,7 +86,6 @@
     "https-proxy-agent": "^7.0.2",
     "iconv-lite": "^0.6.3",
     "inquirer": "^8.2.6",
-    "winston": "^3.10.0",
     "yargs": "^17.7.2"
   },
   "packageManager": "pnpm@8.6.12"

@@ -68,7 +68,7 @@ Feature: common test cases
   Scenario: CliKintoneTest-9 Should return the error message when the baseUrl is not URL format
     When I run the command with args "record export --base-url foo --app 1 --api-token abc"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "(.*)ERROR(.*): TypeError \[ERR_INVALID_URL]: Invalid URL"
+    And The output error message should match with the pattern: "ERROR: TypeError \[ERR_INVALID_URL]: Invalid URL"
 
   Scenario: CliKintoneTest-12 Should return the error message when the app doesn't exist
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app 1 --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD"
@@ -78,4 +78,4 @@ Feature: common test cases
   Scenario: CliKintoneTest-13 Should return the error message when the app is in a guest space
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $$TEST_KINTONE_APP_ID_GUEST_SPACE --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "(.*)ERROR(.*): Please specify --guest-space-id option to access an App in Guest Spaces."
+    And The output error message should match with the pattern: "ERROR: Please specify --guest-space-id option to access an App in Guest Spaces."

@@ -1,26 +1,5 @@
-import { WinstonLoggerModule } from "./log.module";
+import { stderr as chalkStderr } from "chalk";
 import { CliKintoneError } from "./error";
-
-export const SUPPORTED_LOG_EVENT_LEVELS = <const>[
-  "debug",
-  "info",
-  "warn",
-  "error",
-  "fatal",
-];
-
-export type LogEventLevel = (typeof SUPPORTED_LOG_EVENT_LEVELS)[number];
-
-export const SUPPORTED_LOG_CONFIG_LEVELS = <const>[
-  "debug",
-  "info",
-  "warn",
-  "error",
-  "fatal",
-  "none",
-];
-
-export type LogConfigLevel = (typeof SUPPORTED_LOG_CONFIG_LEVELS)[number];
 
 export interface Logger {
   debug: (message: any) => void;
@@ -30,62 +9,116 @@ export interface Logger {
   fatal: (message: any) => void;
 }
 
-export interface LoggerModuleInterface {
-  debug: (message: any) => void;
-  info: (message: any) => void;
-  warn: (message: any) => void;
-  error: (message: any) => void;
-  fatal: (message: any) => void;
-  setLogConfigLevel: (level: LogConfigLevel) => void;
-  silent: () => void;
-}
+export type LogEventLevel = "debug" | "info" | "warn" | "error" | "fatal";
 
-export class CliKintoneLogger implements Logger {
-  constructor(
-    private logModule: LoggerModuleInterface = new WinstonLoggerModule(),
-    private logConfigLevel: LogConfigLevel = "info",
-  ) {
-    this.setLogConfigLevel(logConfigLevel);
+export type LogEvent = {
+  level: LogEventLevel;
+  message: any;
+};
+
+export type LogConfigLevel =
+  | "debug"
+  | "info"
+  | "warn"
+  | "error"
+  | "fatal"
+  | "none";
+
+export type Printer = (data: any) => void;
+
+export class StandardLogger implements Logger {
+  private readonly printer: Printer = console.error;
+
+  private logConfigLevel: LogConfigLevel = "info";
+
+  constructor(options?: {
+    logConfigLevel?: LogConfigLevel;
+    printer?: Printer;
+  }) {
+    if (options?.printer) {
+      this.printer = options.printer;
+    }
+    if (options?.logConfigLevel) {
+      this.logConfigLevel = options.logConfigLevel;
+    }
   }
 
-  debug(message: any): void {
-    this.logModule.debug(message);
-  }
+  public debug = (message: any): void => {
+    this.log({ level: "debug", message });
+  };
+  public info = (message: any): void => {
+    this.log({ level: "info", message });
+  };
+  public warn = (message: any): void => {
+    this.log({ level: "warn", message });
+  };
+  public error = (message: any): void => {
+    this.log({ level: "error", message });
+  };
+  public fatal = (message: any): void => {
+    this.log({ level: "fatal", message });
+  };
 
-  info(message: any): void {
-    this.logModule.info(message);
-  }
-
-  warn(message: any): void {
-    this.logModule.warn(message);
-  }
-
-  error(message: any): void {
-    this.logModule.error(this.parseErrorMessage(message));
-  }
-
-  fatal(message: any): void {
-    this.logModule.fatal(message);
-  }
-
-  setLogConfigLevel(level: LogConfigLevel): void {
-    if (level === "none") {
-      this.logModule.silent();
+  private log = (event: LogEvent): void => {
+    if (!this.isPrintable(event)) {
       return;
     }
 
-    this.logModule.setLogConfigLevel(level);
-  }
+    const formattedMessage = this.format(event);
+    this.print(formattedMessage);
+  };
 
-  parseErrorMessage(error: unknown): string {
-    if (error instanceof Error) {
-      if (error instanceof CliKintoneError) {
-        return error.toString();
-      }
-      return "" + error;
-    }
-    return "" + error;
-  }
+  private isPrintable = (event: LogEvent): boolean => {
+    const logConfigLevelMatrix: {
+      [configLevel in LogConfigLevel]: LogEventLevel[];
+    } = {
+      debug: ["debug", "info", "warn", "error", "fatal"],
+      info: ["info", "warn", "error", "fatal"],
+      warn: ["warn", "error", "fatal"],
+      error: ["error", "fatal"],
+      fatal: ["fatal"],
+      none: [],
+    };
+
+    return logConfigLevelMatrix[this.logConfigLevel].includes(event.level);
+  };
+
+  private format = (event: LogEvent): string => {
+    const timestamp = new Date().toISOString();
+    const eventLevelLabels: { [level in LogEventLevel]: string } = {
+      debug: chalkStderr.green("DEBUG"),
+      info: chalkStderr.blue("INFO"),
+      warn: chalkStderr.yellow("WARN"),
+      error: chalkStderr.red("ERROR"),
+      fatal: chalkStderr.bgRed("FATAL"),
+    };
+    const stringifiedMessage = stringifyMessage(event.message);
+    const prefix = `[${timestamp}] ${eventLevelLabels[event.level]}:`;
+
+    return stringifiedMessage
+      .split("\n")
+      .filter((line) => line.length > 0)
+      .map((line) => `${prefix} ${line}`)
+      .join("\n");
+  };
+
+  private print = (message: string): void => {
+    this.printer(message);
+  };
+
+  public setLogConfigLevel = (logConfigLevel: LogConfigLevel): void => {
+    this.logConfigLevel = logConfigLevel;
+  };
 }
 
-export const logger = new CliKintoneLogger();
+export const logger = new StandardLogger();
+
+const stringifyMessage = (message: unknown): string => {
+  if (message instanceof Error) {
+    if (message instanceof CliKintoneError) {
+      return message.toString();
+    }
+    return "" + message;
+  }
+  return "" + message;
+};

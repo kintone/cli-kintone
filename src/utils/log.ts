@@ -54,7 +54,7 @@ class StandardLogger implements Logger {
   };
 
   private log = (event: LogEvent): void => {
-    if(!this.isPrintable(event)) {
+    if (!this.isPrintable(event)) {
       return;
     }
 
@@ -63,11 +63,13 @@ class StandardLogger implements Logger {
   };
 
   private isPrintable = (event: LogEvent): boolean => {
-    const logConfigLevelMatrix: { [configLevel in LogConfigLevel]: LogEventLevel[] } = {
+    const logConfigLevelMatrix: {
+      [configLevel in LogConfigLevel]: LogEventLevel[];
+    } = {
       debug: ["debug", "info", "warn", "error", "fatal"],
-      info: [ "info", "warn", "error", "fatal"],
+      info: ["info", "warn", "error", "fatal"],
       warn: ["warn", "error", "fatal"],
-      error: [ "error", "fatal"],
+      error: ["error", "fatal"],
       fatal: ["fatal"],
       none: [],
     };
@@ -77,7 +79,7 @@ class StandardLogger implements Logger {
 
   private format = (event: LogEvent): string => {
     const timestamp = new Date().toISOString();
-    const eventLevelLabels: {[level in LogEventLevel]: string} = {
+    const eventLevelLabels: { [level in LogEventLevel]: string } = {
       debug: chalkStderr.green("DEBUG"),
       info: chalkStderr.blue("INFO"),
       warn: chalkStderr.yellow("WARN"),
@@ -94,13 +96,12 @@ class StandardLogger implements Logger {
       .join("\n");
   };
 
-  private print = (text: string): void => {
-    this.printer(text);
+  private print = (message: string): void => {
+    this.printer(message);
   };
 }
 
 export const logger = new StandardLogger();
-
 
 const stringifyMessage = (message: unknown): string => {
   if (message instanceof Error) {

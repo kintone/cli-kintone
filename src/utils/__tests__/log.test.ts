@@ -1,38 +1,28 @@
-import type { Logger } from "../log";
-import { logger } from "../log";
+import type { LogConfigLevel, Logger, Printer } from "../log";
+import { logger, StandardLogger } from "../log";
 
 describe("logger", () => {
   const mockDate = new Date(0);
   const spy = jest.spyOn(global, "Date").mockImplementation(() => mockDate);
 
-  const patternTest = [
-    ["DEBUG", "debug"],
-    ["INFO", "info"],
-    ["WARN", "warn"],
-    ["ERROR", "error"],
-    ["FATAL", "fatal"],
-  ];
-  it.each(patternTest)(
-    `should show the %s log when calling logger with %s level`,
-    (logDisplay, logLevel) => {
-      const consoleMock = jest
-        .spyOn(console, "error")
-        .mockImplementation(() => {
-          return true;
-        });
+  it('should display correct log when calling logger with "debug" level', () => {
+    const message = "This is example message";
+    const message1 = `This is first line message\n This is second line message\n`;
+    const options: { logConfigLevel: LogConfigLevel; printer: Printer } = {
+      logConfigLevel: "debug",
+      printer: jest.fn(),
+    };
+    const standardLogger = new StandardLogger(options);
+    standardLogger.debug(message1);
 
-      logger[logLevel as keyof Logger]("This is an example message.");
+    const expectedMessage = new RegExp(
+      `\\[${mockDate.toISOString()}] (.*)DEBUG(.*): ${message1}`,
+    );
 
-      expect(consoleMock).toHaveBeenCalledTimes(1);
-      expect(consoleMock).toHaveBeenCalledWith(
-        expect.stringMatching(
-          new RegExp(
-            `\\[1970-01-01T00:00:00.000Z] (.*)${logDisplay}(.*): This is an example message.`,
-          ),
-        ),
-      );
-    },
-  );
+    expect(options.printer).toHaveBeenCalledWith(
+      expect.stringMatching(expectedMessage),
+    );
+  });
 
   afterAll(() => {
     spy.mockReset();

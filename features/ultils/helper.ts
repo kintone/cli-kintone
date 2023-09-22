@@ -47,7 +47,7 @@ export const createCsvFile = async (
   inputCsvObject: string[][],
 ): Promise<string> => {
   const csvContent = inputCsvObject
-    .map((row: any) => row.map((field: any) => `"${field}"`).join(","))
+    .map((row) => row.map((field) => `"${field}"`).join(","))
     .join("\n");
 
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));

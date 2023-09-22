@@ -19,6 +19,7 @@ lib
 dist
 bin
 artifacts
+tmp
 
 # misc
 **/.DS_Store

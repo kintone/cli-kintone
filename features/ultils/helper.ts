@@ -45,14 +45,21 @@ const replacer = (substring: string) => {
 
 export const createCsvFile = async (
   inputCsvObject: string[][],
+  destFilePath?: string,
 ): Promise<string> => {
   const csvContent = inputCsvObject
     .map((row) => row.map((field) => `"${field}"`).join(","))
     .join("\n");
 
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
-  const tempFilePath = path.join(tempDir, "records.csv");
-  await fs.writeFile(tempFilePath, csvContent);
+  let filePath = destFilePath;
+  if (filePath) {
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+  } else {
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
+    filePath = path.join(tempDir, "records.csv");
+  }
 
-  return tempFilePath;
+  await fs.writeFile(filePath, csvContent);
+
+  return filePath;
 };

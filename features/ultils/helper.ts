@@ -1,5 +1,7 @@
 import { spawnSync } from "child_process";
 import path from "path";
+import fs from "fs/promises";
+import os from "os";
 
 export const execCliKintoneSync = (
   args: string,
@@ -39,4 +41,18 @@ const replacer = (substring: string) => {
     throw new Error(`The env variable is missing: ${key}`);
   }
   return value;
+};
+
+export const createCsvFile = async (
+  inputCsvObject: string[][],
+): Promise<string> => {
+  const csvContent = inputCsvObject
+    .map((row) => row.map((field) => `"${field}"`).join(","))
+    .join("\n");
+
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
+  const tempFilePath = path.join(tempDir, "records.csv");
+  await fs.writeFile(tempFilePath, csvContent);
+
+  return tempFilePath;
 };

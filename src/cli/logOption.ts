@@ -1,16 +1,16 @@
 import type { Arguments, Options } from "yargs";
-import type { LogConfigLevel } from "../../utils/log";
-import { logger, SUPPORTED_LOG_CONFIG_LEVELS } from "../../utils/log";
+import type { LogConfigLevel } from "../utils/log";
+import { logger, LOG_CONFIG_LEVELS } from "../utils/log";
 
 export const logOptions: { [key: string]: Options } = {
   "log-level": {
-    describe: "Log config level",
+    describe: "The log config level",
     default: "info",
-    choices: SUPPORTED_LOG_CONFIG_LEVELS,
+    choices: LOG_CONFIG_LEVELS,
     requiresArg: true,
   },
   verbose: {
-    describe: "Verbose mode",
+    describe: 'Set log config level to "debug"',
     type: "boolean",
   },
 };
@@ -27,7 +27,7 @@ export const logHandler = (args: LogArguments) => {
     return;
   }
 
-  const logLevel = args["log-level"] as LogConfigLevel;
-
-  logger.setLogConfigLevel(logLevel);
+  if (args["log-level"]) {
+    logger.setLogConfigLevel(args["log-level"]);
+  }
 };

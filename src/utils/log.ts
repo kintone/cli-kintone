@@ -9,7 +9,7 @@ export interface Logger {
   fatal: (message: any) => void;
 }
 
-export const SUPPORTED_LOG_CONFIG_LEVELS = <const>[
+export const LOG_CONFIG_LEVELS = <const>[
   "debug",
   "info",
   "warn",
@@ -18,7 +18,7 @@ export const SUPPORTED_LOG_CONFIG_LEVELS = <const>[
   "none",
 ];
 
-export type LogConfigLevel = (typeof SUPPORTED_LOG_CONFIG_LEVELS)[number];
+export type LogConfigLevel = (typeof LOG_CONFIG_LEVELS)[number];
 
 export type LogEventLevel = "debug" | "info" | "warn" | "error" | "fatal";
 
@@ -46,32 +46,36 @@ export class StandardLogger implements Logger {
     }
   }
 
-  public debug = (message: any): void => {
+  debug(message: any): void {
     this.log({ level: "debug", message });
-  };
-  public info = (message: any): void => {
-    this.log({ level: "info", message });
-  };
-  public warn = (message: any): void => {
-    this.log({ level: "warn", message });
-  };
-  public error = (message: any): void => {
-    this.log({ level: "error", message });
-  };
-  public fatal = (message: any): void => {
-    this.log({ level: "fatal", message });
-  };
+  }
 
-  private log = (event: LogEvent): void => {
+  info(message: any): void {
+    this.log({ level: "info", message });
+  }
+
+  warn(message: any): void {
+    this.log({ level: "warn", message });
+  }
+
+  error(message: any): void {
+    this.log({ level: "error", message });
+  }
+
+  fatal(message: any): void {
+    this.log({ level: "fatal", message });
+  }
+
+  private log(event: LogEvent): void {
     if (!this.isPrintable(event)) {
       return;
     }
 
     const formattedMessage = this.format(event);
     this.print(formattedMessage);
-  };
+  }
 
-  private isPrintable = (event: LogEvent): boolean => {
+  private isPrintable(event: LogEvent): boolean {
     const logConfigLevelMatrix: {
       [configLevel in LogConfigLevel]: LogEventLevel[];
     } = {
@@ -84,9 +88,9 @@ export class StandardLogger implements Logger {
     };
 
     return logConfigLevelMatrix[this.logConfigLevel].includes(event.level);
-  };
+  }
 
-  private format = (event: LogEvent): string => {
+  private format(event: LogEvent): string {
     const timestamp = new Date().toISOString();
     const eventLevelLabels: { [level in LogEventLevel]: string } = {
       debug: chalkStderr.green("DEBUG"),
@@ -103,11 +107,11 @@ export class StandardLogger implements Logger {
       .filter((line) => line.length > 0)
       .map((line) => `${prefix} ${line}`)
       .join("\n");
-  };
+  }
 
-  private print = (message: string): void => {
+  private print(message: string): void {
     this.printer(message);
-  };
+  }
 
   setLogConfigLevel(logConfigLevel: LogConfigLevel): void {
     this.logConfigLevel = logConfigLevel;

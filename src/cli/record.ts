@@ -3,7 +3,6 @@ import type yargs from "yargs";
 import { exportCommand } from "./record/export";
 import { importCommand } from "./record/import";
 import { deleteCommand } from "./record/delete";
-import { logOptions, logHandler } from "./record/logOption";
 
 const command = "record";
 
@@ -14,8 +13,6 @@ const builder = (args: yargs.Argv) =>
     .command(exportCommand)
     .command(importCommand)
     .command(deleteCommand)
-    .options(logOptions)
-    .middleware(logHandler)
     .demandCommand();
 
 const handler = () => {

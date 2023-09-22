@@ -1,5 +1,5 @@
-import { StandardLogger, SUPPORTED_LOG_CONFIG_LEVELS } from "../../utils/log";
-import { logHandler } from "../record/logOption";
+import { StandardLogger, LOG_CONFIG_LEVELS } from "../../utils/log";
+import { logHandler } from "../logOption";
 
 describe("logHandler", () => {
   it(`should set "debug" to the log config level when verbose argument is true`, () => {
@@ -9,7 +9,7 @@ describe("logHandler", () => {
     expect(spyLogger).toHaveBeenCalledWith("debug");
   });
 
-  SUPPORTED_LOG_CONFIG_LEVELS.forEach((log) => {
+  LOG_CONFIG_LEVELS.forEach((log) => {
     it(`should set "${log}" to the log config level when log-level argument is "${log}"`, () => {
       const spyLogger = jest.spyOn(
         StandardLogger.prototype,

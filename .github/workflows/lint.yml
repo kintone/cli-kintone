@@ -9,7 +9,7 @@ on:
 
 jobs:
   lint:
-    name: Node.js ubuntu-latest 16.x
+    name: Node.js ubuntu-latest 18.x
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +18,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
           cache: "pnpm"
 
       - name: Install dependencies

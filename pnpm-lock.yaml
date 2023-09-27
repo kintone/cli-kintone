@@ -56,8 +56,8 @@ devDependencies:
     specifier: ^18.18.0
     version: 18.18.0
   '@types/rollup-plugin-auto-external':
-    specifier: ^2.0.2
-    version: 2.0.2
+    specifier: ^2.0.3
+    version: 2.0.3
   '@types/yargs':
     specifier: ^17.0.25
     version: 17.0.25
@@ -2121,8 +2121,8 @@ packages:
     resolution: {integrity: sha512-ZREFYlpUmPQJ0esjxoG1fMvB2HNaD3z+mjqdSosZvd3RalncI9NEur73P8ZJz4YQdL64CmV1w0RuqoRUlhQRBw==}
     dev: true
 
-  /@types/rollup-plugin-auto-external@2.0.2:
-    resolution: {integrity: sha512-1Xtl9S4yQapD+A4mX1sqYVXm3UmVA9oIEf2YKEhRTCUNxlAM3DoKK1HPxrGMemDJNfhe6Yl3w0JsAGvIN5j/ow==}
+  /@types/rollup-plugin-auto-external@2.0.3:
+    resolution: {integrity: sha512-53aSj+4CdKav2uGO4++IHlA7kOF1XxLRMaznAXcWx2zj87YDBZ5ZhWPAJ2vvri2WqjPdrOznf1qSvnm9hlPyww==}
     dependencies:
       rollup: 3.27.0
     dev: true

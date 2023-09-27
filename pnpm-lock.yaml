@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@kintone/rest-api-client':
-    specifier: ^4.1.0
-    version: 4.1.0
+    specifier: ^4.1.1
+    version: 4.1.1
   chalk:
     specifier: '4'
     version: 4.0.0
@@ -1932,12 +1932,12 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@kintone/rest-api-client@4.1.0:
-    resolution: {integrity: sha512-7f2k+SGETNHz4m/a+JH16RJWbokG5Tew0zvAn98ZJYwtfnWj9QUL1I4Nx2AqApeapD/waOp2W6p5/8DBBGge5Q==}
+  /@kintone/rest-api-client@4.1.1:
+    resolution: {integrity: sha512-HPYtZoJsLWt2fdsDQKR/KqSl3YjAcK+Lp7VsFs8gY52MhwlOrzF1DJUkk3UgcTP3wxlVhCvXFqEhaOOv/6RzOA==}
     engines: {node: '>=16'}
     dependencies:
-      axios: 0.27.2
-      core-js: 3.32.0
+      axios: 1.5.1
+      core-js: 3.32.2
       form-data: 4.0.0
       js-base64: 3.7.5
       mime: 3.0.0
@@ -2538,11 +2538,12 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /axios@0.27.2:
-    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
+  /axios@1.5.1:
+    resolution: {integrity: sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -2944,8 +2945,8 @@ packages:
       browserslist: 4.21.10
     dev: true
 
-  /core-js@3.32.0:
-    resolution: {integrity: sha512-rd4rYZNlF3WuoYuRIDEmbR/ga9CeuWX9U05umAvgrrZoHY4Z++cp/xwPQMvUpBB4Ag6J8KfD80G0zwCyaSxDww==}
+  /core-js@3.32.2:
+    resolution: {integrity: sha512-pxXSw1mYZPDGvTQqEc5vgIb83jGQKFGYWY76z4a7weZXUolw3G+OvpZqSRcfYOoOVUQJYEPsWeQK8pKEnUtWxQ==}
     requiresBuild: true
     dev: false
 
@@ -5795,6 +5796,10 @@ packages:
   /property-expr@2.0.5:
     resolution: {integrity: sha512-IJUkICM5dP5znhCckHSv30Q4b5/JA5enCtkRHYaOVOAocnH/1BQEYTC5NMfT3AVl/iXKdr3aqQbQn9DxyWknwA==}
     dev: true
+
+  /proxy-from-env@1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: false
 
   /ps-tree@1.2.0:
     resolution: {integrity: sha512-0VnamPPYHl4uaU/nSFeZZpR21QAWRz+sRv4iW9+v/GS/J5U5iZB5BNN6J0RMoOvdx2gWM2+ZFMIm58q24e4UYA==}

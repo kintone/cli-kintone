@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.0](https://github.com/kintone/cli-kintone/compare/v1.9.0...v1.10.0) (2023-09-26)
+
+
+### Features
+
+* Support `log-level` and `verbose` option ([#492](https://github.com/kintone/cli-kintone/issues/492)) ([4fca330](https://github.com/kintone/cli-kintone/commit/4fca3302cb90d3c85a10492bf3bf5a7c4f853f8d))
+* Support log config levels ([#493](https://github.com/kintone/cli-kintone/issues/493)) ([fb32adb](https://github.com/kintone/cli-kintone/commit/fb32adb97c464c5a6eafdcbc7c56587ed5d54c9e))
+
 ## [1.9.0](https://github.com/kintone/cli-kintone/compare/v1.8.4...v1.9.0) (2023-09-12)
 
 

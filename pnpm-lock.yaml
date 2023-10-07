@@ -41,8 +41,8 @@ devDependencies:
     specifier: ^7.23.0
     version: 7.23.0(@babel/core@7.23.0)
   '@cucumber/cucumber':
-    specifier: ^9.5.1
-    version: 9.5.1
+    specifier: ^9.6.0
+    version: 9.6.0
   '@cybozu/eslint-config':
     specifier: ^22.0.1
     version: 22.0.1(eslint@8.51.0)(prettier@3.0.1)(typescript@5.2.2)
@@ -1438,8 +1438,8 @@ packages:
       regexp-match-indices: 1.0.2
     dev: true
 
-  /@cucumber/cucumber@9.5.1:
-    resolution: {integrity: sha512-9fRRxbRRkXxRB4D7C21ZjmEvBWI3Su7yNQDvRPfgHnd+xVKaOTvfPs/lZWN1TOiwYlnW5nupRaaCx5xV+fzurw==}
+  /@cucumber/cucumber@9.6.0:
+    resolution: {integrity: sha512-bCw2uJdGHHLg4B3RoZpLzx0RXyXURmPe+swtdK1cGoA8rs+vv+/6osifcNwvFM2sv0nQ91+gDACSrXK7AHCylg==}
     engines: {node: 14 || 16 || >=18}
     hasBin: true
     dependencies:

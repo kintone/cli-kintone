@@ -20,9 +20,9 @@ jobs:
       - id: get-os
         run: |
           if [ "${{ github.event_name }}" == "push" ]; then
-            echo ::set-output name=os::[ubuntu-latest,windows-latest,macos-latest]
+            echo ::set-output name=os::['ubuntu-latest','windows-latest','macos-latest']
           elif [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo ::set-output name=os::[ubuntu-latest]
+            echo ::set-output name=os::['ubuntu-latest']
           fi
 
   test-e2e:

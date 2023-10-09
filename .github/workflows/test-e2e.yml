@@ -11,34 +11,41 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  get-running-os:
+    name: Get running OS
+    runs-on: ubuntu-latest
+    outputs:
+      os: ${{ steps.get-os.outputs.os }}
+    steps:
+      - id: get-os
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+            echo ::set-output name=os::[ubuntu-latest, windows-latest, macos-latest]
+          else if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo ::set-output name=os::[ubuntu-latest]
+          fi
+
   test-e2e:
     name: Node.js ${{ matrix.os }} ${{ matrix.node-version }}
     runs-on: ${{ matrix.os }}
+    needs: get-running-os
 
     strategy:
       max-parallel: 1
       matrix:
         node-version: [18.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: ${{ needs.get-running-os.outputs.os }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: pnpm/action-setup@v2
-
       - uses: actions/setup-node@v3
-        if: github.event_name == 'push' || matrix.os == 'ubuntu-latest'
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
-
       - name: Install dependencies
-        if: github.event_name == 'push' || matrix.os == 'ubuntu-latest'
         run: pnpm install --frozen-lockfile
-      - name: Build
-        if: github.event_name == 'push' || matrix.os == 'ubuntu-latest'
-        run: pnpm build
+      - run: pnpm build
       - name: Run e2e tests
-        if: github.event_name == 'push' || matrix.os == 'ubuntu-latest'
         env:
           TEST_KINTONE_BASE_URL: ${{ secrets.TEST_KINTONE_BASE_URL }}
           TEST_KINTONE_USERNAME: ${{ secrets.TEST_KINTONE_USERNAME }}

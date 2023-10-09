@@ -34,7 +34,7 @@ jobs:
       max-parallel: 1
       matrix:
         node-version: [18.x]
-        os: ${{ fromJSON(needs.get-running-os.outputs.os) }}
+        os: ${{ needs.get-running-os.outputs.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2

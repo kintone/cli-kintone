@@ -9,7 +9,7 @@ on:
 jobs:
   test-e2e:
     concurrency:
-      group: test-e2e-workflow-concurrency-group
+      group: test-e2e-jobs-concurrency-group
       cancel-in-progress: false
 
     name: Node.js ${{ matrix.os }} ${{ matrix.node-version }}

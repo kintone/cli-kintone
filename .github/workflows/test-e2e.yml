@@ -26,6 +26,7 @@ jobs:
       - uses: pnpm/action-setup@v2
 
       - uses: actions/setup-node@v3
+        if: github.event_name == 'push' || matrix.os == 'ubuntu-latest'
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"

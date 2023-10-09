@@ -7,12 +7,17 @@ on:
   pull_request:
   workflow_dispatch:
 
+concurrency:
+  group: test-e2e-workflow-concurrency-group
+  cancel-in-progress: false
+
 jobs:
   test-e2e:
     name: Node.js ${{ matrix.os }} ${{ matrix.node-version }}
     runs-on: ${{ matrix.os }}
 
     strategy:
+      max-parallel: 1
       matrix:
         node-version: [18.x]
         os: [ubuntu-latest, windows-latest, macos-latest]

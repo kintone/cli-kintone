@@ -20,9 +20,9 @@ jobs:
       - id: get-os
         run: |
           if [ "${{ github.event_name }}" == "push" ]; then
-            echo ::set-output name=os::ubuntu-latest,windows-latest,macos-latest
+            echo ::set-output name=os::[ubuntu-latest,windows-latest,macos-latest]
           elif [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo ::set-output name=os::ubuntu-latest
+            echo ::set-output name=os::[ubuntu-latest]
           fi
 
   test-e2e:
@@ -34,7 +34,7 @@ jobs:
       max-parallel: 1
       matrix:
         node-version: [18.x]
-        os: ${{ needs.get-running-os.outputs.os }}
+        os: ${{ fromJSON(needs.get-running-os.outputs.os) }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2

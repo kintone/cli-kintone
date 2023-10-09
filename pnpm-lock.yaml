@@ -47,8 +47,8 @@ devDependencies:
     specifier: ^22.0.1
     version: 22.0.1(eslint@8.51.0)(prettier@3.0.1)(typescript@5.2.2)
   '@types/inquirer':
-    specifier: ^8.2.6
-    version: 8.2.6
+    specifier: ^8.2.7
+    version: 8.2.7
   '@types/jest':
     specifier: ^29.5.5
     version: 29.5.5
@@ -2065,8 +2065,8 @@ packages:
       '@types/node': 18.18.4
     dev: true
 
-  /@types/inquirer@8.2.6:
-    resolution: {integrity: sha512-3uT88kxg8lNzY8ay2ZjP44DKcRaTGztqeIvN2zHvhzIBH/uAPaL75aBtdNRKbA7xXoMbBt5kX0M00VKAnfOYlA==}
+  /@types/inquirer@8.2.7:
+    resolution: {integrity: sha512-uICJEaJOf6MsKyyAf8p58+QxTS6dwy91QVfXk1hnQ0rUT+u7KpkeFx5dxQ/oju0BaOKB284brEMBHLpNf4bZDQ==}
     dependencies:
       '@types/through': 0.0.30
       rxjs: 7.8.1

@@ -48,4 +48,5 @@ jobs:
           TEST_KINTONE_APP_ID_FOR_EXPORT: ${{ vars.TEST_KINTONE_APP_ID_FOR_EXPORT }}
           TEST_KINTONE_APP_ID_FOR_IMPORT: ${{ vars.TEST_KINTONE_APP_ID_FOR_IMPORT }}
           TEST_KINTONE_APP_ID_FOR_DELETE: ${{ vars.TEST_KINTONE_APP_ID_FOR_DELETE }}
+        if: github.event_name == 'push' || matrix.os == 'ubuntu-latest'
         run: pnpm test:e2e

@@ -30,4 +30,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: pnpm test:e2e
+      - name: Run e2e tests
+        env:
+          TEST_KINTONE_BASE_URL: ${{ secrets.TEST_KINTONE_BASE_URL }}
+          TEST_KINTONE_USERNAME: ${{ secrets.TEST_KINTONE_USERNAME }}
+          TEST_KINTONE_PASSWORD: ${{ secrets.TEST_KINTONE_PASSWORD }}
+          TEST_KINTONE_API_TOKEN_FOR_EXPORT: ${{ secrets.TEST_KINTONE_API_TOKEN_FOR_EXPORT }}
+          TEST_KINTONE_API_TOKEN_FOR_EXPORT_DELETE: ${{ secrets.TEST_KINTONE_API_TOKEN_FOR_EXPORT_DELETE }}
+          TEST_KINTONE_API_TOKEN_FOR_IMPORT: ${{ secrets. TEST_KINTONE_API_TOKEN_FOR_IMPORT }}
+          TEST_KINTONE_API_TOKEN_FOR_IMPORT_DELETE: ${{ secrets. TEST_KINTONE_API_TOKEN_FOR_IMPORT_DELETE }}
+          TEST_KINTONE_API_TOKEN_FOR_DELETE: ${{ secrets. TEST_KINTONE_API_TOKEN_FOR_DELETE }}
+          TEST_KINTONE_APP_ID_GUEST_SPACE: ${{ env.TEST_KINTONE_APP_ID_GUEST_SPACE }}
+          TEST_KINTONE_APP_ID_FOR_EXPORT: ${{ env.TEST_KINTONE_APP_ID_FOR_EXPORT }}
+          TEST_KINTONE_APP_ID_FOR_IMPORT: ${{ env.TEST_KINTONE_APP_ID_FOR_IMPORT }}
+          TEST_KINTONE_APP_ID_FOR_DELETE: ${{ env.TEST_KINTONE_APP_ID_FOR_DELETE }}
+        run: pnpm test:e2e

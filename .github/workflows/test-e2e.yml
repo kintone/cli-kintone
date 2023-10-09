@@ -34,7 +34,7 @@ jobs:
       max-parallel: 1
       matrix:
         node-version: [18.x]
-        os: ${{ github.event_name == 'push' && 'ubuntu-latest, windows-latest, macos-latest' || github.event_name == 'pull_request' && 'ubuntu-latest' }}
+        os: ${{ needs.get-running-os.outputs.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2

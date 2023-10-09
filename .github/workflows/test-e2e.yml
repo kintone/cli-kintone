@@ -18,6 +18,8 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
+      - run: git config --global core.autocrlf false
+
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v2

@@ -20,7 +20,6 @@ jobs:
       matrix:
         node-version: [18.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
-    if: github.event_name == 'push' || matrix.os == 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v4
 
@@ -32,9 +31,13 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
+        if: github.event_name == 'push' || matrix.os == 'ubuntu-latest'
         run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - name: Build
+        if: github.event_name == 'push' || matrix.os == 'ubuntu-latest'
+        run: pnpm build
       - name: Run e2e tests
+        if: github.event_name == 'push' || matrix.os == 'ubuntu-latest'
         env:
           TEST_KINTONE_BASE_URL: ${{ secrets.TEST_KINTONE_BASE_URL }}
           TEST_KINTONE_USERNAME: ${{ secrets.TEST_KINTONE_USERNAME }}

@@ -19,7 +19,7 @@ export type RestAPIClientOptions = {
   httpsProxy?: string;
 };
 
-const DEFAULT_SOCKET_TIMEOUT = 60000;
+const DEFAULT_SOCKET_TIMEOUT = 600000;
 
 const buildAuthParam = (options: RestAPIClientOptions) => {
   const passwordAuthParam = {

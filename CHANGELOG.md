@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.2](https://github.com/kintone/cli-kintone/compare/v1.10.1...v1.10.2) (2023-10-16)
+
+
+### Bug Fixes
+
+* increase the socket timeout value ([#526](https://github.com/kintone/cli-kintone/issues/526)) ([b56dce4](https://github.com/kintone/cli-kintone/commit/b56dce4e1d1b535abfa694855019a09220cda4a5))
+
 ## [1.10.1](https://github.com/kintone/cli-kintone/compare/v1.10.0...v1.10.1) (2023-10-03)
 
 

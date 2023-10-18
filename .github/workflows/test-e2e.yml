@@ -1,0 +1,62 @@
+name: test e2e
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: test-e2e-workflow-concurrency-group
+  cancel-in-progress: false
+
+jobs:
+  get-running-os:
+    name: Get running OS
+    runs-on: ubuntu-latest
+    outputs:
+      os: ${{ steps.get-os.outputs.os }}
+    steps:
+      - id: get-os
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+            echo "os=['ubuntu-latest','windows-latest','macos-latest']" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "os=['ubuntu-latest']" >> $GITHUB_OUTPUT
+          fi
+
+  test-e2e:
+    name: Node.js ${{ matrix.os }} ${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+    needs: get-running-os
+
+    strategy:
+      max-parallel: 1
+      matrix:
+        node-version: [18.x]
+        os: ${{ fromJSON(needs.get-running-os.outputs.os) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Run e2e tests
+        env:
+          TEST_KINTONE_BASE_URL: ${{ secrets.TEST_KINTONE_BASE_URL }}
+          TEST_KINTONE_USERNAME: ${{ secrets.TEST_KINTONE_USERNAME }}
+          TEST_KINTONE_PASSWORD: ${{ secrets.TEST_KINTONE_PASSWORD }}
+          TEST_KINTONE_API_TOKEN_FOR_EXPORT: ${{ secrets.TEST_KINTONE_API_TOKEN_FOR_EXPORT }}
+          TEST_KINTONE_API_TOKEN_FOR_EXPORT_DELETE: ${{ secrets.TEST_KINTONE_API_TOKEN_FOR_EXPORT_DELETE }}
+          TEST_KINTONE_API_TOKEN_FOR_IMPORT: ${{ secrets.TEST_KINTONE_API_TOKEN_FOR_IMPORT }}
+          TEST_KINTONE_API_TOKEN_FOR_IMPORT_DELETE: ${{ secrets.TEST_KINTONE_API_TOKEN_FOR_IMPORT_DELETE }}
+          TEST_KINTONE_API_TOKEN_FOR_DELETE: ${{ secrets.TEST_KINTONE_API_TOKEN_FOR_DELETE }}
+          TEST_KINTONE_APP_ID_GUEST_SPACE: ${{ vars.TEST_KINTONE_APP_ID_GUEST_SPACE }}
+          TEST_KINTONE_APP_ID_FOR_EXPORT: ${{ vars.TEST_KINTONE_APP_ID_FOR_EXPORT }}
+          TEST_KINTONE_APP_ID_FOR_IMPORT: ${{ vars.TEST_KINTONE_APP_ID_FOR_IMPORT }}
+          TEST_KINTONE_APP_ID_FOR_DELETE: ${{ vars.TEST_KINTONE_APP_ID_FOR_DELETE }}
+        run: pnpm test:e2e

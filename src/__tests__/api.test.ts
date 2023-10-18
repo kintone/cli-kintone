@@ -61,7 +61,7 @@ describe("api", () => {
   const PFX_FILE_PATH = "./dummy.pfx";
   const PFX_FILE_PASSWORD = "pfx_password";
   const HTTPS_PROXY = "http://proxy.example.com:3128";
-  const DEFAULT_SOCKET_TIMEOUT = 60000;
+  const DEFAULT_SOCKET_TIMEOUT = 600000;
 
   it("should pass username and password to the apiClient correctly", () => {
     const apiClient = buildRestAPIClient({

@@ -45,9 +45,8 @@ export async function* recordReader(
 ): AsyncGenerator<RecordCsv, void, undefined> {
   const lineOffset = 1; // offset the header row
 
-  const { value: firstRow }: { value: CsvRow | null } = await csvStream[
-    Symbol.asyncIterator
-  ]().next();
+  const { value: firstRow }: { value: CsvRow | null } =
+    await csvStream[Symbol.asyncIterator]().next();
 
   if (firstRow === null || firstRow === undefined) {
     return;

@@ -3,7 +3,7 @@ name: test e2e
 on:
   push:
     branches:
-      - main
+      - investigate/update-actions-node-setup-to-v4
   pull_request:
 
 concurrency:
@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"

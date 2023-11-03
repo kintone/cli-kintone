@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import { BeforeAll, After, AfterAll, Status } from "@cucumber/cucumber";
 import fs from "fs";
 import path from "path";

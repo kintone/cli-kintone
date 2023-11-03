@@ -6,10 +6,9 @@ export const execCliKintoneSync = (
   args: string,
   options?: { env?: { [key: string]: string } },
 ) => {
-  const replacedTokenArgs = replaceTokenWithEnvVars(args);
   const response = spawnSync(
     getCliKintoneBinary(),
-    replacedTokenArgs.split(/\s+/),
+    replaceTokenWithEnvVars(args).split(/\s+/),
     {
       encoding: "utf-8",
       env: options?.env ?? {},

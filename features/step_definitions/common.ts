@@ -1,9 +1,5 @@
 import * as assert from "assert";
-import {
-  createCsvFile,
-  execCliKintoneSync,
-  replaceTokenWithEnvVars,
-} from "../ultils/helper";
+import { createCsvFile, execCliKintoneSync } from "../ultils/helper";
 import { Given, When, Then } from "../ultils/world";
 
 Given(
@@ -21,7 +17,7 @@ Given(
   "The app {string} with {string} has no records",
   function (appId: string, apiToken: string) {
     const command = `record delete --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --yes`;
-    const response = execCliKintoneSync(replaceTokenWithEnvVars(command));
+    const response = execCliKintoneSync(command);
     if (response.status !== 0) {
       throw new Error(`Resetting app failed. Error: \n${response.stderr}`);
     }
@@ -34,7 +30,7 @@ Given(
     const tempFilePath = await createCsvFile(table.raw());
     const command = `record import --file-path ${tempFilePath} --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD`;
 
-    const response = execCliKintoneSync(replaceTokenWithEnvVars(command));
+    const response = execCliKintoneSync(command);
     if (response.status !== 0) {
       throw new Error(`Importing CSV failed. Error: \n${response.stderr}`);
     }
@@ -42,7 +38,7 @@ Given(
 );
 
 When("I run the command with args {string}", function (args: string) {
-  this.response = execCliKintoneSync(replaceTokenWithEnvVars(args), {
+  this.response = execCliKintoneSync(args, {
     env: this.env,
   });
 });

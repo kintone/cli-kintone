@@ -1,16 +1,20 @@
 import { spawnSync } from "child_process";
 import path from "path";
 import fs from "fs/promises";
-import os from "os";
 
 export const execCliKintoneSync = (
   args: string,
   options?: { env?: { [key: string]: string } },
 ) => {
-  const response = spawnSync(getCliKintoneBinary(), args.split(/\s+/), {
-    encoding: "utf-8",
-    env: options?.env ?? {},
-  });
+  const replacedTokenArgs = replaceTokenWithEnvVars(args);
+  const response = spawnSync(
+    getCliKintoneBinary(),
+    replacedTokenArgs.split(/\s+/),
+    {
+      encoding: "utf-8",
+      env: options?.env ?? {},
+    },
+  );
   if (response.error) {
     throw response.error;
   }
@@ -55,7 +59,7 @@ export const createCsvFile = async (
   if (filePath) {
     await fs.mkdir(path.dirname(filePath), { recursive: true });
   } else {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
+    const tempDir = await fs.mkdtemp("cli-kintone-csv-file-");
     filePath = path.join(tempDir, "records.csv");
   }
 

@@ -1,9 +1,5 @@
 import * as assert from "assert";
-import {
-  createCsvFile,
-  execCliKintoneSync,
-  replaceTokenWithEnvVars,
-} from "../ultils/helper";
+import { createCsvFile, execCliKintoneSync } from "../ultils/helper";
 import { Given, Then } from "../ultils/world";
 
 Given(
@@ -16,7 +12,7 @@ Given(
 Then("The app {string} should has records as below:", function (appId, table) {
   const fields = table.raw()[0].join(",");
   const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --fields ${fields}`;
-  const response = execCliKintoneSync(replaceTokenWithEnvVars(command));
+  const response = execCliKintoneSync(command);
   if (response.status !== 0) {
     throw new Error(`Getting records failed. Error: \n${response.stderr}`);
   }

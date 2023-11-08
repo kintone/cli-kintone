@@ -25,7 +25,7 @@ export class OurWorld extends World {
     this.log(`Root working directory: ${this.workingDir}`);
   }
 
-  public initIsolated() {
+  public initForIsolatedScenario() {
     this.workingDir = fs.mkdtempSync(
       this.workingDir ? path.join(this.workingDir, "case-") : "case-",
     );

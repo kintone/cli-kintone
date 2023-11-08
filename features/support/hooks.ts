@@ -33,7 +33,7 @@ Before(function () {
 });
 
 Before({ tags: "@isolated" }, function () {
-  this.initIsolated();
+  this.initForIsolatedScenario();
 });
 
 After(async function (scenario) {

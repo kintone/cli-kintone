@@ -1,11 +1,14 @@
 import * as assert from "assert";
 import { createCsvFile, execCliKintoneSync } from "../ultils/helper";
-import { Given, Then } from "../ultils/world";
+import { Given, Then } from "../supports/world";
 
 Given(
   "The csv file {string} with content as below:",
   async function (filePath: string, table) {
-    await createCsvFile(table.raw(), this.workingDir, filePath);
+    await createCsvFile(table.raw(), {
+      baseDir: this.workingDir,
+      destFilePath: filePath,
+    });
   },
 );
 

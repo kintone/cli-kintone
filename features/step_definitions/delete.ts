@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import { execCliKintoneSync } from "../ultils/helper";
-import { Then } from "../ultils/world";
+import { Then } from "../supports/world";
 
 const NO_RECORDS_WARNING =
   "No records exist in the app or match the condition.";

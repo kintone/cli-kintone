@@ -37,3 +37,5 @@ export class OurWorld extends World {
 export const Given = cucumber.Given<OurWorld>;
 export const When = cucumber.When<OurWorld>;
 export const Then = cucumber.Then<OurWorld>;
+export const Before = cucumber.Before<OurWorld>;
+export const After = cucumber.After<OurWorld>;

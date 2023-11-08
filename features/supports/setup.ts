@@ -1,4 +1,4 @@
 import { setWorldConstructor } from "@cucumber/cucumber";
-import { OurWorld } from "../ultils/world";
+import { OurWorld } from "./world";
 
 setWorldConstructor(OurWorld);

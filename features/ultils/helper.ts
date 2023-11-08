@@ -49,21 +49,22 @@ const replacer = (substring: string) => {
 
 export const createCsvFile = async (
   inputCsvObject: string[][],
-  workingDir?: string,
-  destFilePath?: string,
+  options: { baseDir?: string; destFilePath?: string },
 ): Promise<string> => {
   const csvContent = inputCsvObject
     .map((row) => row.map((field) => `"${field}"`).join(","))
     .join("\n");
 
-  let filePath = destFilePath;
+  let filePath = options.destFilePath;
   if (filePath) {
-    filePath = workingDir ? path.join(workingDir, filePath) : filePath;
+    filePath = options.baseDir
+      ? path.join(options.baseDir, filePath)
+      : filePath;
     await fs.mkdir(path.dirname(filePath), { recursive: true });
   } else {
     const prefix = "cli-kintone-csv-file-";
     const tempDir = await fs.mkdtemp(
-      workingDir ? path.join(workingDir, prefix) : prefix,
+      options.baseDir ? path.join(options.baseDir, prefix) : prefix,
     );
     filePath = path.join(tempDir, "records.csv");
   }

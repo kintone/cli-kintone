@@ -1,18 +1,9 @@
 /* eslint-disable new-cap */
-import { OurWorld } from "../ultils/world";
-import {
-  After,
-  AfterAll,
-  Before,
-  BeforeAll,
-  setWorldConstructor,
-  Status,
-} from "@cucumber/cucumber";
+import { AfterAll, BeforeAll, Status } from "@cucumber/cucumber";
 import fs from "fs";
 import path from "path";
 import os from "os";
-
-setWorldConstructor(OurWorld);
+import { Before, After } from "./world";
 
 let rootDir: string;
 let failedScenarioCount = 0;

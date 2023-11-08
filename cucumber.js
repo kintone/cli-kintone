@@ -3,7 +3,7 @@ const config = {
   default: {
     formatOptions: { snippetInterface: "synchronous" },
     requireModule: ["ts-node/register"],
-    require: ["features/support/**/*.ts", "features/step_definitions/**/*.ts"],
+    require: ["features/supports/**/*.ts", "features/step_definitions/**/*.ts"],
   },
 };
 module.exports = config;

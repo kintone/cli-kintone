@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import { createCsvFile, execCliKintoneSync } from "../ultils/helper";
-import { Given, When, Then } from "../ultils/world";
+import { Given, When, Then } from "../supports/world";
 
 Given(
   "Load environment variable {string} as {string}",
@@ -27,11 +27,9 @@ Given(
 Given(
   "The app {string} has some records as below:",
   async function (appId, table) {
-    const tempFilePath = await createCsvFile(
-      table.raw(),
-      this.workingDir,
-      undefined,
-    );
+    const tempFilePath = await createCsvFile(table.raw(), {
+      baseDir: this.workingDir,
+    });
     const command = `record import --file-path ${tempFilePath} --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD`;
 
     const response = execCliKintoneSync(command, { cwd: this.workingDir });

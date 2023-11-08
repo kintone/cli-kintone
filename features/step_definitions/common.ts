@@ -1,5 +1,4 @@
 import * as assert from "assert";
-import { createCsvFile, execCliKintoneSync } from "../ultils/helper";
 import { Given, When, Then } from "../supports/world";
 
 Given(
@@ -17,9 +16,9 @@ Given(
   "The app {string} with {string} has no records",
   function (appId: string, apiToken: string) {
     const command = `record delete --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --yes`;
-    const response = execCliKintoneSync(command, { cwd: this.workingDir });
-    if (response.status !== 0) {
-      throw new Error(`Resetting app failed. Error: \n${response.stderr}`);
+    this.execCliKintoneSync(command);
+    if (this.response.status !== 0) {
+      throw new Error(`Resetting app failed. Error: \n${this.response.stderr}`);
     }
   },
 );
@@ -27,23 +26,17 @@ Given(
 Given(
   "The app {string} has some records as below:",
   async function (appId, table) {
-    const tempFilePath = await createCsvFile(table.raw(), {
-      baseDir: this.workingDir,
-    });
+    const tempFilePath = await this.createCsvFile(table.raw());
     const command = `record import --file-path ${tempFilePath} --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD`;
-
-    const response = execCliKintoneSync(command, { cwd: this.workingDir });
-    if (response.status !== 0) {
-      throw new Error(`Importing CSV failed. Error: \n${response.stderr}`);
+    this.execCliKintoneSync(command);
+    if (this.response.status !== 0) {
+      throw new Error(`Importing CSV failed. Error: \n${this.response.stderr}`);
     }
   },
 );
 
 When("I run the command with args {string}", function (args: string) {
-  this.response = execCliKintoneSync(args, {
-    env: this.env,
-    cwd: this.workingDir,
-  });
+  this.execCliKintoneSync(args);
 });
 
 Then("I should get the exit code is non-zero", function () {

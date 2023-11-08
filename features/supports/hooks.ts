@@ -12,14 +12,18 @@ BeforeAll(function () {
   rootDir = fs.mkdtempSync(
     path.join(os.tmpdir(), `cli-kintone-e2e-test-${new Date().valueOf()}-`),
   );
+  console.log(`Root working directory: ${rootDir}`);
 });
 
 Before(function () {
-  this.init({ rootDir });
+  this.init({ workingDir: rootDir });
 });
 
 Before({ tags: "@isolated" }, function () {
-  this.initForIsolatedScenario();
+  const workingDir = fs.mkdtempSync(
+    rootDir ? path.join(rootDir, "case-") : "case-",
+  );
+  this.init({ workingDir });
 });
 
 After(async function (scenario) {

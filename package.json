@@ -60,7 +60,7 @@
     "@babel/preset-typescript": "^7.23.2",
     "@cucumber/cucumber": "^10.0.1",
     "@cybozu/eslint-config": "^22.0.2",
-    "@types/inquirer": "^8.2.9",
+    "@types/inquirer": "^8.2.10",
     "@types/jest": "^29.5.7",
     "@types/node": "^18.18.8",
     "@types/rollup-plugin-auto-external": "^2.0.5",

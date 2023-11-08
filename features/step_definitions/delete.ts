@@ -7,7 +7,7 @@ const NO_RECORDS_WARNING =
 
 Then("The app {string} has no records", function (appId) {
   const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD`;
-  const response = execCliKintoneSync(command);
+  const response = execCliKintoneSync(command, { cwd: this.workingDir });
   if (response.status !== 0) {
     throw new Error(`Getting records failed. Error: \n${response.stderr}`);
   }

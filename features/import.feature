@@ -1,3 +1,4 @@
+@isolated
 Feature: cli-kintone import command
 
   Scenario: CliKintoneTest-23 Should import the records with API Token successfully

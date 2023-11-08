@@ -1,16 +1,39 @@
 /* eslint-disable new-cap */
-import { BeforeAll, After, AfterAll, Status } from "@cucumber/cucumber";
+import { OurWorld } from "../ultils/world";
+import {
+  After,
+  AfterAll,
+  Before,
+  BeforeAll,
+  setWorldConstructor,
+  Status,
+} from "@cucumber/cucumber";
 import fs from "fs";
 import path from "path";
 import os from "os";
 
-let workingDir: string;
+declare global {
+  // eslint-disable-next-line no-var, vars-on-top
+  var workingDir: string;
+}
+
+setWorldConstructor(OurWorld);
+
+let rootDir: string;
 let failedScenarioCount = 0;
 
 BeforeAll(function () {
-  workingDir = fs.mkdtempSync(path.join(os.tmpdir(), "cli-kintone-e2e-test-"));
-  process.chdir(workingDir);
-  console.log(`Current working directory: ${workingDir}`);
+  rootDir = fs.mkdtempSync(
+    path.join(os.tmpdir(), `cli-kintone-e2e-test-${new Date().valueOf()}-`),
+  );
+});
+
+Before(function () {
+  this.init({ rootDir });
+});
+
+Before({ tags: "@isolated" }, function () {
+  this.initIsolated();
 });
 
 After(async function (scenario) {
@@ -21,6 +44,6 @@ After(async function (scenario) {
 
 AfterAll(function () {
   if (failedScenarioCount === 0) {
-    fs.rmSync(workingDir, { recursive: true, force: true });
+    fs.rmSync(rootDir, { recursive: true, force: true });
   }
 });

@@ -4,7 +4,7 @@ import fs from "fs/promises";
 
 export const execCliKintoneSync = (
   args: string,
-  options?: { env?: { [key: string]: string } },
+  options?: { env?: { [key: string]: string }; cwd?: string },
 ) => {
   const response = spawnSync(
     getCliKintoneBinary(),
@@ -12,6 +12,7 @@ export const execCliKintoneSync = (
     {
       encoding: "utf-8",
       env: options?.env ?? {},
+      cwd: options?.cwd ?? process.cwd(),
     },
   );
   if (response.error) {
@@ -48,6 +49,7 @@ const replacer = (substring: string) => {
 
 export const createCsvFile = async (
   inputCsvObject: string[][],
+  workingDir?: string,
   destFilePath?: string,
 ): Promise<string> => {
   const csvContent = inputCsvObject
@@ -56,9 +58,13 @@ export const createCsvFile = async (
 
   let filePath = destFilePath;
   if (filePath) {
+    filePath = workingDir ? path.join(workingDir, filePath) : filePath;
     await fs.mkdir(path.dirname(filePath), { recursive: true });
   } else {
-    const tempDir = await fs.mkdtemp("cli-kintone-csv-file-");
+    const prefix = "cli-kintone-csv-file-";
+    const tempDir = await fs.mkdtemp(
+      workingDir ? path.join(workingDir, prefix) : prefix,
+    );
     filePath = path.join(tempDir, "records.csv");
   }
 

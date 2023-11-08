@@ -12,11 +12,6 @@ import fs from "fs";
 import path from "path";
 import os from "os";
 
-declare global {
-  // eslint-disable-next-line no-var, vars-on-top
-  var workingDir: string;
-}
-
 setWorldConstructor(OurWorld);
 
 let rootDir: string;

@@ -59,8 +59,8 @@ devDependencies:
     specifier: ^2.0.5
     version: 2.0.5
   '@types/yargs':
-    specifier: ^17.0.30
-    version: 17.0.30
+    specifier: ^17.0.31
+    version: 17.0.31
   '@vercel/ncc':
     specifier: ^0.38.1
     version: 0.38.1
@@ -1843,7 +1843,7 @@ packages:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
       '@types/node': 18.18.9
-      '@types/yargs': 17.0.30
+      '@types/yargs': 17.0.31
       chalk: 4.1.2
     dev: true
 
@@ -2124,8 +2124,8 @@ packages:
     resolution: {integrity: sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==}
     dev: true
 
-  /@types/yargs@17.0.30:
-    resolution: {integrity: sha512-3SJLzYk3yz3EgI9I8OLoH06B3PdXIoU2imrBZzaGqUtUXf5iUNDtmAfCGuQrny1bnmyjh/GM/YNts6WK5jR5Rw==}
+  /@types/yargs@17.0.31:
+    resolution: {integrity: sha512-bocYSx4DI8TmdlvxqGpVNXOgCNR1Jj0gNPhhAY+iz1rgKDAaYrAYdFYnhDV1IFuiuVc9HkOwyDcFxaTElF3/wg==}
     dependencies:
       '@types/yargs-parser': 21.0.0
     dev: true

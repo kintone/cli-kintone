@@ -45,7 +45,7 @@ Feature: cli-kintone import command
       | Alice  | 10     |
       | Bob    | 20     |
       | Jenny  | 30     |
-    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $$TEST_KINTONE_APP_ID_FOR_IMPORT --api-token $$TEST_KINTONE_API_TOKEN_FOR_IMPORT --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --file-path tmp/CliKintoneTest-21.csv"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $$TEST_KINTONE_APP_ID_FOR_IMPORT --api-token $$TEST_KINTONE_API_TOKEN_FOR_IMPORT --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --file-path tmp/CliKintoneTest-22.csv"
     Then I should get the exit code is zero
     And The app "$$TEST_KINTONE_APP_IN_SPACE_ID" should has records as below:
       | Text   | Number |

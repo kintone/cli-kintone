@@ -3,7 +3,7 @@ import { AfterAll, BeforeAll, Status } from "@cucumber/cucumber";
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { Before, After } from "./world";
+import { Before, After } from "../ultils/world";
 
 let rootDir: string;
 let failedScenarioCount = 0;

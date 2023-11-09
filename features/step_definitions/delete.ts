@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { Then } from "../supports/world";
+import { Then } from "../ultils/world";
 
 const NO_RECORDS_WARNING =
   "No records exist in the app or match the condition.";

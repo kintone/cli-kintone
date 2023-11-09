@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { Then } from "../supports/world";
+import { Then } from "../ultils/world";
 
 Then(
   "I should get the version formatted in {string}",

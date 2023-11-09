@@ -1,7 +1,7 @@
 import type { SpawnSyncReturns } from "child_process";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
-import { createCsvFile, execCliKintoneSync } from "../ultils/helper";
+import { createCsvFile, execCliKintoneSync } from "./helper";
 
 export class OurWorld extends World {
   public env: { [key: string]: string } = {};

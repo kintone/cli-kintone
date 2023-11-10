@@ -11,6 +11,7 @@ export const execCliKintoneSync = (
     replaceTokenWithEnvVars(args).split(/\s+/),
     {
       encoding: "utf-8",
+      shell: true,
       env: options?.env ?? {},
       cwd: options?.cwd ?? process.cwd(),
     },

@@ -1,5 +1,6 @@
 import * as assert from "assert";
 import { Given, When, Then } from "../ultils/world";
+import type { Permission } from "../ultils/types";
 
 Given(
   "Load environment variable {string} as {string}",
@@ -13,21 +14,48 @@ Given(
 );
 
 Given(
-  "The app {string} with {string} has no records",
-  function (appId: string, apiToken: string) {
-    const command = `record delete --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --yes`;
-    this.execCliKintoneSync(command);
-    if (this.response.status !== 0) {
-      throw new Error(`Resetting app failed. Error: \n${this.response.stderr}`);
-    }
+  "Load app ID of app {string} as env var: {string}",
+  function (appKey: string, destEnvVar: string) {
+    const credential = this.getCredentialByAppKey(appKey);
+    this.env = { [destEnvVar]: credential.appId, ...this.env };
   },
 );
 
 Given(
+  "Load app token of app {string} with permission {string} as env var: {string}",
+  function (appKey: string, permission: Permission, destEnvVar: string) {
+    const credential = this.getCredentialByAppKey(appKey);
+    const apiToken = credential.apiTokens.find((row) =>
+      row.permissions.includes(permission),
+    );
+    if (!apiToken || !apiToken.token) {
+      throw new Error("The token with delete permission is not found.");
+    }
+    this.env = { [destEnvVar]: apiToken.token, ...this.env };
+  },
+);
+
+Given("The app {string} has no records", function (appKey) {
+  const credential = this.getCredentialByAppKey(appKey);
+  const apiToken = credential.apiTokens.find((row) =>
+    row.permissions.includes("delete"),
+  );
+  if (!apiToken || !apiToken.token) {
+    throw new Error("The token with delete permission is not found.");
+  }
+  const command = `record delete --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken.token} --yes`;
+  this.execCliKintoneSync(command);
+  if (this.response.status !== 0) {
+    throw new Error(`Resetting app failed. Error: \n${this.response.stderr}`);
+  }
+});
+
+Given(
   "The app {string} has some records as below:",
-  async function (appId, table) {
+  async function (appKey, table) {
+    const credential = this.getCredentialByAppKey(appKey);
     const tempFilePath = await this.createCsvFile(table.raw());
-    const command = `record import --file-path ${tempFilePath} --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD`;
+    const command = `record import --file-path ${tempFilePath} --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD`;
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
       throw new Error(`Importing CSV failed. Error: \n${this.response.stderr}`);

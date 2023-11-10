@@ -1,3 +1,4 @@
+@isolated
 Feature: cli-kintone export command
 
   Scenario: CliKintoneTest-81 Should return the record contents in CSV format

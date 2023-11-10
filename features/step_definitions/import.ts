@@ -1,30 +1,25 @@
 import * as assert from "assert";
-import {
-  createCsvFile,
-  execCliKintoneSync,
-  replaceTokenWithEnvVars,
-} from "../ultils/helper";
 import { Given, Then } from "../ultils/world";
 
 Given(
   "The csv file {string} with content as below:",
   async function (filePath: string, table) {
-    await createCsvFile(table.raw(), filePath);
+    await this.createCsvFile(table.raw(), filePath);
   },
 );
 
 Then("The app {string} should has records as below:", function (appId, table) {
   const fields = table.raw()[0].join(",");
   const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --fields ${fields}`;
-  const response = execCliKintoneSync(replaceTokenWithEnvVars(command));
-  if (response.status !== 0) {
-    throw new Error(`Getting records failed. Error: \n${response.stderr}`);
+  this.execCliKintoneSync(command);
+  if (this.response.status !== 0) {
+    throw new Error(`Getting records failed. Error: \n${this.response.stderr}`);
   }
 
   table.raw().shift();
   const records = table.raw();
   records.forEach((record: string[]) => {
     const values = record.map((field: string) => `"${field}"`).join(",");
-    assert.match(response.stdout, new RegExp(`${values}`));
+    assert.match(this.response.stdout, new RegExp(`${values}`));
   });
 });

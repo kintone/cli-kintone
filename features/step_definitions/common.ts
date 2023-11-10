@@ -24,26 +24,29 @@ Given(
 Given(
   "Load app token of app {string} with permission {string} as env var: {string}",
   function (appKey: string, permission: Permission, destEnvVar: string) {
-    const credential = this.getCredentialByAppKey(appKey);
-    const apiToken = credential.apiTokens.find((row) =>
-      row.permissions.includes(permission),
-    );
-    if (!apiToken || !apiToken.token) {
-      throw new Error("The token with delete permission is not found.");
-    }
-    this.env = { [destEnvVar]: apiToken.token, ...this.env };
+    const apiToken = this.getAPITokenByAppAndPermission(appKey, {
+      [permission]: true,
+    });
+    this.env = { [destEnvVar]: apiToken, ...this.env };
+  },
+);
+
+Given(
+  "Load app token of app {string} without permission {string} as env var: {string}",
+  function (appKey: string, permission: Permission, destEnvVar: string) {
+    const apiToken = this.getAPITokenByAppAndPermission(appKey, {
+      [permission]: false,
+    });
+    this.env = { [destEnvVar]: apiToken, ...this.env };
   },
 );
 
 Given("The app {string} has no records", function (appKey) {
   const credential = this.getCredentialByAppKey(appKey);
-  const apiToken = credential.apiTokens.find((row) =>
-    row.permissions.includes("delete"),
-  );
-  if (!apiToken || !apiToken.token) {
-    throw new Error("The token with delete permission is not found.");
-  }
-  const command = `record delete --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken.token} --yes`;
+  const apiToken = this.getAPITokenByAppAndPermission(appKey, {
+    delete: true,
+  });
+  const command = `record delete --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --yes`;
   this.execCliKintoneSync(command);
   if (this.response.status !== 0) {
     throw new Error(`Resetting app failed. Error: \n${this.response.stderr}`);

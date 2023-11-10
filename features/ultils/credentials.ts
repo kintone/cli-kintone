@@ -7,18 +7,24 @@ import type { ErrorObject } from "ajv";
 
 type Record = {
   key: {
+    type: "SINGLE_LINE_TEXT";
     value: string;
   };
   app_id: {
+    type: "SINGLE_LINE_TEXT";
     value: string;
   };
   api_tokens: {
+    type: "SUBTABLE";
     value: Array<{
+      id: string;
       value: {
         token: {
+          type: "SINGLE_LINE_TEXT";
           value: string;
         };
         permissions: {
+          type: "CHECK_BOX";
           value: Permission[];
         };
       };
@@ -112,12 +118,12 @@ const fetchFromKintone: () => Promise<Credential[]> = async () => {
     },
   });
 
-  const { records } = await client.record.getRecords({
+  const { records } = await client.record.getRecords<Record>({
     app: kintoneAppId,
   });
 
-  return (records as unknown as Record[]).map(
-    (r: Record): Credential => ({
+  return records.map(
+    (r): Credential => ({
       key: r.key.value,
       appId: r.app_id.value,
       apiTokens: r.api_tokens.value

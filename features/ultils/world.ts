@@ -1,5 +1,5 @@
 import type { SpawnSyncReturns } from "child_process";
-import type { Credential } from "./types";
+import type { Credential, Permission } from "./types";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
 import { createCsvFile, execCliKintoneSync } from "./helper";
@@ -54,6 +54,41 @@ export class OurWorld extends World {
     }
 
     return credential;
+  }
+
+  public getAPITokenByAppAndPermission(
+    appKey: string,
+    permission: {
+      view?: boolean;
+      add?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    },
+  ): string {
+    const credential = this.getCredentialByAppKey(appKey);
+    const apiToken = credential.apiTokens.find((row) =>
+      Object.entries(permission).every(([key, value]) => {
+        if (value === undefined) {
+          return true;
+        }
+
+        return value
+          ? row.permissions.includes(key as Permission)
+          : !row.permissions.includes(key as Permission);
+      }),
+    );
+
+    if (!apiToken?.token) {
+      const missingPermissions = Object.entries(permission)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(", ");
+
+      throw new Error(
+        `The token with permission [${missingPermissions}] is not found.`,
+      );
+    }
+
+    return apiToken.token;
   }
 }
 

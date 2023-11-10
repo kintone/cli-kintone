@@ -33,7 +33,6 @@ Before({ tags: "@isolated" }, function () {
 After(async function (scenario) {
   if (scenario.result?.status === Status.FAILED) {
     failedScenarioCount++;
-    console.log(this.response.stderr);
   }
 });
 

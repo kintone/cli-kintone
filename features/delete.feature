@@ -1,3 +1,4 @@
+@isolated
 Feature: cli-kintone delete command
 
   Scenario: CliKintoneTest-19 Should delete all records of a specified Kintone app

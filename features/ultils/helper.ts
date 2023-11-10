@@ -1,16 +1,20 @@
 import { spawnSync } from "child_process";
 import path from "path";
 import fs from "fs/promises";
-import os from "os";
 
 export const execCliKintoneSync = (
   args: string,
-  options?: { env?: { [key: string]: string } },
+  options?: { env?: { [key: string]: string }; cwd?: string },
 ) => {
-  const response = spawnSync(getCliKintoneBinary(), args.split(/\s+/), {
-    encoding: "utf-8",
-    env: options?.env ?? {},
-  });
+  const response = spawnSync(
+    getCliKintoneBinary(),
+    replaceTokenWithEnvVars(args).split(/\s+/),
+    {
+      encoding: "utf-8",
+      env: options?.env ?? {},
+      cwd: options?.cwd ?? process.cwd(),
+    },
+  );
   if (response.error) {
     throw response.error;
   }
@@ -45,17 +49,23 @@ const replacer = (substring: string) => {
 
 export const createCsvFile = async (
   inputCsvObject: string[][],
-  destFilePath?: string,
+  options: { baseDir?: string; destFilePath?: string },
 ): Promise<string> => {
   const csvContent = inputCsvObject
     .map((row) => row.map((field) => `"${field}"`).join(","))
     .join("\n");
 
-  let filePath = destFilePath;
+  let filePath = options.destFilePath;
   if (filePath) {
+    filePath = options.baseDir
+      ? path.join(options.baseDir, filePath)
+      : filePath;
     await fs.mkdir(path.dirname(filePath), { recursive: true });
   } else {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
+    const prefix = "cli-kintone-csv-file-";
+    const tempDir = await fs.mkdtemp(
+      options.baseDir ? path.join(options.baseDir, prefix) : prefix,
+    );
     filePath = path.join(tempDir, "records.csv");
   }
 

@@ -38,12 +38,27 @@ const e2eCredentialFilePath = path.join(
   `../../${e2eCredentialFileName}`,
 );
 
+const isRunOnLocal = () => !process.env.CI;
+
+const isRunOnCI = () => !!process.env.CI;
+
 export const fetchCredentials: () => Promise<Credential[]> = async () => {
-  if (!process.env.CI && fs.existsSync(e2eCredentialFilePath)) {
+  if (isRunOnLocal() && fs.existsSync(e2eCredentialFilePath)) {
     return fetchFromFile();
   }
 
-  return fetchFromKintone();
+  const credentials = await fetchFromKintone();
+  if (isRunOnCI()) {
+    credentials.forEach((credential) => {
+      credential.apiTokens.forEach((apiToken) => {
+        if (apiToken.token) {
+          console.log(`::add-mask::${apiToken.token}`);
+        }
+      });
+    });
+  }
+
+  return credentials;
 };
 
 const fetchFromFile: () => Promise<Credential[]> = async () => {

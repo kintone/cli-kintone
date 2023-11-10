@@ -35,12 +35,6 @@ jobs:
       matrix:
         node-version: [18.x]
         os: ${{ fromJSON(needs.get-running-os.outputs.os) }}
-    env:
-      TEST_KINTONE_BASE_URL: ${{ secrets.TEST_KINTONE_BASE_URL }}
-      TEST_KINTONE_USERNAME: ${{ secrets.TEST_KINTONE_USERNAME }}
-      TEST_KINTONE_PASSWORD: ${{ secrets.TEST_KINTONE_PASSWORD }}
-      TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID: ${{ secrets.TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID }}
-      TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN: ${{ secrets.TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
@@ -51,11 +45,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - name: Mask credentials
-        run: |
-          credentials=($(node features/scripts/fetch-credentials.mjs))
-          for credential in "${credentials[@]}"; do
-            echo "::add-mask::$credential"
-          done
       - name: Run e2e tests
+        env:
+          TEST_KINTONE_BASE_URL: ${{ secrets.TEST_KINTONE_BASE_URL }}
+          TEST_KINTONE_USERNAME: ${{ secrets.TEST_KINTONE_USERNAME }}
+          TEST_KINTONE_PASSWORD: ${{ secrets.TEST_KINTONE_PASSWORD }}
+          TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID: ${{ secrets.TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID }}
+          TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN: ${{ secrets.TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN }}
         run: pnpm test:e2e

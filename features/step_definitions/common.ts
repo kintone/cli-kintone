@@ -22,30 +22,22 @@ Given(
 );
 
 Given(
-  "Load app token of app {string} with permission {string} as env var: {string}",
-  function (appKey: string, permission: Permission, destEnvVar: string) {
-    const apiToken = this.getAPITokenByAppAndPermission(appKey, {
-      [permission]: true,
-    });
-    this.env = { [destEnvVar]: apiToken, ...this.env };
-  },
-);
-
-Given(
-  "Load app token of app {string} without permission {string} as env var: {string}",
-  function (appKey: string, permission: Permission, destEnvVar: string) {
-    const apiToken = this.getAPITokenByAppAndPermission(appKey, {
-      [permission]: false,
-    });
+  "Load app token of app {string} with exact permissions {string} as env var: {string}",
+  function (appKey: string, permission: string, destEnvVar: string) {
+    const permissions = permission
+      .split(",")
+      .map((p) => p.trim().toLowerCase()) as Permission[];
+    const apiToken = this.getAPITokenByAppAndPermission(appKey, permissions);
     this.env = { [destEnvVar]: apiToken, ...this.env };
   },
 );
 
 Given("The app {string} has no records", function (appKey) {
   const credential = this.getCredentialByAppKey(appKey);
-  const apiToken = this.getAPITokenByAppAndPermission(appKey, {
-    delete: true,
-  });
+  const apiToken = this.getAPITokenByAppAndPermission(appKey, [
+    "view",
+    "delete",
+  ]);
   const command = `record delete --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --yes`;
   this.execCliKintoneSync(command);
   if (this.response.status !== 0) {

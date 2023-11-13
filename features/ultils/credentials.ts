@@ -1,9 +1,10 @@
-import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { Credential, Permission } from "./types";
+import type { ErrorObject } from "ajv";
+import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import fs from "fs";
 import path from "path";
 import Ajv from "ajv";
-import type { ErrorObject } from "ajv";
+import * as core from "@actions/core";
 
 type Record = {
   key: {
@@ -38,21 +39,19 @@ const e2eCredentialFilePath = path.join(
   `../../${e2eCredentialFileName}`,
 );
 
-const isRunOnLocal = () => !process.env.CI;
+const isRunOnActions = () => !!process.env.GITHUB_ACTIONS;
 
-const isRunOnCI = () => !!process.env.CI;
-
-export const fetchCredentials: () => Promise<Credential[]> = async () => {
-  if (isRunOnLocal() && fs.existsSync(e2eCredentialFilePath)) {
-    return fetchFromFile();
+export const loadCredentials: () => Promise<Credential[]> = async () => {
+  if (!isRunOnActions() && fs.existsSync(e2eCredentialFilePath)) {
+    return loadFromFile();
   }
 
-  const credentials = await fetchFromKintone();
-  if (isRunOnCI()) {
+  const credentials = await loadFromKintone();
+  if (isRunOnActions()) {
     credentials.forEach((credential) => {
       credential.apiTokens.forEach((apiToken) => {
         if (apiToken.token) {
-          console.log(`::add-mask::${apiToken.token}`);
+          core.setSecret(apiToken.token);
         }
       });
     });
@@ -61,7 +60,7 @@ export const fetchCredentials: () => Promise<Credential[]> = async () => {
   return credentials;
 };
 
-const fetchFromFile: () => Promise<Credential[]> = async () => {
+const loadFromFile: () => Promise<Credential[]> = async () => {
   const jsonContent = JSON.parse(
     fs.readFileSync(e2eCredentialFilePath, "utf-8"),
   );
@@ -116,7 +115,7 @@ const generateErrorMessages = (errors: ErrorObject[]): string[] => {
   });
 };
 
-const fetchFromKintone: () => Promise<Credential[]> = async () => {
+const loadFromKintone: () => Promise<Credential[]> = async () => {
   const kintoneBaseUrl = process.env.TEST_KINTONE_BASE_URL;
   const kintoneAppId = process.env.TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID;
   const kintoneApiToken =

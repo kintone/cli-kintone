@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import os from "os";
 import { Before, After } from "../ultils/world";
-import { fetchCredentials } from "../ultils/credentials";
+import { loadCredentials } from "../ultils/credentials";
 import type { Credential } from "../ultils/types";
 
 let rootDir: string;
@@ -16,7 +16,7 @@ BeforeAll(async function () {
   );
   console.log(`Root working directory: ${rootDir}`);
 
-  credentials = await fetchCredentials();
+  credentials = await loadCredentials();
 });
 
 Before(function () {

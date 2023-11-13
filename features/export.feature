@@ -9,7 +9,7 @@ Feature: cli-kintone export command
       | Bob    | 20     |
       | Jenny  | 30     |
     And Load app ID of app "app_for_export" as env var: "APP_ID"
-    And Load app token of app "app_for_export" with permission "view" as env var: "API_TOKEN"
+    And Load app token of app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
     And The header row of the output message should match with the pattern: "\"Record_number\",\"Text\",\"Number\""

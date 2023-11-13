@@ -58,33 +58,26 @@ export class OurWorld extends World {
 
   public getAPITokenByAppAndPermission(
     appKey: string,
-    permission: {
-      view?: boolean;
-      add?: boolean;
-      update?: boolean;
-      delete?: boolean;
-    },
+    permissions: Permission[],
   ): string {
-    const credential = this.getCredentialByAppKey(appKey);
-    const apiToken = credential.apiTokens.find((row) =>
-      Object.entries(permission).every(([key, value]) => {
-        if (value === undefined) {
-          return true;
-        }
+    if (permissions.length === 0) {
+      throw new Error(`The permissions is empty`);
+    }
 
-        return value
-          ? row.permissions.includes(key as Permission)
-          : !row.permissions.includes(key as Permission);
-      }),
-    );
+    const credential = this.getCredentialByAppKey(appKey);
+    const apiToken = credential.apiTokens.find((row) => {
+      if (row.permissions.length !== permissions.length) {
+        return false;
+      }
+
+      return permissions.every((value) => row.permissions.includes(value));
+    });
 
     if (!apiToken?.token) {
-      const missingPermissions = Object.entries(permission)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(", ");
-
       throw new Error(
-        `The token with permission [${missingPermissions}] is not found.`,
+        `The token with exact permissions (${permissions.join(
+          ", ",
+        )}) is not found.`,
       );
     }
 

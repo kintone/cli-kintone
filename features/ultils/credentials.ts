@@ -1,4 +1,3 @@
-import type { Credential, Permission } from "./types";
 import type { ErrorObject } from "ajv";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import fs from "fs";
@@ -33,6 +32,21 @@ type Record = {
   };
 };
 
+export const TOKEN_PERMISSIONS = <const>["view", "add", "edit", "delete"];
+
+export type Permission = (typeof TOKEN_PERMISSIONS)[number];
+
+export type ApiToken = {
+  token: string;
+  permissions: Permission[];
+};
+
+export type Credential = {
+  key: string;
+  appId: string;
+  apiTokens: ApiToken[];
+};
+
 const e2eCredentialFileName = ".e2e-credentials.json";
 const e2eCredentialFilePath = path.join(
   __dirname,
@@ -50,7 +64,7 @@ export const loadCredentials: () => Promise<Credential[]> = async () => {
   if (isRunOnActions()) {
     credentials.forEach((credential) => {
       credential.apiTokens.forEach((apiToken) => {
-        if (apiToken.token) {
+        if (apiToken.token.length > 0) {
           core.setSecret(apiToken.token);
         }
       });
@@ -148,4 +162,34 @@ const loadFromKintone: () => Promise<Credential[]> = async () => {
         : [],
     }),
   );
+};
+
+export const getCredentialByAppKey = (
+  credentials: Credential[],
+  appKey: string,
+): Credential | undefined => {
+  return credentials.find((c) => c.key === appKey);
+};
+
+export const getAPITokenByAppAndPermission = (
+  credentials: Credential[],
+  appKey: string,
+  permissions: Permission[],
+): ApiToken | undefined => {
+  const credential = getCredentialByAppKey(credentials, appKey);
+  if (!credential) {
+    return undefined;
+  }
+
+  return credential.apiTokens.find((row: ApiToken) => {
+    if (permissions.length === 0 && row.permissions.length === 0) {
+      return true;
+    }
+
+    if (row.permissions.length !== permissions.length) {
+      return false;
+    }
+
+    return permissions.every((value) => row.permissions.includes(value));
+  });
 };

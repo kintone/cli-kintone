@@ -4,7 +4,7 @@ import path from "path";
 import os from "os";
 import { Before, After } from "../ultils/world";
 import { loadCredentials } from "../ultils/credentials";
-import type { Credential } from "../ultils/types";
+import type { Credential } from "../ultils/credentials";
 
 let rootDir: string;
 let failedScenarioCount = 0;
@@ -20,14 +20,15 @@ BeforeAll(async function () {
 });
 
 Before(function () {
-  this.init({ workingDir: rootDir, credentials });
+  this.workingDir = rootDir;
+  this.credentials = credentials;
 });
 
 Before({ tags: "@isolated" }, function () {
   const workingDir = fs.mkdtempSync(
     rootDir ? path.join(rootDir, "case-") : "case-",
   );
-  this.init({ workingDir });
+  this.workingDir = workingDir;
 });
 
 After(async function (scenario) {

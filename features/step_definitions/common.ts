@@ -1,6 +1,7 @@
 import * as assert from "assert";
 import { Given, When, Then } from "../ultils/world";
-import type { Permission } from "../ultils/types";
+import type { Permission } from "../ultils/credentials";
+import { TOKEN_PERMISSIONS } from "../ultils/credentials";
 
 Given(
   "Load environment variable {string} as {string}",
@@ -26,8 +27,20 @@ Given(
   function (appKey: string, permission: string, destEnvVar: string) {
     const permissions = permission
       .split(",")
-      .map((p) => p.trim().toLowerCase()) as Permission[];
-    const apiToken = this.getAPITokenByAppAndPermission(appKey, permissions);
+      .map((p) => p.trim().toLowerCase());
+
+    if (permissions.some((p) => !TOKEN_PERMISSIONS.includes(p as Permission))) {
+      throw new Error(
+        `Invalid permissions found. Supported permissions: ${TOKEN_PERMISSIONS.join(
+          ", ",
+        )}`,
+      );
+    }
+
+    const apiToken = this.getAPITokenByAppAndPermission(
+      appKey,
+      permissions as Permission[],
+    );
     this.env = { [destEnvVar]: apiToken, ...this.env };
   },
 );

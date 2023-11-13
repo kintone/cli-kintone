@@ -1,13 +1,17 @@
 import type { SpawnSyncReturns } from "child_process";
-import type { Credential, Permission, ApiToken } from "./types";
+import type { Credential, Permission } from "./credentials";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
 import { createCsvFile, execCliKintoneSync } from "./helper";
+import {
+  getCredentialByAppKey,
+  getAPITokenByAppAndPermission,
+} from "./credentials";
 
 export class OurWorld extends World {
   public env: { [key: string]: string } = {};
-  public workingDir?: string;
-  public credentials?: Credential[];
+  private _workingDir?: string;
+  private _credentials?: Credential[];
   private _response?: SpawnSyncReturns<string>;
 
   public get response() {
@@ -21,12 +25,26 @@ export class OurWorld extends World {
     this._response = value;
   }
 
-  public init(options: { workingDir: string; credentials?: Credential[] }) {
-    this.workingDir = options.workingDir;
-
-    if (options.credentials) {
-      this.credentials = options.credentials;
+  public get credentials() {
+    if (this._credentials === undefined) {
+      throw new Error("No credentials found. Please load credentials first.");
     }
+    return this._credentials;
+  }
+
+  public set credentials(value: Credential[]) {
+    this._credentials = value;
+  }
+
+  public get workingDir() {
+    if (this._workingDir === undefined) {
+      throw new Error("No working dir found. Please init working dir first.");
+    }
+    return this._workingDir;
+  }
+
+  public set workingDir(value: string) {
+    this._workingDir = value;
   }
 
   public execCliKintoneSync(args: string) {
@@ -44,7 +62,7 @@ export class OurWorld extends World {
   }
 
   public getCredentialByAppKey(appKey: string): Credential {
-    const credential = this.credentials?.find((c) => c.key === appKey);
+    const credential = getCredentialByAppKey(this.credentials, appKey);
     if (credential === undefined) {
       throw new Error(`The credential with app key ${appKey} is not found`);
     }
@@ -60,20 +78,13 @@ export class OurWorld extends World {
     appKey: string,
     permissions: Permission[],
   ): string {
-    if (permissions.length === 0) {
-      throw new Error(`The permissions is empty`);
-    }
+    const apiToken = getAPITokenByAppAndPermission(
+      this.credentials,
+      appKey,
+      permissions,
+    );
 
-    const credential = this.getCredentialByAppKey(appKey);
-    const apiToken = credential.apiTokens.find((row: ApiToken) => {
-      if (row.permissions.length !== permissions.length) {
-        return false;
-      }
-
-      return permissions.every((value) => row.permissions.includes(value));
-    });
-
-    if (!apiToken?.token) {
+    if (!apiToken) {
       throw new Error(
         `The token with exact permissions (${permissions.join(
           ", ",

@@ -1,5 +1,5 @@
 import type { SpawnSyncReturns } from "child_process";
-import type { Credential, Permission } from "./types";
+import type { Credential, Permission, ApiToken } from "./types";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
 import { createCsvFile, execCliKintoneSync } from "./helper";
@@ -65,7 +65,7 @@ export class OurWorld extends World {
     }
 
     const credential = this.getCredentialByAppKey(appKey);
-    const apiToken = credential.apiTokens.find((row) => {
+    const apiToken = credential.apiTokens.find((row: ApiToken) => {
       if (row.permissions.length !== permissions.length) {
         return false;
       }

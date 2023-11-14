@@ -41,9 +41,7 @@ const replaceTokenWithEnvVars = (
 ) =>
   input
     .replace(/\$\$[a-zA-Z0-9_]+/g, processEnvReplacer)
-    .replace(/\$[a-zA-Z0-9_]+/g, (substring) =>
-      inputEnvReplacer(substring, envVars),
-    );
+    .replace(/\$[a-zA-Z0-9_]+/g, inputEnvReplacer(envVars));
 
 const processEnvReplacer = (substring: string) => {
   const key = substring.replace("$$", "");
@@ -54,20 +52,19 @@ const processEnvReplacer = (substring: string) => {
   return value;
 };
 
-const inputEnvReplacer = (
-  substring: string,
-  envVars: { [key: string]: string } | undefined,
-) => {
-  if (!envVars) {
-    return substring;
-  }
+const inputEnvReplacer = (envVars: { [key: string]: string } | undefined) => {
+  return (substring: string) => {
+    if (!envVars) {
+      return substring;
+    }
 
-  const key = substring.replace("$", "");
-  const value = envVars[key];
-  if (value === undefined) {
-    throw new Error(`The env variable in input parameter is missing: ${key}`);
-  }
-  return value;
+    const key = substring.replace("$", "");
+    const value = envVars[key];
+    if (value === undefined) {
+      throw new Error(`The env variable in input parameter is missing: ${key}`);
+    }
+    return value;
+  };
 };
 
 export const createCsvFile = async (

@@ -8,9 +8,10 @@ Given(
   },
 );
 
-Then("The app {string} should has records as below:", function (appId, table) {
+Then("The app {string} should has records as below:", function (appKey, table) {
+  const credential = this.getCredentialByAppKey(appKey);
   const fields = table.raw()[0].join(",");
-  const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --fields ${fields}`;
+  const command = `record export --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --fields ${fields}`;
   this.execCliKintoneSync(command);
   if (this.response.status !== 0) {
     throw new Error(`Getting records failed. Error: \n${this.response.stderr}`);

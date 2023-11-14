@@ -1,11 +1,17 @@
 import type { SpawnSyncReturns } from "child_process";
+import type { Credential, Permission } from "./credentials";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
 import { createCsvFile, execCliKintoneSync } from "./helper";
+import {
+  getCredentialByAppKey,
+  getAPITokenByAppAndPermissions,
+} from "./credentials";
 
 export class OurWorld extends World {
   public env: { [key: string]: string } = {};
-  public workingDir?: string;
+  private _workingDir?: string;
+  private _credentials?: Credential[];
   private _response?: SpawnSyncReturns<string>;
 
   public get response() {
@@ -19,8 +25,26 @@ export class OurWorld extends World {
     this._response = value;
   }
 
-  public init(options: { workingDir: string }) {
-    this.workingDir = options.workingDir;
+  public get credentials() {
+    if (this._credentials === undefined) {
+      throw new Error("No credentials found. Please load credentials first.");
+    }
+    return this._credentials;
+  }
+
+  public set credentials(value: Credential[]) {
+    this._credentials = value;
+  }
+
+  public get workingDir() {
+    if (this._workingDir === undefined) {
+      throw new Error("No working dir found. Please init working dir first.");
+    }
+    return this._workingDir;
+  }
+
+  public set workingDir(value: string) {
+    this._workingDir = value;
   }
 
   public execCliKintoneSync(args: string) {
@@ -35,6 +59,40 @@ export class OurWorld extends World {
       baseDir: this.workingDir,
       destFilePath: filePath,
     });
+  }
+
+  public getCredentialByAppKey(appKey: string): Credential {
+    const credential = getCredentialByAppKey(this.credentials, appKey);
+    if (credential === undefined) {
+      throw new Error(`The credential with app key ${appKey} is not found`);
+    }
+
+    if (credential.appId.length === 0) {
+      throw new Error(`The credential with app key ${appKey} has no App ID`);
+    }
+
+    return credential;
+  }
+
+  public getAPITokenByAppAndPermissions(
+    appKey: string,
+    permissions: Permission[],
+  ): string {
+    const apiToken = getAPITokenByAppAndPermissions(
+      this.credentials,
+      appKey,
+      permissions,
+    );
+
+    if (!apiToken) {
+      throw new Error(
+        `The token with exact permissions (${permissions.join(
+          ", ",
+        )}) is not found.`,
+      );
+    }
+
+    return apiToken.token;
   }
 }
 

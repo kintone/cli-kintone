@@ -2,12 +2,14 @@
 Feature: cli-kintone delete command
 
   Scenario: CliKintoneTest-19 Should delete all records of a specified Kintone app
-    Given The app "$$TEST_KINTONE_APP_ID_FOR_DELETE" with "$$TEST_KINTONE_API_TOKEN_FOR_DELETE" has no records
-    And The app "$$TEST_KINTONE_APP_ID_FOR_DELETE" has some records as below:
+    Given The app "app_for_delete" has no records
+    And The app "app_for_delete" has some records as below:
       | Text   | Number |
       | Alice  | 10     |
       | Bob    | 20     |
       | Jenny  | 30     |
-    When I run the command with args "record delete --app $$TEST_KINTONE_APP_ID_FOR_DELETE --base-url $$TEST_KINTONE_BASE_URL --api-token $$TEST_KINTONE_API_TOKEN_FOR_DELETE --yes"
+    And Load app ID of app "app_for_delete" as env var: "APP_ID"
+    And Load app token of app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN --yes"
     Then I should get the exit code is zero
-    And The app "$$TEST_KINTONE_APP_ID_FOR_DELETE" has no records
+    And The app "app_for_delete" should has no records

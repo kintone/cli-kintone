@@ -25,6 +25,7 @@ artifacts
 *.tsbuildinfo
 attachments
 /*.csv
+.e2e-credentials.json
 
 # editor
 **/.vs

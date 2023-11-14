@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { Given, Then } from "../ultils/world";
+import { Given, Then } from "../utils/world";
 
 Given(
   "The csv file {string} with content as below:",

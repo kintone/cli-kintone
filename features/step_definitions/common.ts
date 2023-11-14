@@ -1,7 +1,7 @@
 import * as assert from "assert";
-import { Given, When, Then } from "../ultils/world";
-import type { Permission } from "../ultils/credentials";
-import { TOKEN_PERMISSIONS } from "../ultils/credentials";
+import { Given, When, Then } from "../utils/world";
+import type { Permission } from "../utils/credentials";
+import { TOKEN_PERMISSIONS } from "../utils/credentials";
 
 Given(
   "Load environment variable {string} as {string}",

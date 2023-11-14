@@ -154,12 +154,10 @@ const loadFromKintone: () => Promise<Credential[]> = async () => {
     (r): Credential => ({
       key: r.key.value,
       appId: r.app_id.value,
-      apiTokens: r.api_tokens.value
-        ? r.api_tokens.value.map((row) => ({
-            token: row.value.token.value,
-            permissions: row.value.permissions.value,
-          }))
-        : [],
+      apiTokens: r.api_tokens.value.map((row) => ({
+        token: row.value.token.value,
+        permissions: row.value.permissions.value,
+      })),
     }),
   );
 };
@@ -171,7 +169,7 @@ export const getCredentialByAppKey = (
   return credentials.find((c) => c.key === appKey);
 };
 
-export const getAPITokenByAppAndPermission = (
+export const getAPITokenByAppAndPermissions = (
   credentials: Credential[],
   appKey: string,
   permissions: Permission[],

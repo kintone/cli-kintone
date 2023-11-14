@@ -5,7 +5,7 @@ import { World } from "@cucumber/cucumber";
 import { createCsvFile, execCliKintoneSync } from "./helper";
 import {
   getCredentialByAppKey,
-  getAPITokenByAppAndPermission,
+  getAPITokenByAppAndPermissions,
 } from "./credentials";
 
 export class OurWorld extends World {
@@ -67,18 +67,18 @@ export class OurWorld extends World {
       throw new Error(`The credential with app key ${appKey} is not found`);
     }
 
-    if (!credential.appId) {
+    if (credential.appId.length === 0) {
       throw new Error(`The credential with app key ${appKey} has no App ID`);
     }
 
     return credential;
   }
 
-  public getAPITokenByAppAndPermission(
+  public getAPITokenByAppAndPermissions(
     appKey: string,
     permissions: Permission[],
   ): string {
-    const apiToken = getAPITokenByAppAndPermission(
+    const apiToken = getAPITokenByAppAndPermissions(
       this.credentials,
       appKey,
       permissions,

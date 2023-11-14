@@ -37,7 +37,7 @@ Given(
       );
     }
 
-    const apiToken = this.getAPITokenByAppAndPermission(
+    const apiToken = this.getAPITokenByAppAndPermissions(
       appKey,
       permissions as Permission[],
     );
@@ -47,7 +47,7 @@ Given(
 
 Given("The app {string} has no records", function (appKey) {
   const credential = this.getCredentialByAppKey(appKey);
-  const apiToken = this.getAPITokenByAppAndPermission(appKey, [
+  const apiToken = this.getAPITokenByAppAndPermissions(appKey, [
     "view",
     "delete",
   ]);

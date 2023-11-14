@@ -2,9 +2,9 @@ import { AfterAll, BeforeAll, Status } from "@cucumber/cucumber";
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { Before, After } from "../ultils/world";
-import { loadCredentials } from "../ultils/credentials";
-import type { Credential } from "../ultils/credentials";
+import { Before, After } from "../utils/world";
+import { loadCredentials } from "../utils/credentials";
+import type { Credential } from "../utils/credentials";
 
 let rootDir: string;
 let failedScenarioCount = 0;

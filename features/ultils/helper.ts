@@ -8,10 +8,9 @@ export const execCliKintoneSync = (
 ) => {
   const response = spawnSync(
     getCliKintoneBinary(),
-    replaceTokenWithEnvVars(args).split(/\s+/),
+    replaceTokenWithEnvVars(args, options?.env).split(/\s+/),
     {
       encoding: "utf-8",
-      shell: true,
       env: options?.env ?? {},
       cwd: options?.cwd ?? process.cwd(),
     },
@@ -36,12 +35,35 @@ export const getCliKintoneBinary = (): string => {
   }
 };
 
-export const replaceTokenWithEnvVars = (input: string) =>
-  input.replace(/\$\$[a-zA-Z0-9_]+/g, replacer);
+const replaceTokenWithEnvVars = (
+  input: string,
+  envVars: { [key: string]: string } | undefined,
+) =>
+  input
+    .replace(/\$\$[a-zA-Z0-9_]+/g, processEnvReplacer)
+    .replace(/\$[a-zA-Z0-9_]+/g, (substring) =>
+      worldEnvReplacer(substring, envVars),
+    );
 
-const replacer = (substring: string) => {
+const processEnvReplacer = (substring: string) => {
   const key = substring.replace("$$", "");
   const value = process.env[key];
+  if (value === undefined) {
+    throw new Error(`The env variable is missing: ${key}`);
+  }
+  return value;
+};
+
+const worldEnvReplacer = (
+  substring: string,
+  envVars: { [key: string]: string } | undefined,
+) => {
+  if (!envVars) {
+    return substring;
+  }
+
+  const key = substring.replace("$", "");
+  const value = envVars[key];
   if (value === undefined) {
     throw new Error(`The env variable is missing: ${key}`);
   }

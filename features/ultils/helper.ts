@@ -42,19 +42,19 @@ const replaceTokenWithEnvVars = (
   input
     .replace(/\$\$[a-zA-Z0-9_]+/g, processEnvReplacer)
     .replace(/\$[a-zA-Z0-9_]+/g, (substring) =>
-      worldEnvReplacer(substring, envVars),
+      inputEnvReplacer(substring, envVars),
     );
 
 const processEnvReplacer = (substring: string) => {
   const key = substring.replace("$$", "");
   const value = process.env[key];
   if (value === undefined) {
-    throw new Error(`The env variable is missing: ${key}`);
+    throw new Error(`The env variable in process.env is missing: ${key}`);
   }
   return value;
 };
 
-const worldEnvReplacer = (
+const inputEnvReplacer = (
   substring: string,
   envVars: { [key: string]: string } | undefined,
 ) => {
@@ -65,7 +65,7 @@ const worldEnvReplacer = (
   const key = substring.replace("$", "");
   const value = envVars[key];
   if (value === undefined) {
-    throw new Error(`The env variable is missing: ${key}`);
+    throw new Error(`The env variable in input parameter is missing: ${key}`);
   }
   return value;
 };

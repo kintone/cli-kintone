@@ -109,7 +109,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[520\] \[GAIA_IA02\] The specified API token does not match the API token generated via an app."
 
-  Scenario: CliKintoneTest-28 Should return the error message when importing records with API Token with an API Token without Add permission
+  Scenario: CliKintoneTest-28 Should return the error message when importing records with an API Token without Add permission
     Given The csv file "CliKintoneTest-28.csv" with content as below:
       | Text   | Number |
       | Alice  | 10     |
@@ -119,7 +119,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403\] \[GAIA_NO01\] Using this API token, you cannot run the specified API."
 
-  Scenario: CliKintoneTest-29 Should return the error message when updating records with API Token with an API Token without View/Edit permission
+  Scenario: CliKintoneTest-29 Should return the error message when updating records with an API Token without View/Edit permission
     Given The csv file "CliKintoneTest-29.csv" with content as below:
       | Text   | Number |
       | Alice  | 11     |

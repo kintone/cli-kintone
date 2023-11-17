@@ -17,8 +17,8 @@ Given(
 Given(
   "Load app ID of app {string} as env var: {string}",
   function (appKey: string, destEnvVar: string) {
-    const credential = this.getCredentialByAppKey(appKey);
-    this.env = { [destEnvVar]: credential.appId, ...this.env };
+    const appCredential = this.getAppCredentialByAppKey(appKey);
+    this.env = { [destEnvVar]: appCredential.appId, ...this.env };
   },
 );
 
@@ -45,13 +45,57 @@ Given(
   },
 );
 
+Given(
+  "Load username and password of app {string} with exact permissions {string} as env vars: {string} and {string}",
+  function (
+    appKey: string,
+    permission: string,
+    usernameEnvVar: string,
+    passwordEnvVar: string,
+  ) {
+    const permissions = permission
+      .split(",")
+      .map((p) => p.trim().toLowerCase());
+
+    if (permissions.some((p) => !TOKEN_PERMISSIONS.includes(p as Permission))) {
+      throw new Error(
+        `Invalid permissions found. Supported permissions: ${TOKEN_PERMISSIONS.join(
+          ", ",
+        )}`,
+      );
+    }
+
+    const userCredential = this.getUserCredentialByAppAndUserPermissions(
+      appKey,
+      permissions as Permission[],
+    );
+    this.env = {
+      [usernameEnvVar]: userCredential.username,
+      [passwordEnvVar]: userCredential.password,
+      ...this.env,
+    };
+  },
+);
+
+Given(
+  "Load username and password of user {string} as env vars: {string} and {string}",
+  function (userKey: string, usernameEnvVar: string, passwordEnvVar: string) {
+    const userCredential = this.getUserCredentialByUserKey(userKey);
+    this.env = {
+      [usernameEnvVar]: userCredential.username,
+      [passwordEnvVar]: userCredential.password,
+      ...this.env,
+    };
+  },
+);
+
 Given("The app {string} has no records", function (appKey) {
-  const credential = this.getCredentialByAppKey(appKey);
+  const appCredential = this.getAppCredentialByAppKey(appKey);
   const apiToken = this.getAPITokenByAppAndPermissions(appKey, [
     "view",
     "delete",
   ]);
-  const command = `record delete --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --yes`;
+  const command = `record delete --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --yes`;
   this.execCliKintoneSync(command);
   if (this.response.status !== 0) {
     throw new Error(`Resetting app failed. Error: \n${this.response.stderr}`);
@@ -61,9 +105,10 @@ Given("The app {string} has no records", function (appKey) {
 Given(
   "The app {string} has some records as below:",
   async function (appKey, table) {
-    const credential = this.getCredentialByAppKey(appKey);
+    const appCredential = this.getAppCredentialByAppKey(appKey);
+    const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
     const tempFilePath = await this.createCsvFile(table.raw());
-    const command = `record import --file-path ${tempFilePath} --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD`;
+    const command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
       throw new Error(`Importing CSV failed. Error: \n${this.response.stderr}`);
@@ -76,11 +121,11 @@ When("I run the command with args {string}", function (args: string) {
 });
 
 Then("I should get the exit code is non-zero", function () {
-  assert.notEqual(this.response.status, 0);
+  assert.notEqual(this.response.status, 0, this.response.stderr);
 });
 
 Then("I should get the exit code is zero", function () {
-  assert.equal(this.response.status, 0);
+  assert.equal(this.response.status, 0, this.response.stderr);
 });
 
 Then(

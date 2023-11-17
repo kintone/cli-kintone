@@ -2,13 +2,13 @@ import { AfterAll, BeforeAll, Status } from "@cucumber/cucumber";
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { Before, After } from "../utils/world";
+import { After, Before } from "../utils/world";
+import type { Credentials } from "../utils/credentials";
 import { loadCredentials } from "../utils/credentials";
-import type { Credential } from "../utils/credentials";
 
 let rootDir: string;
 let failedScenarioCount = 0;
-let credentials: Credential[];
+let credentials: Credentials;
 
 BeforeAll(async function () {
   rootDir = fs.mkdtempSync(
@@ -25,10 +25,9 @@ Before(function () {
 });
 
 Before({ tags: "@isolated" }, function () {
-  const workingDir = fs.mkdtempSync(
+  this.workingDir = fs.mkdtempSync(
     rootDir ? path.join(rootDir, "case-") : "case-",
   );
-  this.workingDir = workingDir;
 });
 
 After(async function (scenario) {

@@ -4,8 +4,9 @@ import fs from "fs";
 import path from "path";
 import Ajv from "ajv";
 import * as core from "@actions/core";
+import e2eCredentialsSchema from "../../e2e-credentials-schema.json";
 
-type Record = {
+type AppCredentialRecord = {
   key: {
     type: "SINGLE_LINE_TEXT";
     value: string;
@@ -30,21 +31,74 @@ type Record = {
       };
     }>;
   };
+  user_permissions: {
+    type: "SUBTABLE";
+    value: Array<{
+      id: string;
+      value: {
+        user_permission_key: {
+          type: "SINGLE_LINE_TEXT";
+          value: string;
+        };
+        user_key: {
+          type: "SINGLE_LINE_TEXT";
+          value: string;
+        };
+        u_permissions: {
+          type: "CHECK_BOX";
+          value: Permission[];
+        };
+      };
+    }>;
+  };
+};
+
+type UserCredentialRecord = {
+  key: {
+    type: "SINGLE_LINE_TEXT";
+    value: string;
+  };
+  username: {
+    type: "SINGLE_LINE_TEXT";
+    value: string;
+  };
+  password: {
+    type: "SINGLE_LINE_TEXT";
+    value: string;
+  };
 };
 
 export const TOKEN_PERMISSIONS = <const>["view", "add", "edit", "delete"];
 
 export type Permission = (typeof TOKEN_PERMISSIONS)[number];
 
+export type Credentials = {
+  apps: AppCredential[];
+  users: UserCredential[];
+};
+
 export type ApiToken = {
   token: string;
   permissions: Permission[];
 };
 
-export type Credential = {
+export type AppCredential = {
   key: string;
   appId: string;
   apiTokens: ApiToken[];
+  userPermissions: UserPermission[];
+};
+
+export type UserPermission = {
+  key: string;
+  userKey: UserCredential["key"];
+  permissions: Permission[];
+};
+
+export type UserCredential = {
+  key: string;
+  username: string;
+  password: string;
 };
 
 const e2eCredentialFileName = ".e2e-credentials.json";
@@ -55,54 +109,40 @@ const e2eCredentialFilePath = path.join(
 
 const isRunOnActions = () => !!process.env.GITHUB_ACTIONS;
 
-export const loadCredentials: () => Promise<Credential[]> = async () => {
+export const loadCredentials: () => Promise<Credentials> = async () => {
   if (!isRunOnActions() && fs.existsSync(e2eCredentialFilePath)) {
     return loadFromFile();
   }
 
   const credentials = await loadFromKintone();
   if (isRunOnActions()) {
-    credentials.forEach((credential) => {
-      credential.apiTokens.forEach((apiToken) => {
-        if (apiToken.token.length > 0) {
-          core.setSecret(apiToken.token);
-        }
-      });
-    });
+    setSecret(credentials);
   }
 
   return credentials;
 };
 
-const loadFromFile: () => Promise<Credential[]> = async () => {
+const setSecret = (credentials: Credentials) => {
+  credentials.apps.forEach((credential) => {
+    credential.apiTokens.forEach((apiToken) => {
+      if (apiToken.token.length > 0) {
+        core.setSecret(apiToken.token);
+      }
+    });
+  });
+  credentials.users.forEach((credential) => {
+    core.setSecret(credential.username);
+    core.setSecret(credential.password);
+  });
+};
+
+const loadFromFile: () => Promise<Credentials> = async () => {
   const jsonContent = JSON.parse(
     fs.readFileSync(e2eCredentialFilePath, "utf-8"),
   );
 
-  const credentialsSchema = {
-    type: "array",
-    items: {
-      type: "object",
-      properties: {
-        key: { type: "string" },
-        appId: { type: "string" },
-        apiTokens: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              token: { type: "string" },
-              permissions: { type: "array", items: { type: "string" } },
-            },
-          },
-        },
-      },
-      required: ["key", "appId"],
-    },
-  };
-
   const ajv = new Ajv();
-  const validate = ajv.compile(credentialsSchema);
+  const validate = ajv.compile(e2eCredentialsSchema);
   const isValid = validate(jsonContent);
   if (!isValid) {
     const messages = generateErrorMessages(validate.errors ?? []);
@@ -113,7 +153,7 @@ const loadFromFile: () => Promise<Credential[]> = async () => {
   }
 
   console.log(`Loaded credentials from ${e2eCredentialFileName}`);
-  return jsonContent as Credential[];
+  return jsonContent as Credentials;
 };
 
 const generateErrorMessages = (errors: ErrorObject[]): string[] => {
@@ -129,57 +169,86 @@ const generateErrorMessages = (errors: ErrorObject[]): string[] => {
   });
 };
 
-const loadFromKintone: () => Promise<Credential[]> = async () => {
+const loadFromKintone: () => Promise<Credentials> = async () => {
   const kintoneBaseUrl = process.env.TEST_KINTONE_BASE_URL;
-  const kintoneAppId = process.env.TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID;
-  const kintoneApiToken =
+  const kintoneCMAAppId = process.env.TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID;
+  const kintoneCMAApiToken =
     process.env.TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN;
+  const kintoneUCMAAppId =
+    process.env.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_APP_ID;
+  const kintoneUCMAApiToken =
+    process.env.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN;
 
-  if (!kintoneBaseUrl || !kintoneApiToken || !kintoneAppId) {
+  if (
+    !kintoneBaseUrl ||
+    !kintoneCMAApiToken ||
+    !kintoneCMAAppId ||
+    !kintoneUCMAAppId ||
+    !kintoneUCMAApiToken
+  ) {
     throw new Error("Missing env variables");
   }
 
   const client = new KintoneRestAPIClient({
     baseUrl: kintoneBaseUrl,
     auth: {
-      apiToken: kintoneApiToken,
+      apiToken: [kintoneCMAApiToken, kintoneUCMAApiToken],
     },
   });
 
-  const { records } = await client.record.getRecords<Record>({
-    app: kintoneAppId,
-  });
+  const { records: appCredentialRecords } =
+    await client.record.getRecords<AppCredentialRecord>({
+      app: kintoneCMAAppId,
+    });
+  const { records: userCredentialRecords } =
+    await client.record.getRecords<UserCredentialRecord>({
+      app: kintoneUCMAAppId,
+    });
 
-  return records.map(
-    (r): Credential => ({
-      key: r.key.value,
-      appId: r.app_id.value,
-      apiTokens: r.api_tokens.value.map((row) => ({
-        token: row.value.token.value,
-        permissions: row.value.permissions.value,
-      })),
-    }),
-  );
+  return {
+    apps: appCredentialRecords.map(
+      (r): AppCredential => ({
+        key: r.key.value,
+        appId: r.app_id.value,
+        apiTokens: r.api_tokens.value.map((row) => ({
+          token: row.value.token.value,
+          permissions: row.value.permissions.value,
+        })),
+        userPermissions: r.user_permissions.value.map((row) => ({
+          key: row.value.user_permission_key.value,
+          userKey: row.value.user_key.value,
+          permissions: row.value.u_permissions.value,
+        })),
+      }),
+    ),
+    users: userCredentialRecords.map(
+      (r): UserCredential => ({
+        key: r.key.value,
+        username: r.username.value,
+        password: r.password.value,
+      }),
+    ),
+  };
 };
 
-export const getCredentialByAppKey = (
-  credentials: Credential[],
+export const getAppCredentialByAppKey = (
+  appCredentials: AppCredential[],
   appKey: string,
-): Credential | undefined => {
-  return credentials.find((c) => c.key === appKey);
+): AppCredential | undefined => {
+  return appCredentials.find((c) => c.key === appKey);
 };
 
 export const getAPITokenByAppAndPermissions = (
-  credentials: Credential[],
+  appCredentials: AppCredential[],
   appKey: string,
   permissions: Permission[],
 ): ApiToken | undefined => {
-  const credential = getCredentialByAppKey(credentials, appKey);
-  if (!credential) {
+  const appCredential = getAppCredentialByAppKey(appCredentials, appKey);
+  if (!appCredential) {
     return undefined;
   }
 
-  return credential.apiTokens.find((row: ApiToken) => {
+  return appCredential.apiTokens.find((row: ApiToken) => {
     if (permissions.length === 0 && row.permissions.length === 0) {
       return true;
     }
@@ -190,4 +259,42 @@ export const getAPITokenByAppAndPermissions = (
 
     return permissions.every((value) => row.permissions.includes(value));
   });
+};
+
+export const getUserCredentialByUserKey = (
+  userCredentials: UserCredential[],
+  userKey: string,
+): UserCredential | undefined => {
+  return userCredentials.find((c) => c.key === userKey);
+};
+
+export const getUserCredentialByAppAndUserPermissions = (
+  credentials: Credentials,
+  appKey: string,
+  permissions: Permission[],
+): UserCredential | undefined => {
+  const appCredential = getAppCredentialByAppKey(credentials.apps, appKey);
+  if (!appCredential) {
+    return undefined;
+  }
+
+  const userPermission = appCredential.userPermissions.find(
+    (row: UserPermission) => {
+      if (permissions.length === 0 && row.permissions.length === 0) {
+        return true;
+      }
+
+      if (row.permissions.length !== permissions.length) {
+        return false;
+      }
+
+      return permissions.every((value) => row.permissions.includes(value));
+    },
+  );
+
+  if (!userPermission) {
+    return undefined;
+  }
+
+  return getUserCredentialByUserKey(credentials.users, userPermission.userKey);
 };

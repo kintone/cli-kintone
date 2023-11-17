@@ -1,17 +1,19 @@
 import type { SpawnSyncReturns } from "child_process";
-import type { Credential, Permission } from "./credentials";
+import type { Credentials, AppCredential, Permission } from "./credentials";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
 import { createCsvFile, execCliKintoneSync } from "./helper";
 import {
-  getCredentialByAppKey,
+  getAppCredentialByAppKey,
   getAPITokenByAppAndPermissions,
+  getUserCredentialByUserKey,
+  getUserCredentialByAppAndUserPermissions,
 } from "./credentials";
 
 export class OurWorld extends World {
   public env: { [key: string]: string } = {};
   private _workingDir?: string;
-  private _credentials?: Credential[];
+  private _credentials?: Credentials;
   private _response?: SpawnSyncReturns<string>;
 
   public get response() {
@@ -32,7 +34,7 @@ export class OurWorld extends World {
     return this._credentials;
   }
 
-  public set credentials(value: Credential[]) {
+  public set credentials(value: Credentials) {
     this._credentials = value;
   }
 
@@ -61,17 +63,20 @@ export class OurWorld extends World {
     });
   }
 
-  public getCredentialByAppKey(appKey: string): Credential {
-    const credential = getCredentialByAppKey(this.credentials, appKey);
-    if (credential === undefined) {
+  public getAppCredentialByAppKey(appKey: string): AppCredential {
+    const appCredential = getAppCredentialByAppKey(
+      this.credentials.apps,
+      appKey,
+    );
+    if (appCredential === undefined) {
       throw new Error(`The credential with app key ${appKey} is not found`);
     }
 
-    if (credential.appId.length === 0) {
+    if (appCredential.appId.length === 0) {
       throw new Error(`The credential with app key ${appKey} has no App ID`);
     }
 
-    return credential;
+    return appCredential;
   }
 
   public getAPITokenByAppAndPermissions(
@@ -79,7 +84,7 @@ export class OurWorld extends World {
     permissions: Permission[],
   ): string {
     const apiToken = getAPITokenByAppAndPermissions(
-      this.credentials,
+      this.credentials.apps,
       appKey,
       permissions,
     );
@@ -93,6 +98,40 @@ export class OurWorld extends World {
     }
 
     return apiToken.token;
+  }
+
+  public getUserCredentialByUserKey(userKey: string) {
+    const userCredential = getUserCredentialByUserKey(
+      this.credentials.users,
+      userKey,
+    );
+    if (userCredential === undefined) {
+      throw new Error(
+        `The user credential with user key ${userKey} is not found`,
+      );
+    }
+
+    return userCredential;
+  }
+
+  public getUserCredentialByAppAndUserPermissions(
+    appKey: string,
+    permissions: Permission[],
+  ) {
+    const userCredential = getUserCredentialByAppAndUserPermissions(
+      this.credentials,
+      appKey,
+      permissions,
+    );
+    if (userCredential === undefined) {
+      throw new Error(
+        `The user credential with app key ${appKey} and exact permissions (${permissions.join(
+          ", ",
+        )}) is not found`,
+      );
+    }
+
+    return userCredential;
   }
 }
 

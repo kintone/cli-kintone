@@ -164,7 +164,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-32 Should import the records successfully with username (-u option) and password
+  Scenario: CliKintoneTest-32 Should import the records successfully with username and password (-p option)
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-32.csv" with content as below:
       | Text   | Number |

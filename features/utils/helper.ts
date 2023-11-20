@@ -93,3 +93,17 @@ export const createCsvFile = async (
 
   return filePath;
 };
+
+export const createFile = async (
+  content: string,
+  filePath: string,
+  options: { baseDir?: string },
+) => {
+  const actualFilePath = options.baseDir
+    ? path.join(options.baseDir, filePath)
+    : filePath;
+  await fs.mkdir(path.dirname(actualFilePath), { recursive: true });
+  await fs.writeFile(actualFilePath, content);
+
+  return actualFilePath;
+};

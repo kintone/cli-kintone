@@ -2,7 +2,7 @@ import type { SpawnSyncReturns } from "child_process";
 import type { Credential, Permission } from "./credentials";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
-import { createCsvFile, execCliKintoneSync } from "./helper";
+import { createCsvFile, execCliKintoneSync, createFile } from "./helper";
 import {
   getCredentialByAppKey,
   getAPITokenByAppAndPermissions,
@@ -59,6 +59,10 @@ export class OurWorld extends World {
       baseDir: this.workingDir,
       destFilePath: filePath,
     });
+  }
+
+  public async createFile(content: string, filePath: string) {
+    return createFile(content, filePath, { baseDir: this.workingDir });
   }
 
   public getCredentialByAppKey(appKey: string): Credential {

@@ -1,5 +1,7 @@
 import * as assert from "assert";
 import { Given, Then } from "../utils/world";
+import { getRecordNumbers } from "../utils/helper";
+import fs from "fs";
 
 Given(
   "The csv file {string} with content as below:",
@@ -33,18 +35,27 @@ Then("The app {string} should has records as below:", function (appKey, table) {
 });
 
 Then(
-  "The app {string} should has attachments as below:",
-  function (appKey, table) {
+  "The app {string} should has attachments in {string} as below:",
+  function (appKey, attachmentDir, table) {
     const credential = this.getCredentialByAppKey(appKey);
-    const command = `record export --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --attachments-dir ${this.workingDir}`;
+    const command = `record export --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --attachments-dir ${this.workingDir}/${attachmentDir}`;
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
       throw new Error(
         `Getting records failed. Error: \n${this.response.stderr}`,
       );
     }
+    const obj = table.hashes();
+    console.log("@@@@@", obj);
+    let fileName = "";
+    for (const property in obj) {
+      fileName = property.File;
+    }
 
-    // name
-    // content
+    const filePath = this.workingDir + fileName;
+    const recordsNumber = getRecordNumbers(credential.appId);
+    // forEach(recordsNumber, (recordNumber) => {
+    //   fs.existsSync(`${this.workingDir}/attachments-${recordNumber}/)
+    // }
   },
 );

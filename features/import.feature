@@ -173,9 +173,9 @@ Feature: cli-kintone import command
     And The app "app_for_import" should has records as below:
       | Text   | Number | Attachment |
       | Alice  | 10     | file1.txt  |
-    And The app "app_for_import" should has attachments as below:
-      | File                                     | Content |
-      | attachments/CliKintoneTest-35/file1.txt  | abc     |
+    And The app "app_for_import" should has attachments in "attachments/CliKintoneTest-35" as below:
+      | File       | Content |
+      | file1.txt  | abc     |
 
 #
 #  Scenario: CliKintoneTest-36 Should return the error message when importing records with non-exist directory name

@@ -36,10 +36,6 @@ type AppCredentialRecord = {
     value: Array<{
       id: string;
       value: {
-        user_permission_key: {
-          type: "SINGLE_LINE_TEXT";
-          value: string;
-        };
         user_key: {
           type: "SINGLE_LINE_TEXT";
           value: string;
@@ -90,7 +86,6 @@ export type AppCredential = {
 };
 
 export type UserPermission = {
-  key: string;
   userKey: UserCredential["key"];
   permissions: Permission[];
 };
@@ -215,7 +210,6 @@ const loadFromKintone: () => Promise<Credentials> = async () => {
           permissions: row.value.permissions.value,
         })),
         userPermissions: r.user_permissions.value.map((row) => ({
-          key: row.value.user_permission_key.value,
           userKey: row.value.user_key.value,
           permissions: row.value.u_permissions.value,
         })),

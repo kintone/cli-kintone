@@ -1,6 +1,5 @@
 import * as assert from "assert";
 import { Given, Then } from "../utils/world";
-import { getRecordNumbers } from "../utils/helper";
 import fs from "fs";
 
 Given(
@@ -29,7 +28,9 @@ Then("The app {string} should has records as below:", function (appKey, table) {
   table.raw().shift();
   const records = table.raw();
   records.forEach((record: string[]) => {
-    const values = record.map((field: string) => `"${field}"`).join(",");
+    const values = record
+      .map((field: string) => (field ? `"${field}"` : ""))
+      .join(",");
     assert.match(this.response.stdout, new RegExp(`${values}`));
   });
 });
@@ -45,17 +46,15 @@ Then(
         `Getting records failed. Error: \n${this.response.stderr}`,
       );
     }
-    const obj = table.hashes();
-    console.log("@@@@@", obj);
-    let fileName = "";
-    for (const property in obj) {
-      fileName = property.File;
+    const records: [{ [key: string]: string }] = table.hashes();
+    const recordNumbers = this.getRecordNumbersByAppKey(appKey);
+    for (let index = 0; index < records.length; index++) {
+      const record = records[index];
+      const actualFilePath = `${this.workingDir}/${attachmentDir}/Attachment-${
+        recordNumbers[record.RecordIndex as unknown as number]
+      }/${record.File}`;
+      assert.ok(fs.existsSync(actualFilePath));
+      assert.equal(fs.readFileSync(actualFilePath, "utf8"), record.Content);
     }
-
-    const filePath = this.workingDir + fileName;
-    const recordsNumber = getRecordNumbers(credential.appId);
-    // forEach(recordsNumber, (recordNumber) => {
-    //   fs.existsSync(`${this.workingDir}/attachments-${recordNumber}/)
-    // }
   },
 );

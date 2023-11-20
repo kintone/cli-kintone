@@ -108,12 +108,15 @@ export const createFile = async (
   return actualFilePath;
 };
 
-export const getRecordNumbers = (appId: string): string[] => {
-  const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --fields Record_number`;
+export const getRecordNumbers = (appId: string, apiToken: string): string[] => {
+  const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields Record_number`;
   const response = execCliKintoneSync(command);
   if (response.status !== 0) {
     throw new Error(`Getting records failed. Error: \n${response.stderr}`);
   }
 
-  return response.stdout.split("\n");
+  const recordNumbers = response.stdout.replace(/"/g, "").split("\n");
+  recordNumbers.shift();
+
+  return recordNumbers.filter((recordNumber) => recordNumber.length > 0);
 };

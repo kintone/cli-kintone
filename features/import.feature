@@ -162,20 +162,26 @@ Feature: cli-kintone import command
 
   Scenario: CliKintoneTest-35 Should import the records successfully with attachments.
     Given The app "app_for_import" has no records
-    And There is a file "attachments/CliKintoneTest-35/file1.txt" with content: "abc"
+    And There is a file "attachments/file1.txt" with content: "abc"
+    And There is a file "attachments/file2.txt" with content: "xyz"
+    And There is a file "attachments/file3.txt" with content: "xxx"
     And The csv file "CliKintoneTest-35.csv" with content as below:
       | Text   | Number | Attachment |
-      | Alice  | 10     | file1.txt  |
+      | Alice  | 10     | file1.txt\nfile3.txt  |
+      | Lisa   | 10     | file2.txt  |
     And Load app ID of app "app_for_import" as env var: "APP_ID"
     And Load app token of app "app_for_import" with exact permissions "add" as env var: "API_TOKEN_IMPORT"
-    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT --attachments-dir ./attachments/CliKintoneTest-35 --file-path CliKintoneTest-35.csv"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT --attachments-dir ./attachments --file-path CliKintoneTest-35.csv"
     Then I should get the exit code is zero
     And The app "app_for_import" should has records as below:
       | Text   | Number | Attachment |
-      | Alice  | 10     | file1.txt  |
-    And The app "app_for_import" should has attachments in "attachments/CliKintoneTest-35" as below:
-      | File       | Content |
-      | file1.txt  | abc     |
+      | Alice  | 10     | file1.txt\nfile3.txt  |
+      | Lisa   | 10     | file2.txt  |
+    And The app "app_for_import" should has attachments in "attachments" as below:
+      | RecordIndex   | File       | Content |
+      | 0             | file1.txt  | abc     |
+      | 0             | file3.txt  | xxx     |
+      | 1             | file2.txt  | xyz     |
 
 #
 #  Scenario: CliKintoneTest-36 Should return the error message when importing records with non-exist directory name

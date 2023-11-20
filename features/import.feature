@@ -179,3 +179,24 @@ Feature: cli-kintone import command
       | Alice  | 10     |
       | Bob    | 20     |
       | Jenny  | 30     |
+
+  Scenario: CliKintoneTest-41 Should return the error message when lacking of --file-path option
+    Given Load app ID of app "app_for_import" as env var: "APP_ID"
+    And Load app token of app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Missing required argument: file-path"
+
+  Scenario: CliKintoneTest-42 Should return the error message when importing unsupported file type
+    Given Load app ID of app "app_for_import" as env var: "APP_ID"
+    And Load app token of app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments --file-path CliKintoneTest-41.txt"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: Unexpected file type: txt is unacceptable."
+
+  Scenario: CliKintoneTest-43 Should return the error message when importing non-existent csv file
+    Given Load app ID of app "app_for_import" as env var: "APP_ID"
+    And Load app token of app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments --file-path 9f56a2be-c8f0-4ecc-8f62-b5b430e34e25.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Error: ENOENT: no such file or directory"

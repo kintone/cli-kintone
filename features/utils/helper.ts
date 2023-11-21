@@ -67,7 +67,7 @@ const inputEnvReplacer = (envVars: { [key: string]: string } | undefined) => {
   };
 };
 
-export const createCsvFile = async (
+export const generateCsvFile = async (
   inputCsvObject: string[][],
   options: { baseDir?: string; destFilePath?: string },
 ): Promise<string> => {
@@ -92,4 +92,31 @@ export const createCsvFile = async (
   await fs.writeFile(filePath, csvContent);
 
   return filePath;
+};
+
+export const generateFile = async (
+  content: string,
+  filePath: string,
+  options: { baseDir?: string },
+): Promise<string> => {
+  const actualFilePath = options.baseDir
+    ? path.join(options.baseDir, filePath)
+    : filePath;
+  await fs.mkdir(path.dirname(actualFilePath), { recursive: true });
+  await fs.writeFile(actualFilePath, content);
+
+  return actualFilePath;
+};
+
+export const getRecordNumbers = (appId: string, apiToken: string): string[] => {
+  const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields Record_number`;
+  const response = execCliKintoneSync(command);
+  if (response.status !== 0) {
+    throw new Error(`Getting records failed. Error: \n${response.stderr}`);
+  }
+
+  const recordNumbers = response.stdout.replace(/"/g, "").split("\n");
+  recordNumbers.shift();
+
+  return recordNumbers.filter((recordNumber) => recordNumber.length > 0);
 };

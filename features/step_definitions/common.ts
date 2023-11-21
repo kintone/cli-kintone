@@ -62,7 +62,7 @@ Given(
   "The app {string} has some records as below:",
   async function (appKey, table) {
     const credential = this.getCredentialByAppKey(appKey);
-    const tempFilePath = await this.createCsvFile(table.raw());
+    const tempFilePath = await this.generateCsvFile(table.raw());
     const command = `record import --file-path ${tempFilePath} --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD`;
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {

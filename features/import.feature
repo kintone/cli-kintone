@@ -231,4 +231,4 @@ Feature: cli-kintone import command
     And Load app token of app "app_for_import_attachments" with exact permissions "add" as env var: "API_TOKEN_IMPORT"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT --attachments-dir ./non-exist-dir-c1aceeba-f3e0-45ab-8231-7729d4bc03a0 --file-path CliKintoneTest-36.csv"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open 'non-exist-dir-c1aceeba-f3e0-45ab-8231-7729d4bc03a0/no_exist_file.txt'"
+    And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non-exist-dir-c1aceeba-f3e0-45ab-8231-7729d4bc03a0[\/\\]+no_exist_file.txt'"

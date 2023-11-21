@@ -215,7 +215,7 @@ Feature: cli-kintone import command
     And Load app ID of app "app_for_import_attachments" as env var: "APP_ID"
     And Load app token of app "app_for_import_attachments" with exact permissions "add" as env var: "API_TOKEN_IMPORT"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT --attachments-dir ./attachments --file-path CliKintoneTest-35.csv"
-    Then I should get the exit code is non-zero
+    Then I should get the exit code is zero
     And The app "app_for_import_attachments" should has records as below:
       | Text   | Number | Attachment |
       | Alice  | 10     | file1.txt  |

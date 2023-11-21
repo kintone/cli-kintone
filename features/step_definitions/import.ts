@@ -19,7 +19,7 @@ Given(
 Given(
   "I have a file {string} with content: {string}",
   async function (filePath: string, content: string) {
-    await this.createFile(content, filePath);
+    await this.generateFile(content, filePath);
   },
 );
 

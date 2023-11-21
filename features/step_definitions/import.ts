@@ -46,13 +46,15 @@ Then(
         `Getting records failed. Error: \n${this.response.stderr}`,
       );
     }
+
     const records: [{ [key: string]: string }] = table.hashes();
     const recordNumbers = this.getRecordNumbersByAppKey(appKey);
     for (let index = 0; index < records.length; index++) {
       const record = records[index];
-      const actualFilePath = `${this.workingDir}/${attachmentDir}/Attachment-${
-        recordNumbers[record.RecordIndex as unknown as number]
-      }/${record.File}`;
+      const recordNumber =
+        recordNumbers[record.RecordIndex as unknown as number];
+      const actualFilePath = `${this.workingDir}/${attachmentDir}/Attachment-${recordNumber}/${record.File}`;
+
       assert.ok(fs.existsSync(actualFilePath));
       assert.equal(fs.readFileSync(actualFilePath, "utf8"), record.Content);
     }

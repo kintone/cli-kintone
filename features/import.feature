@@ -162,9 +162,9 @@ Feature: cli-kintone import command
 
   Scenario: CliKintoneTest-35 Should import the records successfully with attachments.
     Given The app "app_for_import" has no records
-    And There is a file "attachments/file1.txt" with content: "abc"
-    And There is a file "attachments/file2.txt" with content: "xyz"
-    And There is a file "attachments/file3.txt" with content: "xxx"
+    And There is a file "attachments/file1.txt" with content: "123"
+    And There is a file "attachments/file2.txt" with content: "abc"
+    And There is a file "attachments/file3.txt" with content: "!!!"
     And The csv file "CliKintoneTest-35.csv" with content as below:
       | Text   | Number | Attachment |
       | Alice  | 10     | file1.txt\nfile3.txt  |
@@ -179,17 +179,16 @@ Feature: cli-kintone import command
       | Lisa   | 10     | file2.txt  |
     And The app "app_for_import" should has attachments in "attachments" as below:
       | RecordIndex   | File       | Content |
-      | 0             | file1.txt  | abc     |
-      | 0             | file3.txt  | xxx     |
-      | 1             | file2.txt  | xyz     |
+      | 0             | file1.txt  | 123     |
+      | 0             | file3.txt  | !!!     |
+      | 1             | file2.txt  | abc     |
 
-#
-#  Scenario: CliKintoneTest-36 Should return the error message when importing records with non-exist directory name
-#    Given The csv file "CliKintoneTest-36.csv" with content as below:
-#      | Text   | Number | Attachment        |
-#      | Alice  | 10     | no_exist_file.txt |
-#    And Load app ID of app "app_for_import" as env var: "APP_ID"
-#    And Load app token of app "app_for_import" with exact permissions "add" as env var: "API_TOKEN_IMPORT"
-#    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT --attachments-dir ./non-exist-dir --file-path CliKintoneTest-36.csv"
-#    Then I should get the exit code is non-zero
-#    And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open 'non-exist-dir/no_exist_file.txt'"
+  Scenario: CliKintoneTest-36 Should return the error message when importing records with non-exist directory name
+    Given The csv file "CliKintoneTest-36.csv" with content as below:
+      | Text   | Number | Attachment        |
+      | Alice  | 10     | no_exist_file.txt |
+    And Load app ID of app "app_for_import" as env var: "APP_ID"
+    And Load app token of app "app_for_import" with exact permissions "add" as env var: "API_TOKEN_IMPORT"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT --attachments-dir ./non-exist-dir --file-path CliKintoneTest-36.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open 'non-exist-dir/no_exist_file.txt'"

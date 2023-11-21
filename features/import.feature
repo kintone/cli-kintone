@@ -132,6 +132,54 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403\] \[GAIA_NO01\] Using this API token, you cannot run the specified API."
 
+  Scenario: CliKintoneTest-30 Should import the records successfully with username and password
+    Given The app "app_for_import" has no records
+    And The csv file "CliKintoneTest-30.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of app "app_for_import" as env var: "APP_ID"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $$TEST_KINTONE_USERNAME_ADD_PERMISSION --password $$TEST_KINTONE_PASSWORD_ADD_PERMISSION --file-path CliKintoneTest-30.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import" should has records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+
+  Scenario: CliKintoneTest-31 Should import the records successfully with username (-u option) and password
+    Given The app "app_for_import" has no records
+    And The csv file "CliKintoneTest-31.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of app "app_for_import" as env var: "APP_ID"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID -u $$TEST_KINTONE_USERNAME_ADD_PERMISSION --password $$TEST_KINTONE_PASSWORD_ADD_PERMISSION --file-path CliKintoneTest-31.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import" should has records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+
+  Scenario: CliKintoneTest-32 Should import the records successfully with username and password (-p option)
+    Given The app "app_for_import" has no records
+    And The csv file "CliKintoneTest-32.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of app "app_for_import" as env var: "APP_ID"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $$TEST_KINTONE_USERNAME_ADD_PERMISSION -p $$TEST_KINTONE_PASSWORD_ADD_PERMISSION --file-path CliKintoneTest-32.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import" should has records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+
   Scenario: CliKintoneTest-33 Should import the records successfully with --attachments-dir specified and no attachments fields.
     Given The csv file "CliKintoneTest-33.csv" with content as below:
       | Text   | Number |

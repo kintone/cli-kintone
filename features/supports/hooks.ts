@@ -20,8 +20,7 @@ BeforeAll(async function () {
 });
 
 Before(function () {
-  this.workingDir = rootDir;
-  this.credentials = credentials;
+  this.init({ workingDir: rootDir, credentials });
 });
 
 Before({ tags: "@isolated" }, function () {

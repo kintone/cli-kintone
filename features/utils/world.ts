@@ -29,13 +29,9 @@ export class OurWorld extends World {
 
   public get credentials() {
     if (this._credentials === undefined) {
-      throw new Error("No credentials found. Please load credentials first.");
+      throw new Error("No credentials found. Please init credentials first.");
     }
     return this._credentials;
-  }
-
-  public set credentials(value: Credentials) {
-    this._credentials = value;
   }
 
   public get workingDir() {
@@ -47,6 +43,16 @@ export class OurWorld extends World {
 
   public set workingDir(value: string) {
     this._workingDir = value;
+  }
+
+  public init(options: { workingDir?: string; credentials?: Credentials }) {
+    if (options.workingDir && options.workingDir.length > 0) {
+      this.workingDir = options.workingDir;
+    }
+
+    if (options.credentials) {
+      this._credentials = options.credentials;
+    }
   }
 
   public execCliKintoneSync(args: string) {

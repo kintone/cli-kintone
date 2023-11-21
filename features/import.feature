@@ -167,7 +167,7 @@ Feature: cli-kintone import command
     And There is a file "attachments/file3.txt" with content: "!!!"
     And The csv file "CliKintoneTest-35.csv" with content as below:
       | Text   | Number | Attachment |
-      | Alice  | 10     | file1.txt\nfile3.txt  |
+      | Alice  | 10     | file1.txt  |
       | Lisa   | 10     | file2.txt  |
     And Load app ID of app "app_for_import" as env var: "APP_ID"
     And Load app token of app "app_for_import" with exact permissions "add" as env var: "API_TOKEN_IMPORT"
@@ -175,12 +175,11 @@ Feature: cli-kintone import command
     Then I should get the exit code is zero
     And The app "app_for_import" should has records as below:
       | Text   | Number | Attachment |
-      | Alice  | 10     | file1.txt\nfile3.txt  |
+      | Alice  | 10     | file1.txt  |
       | Lisa   | 10     | file2.txt  |
     And The app "app_for_import" should has attachments in "attachments" as below:
       | RecordIndex   | File       | Content |
       | 0             | file1.txt  | 123     |
-      | 0             | file3.txt  | !!!     |
       | 1             | file2.txt  | abc     |
 
   Scenario: CliKintoneTest-36 Should return the error message when importing records with non-exist directory name

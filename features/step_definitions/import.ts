@@ -5,14 +5,14 @@ import fs from "fs";
 Given(
   "The csv file {string} with content as below:",
   async function (filePath: string, table) {
-    await this.createCsvFile(table.raw(), filePath);
+    await this.generateCsvFile(table.raw(), filePath);
   },
 );
 
 Given(
   "I have a file {string} with content: {string}",
   async function (filePath: string, content: string) {
-    await this.createFile(content, filePath);
+    await this.generateFile(content, filePath);
   },
 );
 

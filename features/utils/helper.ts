@@ -67,7 +67,7 @@ const inputEnvReplacer = (envVars: { [key: string]: string } | undefined) => {
   };
 };
 
-export const createCsvFile = async (
+export const generateCsvFile = async (
   inputCsvObject: string[][],
   options: { baseDir?: string; destFilePath?: string },
 ): Promise<string> => {
@@ -94,11 +94,11 @@ export const createCsvFile = async (
   return filePath;
 };
 
-export const createFile = async (
+export const generateFile = async (
   content: string,
   filePath: string,
   options: { baseDir?: string },
-) => {
+): Promise<string> => {
   const actualFilePath = options.baseDir
     ? path.join(options.baseDir, filePath)
     : filePath;

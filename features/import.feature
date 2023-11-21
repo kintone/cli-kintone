@@ -232,3 +232,45 @@ Feature: cli-kintone import command
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT --attachments-dir ./non-exist-dir-c1aceeba-f3e0-45ab-8231-7729d4bc03a0 --file-path CliKintoneTest-36.csv"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non-exist-dir-c1aceeba-f3e0-45ab-8231-7729d4bc03a0[\/\\]+no_exist_file.txt'"
+
+  Scenario: CliKintoneTest-37 Should import the records successfully with multiple attachments on a field
+    Given The app "app_for_import_attachments" has no records
+    And I have a file "attachments/file1.txt" with content: "123"
+    And I have a file "attachments/file2.txt" with content: "abc"
+    And The csv file "CliKintoneTest-37.csv" with content as below:
+      | Text   | Number | Attachment |
+      | Alice  | 10     | file1.txt\nfile2.txt  |
+    And Load app ID of app "app_for_import_attachments" as env var: "APP_ID"
+    And Load app token of app "app_for_import_attachments" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments --file-path CliKintoneTest-37.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import_attachments" should has records as below:
+      | Text   | Number | Attachment |
+      | Alice  | 10     | file1.txt\nfile2.txt  |
+    And The app "app_for_import_attachments" should has attachments in "attachments" as below:
+      | RecordIndex   | File       | Content |
+      | 0             | file1.txt  | 123     |
+      | 0             | file2.txt  | abc     |
+
+  Scenario: CliKintoneTest-38 Should import the records successfully with multiple attachments on different fields in a record
+    Given The app "app_for_import_attachments" has no records
+    And I have a file "attachments/file1.txt" with content: "123"
+    And I have a file "attachments/file2.txt" with content: "456"
+    And I have a file "attachments/file3.txt" with content: "abc"
+    And I have a file "attachments/file4.txt" with content: "xyz"
+    And The csv file "CliKintoneTest-38.csv" with content as below:
+      | Text   | Number | Attachment            | Attachment_0          |
+      | Alice  | 10     | file1.txt\nfile2.txt  | file3.txt\nfile4.txt  |
+    And Load app ID of app "app_for_import_attachments" as env var: "APP_ID"
+    And Load app token of app "app_for_import_attachments" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments --file-path CliKintoneTest-38.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import_attachments" should has records as below:
+      | Text   | Number | Attachment            | Attachment_0          |
+      | Alice  | 10     | file1.txt\nfile2.txt  | file3.txt\nfile4.txt  |
+    And The app "app_for_import_attachments" should has attachments in "attachments" as below:
+      | RecordIndex   | File       | Content |
+      | 0             | file1.txt  | 123     |
+      | 0             | file2.txt  | 456     |
+      | 0             | file3.txt  | abc     |
+      | 0             | file4.txt  | xyz     |

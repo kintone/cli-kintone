@@ -7,7 +7,7 @@ import { loadCredentials } from "../utils/credentials";
 import type { Credential } from "../utils/credentials";
 
 let rootDir: string;
-const failedScenarioCount = 0;
+let failedScenarioCount = 0;
 let credentials: Credential[];
 
 BeforeAll(async function () {
@@ -33,12 +33,12 @@ Before({ tags: "@isolated" }, function () {
 
 After(async function (scenario) {
   if (scenario.result?.status === Status.FAILED) {
-    // failedScenarioCount++;
+    failedScenarioCount++;
   }
 });
 
 AfterAll(function () {
   if (failedScenarioCount === 0) {
-    // fs.rmSync(rootDir, { recursive: true, force: true });
+    fs.rmSync(rootDir, { recursive: true, force: true });
   }
 });

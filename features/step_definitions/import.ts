@@ -16,13 +16,6 @@ Given(
   },
 );
 
-Given(
-  "I have a file {string} with content: {string}",
-  async function (filePath: string, content: string) {
-    await this.generateFile(content, filePath);
-  },
-);
-
 Then("The app {string} should has records as below:", function (appKey, table) {
   const credential = this.getCredentialByAppKey(appKey);
   const fields = table.raw()[0].join(",");

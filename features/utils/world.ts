@@ -2,7 +2,12 @@ import type { SpawnSyncReturns } from "child_process";
 import type { Credential, Permission } from "./credentials";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
-import { createCsvFile, execCliKintoneSync } from "./helper";
+import {
+  generateCsvFile,
+  execCliKintoneSync,
+  generateFile,
+  getRecordNumbers,
+} from "./helper";
 import {
   getCredentialByAppKey,
   getAPITokenByAppAndPermissions,
@@ -54,11 +59,15 @@ export class OurWorld extends World {
     });
   }
 
-  public async createCsvFile(inputCsvObject: string[][], filePath?: string) {
-    return createCsvFile(inputCsvObject, {
+  public async generateCsvFile(inputCsvObject: string[][], filePath?: string) {
+    return generateCsvFile(inputCsvObject, {
       baseDir: this.workingDir,
       destFilePath: filePath,
     });
+  }
+
+  public async generateFile(content: string, filePath: string) {
+    return generateFile(content, filePath, { baseDir: this.workingDir });
   }
 
   public getCredentialByAppKey(appKey: string): Credential {
@@ -93,6 +102,12 @@ export class OurWorld extends World {
     }
 
     return apiToken.token;
+  }
+
+  public getRecordNumbersByAppKey(appKey: string): string[] {
+    const credential = this.getCredentialByAppKey(appKey);
+    const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
+    return getRecordNumbers(credential.appId, apiToken);
   }
 }
 

@@ -107,7 +107,7 @@ Given(
   async function (appKey, table) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
-    const tempFilePath = await this.createCsvFile(table.raw());
+    const tempFilePath = await this.generateCsvFile(table.raw());
     const command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {

@@ -10,7 +10,7 @@ Given(
 );
 
 Given(
-  "There is a file {string} with content: {string}",
+  "I have a file {string} with content: {string}",
   async function (filePath: string, content: string) {
     await this.createFile(content, filePath);
   },

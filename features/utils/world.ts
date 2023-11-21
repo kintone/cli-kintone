@@ -3,9 +3,9 @@ import type { Credential, Permission } from "./credentials";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
 import {
-  createCsvFile,
+  generateCsvFile,
   execCliKintoneSync,
-  createFile,
+  generateFile,
   getRecordNumbers,
 } from "./helper";
 import {
@@ -59,15 +59,15 @@ export class OurWorld extends World {
     });
   }
 
-  public async createCsvFile(inputCsvObject: string[][], filePath?: string) {
-    return createCsvFile(inputCsvObject, {
+  public async generateCsvFile(inputCsvObject: string[][], filePath?: string) {
+    return generateCsvFile(inputCsvObject, {
       baseDir: this.workingDir,
       destFilePath: filePath,
     });
   }
 
-  public async createFile(content: string, filePath: string) {
-    return createFile(content, filePath, { baseDir: this.workingDir });
+  public async generateFile(content: string, filePath: string) {
+    return generateFile(content, filePath, { baseDir: this.workingDir });
   }
 
   public getCredentialByAppKey(appKey: string): Credential {

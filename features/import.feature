@@ -180,7 +180,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-33 Should import the records successfully with --attachments-dir specified and no attachments fields.
+  Scenario: CliKintoneTest-33 Should import the records successfully with --attachments-dir specified and no attachment field.
     Given The csv file "CliKintoneTest-33.csv" with content as below:
       | Text   | Number |
       | Alice  | 10     |
@@ -196,7 +196,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-34 Should return the error message when importing non-existent attachments.
+  Scenario: CliKintoneTest-34 Should return the error message when importing non-existent attachment.
     Given The csv file "CliKintoneTest-34.csv" with content as below:
       | Text   | Number | Attachment         |
       | Alice  | 10     | non_exist_file.txt |
@@ -206,7 +206,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non_exist_file.txt'"
 
-  Scenario: CliKintoneTest-35 Should import the records successfully with attachments.
+  Scenario: CliKintoneTest-35 Should import the records successfully with attachment.
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And The csv file "CliKintoneTest-35.csv" with content as below:
@@ -223,7 +223,7 @@ Feature: cli-kintone import command
       | RecordIndex   | File       | Content |
       | 0             | file1.txt  | 123     |
 
-  Scenario: CliKintoneTest-36 Should return the error message when importing records with a non-existent directory name
+  Scenario: CliKintoneTest-36 Should return the error message when importing records with a non-existent directory.
     Given The csv file "CliKintoneTest-36.csv" with content as below:
       | Text   | Number | Attachment        |
       | Alice  | 10     | no_exist_file.txt |

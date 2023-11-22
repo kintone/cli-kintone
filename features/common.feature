@@ -56,7 +56,7 @@ Feature: common test cases
     And The output error message should match with the pattern: "\[404] \[GAIA_AP01] The app \(ID: 1\) not found. The app may have been deleted."
 
   Scenario: CliKintoneTest-13 Should return the error message when the app is in a guest space
-    Given Load app ID of app "app_in_guest_space" as env var: "APP_ID"
+    Given Load app ID of the app "app_in_guest_space" as env var: "APP_ID"
     And Load username and password of user "user_for_guest_space" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $USERNAME --password $PASSWORD"
     Then I should get the exit code is non-zero

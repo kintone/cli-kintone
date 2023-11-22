@@ -15,7 +15,7 @@ Given(
 );
 
 Given(
-  "Load app ID of app {string} as env var: {string}",
+  "Load app ID of the app {string} as env var: {string}",
   function (appKey: string, destEnvVar: string) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     this.env = { [destEnvVar]: appCredential.appId, ...this.env };
@@ -23,7 +23,7 @@ Given(
 );
 
 Given(
-  "Load app token of app {string} with exact permissions {string} as env var: {string}",
+  "Load app token of the app {string} with exact permissions {string} as env var: {string}",
   function (appKey: string, permission: string, destEnvVar: string) {
     const permissions = permission
       .split(",")
@@ -46,7 +46,7 @@ Given(
 );
 
 Given(
-  "Load username and password of app {string} with exact permissions {string} as env vars: {string} and {string}",
+  "Load username and password of the app {string} with exact permissions {string} as env vars: {string} and {string}",
   function (
     appKey: string,
     permission: string,

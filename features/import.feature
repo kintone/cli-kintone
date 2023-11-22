@@ -23,7 +23,8 @@ Feature: cli-kintone import command
       | Text   | Number |
       | Alice  | 10     |
     And Load app ID of app "app_for_import" as env var: "APP_ID"
-    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $$TEST_KINTONE_USERNAME_UNPRIVILEGED --password $$TEST_KINTONE_PASSWORD_UNPRIVILEGED --file-path CliKintoneTest-20.csv"
+    And Load username and password of app "app_for_import" with exact permissions "view" as env vars: "UNPRIVILEGED_USERNAME" and "UNPRIVILEGED_PASSWORD"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $UNPRIVILEGED_USERNAME --password $UNPRIVILEGED_PASSWORD --file-path CliKintoneTest-20.csv"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403\] \[CB_NO02\] No privilege to proceed."
 
@@ -35,7 +36,8 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
     And Load app ID of app "app_in_space" as env var: "APP_ID"
-    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --file-path CliKintoneTest-21.csv"
+    And Load app token of app "app_in_space" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --file-path CliKintoneTest-21.csv"
     Then I should get the exit code is zero
     And The app "app_in_space" should has records as below:
       | Text   | Number |
@@ -51,8 +53,8 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
     And Load app ID of app "app_for_import" as env var: "APP_ID"
-    And Load app token of app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
-    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --username $$TEST_KINTONE_USERNAME --password $$TEST_KINTONE_PASSWORD --file-path CliKintoneTest-22.csv"
+    And Load username and password of app "app_for_import" with exact permissions "add" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token INVALID_TOKEN --username $USERNAME --password $PASSWORD --file-path CliKintoneTest-22.csv"
     Then I should get the exit code is zero
     And The app "app_for_import" should has records as below:
       | Text   | Number |
@@ -140,7 +142,8 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
     And Load app ID of app "app_for_import" as env var: "APP_ID"
-    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $$TEST_KINTONE_USERNAME_ADD_PERMISSION --password $$TEST_KINTONE_PASSWORD_ADD_PERMISSION --file-path CliKintoneTest-30.csv"
+    And Load username and password of app "app_for_import" with exact permissions "add" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $USERNAME --password $PASSWORD --file-path CliKintoneTest-30.csv"
     Then I should get the exit code is zero
     And The app "app_for_import" should has records as below:
       | Text   | Number |
@@ -156,7 +159,8 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
     And Load app ID of app "app_for_import" as env var: "APP_ID"
-    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID -u $$TEST_KINTONE_USERNAME_ADD_PERMISSION --password $$TEST_KINTONE_PASSWORD_ADD_PERMISSION --file-path CliKintoneTest-31.csv"
+    And Load username and password of app "app_for_import" with exact permissions "add" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID -u $USERNAME --password $PASSWORD --file-path CliKintoneTest-31.csv"
     Then I should get the exit code is zero
     And The app "app_for_import" should has records as below:
       | Text   | Number |
@@ -172,7 +176,8 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
     And Load app ID of app "app_for_import" as env var: "APP_ID"
-    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $$TEST_KINTONE_USERNAME_ADD_PERMISSION -p $$TEST_KINTONE_PASSWORD_ADD_PERMISSION --file-path CliKintoneTest-32.csv"
+    And Load username and password of app "app_for_import" with exact permissions "add" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $USERNAME -p $PASSWORD --file-path CliKintoneTest-32.csv"
     Then I should get the exit code is zero
     And The app "app_for_import" should has records as below:
       | Text   | Number |

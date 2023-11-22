@@ -68,6 +68,8 @@
     "forceConsistentCasingInFileNames": true,  /* Disallow inconsistently-cased references to the same file. */
     "resolveJsonModule": true
   },
-  "include": ["src/**/*", "features/**/*", "package.json"],
+  "include": ["src/**/*", "features/**/*", "package.json",
+    "e2e-credentials-schema.json"
+  ],
   "exclude": ["node_modules"]
 }

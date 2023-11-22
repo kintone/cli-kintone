@@ -299,3 +299,20 @@ Feature: cli-kintone import command
       | 0             | Attachment          | file2.txt  | 456     |
       | 1             | Attachment          | file3.txt  | abc     |
       | 1             | Attachment          | file4.txt  | xyz     |
+
+  Scenario: CliKintoneTest-40 Should import the records successfully with .txt attachment.
+    Given The app "app_for_import_attachments" has no records
+    And I have a file "attachments/file.txt" with content: "G3Gef76wJ5u1mPuh14QhwgeLd5eC0OHU"
+    And The csv file "CliKintoneTest-40.csv" with content as below:
+      | Text   | Attachment |
+      | Alice  | file.txt   |
+    And Load app ID of app "app_for_import_attachments" as env var: "APP_ID"
+    And Load app token of app "app_for_import_attachments" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments --file-path CliKintoneTest-40.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import_attachments" should has records as below:
+      | Text   | Attachment |
+      | Alice  | file.txt   |
+    And The app "app_for_import_attachments" should has attachments as below:
+      | RecordIndex   | AttachmentFieldCode | File       | Content                          |
+      | 0             | Attachment          | file.txt   | G3Gef76wJ5u1mPuh14QhwgeLd5eC0OHU |

@@ -37,8 +37,22 @@ Then("The app {string} should has records as below:", function (appKey, table) {
 });
 
 Then(
-  "The app {string} should has attachments in {string} as below:",
-  function (appKey, attachmentDir, table) {
+  "The app {string} should has attachments as below:",
+  function (appKey, table) {
+    const columns: string[] = table.raw()[0];
+    const requiredColumns = [
+      "RecordIndex",
+      "AttachmentFieldCode",
+      "File",
+      "Content",
+    ];
+    requiredColumns.forEach((requiredColumn) => {
+      if (!columns.includes(requiredColumn)) {
+        throw new Error(`The table should have ${requiredColumn} column.`);
+      }
+    });
+
+    const attachmentDir = "attachments";
     const credential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
     const command = `record export --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --attachments-dir ${this.workingDir}/${attachmentDir}`;
@@ -55,7 +69,7 @@ Then(
       const record = records[index];
       const recordNumber =
         recordNumbers[record.RecordIndex as unknown as number];
-      const actualFilePath = `${this.workingDir}/${attachmentDir}/Attachment-${recordNumber}/${record.File}`;
+      const actualFilePath = `${this.workingDir}/${attachmentDir}/${record.AttachmentFieldCode}-${recordNumber}/${record.File}`;
 
       assert.ok(fs.existsSync(actualFilePath));
       assert.equal(fs.readFileSync(actualFilePath, "utf8"), record.Content);

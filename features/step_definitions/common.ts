@@ -23,6 +23,14 @@ Given(
 );
 
 Given(
+  "Load guest space ID of the app {string} as env var: {string}",
+  function (appKey: string, destEnvVar: string) {
+    const appCredential = this.getAppCredentialByAppKey(appKey);
+    this.env = { [destEnvVar]: appCredential.guestSpaceId, ...this.env };
+  },
+);
+
+Given(
   "Load app token of the app {string} with exact permissions {string} as env var: {string}",
   function (appKey: string, permission: string, destEnvVar: string) {
     const permissions = permission

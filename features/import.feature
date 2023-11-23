@@ -408,7 +408,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-61 Should return the error message when the guest space is not exist.
+  Scenario: CliKintoneTest-61 Should return the error message when the guest space does not exist.
     Given The app "app_in_guest_space" has no records
     And The csv file "CliKintoneTest-61.csv" with content as below:
       | Text   | Number |

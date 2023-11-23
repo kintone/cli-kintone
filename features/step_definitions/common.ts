@@ -26,6 +26,13 @@ Given(
   "Load guest space ID of the app {string} as env var: {string}",
   function (appKey: string, destEnvVar: string) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
+    if (
+      !appCredential.guestSpaceId ||
+      appCredential.guestSpaceId.length === 0
+    ) {
+      throw new Error(`The app ${appKey} has no guest space ID`);
+    }
+
     this.env = { [destEnvVar]: appCredential.guestSpaceId, ...this.env };
   },
 );
@@ -103,7 +110,10 @@ Given("The app {string} has no records", function (appKey) {
     "view",
     "delete",
   ]);
-  const command = `record delete --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --yes`;
+  let command = `record delete --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --yes`;
+  if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
+    command += ` --guest-space-id ${appCredential.guestSpaceId}`;
+  }
   this.execCliKintoneSync(command);
   if (this.response.status !== 0) {
     throw new Error(`Resetting app failed. Error: \n${this.response.stderr}`);

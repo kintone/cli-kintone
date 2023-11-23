@@ -85,7 +85,7 @@ export type ApiToken = {
 export type AppCredential = {
   key: string;
   appId: string;
-  guestSpaceId: string;
+  guestSpaceId?: string;
   apiTokens: ApiToken[];
   userPermissions: UserPermission[];
 };

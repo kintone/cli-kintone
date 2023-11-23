@@ -389,3 +389,34 @@ Feature: cli-kintone import command
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Text,Non_Existent_Field_Code --file-path CliKintoneTest-53.csv"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: The specified field \"Non_Existent_Field_Code\" does not exist on the app"
+
+  Scenario: CliKintoneTest-60 Should import the records successfully with the correct guest space id
+    Given The app "app_in_guest_space" has no records
+    And The csv file "CliKintoneTest-60.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_in_guest_space" as env var: "APP_ID"
+    And Load app token of the app "app_in_guest_space" with exact permissions "add" as env var: "API_TOKEN"
+    And Load guest space ID of the app "app_in_guest_space" as env var: "GUEST_SPACE_ID"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --guest-space-id $GUEST_SPACE_ID --file-path CliKintoneTest-60.csv"
+    Then I should get the exit code is zero
+    And The app "app_in_guest_space" should has records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+
+  Scenario: CliKintoneTest-61 Should return the error message when the guest space is not exist.
+    Given The app "app_in_guest_space" has no records
+    And The csv file "CliKintoneTest-61.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_in_guest_space" as env var: "APP_ID"
+    And Load app token of the app "app_in_guest_space" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --guest-space-id 1 --file-path CliKintoneTest-61.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: \[403\] \[CB_NO02\] No privilege to proceed."

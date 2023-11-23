@@ -1,11 +1,24 @@
 import * as assert from "assert";
 import { Given, Then } from "../utils/world";
 import fs from "fs";
+import type { SupportedEncoding } from "../utils/helper";
+import { SUPPORTED_ENCODING } from "../utils/helper";
 
 Given(
   "The csv file {string} with content as below:",
   async function (filePath: string, table) {
-    await this.generateCsvFile(table.raw(), filePath);
+    await this.generateCsvFile(table.raw(), { filePath });
+  },
+);
+
+Given(
+  "The csv file {string} with {string} content as below:",
+  async function (filePath: string, encoding: SupportedEncoding, table) {
+    if (!SUPPORTED_ENCODING.includes(encoding)) {
+      throw new Error(`The encoding ${encoding} is not supported`);
+    }
+
+    await this.generateCsvFile(table.raw(), { filePath, encoding });
   },
 );
 

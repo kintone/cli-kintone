@@ -1,6 +1,11 @@
 import { spawnSync } from "child_process";
 import path from "path";
 import fs from "fs/promises";
+import iconv from "iconv-lite";
+
+export const SUPPORTED_ENCODING = <const>["utf8", "sjis"];
+
+export type SupportedEncoding = (typeof SUPPORTED_ENCODING)[number];
 
 export const execCliKintoneSync = (
   args: string,
@@ -68,13 +73,13 @@ const inputEnvReplacer = (envVars: { [key: string]: string } | undefined) => {
 };
 
 export const generateCsvFile = async (
-  inputCsvObject: string[][],
-  options: { baseDir?: string; destFilePath?: string },
+  csvContent: string,
+  options: {
+    baseDir?: string;
+    destFilePath?: string;
+    encoding?: SupportedEncoding;
+  },
 ): Promise<string> => {
-  const csvContent = inputCsvObject
-    .map((row) => row.map((field) => `"${field}"`).join(","))
-    .join("\n");
-
   let filePath = options.destFilePath;
   if (filePath) {
     filePath = options.baseDir
@@ -89,7 +94,7 @@ export const generateCsvFile = async (
     filePath = path.join(tempDir, "records.csv");
   }
 
-  await fs.writeFile(filePath, csvContent);
+  await _writeFile(csvContent, filePath, { encoding: options.encoding });
 
   return filePath;
 };
@@ -97,15 +102,27 @@ export const generateCsvFile = async (
 export const generateFile = async (
   content: string,
   filePath: string,
-  options: { baseDir?: string },
+  options: { baseDir?: string; encoding?: SupportedEncoding },
 ): Promise<string> => {
   const actualFilePath = options.baseDir
     ? path.join(options.baseDir, filePath)
     : filePath;
   await fs.mkdir(path.dirname(actualFilePath), { recursive: true });
-  await fs.writeFile(actualFilePath, content);
+  await _writeFile(content, actualFilePath, { encoding: options.encoding });
 
   return actualFilePath;
+};
+
+const _writeFile = async (
+  content: string,
+  filePath: string,
+  options?: { encoding?: SupportedEncoding },
+): Promise<void> => {
+  if (options && options.encoding) {
+    return fs.writeFile(filePath, iconv.encode(content, options.encoding));
+  }
+
+  return fs.writeFile(filePath, content);
 };
 
 export const getRecordNumbers = (appId: string, apiToken: string): string[] => {

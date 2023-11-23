@@ -389,3 +389,42 @@ Feature: cli-kintone import command
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Text,Non_Existent_Field_Code --file-path CliKintoneTest-53.csv"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: The specified field \"Non_Existent_Field_Code\" does not exist on the app"
+
+  Scenario: CliKintoneTest-62 Should import the records successfully with --encoding option is utf8
+    Given The app "app_for_import" has no records
+    And The csv file "CliKintoneTest-62.csv" with "utf8" content as below:
+      | Text        | Number |
+      | レコード番号  | 10     |
+    And Load app ID of the app "app_for_import" as env var: "APP_ID"
+    And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --encoding utf8 --file-path CliKintoneTest-62.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import" should has records as below:
+      | Text        | Number  |
+      | レコード番号  | 10      |
+
+  Scenario: CliKintoneTest-63 Should import the records successfully with --encoding option is sjis
+    Given The app "app_for_import" has no records
+    And The csv file "CliKintoneTest-63.csv" with "sjis" content as below:
+      | Text    | Number |
+      | 作成日時 | 10     |
+    And Load app ID of the app "app_for_import" as env var: "APP_ID"
+    And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --encoding sjis --file-path CliKintoneTest-63.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import" should has records as below:
+      | Text    | Number  |
+      | 作成日時 | 10      |
+
+  Scenario: CliKintoneTest-64 Should return the error message when importing records with an unsupported character code.
+    Given The app "app_for_import" has no records
+    And The csv file "CliKintoneTest-64.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_import" as env var: "APP_ID"
+    And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --encoding unsupported_character_code --file-path CliKintoneTest-64.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Argument: encoding, Given: \"unsupported_character_code\", Choices: \"utf8\", \"sjis\""

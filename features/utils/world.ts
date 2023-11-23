@@ -70,7 +70,7 @@ export class OurWorld extends World {
 
   public async generateCsvFile(
     inputCsvObject: string[][],
-    options: { filePath?: string; encoding?: SupportedEncoding },
+    options?: { filePath?: string; encoding?: SupportedEncoding },
   ) {
     const csvContent = inputCsvObject
       .map((row) => row.map((field) => `"${field}"`).join(","))

@@ -342,3 +342,50 @@ Feature: cli-kintone import command
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments --file-path 9f56a2be-c8f0-4ecc-8f62-b5b430e34e25.csv"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory"
+
+  Scenario: CliKintoneTest-51 Should import the records successfully with --fields specified.
+    Given The app "app_for_import" has no records
+    And The csv file "CliKintoneTest-51.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_import" as env var: "APP_ID"
+    And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Text --file-path CliKintoneTest-51.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import" should has records as below:
+      | Text   | Number |
+      | Alice  |        |
+      | Bob    |        |
+      | Jenny  |        |
+
+  Scenario: CliKintoneTest-52 Should import the records successfully with --fields specified multiple existent field codes.
+    Given The app "app_for_import" has no records
+    And The csv file "CliKintoneTest-52.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_import" as env var: "APP_ID"
+    And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Text,Number --file-path CliKintoneTest-52.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import" should has records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+
+  Scenario: CliKintoneTest-53 Should return the error message when importing records with --fields specified, including existent and non-existent field codes.
+    Given The app "app_for_import" has no records
+    And The csv file "CliKintoneTest-53.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_import" as env var: "APP_ID"
+    And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Text,Non_Existent_Field_Code --file-path CliKintoneTest-53.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Error: The specified field \"Non_Existent_Field_Code\" does not exist on the app"

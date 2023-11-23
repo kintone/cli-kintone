@@ -346,10 +346,10 @@ Feature: cli-kintone import command
   Scenario: CliKintoneTest-51 Should import the records successfully with --fields specified.
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-51.csv" with content as below:
-      | Text   |
-      | Alice  |
-      | Bob    |
-      | Jenny  |
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
     And Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Text --file-path CliKintoneTest-51.csv"
@@ -377,7 +377,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-53 Should return the error message when importing records includes a non-existent field code.
+  Scenario: CliKintoneTest-53 Should return the error message when importing records with --fields specified, including existent and non-existent field codes.
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-53.csv" with content as below:
       | Text   | Number |

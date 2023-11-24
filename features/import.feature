@@ -392,7 +392,7 @@ Feature: cli-kintone import command
 
   Scenario: CliKintoneTest-62 Should import the records successfully with --encoding option is utf8
     Given The app "app_for_import" has no records
-    And The csv file "CliKintoneTest-62.csv" with "utf8" content as below:
+    And The csv file "CliKintoneTest-62.csv" with "utf8" encoded content as below:
       | Text        | Number |
       | レコード番号  | 10     |
     And Load app ID of the app "app_for_import" as env var: "APP_ID"
@@ -405,7 +405,7 @@ Feature: cli-kintone import command
 
   Scenario: CliKintoneTest-63 Should import the records successfully with --encoding option is sjis
     Given The app "app_for_import" has no records
-    And The csv file "CliKintoneTest-63.csv" with "sjis" content as below:
+    And The csv file "CliKintoneTest-63.csv" with "sjis" encoded content as below:
       | Text    | Number |
       | 作成日時 | 10     |
     And Load app ID of the app "app_for_import" as env var: "APP_ID"

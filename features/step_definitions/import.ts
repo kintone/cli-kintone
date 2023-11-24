@@ -12,7 +12,7 @@ Given(
 );
 
 Given(
-  "The csv file {string} with {string} content as below:",
+  "The csv file {string} with {string} encoded content as below:",
   async function (filePath: string, encoding: SupportedEncoding, table) {
     if (!SUPPORTED_ENCODING.includes(encoding)) {
       throw new Error(`The encoding ${encoding} is not supported`);

@@ -447,7 +447,7 @@ Feature: cli-kintone import command
       | Text   | Number |
       | Alice  | 10     |
       | Bob    | 20     |
-    And Load the record numbers of the app "app_for_import" as variable: "RECORD_NUMBERS"
+    And Load the record numbers of the app "app_for_import" as replacement: "RECORD_NUMBERS"
     And The csv file "CliKintoneTest-44.csv" with content as below:
       | Record_number      | Text   | Number |
       | $RECORD_NUMBERS[0] | Alice  | 20     |

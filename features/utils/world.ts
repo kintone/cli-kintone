@@ -17,7 +17,9 @@ import {
 
 export class OurWorld extends World {
   public env: { [key: string]: string } = {};
-  public var: { [key: string]: any } = {};
+  public replacements: {
+    [key: string]: string | string[] | number | number[] | boolean;
+  } = {};
   private _workingDir?: string;
   private _credentials?: Credentials;
   private _response?: SpawnSyncReturns<string>;

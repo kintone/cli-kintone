@@ -6,7 +6,10 @@ import { replacePlaceholdersInDataTables } from "../utils/helper";
 Given(
   "The csv file {string} with content as below:",
   async function (filePath: string, table) {
-    const csvObject = replacePlaceholdersInDataTables(table.raw(), this.var);
+    const csvObject = replacePlaceholdersInDataTables(
+      table.raw(),
+      this.replacements,
+    );
     await this.generateCsvFile(csvObject, filePath);
   },
 );
@@ -50,7 +53,10 @@ Then("The app {string} should has records as below:", function (appKey, table) {
   }
 
   table.raw().shift();
-  const records = replacePlaceholdersInDataTables(table.raw(), this.var);
+  const records = replacePlaceholdersInDataTables(
+    table.raw(),
+    this.replacements,
+  );
   records.forEach((record: string[]) => {
     const values = record
       .map((field: string) => (field ? `"${field}"` : ""))

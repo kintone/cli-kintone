@@ -39,18 +39,10 @@ Given(
 );
 
 Given(
-  "Load app ID of the app {string} as variable: {string}",
-  function (appKey: string, destVar: string) {
-    const appCredential = this.getAppCredentialByAppKey(appKey);
-    this.var = { [destVar]: appCredential.appId, ...this.var };
-  },
-);
-
-Given(
-  "Load the record numbers of the app {string} as variable: {string}",
+  "Load the record numbers of the app {string} as replacement: {string}",
   function (appKey: string, destVar: string) {
     const recordNumbers = this.getRecordNumbersByAppKey(appKey);
-    this.var = { [destVar]: recordNumbers, ...this.var };
+    this.replacements = { [destVar]: recordNumbers, ...this.replacements };
   },
 );
 
@@ -142,7 +134,10 @@ Given(
   async function (appKey, table) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
-    const csvObject = replacePlaceholdersInDataTables(table.raw(), this.var);
+    const csvObject = replacePlaceholdersInDataTables(
+      table.raw(),
+      this.replacements,
+    );
     const tempFilePath = await this.generateCsvFile(csvObject);
     const command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
     this.execCliKintoneSync(command);

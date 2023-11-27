@@ -1,11 +1,13 @@
 import * as assert from "assert";
 import { Given, Then } from "../utils/world";
 import fs from "fs";
+import { replacePlaceholdersInDataTables } from "../utils/helper";
 
 Given(
   "The csv file {string} with content as below:",
   async function (filePath: string, table) {
-    await this.generateCsvFile(table.raw(), filePath);
+    const csvObject = replacePlaceholdersInDataTables(table.raw(), this.var);
+    await this.generateCsvFile(csvObject, filePath);
   },
 );
 
@@ -48,7 +50,7 @@ Then("The app {string} should has records as below:", function (appKey, table) {
   }
 
   table.raw().shift();
-  const records = table.raw();
+  const records = replacePlaceholdersInDataTables(table.raw(), this.var);
   records.forEach((record: string[]) => {
     const values = record
       .map((field: string) => (field ? `"${field}"` : ""))

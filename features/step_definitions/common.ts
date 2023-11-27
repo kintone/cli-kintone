@@ -2,6 +2,7 @@ import * as assert from "assert";
 import { Given, When, Then } from "../utils/world";
 import type { Permission } from "../utils/credentials";
 import { TOKEN_PERMISSIONS } from "../utils/credentials";
+import { replacePlaceholdersInDataTables } from "../utils/helper";
 
 Given(
   "Load environment variable {string} as {string}",
@@ -34,6 +35,22 @@ Given(
     }
 
     this.env = { [destEnvVar]: appCredential.guestSpaceId, ...this.env };
+  },
+);
+
+Given(
+  "Load app ID of the app {string} as variable: {string}",
+  function (appKey: string, destVar: string) {
+    const appCredential = this.getAppCredentialByAppKey(appKey);
+    this.var = { [destVar]: appCredential.appId, ...this.var };
+  },
+);
+
+Given(
+  "Load the record numbers of the app {string} as variable: {string}",
+  function (appKey: string, destVar: string) {
+    const recordNumbers = this.getRecordNumbersByAppKey(appKey);
+    this.var = { [destVar]: recordNumbers, ...this.var };
   },
 );
 
@@ -125,7 +142,8 @@ Given(
   async function (appKey, table) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
-    const tempFilePath = await this.generateCsvFile(table.raw());
+    const csvObject = replacePlaceholdersInDataTables(table.raw(), this.var);
+    const tempFilePath = await this.generateCsvFile(csvObject);
     const command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {

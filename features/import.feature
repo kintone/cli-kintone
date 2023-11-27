@@ -423,10 +423,10 @@ Feature: cli-kintone import command
 
   Scenario: CliKintoneTest-44 Should upsert the records successfully with --update-key is Record_number field.
     Given The app "app_for_import" has no records
-    And The app "app_for_import" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
+      And The app "app_for_import" has some records as below:
+        | Text   | Number |
+        | Alice  | 10     |
+        | Bob    | 20     |
     And The csv file "CliKintoneTest-44.csv" with the same Record_number in the app "app_for_import" as below:
       | Text   | Number |
       | Alice  | 20     |
@@ -440,3 +440,24 @@ Feature: cli-kintone import command
       | Text   | Number |
       | Alice  | 20     |
       | Bob    | 30     |
+
+  Scenario: CliKintoneTest-44-1 Should upsert the records successfully with --update-key is Record_number field.
+    Given The app "app_for_import" has no records
+    And The app "app_for_import" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+    And Load the record numbers of the app "app_for_import" as variable: "RECORD_NUMBERS"
+    And The csv file "CliKintoneTest-44.csv" with content as below:
+      | Record_number      | Text   | Number |
+      | $RECORD_NUMBERS[0] | Alice  | 20     |
+      | $RECORD_NUMBERS[1] | Bob    | 30     |
+    And Load app ID of the app "app_for_import" as env var: "APP_ID"
+    And Load app token of the app "app_for_import" with exact permissions "view,edit" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --update-key Record_number --file-path CliKintoneTest-44.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import" should has 2 records
+    And The app "app_for_import" should has records as below:
+      | Record_number      | Text   | Number |
+      | $RECORD_NUMBERS[0] | Alice  | 20     |
+      | $RECORD_NUMBERS[1] | Bob    | 30     |

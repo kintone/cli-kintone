@@ -120,3 +120,32 @@ export const getRecordNumbers = (appId: string, apiToken: string): string[] => {
 
   return recordNumbers.filter((recordNumber) => recordNumber.length > 0);
 };
+
+export const replacePlaceholdersInDataTables = (
+  table: string[][],
+  replacements: { [key: string]: any },
+): string[][] => {
+  return table.map((row) =>
+    row.map((cell) => replacePlaceholders(cell, replacements)),
+  );
+};
+
+export const replacePlaceholders = (
+  str: string,
+  replacements: { [key: string]: any },
+): string => {
+  return str.replace(
+    /\$([a-zA-Z0-9_]*)(?:\[(\d+)])?/g,
+    (match, placeholder, index) => {
+      if (replacements[placeholder] !== undefined) {
+        if (replacements[placeholder][index] !== undefined) {
+          return replacements[placeholder][index];
+        }
+
+        return replacements[placeholder];
+      }
+
+      return match;
+    },
+  );
+};

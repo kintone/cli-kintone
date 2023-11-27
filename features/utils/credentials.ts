@@ -15,6 +15,10 @@ type AppCredentialRecord = {
     type: "SINGLE_LINE_TEXT";
     value: string;
   };
+  guest_space_id: {
+    type: "SINGLE_LINE_TEXT";
+    value: string;
+  };
   api_tokens: {
     type: "SUBTABLE";
     value: Array<{
@@ -81,6 +85,7 @@ export type ApiToken = {
 export type AppCredential = {
   key: string;
   appId: string;
+  guestSpaceId?: string;
   apiTokens: ApiToken[];
   userPermissions: UserPermission[];
 };
@@ -206,6 +211,7 @@ const loadFromKintone: () => Promise<Credentials> = async () => {
       (r): AppCredential => ({
         key: r.key.value,
         appId: r.app_id.value,
+        guestSpaceId: r.guest_space_id.value,
         apiTokens: r.api_tokens.value.map((row) => ({
           token: row.value.token.value,
           permissions: row.value.permissions.value,

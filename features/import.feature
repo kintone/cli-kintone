@@ -342,3 +342,39 @@ Feature: cli-kintone import command
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments --file-path 9f56a2be-c8f0-4ecc-8f62-b5b430e34e25.csv"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory"
+
+  Scenario: CliKintoneTest-54 Should return the error message when importing records with --fields specified, including fields within a table.
+    Given The app "app_for_import_table" has no records
+    And The csv file "CliKintoneTest-54.csv" with content as below:
+      | * | Text_0 | Number_0 | Table | Text    | Number |
+      | * | Alice  | 10       | 1     | Alice_1 | 100    |
+      |   | Alice  | 10       | 2     | Alice_2 | 200    |
+      | * | Bob    | 20       | 3     | Bob_1   | 300    |
+      | * | Jenny  | 30       | 4     |         |        |
+      | * |        |          | 5     | Michael | 400    |
+    And Load app ID of the app "app_for_import_table" as env var: "APP_ID"
+    And Load app token of the app "app_for_import_table" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Text,Number --file-path CliKintoneTest-54.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Error: The field in a Table cannot be specified to the fields option \(\"Text\"\)"
+
+  Scenario: CliKintoneTest-55 Should import the records successfully with --fields specified, include field code of table.
+    Given The app "app_for_import_table" has no records
+    And The csv file "CliKintoneTest-55.csv" with content as below:
+      | * | Text_0 | Number_0 | Table | Text    | Number |
+      | * | Alice  | 10       | 1     | Alice_1 | 100    |
+      |   | Alice  | 10       | 2     | Alice_2 | 200    |
+      | * | Bob    | 20       | 3     | Bob     | 300    |
+      | * | Jenny  | 30       | 4     | Jenny   | 400    |
+      | * |        |          | 5     | Michael | 500    |
+    And Load app ID of the app "app_for_import_table" as env var: "APP_ID"
+    And Load app token of the app "app_for_import_table" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Table --file-path CliKintoneTest-55.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import_table" with table field should has records as below:
+      | Text_0 | Number_0 | Table |         |     |
+      |        |          |       | Alice_1 | 100 |
+      |        |          |       | Alice_2 | 200 |
+      |        |          |       | Bob     | 300 |
+      |        |          |       | Jenny   | 400 |
+      |        |          |       | Michael | 500 |

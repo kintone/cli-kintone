@@ -20,7 +20,10 @@ Then("The app {string} should has records as below:", function (appKey, table) {
   const appCredential = this.getAppCredentialByAppKey(appKey);
   const fields = table.raw()[0].join(",");
   const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
-  const command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${fields}`;
+  let command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${fields}`;
+  if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
+    command += ` --guest-space-id ${appCredential.guestSpaceId}`;
+  }
   this.execCliKintoneSync(command);
   if (this.response.status !== 0) {
     throw new Error(`Getting records failed. Error: \n${this.response.stderr}`);

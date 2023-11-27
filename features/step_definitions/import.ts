@@ -10,6 +10,24 @@ Given(
 );
 
 Given(
+  "The csv file {string} with the same Record_number in the app {string} as below:",
+  async function (filePath: string, appKey: string, table) {
+    const recordNumbers = this.getRecordNumbersByAppKey(appKey);
+    const csvObject: string[][] = table
+      .raw()
+      .map((row: string[], index: number) => {
+        if (index === 0) {
+          return ["Record_number", ...row];
+        }
+
+        return [recordNumbers[index - 1], ...row];
+      });
+
+    await this.generateCsvFile(csvObject, filePath);
+  },
+);
+
+Given(
   "I have a file {string} with content: {string}",
   async function (filePath: string, content: string) {
     await this.generateFile(content, filePath);

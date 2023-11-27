@@ -420,3 +420,23 @@ Feature: cli-kintone import command
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --guest-space-id 1 --file-path CliKintoneTest-61.csv"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403\] \[CB_NO02\] No privilege to proceed."
+
+  Scenario: CliKintoneTest-44 Should upsert the records successfully with --update-key is Record_number field.
+    Given The app "app_for_import" has no records
+    And The app "app_for_import" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+    And The csv file "CliKintoneTest-44.csv" with the same Record_number in the app "app_for_import" as below:
+      | Text   | Number |
+      | Alice  | 20     |
+      | Bob    | 30     |
+    And Load app ID of the app "app_for_import" as env var: "APP_ID"
+    And Load app token of the app "app_for_import" with exact permissions "view,edit" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --update-key Record_number --file-path CliKintoneTest-44.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import" should has 2 records
+    And The app "app_for_import" should has records as below:
+      | Text   | Number |
+      | Alice  | 20     |
+      | Bob    | 30     |

@@ -169,3 +169,11 @@ Then(
     assert.match(this.response.stdout, reg);
   },
 );
+
+Then(
+  "The app {string} should has {int} records",
+  function (appKey, numberOfRecords: number) {
+    const recordNumbers = this.getRecordNumbersByAppKey(appKey);
+    assert.equal(recordNumbers.length, numberOfRecords);
+  },
+);

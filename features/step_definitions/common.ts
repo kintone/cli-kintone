@@ -39,7 +39,7 @@ Given(
 );
 
 Given(
-  "Load the record numbers of the app {string} as replacement: {string}",
+  "Load the record numbers of the app {string} as variable: {string}",
   function (appKey: string, destVar: string) {
     const recordNumbers = this.getRecordNumbersByAppKey(appKey);
     this.replacements = { [destVar]: recordNumbers, ...this.replacements };

@@ -18,8 +18,8 @@ Given(
 
 Then("The app {string} should has records as below:", function (appKey, table) {
   const appCredential = this.getAppCredentialByAppKey(appKey);
-  const fields = table.raw()[0].join(",");
   const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
+  const fields = table.raw()[0].join(",");
   let command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${fields}`;
   if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
     command += ` --guest-space-id ${appCredential.guestSpaceId}`;
@@ -44,7 +44,12 @@ Then(
   function (appKey, table) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
-    const command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
+    const allFields = table.raw()[0];
+    const regex = /^[a-zA-Z0-9_]+$/;
+    const filteredFields = allFields
+      .filter((field: string) => regex.test(field))
+      .join(",");
+    const command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${filteredFields}`;
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
       throw new Error(
@@ -56,8 +61,17 @@ Then(
     records.shift();
     records.forEach((record: string[]) => {
       const values = record
-        .filter((field: string) => field)
-        .map((field: string) => (field ? `"${field}"` : ""))
+        .map((field: string) => {
+          if (!field) {
+            return "";
+          }
+
+          if (field === "*") {
+            return `\\${field}`;
+          }
+
+          return `"${field}"`;
+        })
         .join(",");
       assert.match(this.response.stdout, new RegExp(`${values}`));
     });

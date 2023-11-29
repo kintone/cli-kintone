@@ -1,22 +1,6 @@
 @isolated
 Feature: cli-kintone export command
 
-  Scenario: CliKintoneTest-81 Should return the record contents in CSV format
-    Given The app "app_for_export" has no records
-    And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
-    And Load app ID of the app "app_for_export" as env var: "APP_ID"
-    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
-    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
-    Then I should get the exit code is zero
-    And The header row of the output message should match with the pattern: "\"Record_number\",\"Text\",\"Number\""
-    And The output message should match with the pattern: "\"\d+\",\"Alice\",\"10\""
-    And The output message should match with the pattern: "\"\d+\",\"Bob\",\"20\""
-    And The output message should match with the pattern: "\"\d+\",\"Jenny\",\"30\""
-
   Scenario: CliKintoneTest-78 Should return the error message when the user has no privilege to view records
     Given Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load username and password of the app "app_for_export" with exact permissions "add" as env vars: "USERNAME" and "PASSWORD"
@@ -36,10 +20,10 @@ Feature: cli-kintone export command
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
     And The output message should match with the data below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
+      | Record_number | Text  | Number |
+      | \d+           | Alice | 10     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
 
   Scenario: CliKintoneTest-80 Should return the record contents in CSV format with an invalid --api-token and a valid --username/--password
     Given The app "app_for_export" has no records
@@ -53,11 +37,28 @@ Feature: cli-kintone export command
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token INVALID_TOKEN --username $USERNAME --password $PASSWORD"
     Then I should get the exit code is zero
     And The output message should match with the data below:
-      | Text  | Number |
-      | Alice | 10     |
-      | Bob   | 20     |
-      | Jenny | 30     |
+      | Record_number | Text  | Number |
+      | \d+           | Alice | 10     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
 
+  Scenario: CliKintoneTest-81 Should return the record contents in CSV format
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
+    Then I should get the exit code is zero
+    And The header row of the output message should match with the pattern: "\"Record_number\",\"Text\",\"Number\""
+    And The output message should match with the data below:
+      | Record_number | Text  | Number |
+      | \d+           | Alice | 10     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
   Scenario: CliKintoneTest-82 Should return the error message when exporting the record with a draft API Token.
     Given Load app ID of the app "app_for_draft_token" as env var: "APP_ID"
     And Load app token of the app "app_for_draft_token" with exact permissions "view" as env var: "DRAFT_API_TOKEN"

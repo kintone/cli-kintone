@@ -2,6 +2,7 @@ import type { SpawnSyncReturns } from "child_process";
 import type { Credentials, AppCredential, Permission } from "./credentials";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
+import type { SupportedEncoding } from "./helper";
 import {
   generateCsvFile,
   execCliKintoneSync,
@@ -67,10 +68,18 @@ export class OurWorld extends World {
     });
   }
 
-  public async generateCsvFile(inputCsvObject: string[][], filePath?: string) {
-    return generateCsvFile(inputCsvObject, {
+  public async generateCsvFile(
+    inputCsvObject: string[][],
+    options?: { filePath?: string; encoding?: SupportedEncoding },
+  ) {
+    const csvContent = inputCsvObject
+      .map((row) => row.map((field) => `"${field}"`).join(","))
+      .join("\n");
+
+    return generateCsvFile(csvContent, {
       baseDir: this.workingDir,
-      destFilePath: filePath,
+      destFilePath: options?.filePath,
+      encoding: options?.encoding,
     });
   }
 

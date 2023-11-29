@@ -8,7 +8,7 @@ Feature: cli-kintone export command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403\] \[CB_NO02\] No privilege to proceed."
 
-  Scenario: CliKintoneTest-79 Should return the record contents of the app in the space in CSV format
+  Scenario: CliKintoneTest-79 Should return the record contents in CSV format of the app in a space
     Given The app "app_in_space" has no records
     And The app "app_in_space" has some records as below:
       | Text   | Number |
@@ -59,6 +59,7 @@ Feature: cli-kintone export command
       | \d+           | Alice | 10     |
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
+
   Scenario: CliKintoneTest-82 Should return the error message when exporting the record with a draft API Token.
     Given Load app ID of the app "app_for_draft_token" as env var: "APP_ID"
     And Load app token of the app "app_for_draft_token" with exact permissions "view" as env var: "DRAFT_API_TOKEN"

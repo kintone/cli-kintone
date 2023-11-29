@@ -163,6 +163,17 @@ Then(
 );
 
 Then(
+  "The output message should match with the data below:",
+  async function (table) {
+    const records = table.raw();
+    records.forEach((record: string[]) => {
+      const values = record.map((field: string) => `"${field}"`).join(",");
+      assert.match(this.response.stdout, new RegExp(`${values}`));
+    });
+  },
+);
+
+Then(
   "The header row of the output message should match with the pattern: {string}",
   function (headerRow: string) {
     const reg = new RegExp(`^${headerRow}`);

@@ -35,7 +35,7 @@ Feature: cli-kintone export command
     And Load app token of the app "app_in_space" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
-    And The app "app_in_space" should has records as below:
+    And The output message should match with the data below:
       | Text   | Number |
       | Alice  | 10     |
       | Bob    | 20     |
@@ -52,7 +52,7 @@ Feature: cli-kintone export command
     And Load username and password of the app "app_for_export" with exact permissions "view" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token INVALID_TOKEN --username $USERNAME --password $PASSWORD"
     Then I should get the exit code is zero
-    And The app "app_for_export" should has records as below:
+    And The output message should match with the data below:
       | Text  | Number |
       | Alice | 10     |
       | Bob   | 20     |

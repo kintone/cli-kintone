@@ -17,7 +17,7 @@ Feature: common test cases
   Scenario: CliKintoneTest-4 Should return the help description by --help
     When I run the command with args "--help"
     Then I should get the exit code is zero
-    And The output message should match with the pattern: "cli-kintone-(macos|win\.exe|linux) <command>"
+    And   The output message should match with the pattern: "cli-kintone-(macos|win\.exe|linux) <command>"
 
   Scenario: CliKintoneTest-5 Should return the error message when lacking of --base-url option
     When I run the command with args "record export --app 1"

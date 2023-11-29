@@ -58,7 +58,7 @@ Feature: cli-kintone export command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-82 Should return the error message when exporting the record contents with draft API Token
+  Scenario: CliKintoneTest-82 Should return the error message when exporting the record with a draft API Token.
     Given Load app ID of the app "app_for_draft_token" as env var: "APP_ID"
     And Load app token of the app "app_for_draft_token" with exact permissions "view" as env var: "DRAFT_API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $DRAFT_API_TOKEN"

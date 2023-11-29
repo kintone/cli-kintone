@@ -1,6 +1,47 @@
 @isolated
 Feature: cli-kintone export command
 
+  Scenario: CliKintoneTest-78 Should return the error message when the user has no privilege to view records
+    Given Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load username and password of the app "app_for_export" with exact permissions "add" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $USERNAME --password $PASSWORD"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: \[403\] \[CB_NO02\] No privilege to proceed."
+
+  Scenario: CliKintoneTest-79 Should return the record contents in CSV format of the app in a space
+    Given The app "app_in_space" has no records
+    And The app "app_in_space" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_in_space" as env var: "APP_ID"
+    And Load app token of the app "app_in_space" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
+    Then I should get the exit code is zero
+    And The output message should match with the data below:
+      | Record_number | Text  | Number |
+      | \d+           | Alice | 10     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
+
+  Scenario: CliKintoneTest-80 Should return the record contents in CSV format with an invalid --api-token and a valid --username/--password
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load username and password of the app "app_for_export" with exact permissions "view" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token INVALID_TOKEN --username $USERNAME --password $PASSWORD"
+    Then I should get the exit code is zero
+    And The output message should match with the data below:
+      | Record_number | Text  | Number |
+      | \d+           | Alice | 10     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
+
   Scenario: CliKintoneTest-81 Should return the record contents in CSV format
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -13,6 +54,15 @@ Feature: cli-kintone export command
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
     And The header row of the output message should match with the pattern: "\"Record_number\",\"Text\",\"Number\""
-    And The output message should match with the pattern: "\"\d+\",\"Alice\",\"10\""
-    And The output message should match with the pattern: "\"\d+\",\"Bob\",\"20\""
-    And The output message should match with the pattern: "\"\d+\",\"Jenny\",\"30\""
+    And The output message should match with the data below:
+      | Record_number | Text  | Number |
+      | \d+           | Alice | 10     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
+
+  Scenario: CliKintoneTest-82 Should return the error message when exporting the record with a draft API Token.
+    Given Load app ID of the app "app_for_draft_token" as env var: "APP_ID"
+    And Load app token of the app "app_for_draft_token" with exact permissions "view" as env var: "DRAFT_API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $DRAFT_API_TOKEN"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "\[520\] \[GAIA_IA02\] The specified API token does not match the API token generated via an app."

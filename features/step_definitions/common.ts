@@ -167,7 +167,9 @@ Then(
   async function (table) {
     const records = table.raw();
     records.forEach((record: string[]) => {
-      const values = record.map((field: string) => `"${field}"`).join(",");
+      const values = record
+        .map((field: string) => (field ? `"${field}"` : ""))
+        .join(",");
       assert.match(this.response.stdout, new RegExp(`${values}`));
     });
   },

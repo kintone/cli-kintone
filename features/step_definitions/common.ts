@@ -193,7 +193,7 @@ Then(
 );
 
 Then(
-  "The app {string} should has {int} records",
+  "The app {string} should have {int} records",
   function (appKey, numberOfRecords: number) {
     const recordNumbers = this.getRecordNumbersByAppKey(appKey);
     assert.equal(recordNumbers.length, numberOfRecords);

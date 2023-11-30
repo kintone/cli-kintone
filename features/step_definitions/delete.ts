@@ -4,7 +4,7 @@ import { Then } from "../utils/world";
 const NO_RECORDS_WARNING =
   "No records exist in the app or match the condition.";
 
-Then("The app {string} should has no records", function (appKey) {
+Then("The app {string} should have no records", function (appKey) {
   const appCredential = this.getAppCredentialByAppKey(appKey);
   const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
   const command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;

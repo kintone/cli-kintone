@@ -5,7 +5,7 @@ import type { SupportedEncoding } from "../utils/helper";
 import { SUPPORTED_ENCODING } from "../utils/helper";
 
 Given(
-  "The csv file {string} with content as below:",
+  "The CSV file {string} with content as below:",
   async function (filePath: string, table) {
     const csvObject = this.replacePlaceholdersInDataTables(table.raw());
     await this.generateCsvFile(csvObject, { filePath });
@@ -13,7 +13,7 @@ Given(
 );
 
 Given(
-  "The csv file {string} with {string} encoded content as below:",
+  "The CSV file {string} with {string} encoded content as below:",
   async function (filePath: string, encoding: SupportedEncoding, table) {
     if (!SUPPORTED_ENCODING.includes(encoding)) {
       throw new Error(`The encoding ${encoding} is not supported`);
@@ -30,31 +30,36 @@ Given(
   },
 );
 
-Then("The app {string} should has records as below:", function (appKey, table) {
-  const appCredential = this.getAppCredentialByAppKey(appKey);
-  const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
-  const fields = table.raw()[0].join(",");
-  let command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${fields}`;
-  if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
-    command += ` --guest-space-id ${appCredential.guestSpaceId}`;
-  }
-  this.execCliKintoneSync(command);
-  if (this.response.status !== 0) {
-    throw new Error(`Getting records failed. Error: \n${this.response.stderr}`);
-  }
+Then(
+  "The app {string} should have records as below:",
+  function (appKey, table) {
+    const appCredential = this.getAppCredentialByAppKey(appKey);
+    const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
+    const fields = table.raw()[0].join(",");
+    let command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${fields}`;
+    if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
+      command += ` --guest-space-id ${appCredential.guestSpaceId}`;
+    }
+    this.execCliKintoneSync(command);
+    if (this.response.status !== 0) {
+      throw new Error(
+        `Getting records failed. Error: \n${this.response.stderr}`,
+      );
+    }
 
-  const records = this.replacePlaceholdersInDataTables(table.raw());
-  records.shift();
-  records.forEach((record: string[]) => {
-    const values = record
-      .map((field: string) => (field ? `"${field}"` : ""))
-      .join(",");
-    assert.match(this.response.stdout, new RegExp(`${values}`));
-  });
-});
+    const records = this.replacePlaceholdersInDataTables(table.raw());
+    records.shift();
+    records.forEach((record: string[]) => {
+      const values = record
+        .map((field: string) => (field ? `"${field}"` : ""))
+        .join(",");
+      assert.match(this.response.stdout, new RegExp(`${values}`));
+    });
+  },
+);
 
 Then(
-  "The app {string} with table field should has records as below:",
+  "The app {string} with table field should have records as below:",
   function (appKey, table) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
@@ -93,7 +98,7 @@ Then(
 );
 
 Then(
-  "The app {string} should has attachments as below:",
+  "The app {string} should have attachments as below:",
   function (appKey, table) {
     const columns: string[] = table.raw()[0];
     const requiredColumns = [

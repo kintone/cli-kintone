@@ -7,6 +7,10 @@ export const SUPPORTED_ENCODING = <const>["utf8", "sjis"];
 
 export type SupportedEncoding = (typeof SUPPORTED_ENCODING)[number];
 
+export type ReplacementValue = string | string[] | number | number[] | boolean;
+
+export type Replacements = { [key: string]: ReplacementValue };
+
 export const execCliKintoneSync = (
   args: string,
   options?: { env?: { [key: string]: string }; cwd?: string },
@@ -136,4 +140,29 @@ export const getRecordNumbers = (appId: string, apiToken: string): string[] => {
   recordNumbers.shift();
 
   return recordNumbers.filter((recordNumber) => recordNumber.length > 0);
+};
+
+export const replacePlaceholders = (
+  str: string,
+  replacements: Replacements,
+): string => {
+  return str.replace(
+    /\$([a-zA-Z0-9_]*)(?:\[(\d+)])?/g,
+    (match: string, placeholder: string, index?: number) => {
+      if (replacements[placeholder] === undefined) {
+        return match;
+      }
+
+      const replacementValue = replacements[placeholder];
+      if (
+        Array.isArray(replacementValue) &&
+        index &&
+        replacementValue[index] !== undefined
+      ) {
+        return replacementValue[index].toString();
+      }
+
+      return replacementValue.toString();
+    },
+  );
 };

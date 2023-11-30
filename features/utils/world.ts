@@ -2,12 +2,13 @@ import type { SpawnSyncReturns } from "child_process";
 import type { Credentials, AppCredential, Permission } from "./credentials";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
-import type { SupportedEncoding } from "./helper";
+import type { SupportedEncoding, Replacements } from "./helper";
 import {
   generateCsvFile,
   execCliKintoneSync,
   generateFile,
   getRecordNumbers,
+  replacePlaceholders,
 } from "./helper";
 import {
   getAppCredentialByAppKey,
@@ -18,6 +19,7 @@ import {
 
 export class OurWorld extends World {
   public env: { [key: string]: string } = {};
+  public replacements: Replacements = {};
   private _workingDir?: string;
   private _credentials?: Credentials;
   private _response?: SpawnSyncReturns<string>;
@@ -62,10 +64,13 @@ export class OurWorld extends World {
   }
 
   public execCliKintoneSync(args: string) {
-    this.response = execCliKintoneSync(args, {
-      env: this.env,
-      cwd: this.workingDir,
-    });
+    this.response = execCliKintoneSync(
+      replacePlaceholders(args, this.replacements),
+      {
+        env: this.env,
+        cwd: this.workingDir,
+      },
+    );
   }
 
   public async generateCsvFile(
@@ -162,6 +167,16 @@ export class OurWorld extends World {
     const credential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
     return getRecordNumbers(credential.appId, apiToken);
+  }
+
+  public replacePlaceholdersInDataTables(table: string[][]): string[][] {
+    if (Object.keys(this.replacements).length === 0) {
+      return table;
+    }
+
+    return table.map((row) =>
+      row.map((cell) => replacePlaceholders(cell, this.replacements)),
+    );
   }
 }
 

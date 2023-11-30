@@ -343,6 +343,133 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory"
 
+  Scenario: CliKintoneTest-44 Should upsert the records successfully with --update-key is a Record_number field.
+    Given The app "app_for_upsert" has no records
+    And The app "app_for_upsert" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+    And Load the record numbers of the app "app_for_upsert" as variable: "RECORD_NUMBERS"
+    And The csv file "CliKintoneTest-44.csv" with content as below:
+      | Record_number      | Text   | Number |
+      | $RECORD_NUMBERS[0] | Lisa   | 30     |
+      | $RECORD_NUMBERS[1] | Rose   | 40     |
+      |                    | Jenny  | 50     |
+    And Load app ID of the app "app_for_upsert" as env var: "APP_ID"
+    And Load app token of the app "app_for_upsert" with exact permissions "view,add,edit" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --update-key Record_number --file-path CliKintoneTest-44.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_upsert" should has 3 records
+    And The app "app_for_upsert" should has records as below:
+      | Record_number      | Text   | Number |
+      | $RECORD_NUMBERS[0] | Lisa   | 30     |
+      | $RECORD_NUMBERS[1] | Rose   | 40     |
+      | \d+                | Jenny  | 50     |
+
+  Scenario: CliKintoneTest-45 Should upsert the records successfully with --update-key is a Text field.
+    Given The app "app_for_upsert" has no records
+    And The app "app_for_upsert" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+    And Load the record numbers of the app "app_for_upsert" as variable: "RECORD_NUMBERS"
+    And The csv file "CliKintoneTest-45.csv" with content as below:
+      | Record_number      | Text   | Number |
+      |                    | Alice  | 30     |
+      |                    | Bob    | 40     |
+      |                    | Jenny  | 50     |
+    And Load app ID of the app "app_for_upsert" as env var: "APP_ID"
+    And Load app token of the app "app_for_upsert" with exact permissions "view,add,edit" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --update-key Text --file-path CliKintoneTest-45.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_upsert" should has 3 records
+    And The app "app_for_upsert" should has records as below:
+      | Record_number      | Text   | Number |
+      | $RECORD_NUMBERS[0] | Alice  | 30     |
+      | $RECORD_NUMBERS[1] | Bob    | 40     |
+      | \d+                | Jenny  | 50     |
+
+  Scenario: CliKintoneTest-46 Should return the error message when upserting with a non-prohibit duplicate values Text field.
+    Given The app "app_for_upsert" has no records
+    And The app "app_for_upsert" has some records as below:
+      | Text_Non_Prohibit_Duplicate_Values   | Number |
+      | Alice                                | 10     |
+    And The csv file "CliKintoneTest-46.csv" with content as below:
+      | Text_Non_Prohibit_Duplicate_Values   | Number |
+      | Alice                                | 20     |
+    And Load app ID of the app "app_for_upsert" as env var: "APP_ID"
+    And Load app token of the app "app_for_upsert" with exact permissions "view,add,edit" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --update-key Text_Non_Prohibit_Duplicate_Values --file-path CliKintoneTest-46.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: Error: update key field should set to unique"
+
+  Scenario: CliKintoneTest-47 Should upsert the records successfully with --update-key is a Number field.
+    Given The app "app_for_upsert" has no records
+    And The app "app_for_upsert" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+    And Load the record numbers of the app "app_for_upsert" as variable: "RECORD_NUMBERS"
+    And The csv file "CliKintoneTest-47.csv" with content as below:
+      | Record_number      | Text   | Number |
+      |                    | Lisa   | 10     |
+      |                    | Rose   | 20     |
+      |                    | Jenny  | 30     |
+    And Load app ID of the app "app_for_upsert" as env var: "APP_ID"
+    And Load app token of the app "app_for_upsert" with exact permissions "view,add,edit" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --update-key Number --file-path CliKintoneTest-47.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_upsert" should has 3 records
+    And The app "app_for_upsert" should has records as below:
+      | Record_number      | Text   | Number |
+      | $RECORD_NUMBERS[0] | Lisa   | 10     |
+      | $RECORD_NUMBERS[1] | Rose   | 20     |
+      | \d+                | Jenny  | 30     |
+
+  Scenario: CliKintoneTest-48 Should return the error message when upserting with a non-prohibit duplicate values Number field.
+    Given The app "app_for_upsert" has no records
+    And The app "app_for_upsert" has some records as below:
+      | Text   | Number_Non_Prohibit_Duplicate_Values |
+      | Alice  | 10                                   |
+    And The csv file "CliKintoneTest-48.csv" with content as below:
+      | Text   | Number_Non_Prohibit_Duplicate_Values |
+      | Bob    | 10                                   |
+    And Load app ID of the app "app_for_upsert" as env var: "APP_ID"
+    And Load app token of the app "app_for_upsert" with exact permissions "view,add,edit" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --update-key Number_Non_Prohibit_Duplicate_Values --file-path CliKintoneTest-48.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: Error: update key field should set to unique"
+
+  Scenario: CliKintoneTest-49 Should return the error message when upserting with an unsupported field.
+    Given The app "app_for_upsert" has no records
+    And The app "app_for_upsert" has some records as below:
+      | Text   | Date       |
+      | Alice  | 2024-01-01 |
+    And The csv file "CliKintoneTest-49.csv" with content as below:
+      | Text   | Date       |
+      | Bob    | 2024-01-01 |
+    And Load app ID of the app "app_for_upsert" as env var: "APP_ID"
+    And Load app token of the app "app_for_upsert" with exact permissions "view,add,edit" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --update-key Date --file-path CliKintoneTest-49.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: Error: unsupported field type for update key"
+
+  Scenario: CliKintoneTest-50 Should return the error message when upserting with an API Token without Edit permission.
+    Given The app "app_for_upsert" has no records
+    And The app "app_for_upsert" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+    And The csv file "CliKintoneTest-50.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 30     |
+      | Bob    | 40     |
+    And Load app ID of the app "app_for_upsert" as env var: "APP_ID"
+    And Load app token of the app "app_for_upsert" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --update-key Text --file-path CliKintoneTest-50.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "\[403\] \[GAIA_NO01\] Using this API token, you cannot run the specified API."
+
   Scenario: CliKintoneTest-51 Should import the records successfully with --fields specified.
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-51.csv" with content as below:

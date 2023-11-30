@@ -7,7 +7,8 @@ import { SUPPORTED_ENCODING } from "../utils/helper";
 Given(
   "The csv file {string} with content as below:",
   async function (filePath: string, table) {
-    await this.generateCsvFile(table.raw(), { filePath });
+    const csvObject = this.replacePlaceholdersInDataTables(table.raw());
+    await this.generateCsvFile(csvObject, { filePath });
   },
 );
 
@@ -42,7 +43,7 @@ Then("The app {string} should has records as below:", function (appKey, table) {
     throw new Error(`Getting records failed. Error: \n${this.response.stderr}`);
   }
 
-  const records = table.raw();
+  const records = this.replacePlaceholdersInDataTables(table.raw());
   records.shift();
   records.forEach((record: string[]) => {
     const values = record

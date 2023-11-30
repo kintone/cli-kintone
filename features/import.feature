@@ -1,7 +1,7 @@
 @isolated
 Feature: cli-kintone import command
 
-  Scenario: CliKintoneTest-23 Should import the records with API Token successfully
+  Scenario: CliKintoneTest-23 Should import the records with API Token successfully.
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-23.csv" with content as below:
       | Text   | Number |
@@ -18,7 +18,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-20 Should return the error message when the user has no privilege to add records
+  Scenario: CliKintoneTest-20 Should return the error message when the user has no privilege to add records.
     Given The csv file "CliKintoneTest-20.csv" with content as below:
       | Text   | Number |
       | Alice  | 10     |
@@ -26,9 +26,9 @@ Feature: cli-kintone import command
     And Load username and password of the app "app_for_import" with exact permissions "view" as env vars: "UNPRIVILEGED_USERNAME" and "UNPRIVILEGED_PASSWORD"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $UNPRIVILEGED_USERNAME --password $UNPRIVILEGED_PASSWORD --file-path CliKintoneTest-20.csv"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "ERROR: \[403\] \[CB_NO02\] No privilege to proceed."
+    And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed."
 
-  Scenario: CliKintoneTest-21 Should import records to app in space successfully
+  Scenario: CliKintoneTest-21 Should import records to app in space successfully.
     Given The app "app_in_space" has no records
     And The csv file "CliKintoneTest-21.csv" with content as below:
       | Text   | Number |
@@ -45,7 +45,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-22 Should import records to app with --api-token and --username, --password successfully
+  Scenario: CliKintoneTest-22 Should import records to app with --api-token and --username, --password successfully.
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-22.csv" with content as below:
       | Text   | Number |
@@ -54,7 +54,7 @@ Feature: cli-kintone import command
       | Jenny  | 30     |
     And Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load username and password of the app "app_for_import" with exact permissions "add" as env vars: "USERNAME" and "PASSWORD"
-    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token INVALID_TOKEN --username $USERNAME --password $PASSWORD --file-path CliKintoneTest-22.csv"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token INVALID_API_TOKEN --username $USERNAME --password $PASSWORD --file-path CliKintoneTest-22.csv"
     Then I should get the exit code is zero
     And The app "app_for_import" should has records as below:
       | Text   | Number |
@@ -62,7 +62,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-24 Should return the error message when importing records with draft API Token
+  Scenario: CliKintoneTest-24 Should return the error message when importing records with draft API Token.
     Given The csv file "CliKintoneTest-24.csv" with content as below:
       | Text   | Number |
       | Alice  | 10     |
@@ -70,9 +70,9 @@ Feature: cli-kintone import command
     And Load app token of the app "app_for_draft_token" with exact permissions "add" as env var: "API_TOKEN"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --file-path CliKintoneTest-24.csv"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[520\] \[GAIA_IA02\] The specified API token does not match the API token generated via an app."
+    And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
-  Scenario: CliKintoneTest-25 Should return the error message when importing records with two valid API Token
+  Scenario: CliKintoneTest-25 Should return the error message when importing records with two valid API Token.
     Given The csv file "CliKintoneTest-25.csv" with content as below:
       | Text   | Number |
       | Alice  | 10     |
@@ -81,9 +81,9 @@ Feature: cli-kintone import command
     And Load app token of the app "app_for_import" with exact permissions "view,add" as env var: "API_TOKEN_2"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_1,$API_TOKEN_2 --file-path CliKintoneTest-25.csv"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[400\] \[GAIA_DA03\] You cannot specify a duplicate API token for the same app."
+    And The output error message should match with the pattern: "\[400] \[GAIA_DA03] You cannot specify a duplicate API token for the same app."
 
-  Scenario: CliKintoneTest-26 Should import the records successfully with two valid API Token in different apps
+  Scenario: CliKintoneTest-26 Should import the records successfully with two valid API Token in different apps.
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-26.csv" with content as below:
       | Text   | Number |
@@ -101,7 +101,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-27 Should return the error message when importing records with valid and invalid API Tokens
+  Scenario: CliKintoneTest-27 Should return the error message when importing records with valid and invalid API Tokens.
     Given The csv file "CliKintoneTest-27.csv" with content as below:
       | Text   | Number |
       | Alice  | 10     |
@@ -109,9 +109,9 @@ Feature: cli-kintone import command
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN_IMPORT"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT,invalid_token --file-path CliKintoneTest-27.csv"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[520\] \[GAIA_IA02\] The specified API token does not match the API token generated via an app."
+    And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
-  Scenario: CliKintoneTest-28 Should return the error message when importing records with an API Token without Add permission
+  Scenario: CliKintoneTest-28 Should return the error message when importing records with an API Token without Add permission.
     Given The csv file "CliKintoneTest-28.csv" with content as below:
       | Text   | Number |
       | Alice  | 10     |
@@ -119,9 +119,9 @@ Feature: cli-kintone import command
     And Load app token of the app "app_for_import" with exact permissions "view" as env var: "API_TOKEN_VIEW"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_VIEW --file-path CliKintoneTest-28.csv"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[403\] \[GAIA_NO01\] Using this API token, you cannot run the specified API."
+    And The output error message should match with the pattern: "\[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 
-  Scenario: CliKintoneTest-29 Should return the error message when updating records with an API Token without View/Edit permission
+  Scenario: CliKintoneTest-29 Should return the error message when updating records with an API Token without View/Edit permission.
     Given The csv file "CliKintoneTest-29.csv" with content as below:
       | Text   | Number |
       | Alice  | 11     |
@@ -132,9 +132,9 @@ Feature: cli-kintone import command
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN_IMPORT"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT --file-path CliKintoneTest-29.csv --update-key Record_number"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[403\] \[GAIA_NO01\] Using this API token, you cannot run the specified API."
+    And The output error message should match with the pattern: "\[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 
-  Scenario: CliKintoneTest-30 Should import the records successfully with username and password
+  Scenario: CliKintoneTest-30 Should import the records successfully with username and password.
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-30.csv" with content as below:
       | Text   | Number |
@@ -151,7 +151,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-31 Should import the records successfully with username (-u option) and password
+  Scenario: CliKintoneTest-31 Should import the records successfully with username (-u option) and password.
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-31.csv" with content as below:
       | Text   | Number |
@@ -168,7 +168,7 @@ Feature: cli-kintone import command
       | Bob    | 20     |
       | Jenny  | 30     |
 
-  Scenario: CliKintoneTest-32 Should import the records successfully with username and password (-p option)
+  Scenario: CliKintoneTest-32 Should import the records successfully with username and password (-p option).
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-32.csv" with content as below:
       | Text   | Number |
@@ -238,7 +238,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non-exist-dir-c1aceeba-f3e0-45ab-8231-7729d4bc03a0[\/\\]+no_exist_file.txt'"
 
-  Scenario: CliKintoneTest-37 Should import the records successfully with multiple attachments on a field
+  Scenario: CliKintoneTest-37 Should import the records successfully with multiple attachments on a field.
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And I have a file "attachments/file2.txt" with content: "abc"
@@ -257,7 +257,7 @@ Feature: cli-kintone import command
       | 0             | Attachment          | file1.txt  | 123     |
       | 0             | Attachment          | file2.txt  | abc     |
 
-  Scenario: CliKintoneTest-38 Should import the records successfully with multiple attachments on different fields in a record
+  Scenario: CliKintoneTest-38 Should import the records successfully with multiple attachments on different fields in a record.
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And I have a file "attachments/file2.txt" with content: "456"
@@ -280,7 +280,7 @@ Feature: cli-kintone import command
       | 0             | Attachment_0        | file3.txt  | abc     |
       | 0             | Attachment_0        | file4.txt  | xyz     |
 
-  Scenario: CliKintoneTest-39 Should import the records successfully with multiple attachments on different records
+  Scenario: CliKintoneTest-39 Should import the records successfully with multiple attachments on different records.
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And I have a file "attachments/file2.txt" with content: "456"
@@ -553,7 +553,7 @@ Feature: cli-kintone import command
       | * |        |          | \d+   | Jenny           | 400            |
       | * |        |          | \d+   | Michael         | 500            |
 
-  Scenario: CliKintoneTest-60 Should import the records successfully with the correct guest space id
+  Scenario: CliKintoneTest-60 Should import the records successfully with the correct guest space id.
     Given The app "app_in_guest_space" has no records
     And The csv file "CliKintoneTest-60.csv" with content as below:
       | Text   | Number |
@@ -582,9 +582,9 @@ Feature: cli-kintone import command
     And Load app token of the app "app_in_guest_space" with exact permissions "add" as env var: "API_TOKEN"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --guest-space-id 1 --file-path CliKintoneTest-61.csv"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "ERROR: \[403\] \[CB_NO02\] No privilege to proceed."
+    And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed."
 
-  Scenario: CliKintoneTest-62 Should import the records successfully with --encoding option is utf8
+  Scenario: CliKintoneTest-62 Should import the records successfully with --encoding option is utf8.
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-62.csv" with "utf8" encoded content as below:
       | Text        | Number |
@@ -597,7 +597,7 @@ Feature: cli-kintone import command
       | Text        | Number  |
       | レコード番号  | 10      |
 
-  Scenario: CliKintoneTest-63 Should import the records successfully with --encoding option is sjis
+  Scenario: CliKintoneTest-63 Should import the records successfully with --encoding option is sjis.
     Given The app "app_for_import" has no records
     And The csv file "CliKintoneTest-63.csv" with "sjis" encoded content as below:
       | Text    | Number |

@@ -83,11 +83,22 @@ Feature: cli-kintone export command
     And The output error message should match with the pattern: "\[400] \[GAIA_DA03] You cannot specify a duplicate API token for the same app."
 
   Scenario: CliKintoneTest-85 Should return the record contents with two valid API tokens in different apps.
-    Given Load app ID of the app "app_for_export" as env var: "APP_ID"
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN_1"
     And Load app token of the app "app_for_import" with exact permissions "view,add" as env var: "API_TOKEN_2"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_1,$API_TOKEN_2"
     Then I should get the exit code is zero
+    And The output message should match with the data below:
+      | Record_number | Text  | Number |
+      | \d+           | Alice | 10     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
 
   Scenario: CliKintoneTest-86 Should return the error message when exporting the record with multiple API tokens, including a valid API token and an invalid API token.
     Given Load app ID of the app "app_for_export" as env var: "APP_ID"

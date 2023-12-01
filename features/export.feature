@@ -121,7 +121,7 @@ Feature: cli-kintone export command
     Then I should get the exit code is zero
     And The output message should match with the data below:
       | Record_number      | Text  | Attachment                              |
-      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0]/file1.txt |
+      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
     And The directory "exported-attachments" should contain files as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
@@ -139,7 +139,7 @@ Feature: cli-kintone export command
     Then I should get the exit code is zero
     And The output message should match with the data below:
       | Record_number      | Text  | Attachment                              |
-      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0]/file1.txt |
+      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
     And The directory "new-directory" should contain files as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
@@ -159,8 +159,8 @@ Feature: cli-kintone export command
     Then I should get the exit code is zero
     And The output message should match with the data below:
       | Record_number      | Text  | Attachment                              |
-      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0]/file1.txt |
-      | $RECORD_NUMBERS[1] | Bob   | Attachment-$RECORD_NUMBERS[1]/file2.txt |
+      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
+      | $RECORD_NUMBERS[1] | Bob   | Attachment-$RECORD_NUMBERS[1][\/\\\\]file2.txt |
     And The directory "exported-attachments" should contain files as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
@@ -180,7 +180,7 @@ Feature: cli-kintone export command
     Then I should get the exit code is zero
     And The output message should match with the data below:
       | Record_number      | Text  | Attachment                                                                       |
-      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0]/file1.txt\nAttachment-$RECORD_NUMBERS[0]/file2.txt |
+      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt\nAttachment-$RECORD_NUMBERS[0][\/\\\\]file2.txt |
     And The directory "exported-attachments" should contain files as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
@@ -199,7 +199,7 @@ Feature: cli-kintone export command
     Then I should get the exit code is zero
     And The output message should match with the data below:
       | Record_number      | Text  | Attachment                              |
-      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0]/file1.txt |
+      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
     And The directory "exported-attachments" should contain files as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |

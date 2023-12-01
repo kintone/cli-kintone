@@ -3,6 +3,7 @@ import { Given, Then } from "../utils/world";
 import fs from "fs";
 import type { SupportedEncoding } from "../utils/helper";
 import { SUPPORTED_ENCODING } from "../utils/helper";
+import path from "path";
 
 Given(
   "The CSV file {string} with content as below:",
@@ -137,3 +138,22 @@ Then(
     }
   },
 );
+
+Then("The app {string} should have no attachments", function (appKey) {
+  const attachmentDir = fs.mkdtempSync(
+    path.join(this.workingDir, "no-attachments-"),
+  );
+  const credential = this.getAppCredentialByAppKey(appKey);
+  const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
+  const command = `record export --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --attachments-dir ${attachmentDir}`;
+  this.execCliKintoneSync(command);
+  if (this.response.status !== 0) {
+    throw new Error(`Getting records failed. Error: \n${this.response.stderr}`);
+  }
+
+  assert.equal(
+    fs.readdirSync(attachmentDir, { recursive: true }).length,
+    0,
+    `The directory ${attachmentDir} should be empty`,
+  );
+});

@@ -133,7 +133,7 @@ Given(
   async function (appKey, table) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
-    const csvObject = this.replacePlaceholdersInDataTables(table.raw());
+    const csvObject = this.replacePlaceholdersInRawDataTables(table.raw());
     const tempFilePath = await this.generateCsvFile(csvObject);
     const command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
     this.execCliKintoneSync(command);
@@ -148,7 +148,7 @@ Given(
   async function (appKey: string, attachmentDir: string, table) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
-    const csvObject = this.replacePlaceholdersInDataTables(table.raw());
+    const csvObject = this.replacePlaceholdersInRawDataTables(table.raw());
     const tempFilePath = await this.generateCsvFile(csvObject);
     const command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --attachments-dir ${attachmentDir} --api-token ${apiToken}`;
     this.execCliKintoneSync(command);
@@ -189,7 +189,7 @@ Then(
 Then(
   "The output message should match with the data below:",
   async function (table) {
-    const records = table.raw();
+    const records = this.replacePlaceholdersInRawDataTables(table.raw());
     records.forEach((record: string[]) => {
       const values = record
         .map((field: string) => (field ? `"${field}"` : ""))

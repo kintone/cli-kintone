@@ -38,6 +38,14 @@ Given(
 );
 
 Given(
+  "Load the record numbers of the app {string} as variable: {string}",
+  function (appKey: string, destVar: string) {
+    const recordNumbers = this.getRecordNumbersByAppKey(appKey);
+    this.replacements = { [destVar]: recordNumbers, ...this.replacements };
+  },
+);
+
+Given(
   "Load app token of the app {string} with exact permissions {string} as env var: {string}",
   function (appKey: string, permission: string, destEnvVar: string) {
     const permissions = permission
@@ -125,7 +133,8 @@ Given(
   async function (appKey, table) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
-    const tempFilePath = await this.generateCsvFile(table.raw());
+    const csvObject = this.replacePlaceholdersInDataTables(table.raw());
+    const tempFilePath = await this.generateCsvFile(csvObject);
     const command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
@@ -180,5 +189,13 @@ Then(
   function (headerRow: string) {
     const reg = new RegExp(`^${headerRow}`);
     assert.match(this.response.stdout, reg);
+  },
+);
+
+Then(
+  "The app {string} should have {int} records",
+  function (appKey, numberOfRecords: number) {
+    const recordNumbers = this.getRecordNumbersByAppKey(appKey);
+    assert.equal(recordNumbers.length, numberOfRecords);
   },
 );

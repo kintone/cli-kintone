@@ -622,3 +622,60 @@ Feature: cli-kintone import command
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --encoding unsupported_character_code --file-path CliKintoneTest-64.csv"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Argument: encoding, Given: \"unsupported_character_code\", Choices: \"utf8\", \"sjis\""
+
+  Scenario: CliKintoneTest-75 Should delete attachments successfully when upserting records without the attachment field.
+    Given The app "app_for_upsert" has no records
+    And I have a file "attachments/file1.txt" with content: "123"
+    And I have a file "attachments/file2.txt" with content: "abc"
+    And The app "app_for_upsert" has some records with attachments in directory "attachments" as below:
+      | Text   | Number | Attachment |
+      | Alice  | 10     | file1.txt  |
+      | Bob    | 20     | file2.txt  |
+    And Load the record numbers of the app "app_for_upsert" as variable: "RECORD_NUMBERS"
+    And The CSV file "CliKintoneTest-75.csv" with content as below:
+      | Record_number      | Text   | Number | Attachment |
+      | $RECORD_NUMBERS[0] | Lisa   | 30     |            |
+      | $RECORD_NUMBERS[1] | Rose   | 40     |            |
+      |                    | Jenny  | 50     |            |
+    And Load app ID of the app "app_for_upsert" as env var: "APP_ID"
+    And Load app token of the app "app_for_upsert" with exact permissions "view,add,edit" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir attachments --update-key Record_number --file-path CliKintoneTest-75.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_upsert" should have no attachments
+    And The app "app_for_upsert" should have records as below:
+      | Record_number      | Text   | Number | Attachment |
+      | $RECORD_NUMBERS[0] | Lisa   | 30     |            |
+      | $RECORD_NUMBERS[1] | Rose   | 40     |            |
+      | \d+                | Jenny  | 50     |            |
+
+  Scenario: CliKintoneTest-76 Should import the records successfully including the Table field.
+    Given The app "app_for_import_table" has no records
+    And The CSV file "CliKintoneTest-75.csv" with content as below:
+      | * | Text_0 | Number_0 | Table | Text    | Number |
+      | * | Alice  | 10       | 1     | Alice_1 | 100    |
+      |   | Alice  | 10       | 2     | Alice_2 | 200    |
+      | * | Bob    | 20       | 3     | Bob     | 300    |
+      | * | Jenny  | 30       | 4     | Jenny   | 400    |
+      | * |        |          | 5     | Michael | 500    |
+    And Load app ID of the app "app_for_import_table" as env var: "APP_ID"
+    And Load app token of the app "app_for_import_table" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --file-path CliKintoneTest-75.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_import_table" with table field should have records as below:
+      | * | Text_0 | Number_0 | Table | (Table.Text)    | (Table.Number) |
+      | * | Alice  | 10       | \d+   | Alice_1         | 100            |
+      |   | Alice  | 10       | \d+   | Alice_2         | 200            |
+      | * | Bob    | 20       | \d+   | Bob             | 300            |
+      | * | Jenny  | 30       | \d+   | Jenny           | 400            |
+      | * |        |          | \d+   | Michael         | 500            |
+
+  Scenario: CliKintoneTest-77 Should return the error message when importing with empty input for the required field.
+    Given The CSV file "CliKintoneTest-77.csv" with content as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    |        |
+    And Load app ID of the app "app_for_import_required_field" as env var: "APP_ID"
+    And Load app token of the app "app_for_import_required_field" with exact permissions "add" as env var: "API_TOKEN"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --file-path CliKintoneTest-77.csv"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: \[400] \[CB_VA01] Missing or invalid input."

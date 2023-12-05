@@ -169,7 +169,7 @@ export class OurWorld extends World {
     return getRecordNumbers(credential.appId, apiToken);
   }
 
-  public replacePlaceholdersInDataTables(table: string[][]): string[][] {
+  public replacePlaceholdersInRawDataTables(table: string[][]): string[][] {
     if (Object.keys(this.replacements).length === 0) {
       return table;
     }
@@ -177,6 +177,22 @@ export class OurWorld extends World {
     return table.map((row) =>
       row.map((cell) => replacePlaceholders(cell, this.replacements)),
     );
+  }
+
+  public replacePlaceholdersInHashesDataTables(
+    table: Array<{ [key: string]: string }>,
+  ): Array<{ [key: string]: string }> {
+    if (Object.keys(this.replacements).length === 0) {
+      return table;
+    }
+
+    return table.map((row) => {
+      const newRow: { [key: string]: string } = {};
+      Object.keys(row).forEach((key) => {
+        newRow[key] = replacePlaceholders(row[key], this.replacements);
+      });
+      return newRow;
+    });
   }
 }
 

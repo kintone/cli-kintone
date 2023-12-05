@@ -8,7 +8,7 @@ import path from "path";
 Given(
   "The CSV file {string} with content as below:",
   async function (filePath: string, table) {
-    const csvObject = this.replacePlaceholdersInDataTables(table.raw());
+    const csvObject = this.replacePlaceholdersInRawDataTables(table.raw());
     await this.generateCsvFile(csvObject, { filePath });
   },
 );
@@ -48,7 +48,7 @@ Then(
       );
     }
 
-    const records = this.replacePlaceholdersInDataTables(table.raw());
+    const records = this.replacePlaceholdersInRawDataTables(table.raw());
     records.shift();
     records.forEach((record: string[]) => {
       const values = record
@@ -133,8 +133,17 @@ Then(
         recordNumbers[record.RecordIndex as unknown as number];
       const actualFilePath = `${this.workingDir}/${attachmentDir}/${record.AttachmentFieldCode}-${recordNumber}/${record.File}`;
 
-      assert.ok(fs.existsSync(actualFilePath));
-      assert.equal(fs.readFileSync(actualFilePath, "utf8"), record.Content);
+      assert.ok(
+        fs.existsSync(actualFilePath),
+        `The file "${actualFilePath}" is not found`,
+      );
+
+      const actualContent = fs.readFileSync(actualFilePath, "utf8");
+      assert.equal(
+        actualContent,
+        record.Content,
+        `The content of the file "${actualFilePath}" does not matched.`,
+      );
     }
   },
 );

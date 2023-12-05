@@ -107,6 +107,57 @@ Feature: cli-kintone export command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
+  Scenario: CliKintoneTest-87 Should return the record contents in CSV format with --username and --password options.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load username and password of the app "app_for_export" with exact permissions "view" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $USERNAME --password $PASSWORD"
+    Then I should get the exit code is zero
+    And The output message should match with the data below:
+      | Record_number | Text  | Number |
+      | \d+           | Alice | 10     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
+
+  Scenario: CliKintoneTest-88 Should return the record contents in CSV format with -u and --password options.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load username and password of the app "app_for_export" with exact permissions "view" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID -u $USERNAME --password $PASSWORD"
+    Then I should get the exit code is zero
+    And The output message should match with the data below:
+      | Record_number | Text  | Number |
+      | \d+           | Alice | 10     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
+
+  Scenario: CliKintoneTest-89 Should return the record contents in CSV format with --username and -p options.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load username and password of the app "app_for_export" with exact permissions "view" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $USERNAME -p $PASSWORD"
+    Then I should get the exit code is zero
+    And The output message should match with the data below:
+      | Record_number | Text  | Number |
+      | \d+           | Alice | 10     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
+
   Scenario: CliKintoneTest-90 Should return the record contents and download attachments successfully with an existing directory.
     Given The app "app_for_export_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"

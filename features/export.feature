@@ -119,9 +119,10 @@ Feature: cli-kintone export command
     And I have a directory "exported-attachments"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir exported-attachments"
     Then I should get the exit code is zero
+    # [\/\\\\] is used to match both Windows and Unix path separators
     And The output message should match with the data below:
-      | Record_number      | Text  | Attachment                              |
-      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
+      | Record_number      | Text  | Attachment                                      |
+      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt  |
     And The directory "exported-attachments" should contain files as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
@@ -138,7 +139,7 @@ Feature: cli-kintone export command
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir new-directory"
     Then I should get the exit code is zero
     And The output message should match with the data below:
-      | Record_number      | Text  | Attachment                              |
+      | Record_number      | Text  | Attachment                                     |
       | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
     And The directory "new-directory" should contain files as below:
       | FilePath                      | FileName  | Content |
@@ -158,7 +159,7 @@ Feature: cli-kintone export command
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir exported-attachments"
     Then I should get the exit code is zero
     And The output message should match with the data below:
-      | Record_number      | Text  | Attachment                              |
+      | Record_number      | Text  | Attachment                                     |
       | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
       | $RECORD_NUMBERS[1] | Bob   | Attachment-$RECORD_NUMBERS[1][\/\\\\]file2.txt |
     And The directory "exported-attachments" should contain files as below:
@@ -179,7 +180,7 @@ Feature: cli-kintone export command
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir exported-attachments"
     Then I should get the exit code is zero
     And The output message should match with the data below:
-      | Record_number      | Text  | Attachment                                                                       |
+      | Record_number      | Text  | Attachment                                                                                     |
       | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt\nAttachment-$RECORD_NUMBERS[0][\/\\\\]file2.txt |
     And The directory "exported-attachments" should contain files as below:
       | FilePath                      | FileName  | Content |
@@ -198,7 +199,7 @@ Feature: cli-kintone export command
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir exported-attachments"
     Then I should get the exit code is zero
     And The output message should match with the data below:
-      | Record_number      | Text  | Attachment                              |
+      | Record_number      | Text  | Attachment                                     |
       | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
     And The directory "exported-attachments" should contain files as below:
       | FilePath                      | FileName  | Content |

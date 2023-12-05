@@ -143,6 +143,21 @@ Given(
   },
 );
 
+Given(
+  "The app {string} has some records with attachments in directory {string} as below:",
+  async function (appKey: string, attachmentDir: string, table) {
+    const appCredential = this.getAppCredentialByAppKey(appKey);
+    const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
+    const csvObject = this.replacePlaceholdersInDataTables(table.raw());
+    const tempFilePath = await this.generateCsvFile(csvObject);
+    const command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --attachments-dir ${attachmentDir} --api-token ${apiToken}`;
+    this.execCliKintoneSync(command);
+    if (this.response.status !== 0) {
+      throw new Error(`Importing CSV failed. Error: \n${this.response.stderr}`);
+    }
+  },
+);
+
 When("I run the command with args {string}", function (args: string) {
   this.execCliKintoneSync(args);
 });

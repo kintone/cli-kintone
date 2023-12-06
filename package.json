@@ -62,7 +62,7 @@
     "@cucumber/cucumber": "^10.0.1",
     "@cybozu/eslint-config": "^22.0.2",
     "@types/inquirer": "^8.2.10",
-    "@types/jest": "^29.5.10",
+    "@types/jest": "^29.5.11",
     "@types/node": "^18.19.2",
     "@types/rollup-plugin-auto-external": "^2.0.5",
     "@types/yargs": "^17.0.32",

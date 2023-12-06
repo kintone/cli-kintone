@@ -255,3 +255,64 @@ Feature: cli-kintone export command
     And The directory "exported-attachments" should contain files as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
+
+  Scenario: CliKintoneTest-100 Should return the record contents when exporting the record with --fields specified.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Number"
+    Then I should get the exit code is zero
+    And The output message should match with the pattern: "\"Number\"\n\"10\"\n\"20\"\n\"30\""
+
+  Scenario: CliKintoneTest-101 Should return the record contents when exporting the record with --fields specified, including multiple existent field codes.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Record_number,Number"
+    Then I should get the exit code is zero
+    And The output message should match with the data below:
+      | Record_number | Number |
+      | \d+           | 10     |
+      | \d+           | 20     |
+      | \d+           | 30     |
+
+  Scenario: CliKintoneTest-102 Should return the error message when exporting records with --fields specified, including existent and non-existent field codes.
+    Given Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Number,Non_Existent_Field_Code"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Error: The specified field \"Non_Existent_Field_Code\" does not exist on the app"
+
+  Scenario: CliKintoneTest-103 Should return the error message when exporting records with --fields specified, including fields within a table.
+    Given Load app ID of the app "app_for_export_table" as env var: "APP_ID"
+    And Load app token of the app "app_for_export_table" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Text"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Error: The field in a Table cannot be specified to the fields option \(\"Text\"\)"
+
+  Scenario: CliKintoneTest-104 Should return the record contents when exporting the record with --fields specified, including field code of the table.
+    Given The app "app_for_export_table" has no records
+    And The app "app_for_export_table" has some records as below:
+      | Text_0 | Table | Text  | Number |
+      | Lisa   | 1     | Alice | 10     |
+      | Rose   | 2     | Bob   | 20     |
+      | Jenny  | 3     | Jenny | 30     |
+    And Load app ID of the app "app_for_export_table" as env var: "APP_ID"
+    And Load app token of the app "app_for_export_table" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Table"
+    Then I should get the exit code is zero
+    And The output message with table field should match the data below:
+      | * | Table | Text   | Number |
+      | * | \d+   | Alice  | 10     |
+      | * | \d+   | Bob    | 20     |
+      | * | \d+   | Jenny  | 30     |

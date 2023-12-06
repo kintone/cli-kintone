@@ -38,3 +38,26 @@ Then(
     }
   },
 );
+
+Then(
+  "The output message with table field should match the data below:",
+  async function (table) {
+    const records = this.replacePlaceholdersInRawDataTables(table.raw());
+    records.forEach((record: string[]) => {
+      const values = record
+        .map((field: string) => {
+          if (!field) {
+            return "";
+          }
+
+          if (field === "*") {
+            return `\\${field}`;
+          }
+
+          return `"${field}"`;
+        })
+        .join(",");
+      assert.match(this.response.stdout, new RegExp(`${values}`));
+    });
+  },
+);

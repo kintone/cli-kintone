@@ -135,7 +135,10 @@ Given(
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
     const csvObject = this.replacePlaceholdersInRawDataTables(table.raw());
     const tempFilePath = await this.generateCsvFile(csvObject);
-    const command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
+    let command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
+    if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
+      command += ` --guest-space-id ${appCredential.guestSpaceId}`;
+    }
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
       throw new Error(`Importing CSV failed. Error: \n${this.response.stderr}`);

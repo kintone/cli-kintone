@@ -40,6 +40,28 @@ Then(
 );
 
 Then(
+  "The output message should match the data in the order as below:",
+  async function (table) {
+    const records = this.replacePlaceholdersInRawDataTables(table.raw());
+    let matchStr = "";
+    records.forEach((record: string[]) => {
+      const values = record
+        .map((field: string) => (field ? `"${field}"` : ""))
+        .join(",");
+      matchStr += `${values}(.*)\n`;
+    });
+    const reg = new RegExp(matchStr);
+    assert.match(
+      this.response.stdout,
+      reg,
+      `The output message does not match the data in the order.\nExpected: \n${JSON.stringify(
+        records,
+      )}\nActual: \n${this.response.stdout}`,
+    );
+  },
+);
+
+Then(
   "The output message with table field should match the data below:",
   async function (table) {
     const records = this.replacePlaceholdersInRawDataTables(table.raw());

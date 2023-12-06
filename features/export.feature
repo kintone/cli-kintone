@@ -255,3 +255,74 @@ Feature: cli-kintone export command
     And The directory "exported-attachments" should contain files as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
+
+  Scenario: CliKintoneTest-95 Should return the record contents with valid condition query.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --condition Number>=20"
+    Then I should get the exit code is zero
+    And The output message should match with the data below:
+      | Record_number | Text  | Number |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
+
+  Scenario: CliKintoneTest-96 Should return the error message when exporting the record with invalid condition query.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --condition Unknown_Field>=20"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "\[520] \[GAIA_IQ11] Specified field \(Unknown_Field\) not found."
+
+  Scenario: CliKintoneTest-97 Should return the record contents with valid condition query (-c option).
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN -c Number>=20"
+    Then I should get the exit code is zero
+    And The output message should match with the data below:
+      | Record_number | Text  | Number |
+      | \d+           | Bob   | 20     |
+      | \d+           | Jenny | 30     |
+
+  Scenario: CliKintoneTest-98 Should return the record contents with valid --order-by option.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Bob    | 20     |
+      | Jenny  | 30     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --order-by 'Number desc'"
+    Then I should get the exit code is zero
+    And The output message should match the data in the order as below:
+      | Record_number | Text  | Number |
+      | \d+           | Jenny | 30     |
+      | \d+           | Bob   | 20     |
+      | \d+           | Alice | 10     |
+
+  Scenario: CliKintoneTest-99 Should return the error message when exporting the record with invalid order by query.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --order-by 'Unknown_Field desc'"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "\[520] \[GAIA_IQ11] Specified field \(Unknown_Field\) not found."

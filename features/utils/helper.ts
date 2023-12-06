@@ -15,15 +15,23 @@ export const execCliKintoneSync = (
   args: string,
   options?: { env?: { [key: string]: string }; cwd?: string },
 ) => {
-  const response = spawnSync(
-    getCliKintoneBinary(),
-    replaceTokenWithEnvVars(args, options?.env).split(/\s+/),
-    {
-      encoding: "utf-8",
-      env: options?.env ?? {},
-      cwd: options?.cwd ?? process.cwd(),
-    },
+  const replacedArgs = replaceTokenWithEnvVars(args, options?.env).match(
+    /(?:[^\s'"]+|"[^"]*"|'[^']*')+/g,
   );
+
+  if (!replacedArgs) {
+    throw new Error("Failed to parse command arguments.");
+  }
+
+  const cleanedArgs = replacedArgs.map((arg) =>
+    arg.replace(/^['"]|['"]$/g, ""),
+  );
+
+  const response = spawnSync(getCliKintoneBinary(), cleanedArgs, {
+    encoding: "utf-8",
+    env: options?.env ?? {},
+    cwd: options?.cwd ?? process.cwd(),
+  });
   if (response.error) {
     throw response.error;
   }

@@ -412,3 +412,36 @@ Feature: cli-kintone export command
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --guest-space-id 9999999999999999999"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403] \[CB_NO02] No privilege to proceed"
+
+  Scenario: CliKintoneTest-111 Should return the record contents when exporting the record with --encoding option is utf8.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text       | Number |
+      | レコード番号 | 10     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --encoding utf8"
+    Then I should get the exit code is zero
+    And The output message with "utf8" encoded should match with the data below:
+      | Record_number | Text       | Number |
+      | \d+           | レコード番号 | 10     |
+
+  Scenario: CliKintoneTest-112 Should return the record contents when exporting the record with --encoding option is sjis.
+    Given The app "app_for_export" has no records
+    And The app "app_for_export" has some records as below:
+      | Text    | Number |
+      | 作成日時 | 10     |
+    And Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --encoding sjis"
+    Then I should get the exit code is zero
+    And The output message with "sjis" encoded should match with the data below:
+      | Record_number | Text        | Number |
+      | \d+           | 作成日時     | 10     |
+
+  Scenario: CliKintoneTest-113 Should return the error message when exporting the record with an unsupported character encoding.
+    Given Load app ID of the app "app_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --encoding unsupported_encoding"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Argument: encoding, Given: \"unsupported_encoding\", Choices: \"utf8\", \"sjis\""

@@ -13,10 +13,10 @@ Then("The app {string} should have no records", function (appKey) {
     throw new Error(`Getting records failed. Error: \n${this.response.stderr}`);
   }
 
-  const actualData = this.response.stdout.slice(
-    this.response.stdout.indexOf("\n") + 1,
-  );
+  const actualData = this.response.stdout
+    .toString()
+    .slice(this.response.stdout.toString().indexOf("\n") + 1);
 
   assert.equal(actualData, "");
-  assert.match(this.response.stderr, new RegExp(NO_RECORDS_WARNING));
+  assert.match(this.response.stderr.toString(), new RegExp(NO_RECORDS_WARNING));
 });

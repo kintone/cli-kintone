@@ -28,7 +28,6 @@ export const execCliKintoneSync = (
   );
 
   const response = spawnSync(getCliKintoneBinary(), cleanedArgs, {
-    encoding: "utf-8",
     env: options?.env ?? {},
     cwd: options?.cwd ?? process.cwd(),
   });
@@ -144,7 +143,10 @@ export const getRecordNumbers = (appId: string, apiToken: string): string[] => {
     throw new Error(`Getting records failed. Error: \n${response.stderr}`);
   }
 
-  const recordNumbers = response.stdout.replace(/"/g, "").split("\n");
+  const recordNumbers = response.stdout
+    .toString()
+    .replace(/"/g, "")
+    .split("\n");
   recordNumbers.shift();
 
   return recordNumbers.filter((recordNumber) => recordNumber.length > 0);

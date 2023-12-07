@@ -21,7 +21,7 @@ Feature: cli-kintone delete command
       | Alice | 10     |
     And Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And Load app token of the app "app_for_delete" with exact permissions "view" as env var: "API_TOKEN"
-    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN  --yes"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 

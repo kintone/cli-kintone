@@ -161,6 +161,24 @@ Given(
   },
 );
 
+Given(
+  "The app {string} with table field have some records as below:",
+  async function (appKey, table) {
+    const appCredential = this.getAppCredentialByAppKey(appKey);
+    const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
+    const allFields = table.raw()[0];
+    const regex = /^[a-zA-Z0-9_]+$/;
+    const csvObject = this.replacePlaceholdersInRawDataTables(table.raw());
+    const tempFilePath = await this.generateCsvFile(csvObject);
+
+    const command = `record import --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --file-path ${tempFilePath}`;
+    this.execCliKintoneSync(command);
+    if (this.response.status !== 0) {
+      throw new Error(`Importing CSV failed. Error: \n${this.response.stderr}`);
+    }
+  },
+);
+
 When("I run the command with args {string}", function (args: string) {
   this.execCliKintoneSync(args);
 });

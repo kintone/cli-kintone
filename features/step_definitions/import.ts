@@ -60,7 +60,7 @@ Then(
 );
 
 Then(
-  "The app {string} with table field should have records as below:",
+  "The app {string} with table field should has records as below:",
   function (appKey, table) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);

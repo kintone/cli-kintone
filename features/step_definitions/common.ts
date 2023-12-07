@@ -2,8 +2,6 @@ import * as assert from "assert";
 import { Given, When, Then } from "../utils/world";
 import type { Permission } from "../utils/credentials";
 import { TOKEN_PERMISSIONS } from "../utils/credentials";
-import type { SupportedEncoding } from "../utils/helper";
-import { SUPPORTED_ENCODING } from "../utils/helper";
 
 Given(
   "Load environment variable {string} as {string}",

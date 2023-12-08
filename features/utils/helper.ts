@@ -139,10 +139,14 @@ const _writeFile = async (
 export const getRecordNumbers = (
   appId: string,
   apiToken: string,
-  options: { fieldCode?: string } = {},
+  options: { fieldCode?: string; guestSpaceId?: string } = {},
 ): string[] => {
   const recordNumberFieldCode = options.fieldCode ?? "Record_number";
-  const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${recordNumberFieldCode}`;
+  let command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${recordNumberFieldCode}`;
+
+  if (options.guestSpaceId && options.guestSpaceId.length > 0) {
+    command += ` --guest-space-id ${options.guestSpaceId}`;
+  }
 
   const response = execCliKintoneSync(command);
   if (response.status !== 0) {

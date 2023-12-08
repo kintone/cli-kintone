@@ -163,10 +163,15 @@ export class OurWorld extends World {
     return userCredential;
   }
 
-  public getRecordNumbersByAppKey(appKey: string): string[] {
+  public getRecordNumbersByAppKey(
+    appKey: string,
+    fieldCode?: string,
+  ): string[] {
     const credential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
-    return getRecordNumbers(credential.appId, apiToken);
+    return getRecordNumbers(credential.appId, apiToken, {
+      fieldCode,
+    });
   }
 
   public replacePlaceholdersInRawDataTables(table: string[][]): string[][] {

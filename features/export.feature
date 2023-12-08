@@ -11,10 +11,10 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-79 Should return the record contents in CSV format of the app in a space.
     Given The app "app_in_space" has no records
     And The app "app_in_space" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
     And Load app ID of the app "app_in_space" as env var: "APP_ID"
     And Load app token of the app "app_in_space" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
@@ -28,10 +28,10 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-80 Should return the record contents in CSV format with an invalid --api-token and a valid --username/--password.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load username and password of the app "app_for_export" with exact permissions "view" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token INVALID_API_TOKEN --username $USERNAME --password $PASSWORD"
@@ -45,15 +45,14 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-81 Should return the record contents in CSV format.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
-    And The header row of the output message should match with the pattern: "\"Record_number\",\"Text\",\"Number\""
     And The output message should match with the data below:
       | Record_number | Text  | Number |
       | \d+           | Alice | 10     |
@@ -110,10 +109,10 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-87 Should return the record contents in CSV format with --username and --password options.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load username and password of the app "app_for_export" with exact permissions "view" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $USERNAME --password $PASSWORD"
@@ -127,10 +126,10 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-88 Should return the record contents in CSV format with -u and --password options.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load username and password of the app "app_for_export" with exact permissions "view" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID -u $USERNAME --password $PASSWORD"
@@ -144,10 +143,10 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-89 Should return the record contents in CSV format with --username and -p options.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load username and password of the app "app_for_export" with exact permissions "view" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --username $USERNAME -p $PASSWORD"
@@ -172,8 +171,8 @@ Feature: cli-kintone export command
     Then I should get the exit code is zero
     # [\/\\\\] is used to match both Windows and Unix path separators
     And The output message should match with the data below:
-      | Record_number      | Text  | Attachment                                      |
-      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt  |
+      | Record_number      | Text  | Attachment                                     |
+      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
     And The directory "exported-attachments" should contain files as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
@@ -223,8 +222,8 @@ Feature: cli-kintone export command
     And I have a file "attachments/file1.txt" with content: "123"
     And I have a file "attachments/file2.txt" with content: "abc"
     And The app "app_for_export_attachments" has some records with attachments in directory "attachments" as below:
-      | Text  | Attachment            |
-      | Alice | file1.txt\nfile2.txt  |
+      | Text  | Attachment           |
+      | Alice | file1.txt\nfile2.txt |
     And Load the record numbers of the app "app_for_export_attachments" as variable: "RECORD_NUMBERS"
     And Load app ID of the app "app_for_export_attachments" as env var: "APP_ID"
     And Load app token of the app "app_for_export_attachments" with exact permissions "view" as env var: "API_TOKEN"
@@ -259,10 +258,10 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-95 Should return the record contents with valid condition query.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --condition Number>=20"
@@ -275,8 +274,8 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-96 Should return the error message when exporting the record with invalid condition query.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
+      | Text  | Number |
+      | Alice | 10     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --condition Unknown_Field>=20"
@@ -286,10 +285,10 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-97 Should return the record contents with valid condition query (-c option).
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN -c Number>=20"
@@ -302,10 +301,10 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-98 Should return the record contents with valid --order-by option.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Bob    | 20     |
-      | Jenny  | 30     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --order-by 'Number desc'"
@@ -319,8 +318,8 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-99 Should return the error message when exporting the record with invalid order by query.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
+      | Text  | Number |
+      | Alice | 10     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --order-by 'Unknown_Field desc'"
@@ -383,10 +382,10 @@ Feature: cli-kintone export command
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --fields Table"
     Then I should get the exit code is zero
     And The output message with table field should match the data below:
-      | * | Table | Text   | Number |
-      | * | \d+   | Alice  | 10     |
-      | * | \d+   | Bob    | 20     |
-      | * | \d+   | Jenny  | 30     |
+      | * | Table | Text  | Number |
+      | * | \d+   | Alice | 10     |
+      | * | \d+   | Bob   | 20     |
+      | * | \d+   | Jenny | 30     |
 
   Scenario: CliKintoneTest-109 Should return the record contents when exporting the record with correct --guest-space-id specified
     Given The app "app_in_guest_space" has no records
@@ -445,3 +444,32 @@ Feature: cli-kintone export command
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --encoding unsupported_encoding"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Argument: encoding, Given: \"unsupported_encoding\", Choices: \"utf8\", \"sjis\""
+
+  Scenario: CliKintoneTest-124 Should return the record contents successfully, including table data, when exporting the records
+    Given Load app ID of the app "app_for_export_table" as env var: "APP_ID"
+    And Load app token of the app "app_for_export_table" with exact permissions "view" as env var: "API_TOKEN"
+    And The app "app_for_export_table" has no records
+    And The app "app_for_export_table" has some records as below:
+      | * | Text_0 | Text          | Number |
+      | * | Lisa   | Lisa Pink     | 10     |
+      | * | Rose   | Rose Roseanne | 20     |
+      | * | Bob    | Bob Dylan     | 30     |
+      | * | Jenny  | Jenny_1       | 40     |
+      |   | Jenny  | Jenny_2       | 50     |
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
+    Then I should get the exit code is zero
+    And The app "app_for_export_table" with table field should have records as below:
+      | * | Text_0 | Table | (Table.Text)  | (Table.Number) |
+      | * | Lisa   | \d+   | Lisa Pink     | 10             |
+      | * | Rose   | \d+   | Rose Roseanne | 20             |
+      | * | Bob    | \d+   | Bob Dylan     | 30             |
+      | * | Jenny  | \d+   | Jenny_1       | 40             |
+      |   | Jenny  | \d+   | Jenny_2       | 50             |
+
+  Scenario: CliKintoneTest-125 Should return only field codes when exporting the records of the app which no data
+    Given Load app ID of the app "app_for_export_table" as env var: "APP_ID"
+    And Load app token of the app "app_for_export_table" with exact permissions "view" as env var: "API_TOKEN"
+    And The app "app_for_export_table" has no records
+    When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
+    Then I should get the exit code is zero
+    And The output message should match with the pattern: "\*,\"Record_number\",\"Text_0\",\"Table\",\"Text\",\"Number\"(.*)\n$"

@@ -417,7 +417,7 @@ Feature: cli-kintone export command
     Given Load app ID of the app "app_for_export_table" as env var: "APP_ID"
     And Load app token of the app "app_for_export_table" with exact permissions "view" as env var: "API_TOKEN"
     And The app "app_for_export_table" has no records
-    And The app "app_for_export_table" with table field have some records as below:
+    And The app "app_for_export_table" has some records as below:
       | * | Text_0 | Text          | Number |
       | * | Lisa   | Lisa Pink     | 10     |
       | * | Rose   | Rose Roseanne | 20     |
@@ -426,7 +426,7 @@ Feature: cli-kintone export command
       |   | Jenny  | Jenny_2       | 50     |
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
-    And The app "app_for_export_table" with table field should has records as below:
+    And The app "app_for_export_table" with table field should have records as below:
       | * | Text_0 | Table | (Table.Text)  | (Table.Number) |
       | * | Lisa   | \d+   | Lisa Pink     | 10             |
       | * | Rose   | \d+   | Rose Roseanne | 20             |
@@ -440,5 +440,5 @@ Feature: cli-kintone export command
     And The app "app_for_export_table" has no records
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
-    And The app "app_for_export_table" with table field should has records as below:
-      | * | Text_0 | Table | (Table.Text) | (Table.Number) |
+    And The app "app_for_export_table" should have headers as below:
+      | * | Record_number | Text_0 | Table | Text | Number |

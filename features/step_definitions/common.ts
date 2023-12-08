@@ -161,24 +161,6 @@ Given(
   },
 );
 
-Given(
-  "The app {string} with table field have some records as below:",
-  async function (appKey, table) {
-    const appCredential = this.getAppCredentialByAppKey(appKey);
-    const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
-    const allFields = table.raw()[0];
-    const regex = /^[a-zA-Z0-9_]+$/;
-    const csvObject = this.replacePlaceholdersInRawDataTables(table.raw());
-    const tempFilePath = await this.generateCsvFile(csvObject);
-
-    const command = `record import --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --file-path ${tempFilePath}`;
-    this.execCliKintoneSync(command);
-    if (this.response.status !== 0) {
-      throw new Error(`Importing CSV failed. Error: \n${this.response.stderr}`);
-    }
-  },
-);
-
 When("I run the command with args {string}", function (args: string) {
   this.execCliKintoneSync(args);
 });
@@ -233,5 +215,40 @@ Then(
   function (appKey, numberOfRecords: number) {
     const recordNumbers = this.getRecordNumbersByAppKey(appKey);
     assert.equal(recordNumbers.length, numberOfRecords);
+  },
+);
+
+Then(
+  "The app {string} should have headers as below:",
+  function (appKey, table) {
+    const appCredential = this.getAppCredentialByAppKey(appKey);
+    const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
+    let command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
+    if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
+      command += ` --guest-space-id ${appCredential.guestSpaceId}`;
+    }
+    this.execCliKintoneSync(command);
+    console.log(command);
+    if (this.response.status !== 0) {
+      throw new Error(
+        `Getting records failed. Error: \n${this.response.stderr}`,
+      );
+    }
+
+    const records = table.raw();
+    const values = (records[0] ?? [])
+      .map((field: string) => {
+        if (!field) {
+          return "";
+        }
+
+        if (field === "*") {
+          return `\\${field}`;
+        }
+
+        return `"${field}"`;
+      })
+      .join(",");
+    assert.match(this.response.stdout, new RegExp(`${values}`));
   },
 );

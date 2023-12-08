@@ -203,51 +203,9 @@ Then(
 );
 
 Then(
-  "The header row of the output message should match with the pattern: {string}",
-  function (headerRow: string) {
-    const reg = new RegExp(`^${headerRow}`);
-    assert.match(this.response.stdout, reg);
-  },
-);
-
-Then(
   "The app {string} should have {int} records",
   function (appKey, numberOfRecords: number) {
     const recordNumbers = this.getRecordNumbersByAppKey(appKey);
     assert.equal(recordNumbers.length, numberOfRecords);
-  },
-);
-
-Then(
-  "The app {string} should have headers as below:",
-  function (appKey, table) {
-    const appCredential = this.getAppCredentialByAppKey(appKey);
-    const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
-    let command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
-    if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
-      command += ` --guest-space-id ${appCredential.guestSpaceId}`;
-    }
-    this.execCliKintoneSync(command);
-    if (this.response.status !== 0) {
-      throw new Error(
-        `Getting records failed. Error: \n${this.response.stderr}`,
-      );
-    }
-
-    const records = table.raw();
-    const values = (records[0] ?? [])
-      .map((field: string) => {
-        if (!field) {
-          return "";
-        }
-
-        if (field === "*") {
-          return `\\${field}`;
-        }
-
-        return `"${field}"`;
-      })
-      .join(",");
-    assert.match(this.response.stdout, new RegExp(`${values}`));
   },
 );

@@ -53,7 +53,6 @@ Feature: cli-kintone export command
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
-    And The header row of the output message should match with the pattern: "\"Record_number\",\"Text\",\"Number\""
     And The output message should match with the data below:
       | Record_number | Text  | Number |
       | \d+           | Alice | 10     |
@@ -426,7 +425,7 @@ Feature: cli-kintone export command
       |   | Jenny  | Jenny_2       | 50     |
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
-    And The app "app_for_export_table" has some records as below:
+    And The app "app_for_export_table" with table field should have records as below:
       | * | Text_0 | Table | (Table.Text)  | (Table.Number) |
       | * | Lisa   | \d+   | Lisa Pink     | 10             |
       | * | Rose   | \d+   | Rose Roseanne | 20             |
@@ -440,5 +439,4 @@ Feature: cli-kintone export command
     And The app "app_for_export_table" has no records
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
-    And The app "app_for_export_table" should have headers as below:
-      | * | Record_number | Text_0 | Table | Text | Number |
+    And The output message should match with the pattern: "\*,\"Record_number\",\"Text_0\",\"Table\",\"Text\",\"Number\"(.*)\n$"

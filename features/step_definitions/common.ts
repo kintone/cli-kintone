@@ -174,18 +174,18 @@ When("I run the command with args {string}", function (args: string) {
 });
 
 Then("I should get the exit code is non-zero", function () {
-  assert.notEqual(this.response.status, 0, this.response.stderr);
+  assert.notEqual(this.response.status, 0, this.response.stderr.toString());
 });
 
 Then("I should get the exit code is zero", function () {
-  assert.equal(this.response.status, 0, this.response.stderr);
+  assert.equal(this.response.status, 0, this.response.stderr.toString());
 });
 
 Then(
   "The output error message should match with the pattern: {string}",
   function (errorMessage: string) {
     const reg = new RegExp(errorMessage);
-    assert.match(this.response.stderr, reg);
+    assert.match(this.response.stderr.toString(), reg);
   },
 );
 
@@ -193,7 +193,7 @@ Then(
   "The output message should match with the pattern: {string}",
   function (message: string) {
     const reg = new RegExp(message);
-    assert.match(this.response.stdout, reg);
+    assert.match(this.response.stdout.toString(), reg);
   },
 );
 
@@ -205,16 +205,8 @@ Then(
       const values = record
         .map((field: string) => (field ? `"${field}"` : ""))
         .join(",");
-      assert.match(this.response.stdout, new RegExp(`${values}`));
+      assert.match(this.response.stdout.toString(), new RegExp(`${values}`));
     });
-  },
-);
-
-Then(
-  "The header row of the output message should match with the pattern: {string}",
-  function (headerRow: string) {
-    const reg = new RegExp(`^${headerRow}`);
-    assert.match(this.response.stdout, reg);
   },
 );
 

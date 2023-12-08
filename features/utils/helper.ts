@@ -28,7 +28,6 @@ export const execCliKintoneSync = (
   );
 
   const response = spawnSync(getCliKintoneBinary(), cleanedArgs, {
-    encoding: "utf-8",
     env: options?.env ?? {},
     cwd: options?.cwd ?? process.cwd(),
   });
@@ -152,6 +151,7 @@ export const getRecordNumbers = (
 
   const regex = /([a-zA-Z]+\d*)-(\d+)/g;
   const recordNumbers = response.stdout
+    .toString()
     .replace(regex, (match, appCode, number) => number)
     .replace(/"/g, "")
     .split("\n");

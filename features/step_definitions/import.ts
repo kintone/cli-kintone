@@ -54,7 +54,7 @@ Then(
       const values = record
         .map((field: string) => (field ? `"${field}"` : ""))
         .join(",");
-      assert.match(this.response.stdout, new RegExp(`${values}`));
+      assert.match(this.response.stdout.toString(), new RegExp(`${values}`));
     });
   },
 );
@@ -93,7 +93,7 @@ Then(
           return `"${field}"`;
         })
         .join(",");
-      assert.match(this.response.stdout, new RegExp(`${values}`));
+      assert.match(this.response.stdout.toString(), new RegExp(`${values}`));
     });
   },
 );

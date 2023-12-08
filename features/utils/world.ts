@@ -22,7 +22,7 @@ export class OurWorld extends World {
   public replacements: Replacements = {};
   private _workingDir?: string;
   private _credentials?: Credentials;
-  private _response?: SpawnSyncReturns<string>;
+  private _response?: SpawnSyncReturns<Buffer>;
 
   public get response() {
     if (this._response === undefined) {

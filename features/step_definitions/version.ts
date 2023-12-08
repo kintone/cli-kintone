@@ -5,6 +5,6 @@ Then(
   "I should get the version formatted in {string}",
   function (versionFormat: string) {
     const reg = new RegExp(versionFormat);
-    assert.match(this.response.stdout, reg);
+    assert.match(this.response.stdout.toString(), reg);
   },
 );

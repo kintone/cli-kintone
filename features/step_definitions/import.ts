@@ -71,7 +71,6 @@ Then(
       .join(",");
     const command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${filteredFields}`;
     this.execCliKintoneSync(command);
-    console.log(command);
     if (this.response.status !== 0) {
       throw new Error(
         `Getting records failed. Error: \n${this.response.stderr}`,
@@ -80,7 +79,6 @@ Then(
 
     const records = table.raw();
     records.shift();
-    console.log("records", records);
     records.forEach((record: string[]) => {
       const values = record
         .map((field: string) => {

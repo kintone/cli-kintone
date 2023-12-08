@@ -228,7 +228,6 @@ Then(
       command += ` --guest-space-id ${appCredential.guestSpaceId}`;
     }
     this.execCliKintoneSync(command);
-    console.log(command);
     if (this.response.status !== 0) {
       throw new Error(
         `Getting records failed. Error: \n${this.response.stderr}`,

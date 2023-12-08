@@ -661,6 +661,7 @@ Feature: cli-kintone import command
     And Load app token of the app "app_for_import_table" with exact permissions "add" as env var: "API_TOKEN"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --file-path CliKintoneTest-75.csv"
     Then I should get the exit code is zero
+    And The app "app_for_import_table" with table field should have records as below:
       | * | Text_0 | Number_0 | Table | (Table.Text) | (Table.Number) |
       | * | Alice  | 10       | \d+   | Alice_1      | 100            |
       |   | Alice  | 10       | \d+   | Alice_2      | 200            |

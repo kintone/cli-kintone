@@ -2,6 +2,7 @@ import { spawnSync } from "child_process";
 import path from "path";
 import fs from "fs/promises";
 import iconv from "iconv-lite";
+import { QueryBuilder } from "./queryBuilder";
 
 export const SUPPORTED_ENCODING = <const>["utf8", "sjis"];
 
@@ -142,7 +143,14 @@ export const getRecordNumbers = (
   options: { fieldCode?: string } = {},
 ): string[] => {
   const recordNumberFieldCode = options.fieldCode ?? "Record_number";
-  const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${recordNumberFieldCode}`;
+  const command = QueryBuilder.record()
+    .export({
+      baseUrl: "$$TEST_KINTONE_BASE_URL",
+      app: appId,
+      apiToken,
+      fields: [recordNumberFieldCode],
+    })
+    .getQuery();
 
   const response = execCliKintoneSync(command);
   if (response.status !== 0) {

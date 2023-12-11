@@ -48,6 +48,6 @@ export class QueryBuilder {
 
     return `${
       this.command
-    } ${this.subCommand.getSubCommand()} ${this.subCommand.getQuery()}`;
+    } ${this.subCommand.getSubCommandName()} ${this.subCommand.getQuery()}`;
   }
 }

@@ -46,6 +46,14 @@ Given(
 );
 
 Given(
+  "Load the record numbers with field code {string} of the app {string} as variable: {string}",
+  function (fieldCode: string, appKey: string, destVar: string) {
+    const recordNumbers = this.getRecordNumbersByAppKey(appKey, fieldCode);
+    this.replacements = { [destVar]: recordNumbers, ...this.replacements };
+  },
+);
+
+Given(
   "Load app token of the app {string} with exact permissions {string} as env var: {string}",
   function (appKey: string, permission: string, destEnvVar: string) {
     const permissions = permission

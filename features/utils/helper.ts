@@ -136,15 +136,23 @@ const _writeFile = async (
   return fs.writeFile(filePath, content);
 };
 
-export const getRecordNumbers = (appId: string, apiToken: string): string[] => {
-  const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields Record_number`;
+export const getRecordNumbers = (
+  appId: string,
+  apiToken: string,
+  options: { fieldCode?: string } = {},
+): string[] => {
+  const recordNumberFieldCode = options.fieldCode ?? "Record_number";
+  const command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${recordNumberFieldCode}`;
+
   const response = execCliKintoneSync(command);
   if (response.status !== 0) {
     throw new Error(`Getting records failed. Error: \n${response.stderr}`);
   }
 
+  const regex = /([a-zA-Z]+\d*)-(\d+)/g;
   const recordNumbers = response.stdout
     .toString()
+    .replace(regex, (match, appCode, number) => number)
     .replace(/"/g, "")
     .split("\n");
   recordNumbers.shift();

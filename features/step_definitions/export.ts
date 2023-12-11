@@ -2,6 +2,7 @@ import * as assert from "assert";
 import { Given, Then } from "../utils/world";
 import fs from "fs";
 import path from "path";
+import iconv from "iconv-lite";
 
 Given("I have a directory {string}", function (directory: string) {
   fs.mkdirSync(path.join(this.workingDir, directory));
@@ -52,7 +53,7 @@ Then(
     });
     const reg = new RegExp(matchStr);
     assert.match(
-      this.response.stdout,
+      this.response.stdout.toString(),
       reg,
       `The output message does not match the data in the order.\nExpected: \n${JSON.stringify(
         records,
@@ -79,7 +80,21 @@ Then(
           return `"${field}"`;
         })
         .join(",");
-      assert.match(this.response.stdout, new RegExp(`${values}`));
+      assert.match(this.response.stdout.toString(), new RegExp(`${values}`));
+    });
+  },
+);
+
+Then(
+  "The output message with {string} encoded should match with the data below:",
+  async function (encoding, table) {
+    const decodedOutputMsg = iconv.decode(this.response.stdout, encoding);
+    const records = this.replacePlaceholdersInRawDataTables(table.raw());
+    records.forEach((record: string[]) => {
+      const values = record
+        .map((field: string) => (field ? `"${field}"` : ""))
+        .join(",");
+      assert.match(decodedOutputMsg, new RegExp(`${values}`));
     });
   },
 );

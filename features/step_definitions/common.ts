@@ -214,6 +214,10 @@ Then(
   "The app {string} should have {int} records",
   function (appKey, numberOfRecords: number) {
     const recordNumbers = this.getRecordNumbersByAppKey(appKey);
-    assert.equal(recordNumbers.length, numberOfRecords);
+    assert.equal(
+      recordNumbers.length,
+      numberOfRecords,
+      "The number of records does not match",
+    );
   },
 );

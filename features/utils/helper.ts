@@ -1,4 +1,4 @@
-import { spawnSync } from "child_process";
+import { spawn, spawnSync } from "child_process";
 import path from "path";
 import fs from "fs/promises";
 import iconv from "iconv-lite";
@@ -11,15 +11,46 @@ export type ReplacementValue = string | string[] | number | number[] | boolean;
 
 export type Replacements = { [key: string]: ReplacementValue };
 
-export type ExecOptions = {
-  env?: { [key: string]: string };
-  cwd?: string;
-  shell?: boolean | string;
-  interactiveCommand?: string;
+export const execCliKintoneSync = (
+  args: string,
+  options?: {
+    env?: { [key: string]: string };
+    cwd?: string;
+  },
+) => {
+  const response = spawnSync(
+    getCliKintoneBinary(),
+    parseArgs(args, options?.env),
+    {
+      env: options?.env ?? {},
+      cwd: options?.cwd ?? process.cwd(),
+    },
+  );
+  if (response.error) {
+    throw response.error;
+  }
+  return response;
 };
 
-export const execCliKintoneSync = (args: string, options?: ExecOptions) => {
-  const replacedArgs = replaceTokenWithEnvVars(args, options?.env).match(
+export const execCliKintone = (
+  args: string,
+  options: {
+    env?: { [key: string]: string };
+    cwd?: string;
+  },
+) => {
+  return spawn(getCliKintoneBinary(), parseArgs(args, options?.env), {
+    stdio: ["pipe", "pipe", "pipe"],
+    env: options?.env ?? {},
+    cwd: options?.cwd ?? process.cwd(),
+  });
+};
+
+const parseArgs = (
+  args: string,
+  envVars: { [key: string]: string } | undefined,
+) => {
+  const replacedArgs = replaceTokenWithEnvVars(args, envVars).match(
     /(?:[^\s'"]+|"[^"]*"|'[^']*')+/g,
   );
 
@@ -27,23 +58,7 @@ export const execCliKintoneSync = (args: string, options?: ExecOptions) => {
     throw new Error("Failed to parse command arguments.");
   }
 
-  const cleanedArgs = replacedArgs.map((arg) =>
-    arg.replace(/^['"]|['"]$/g, ""),
-  );
-
-  let command = getCliKintoneBinary();
-  if (options?.interactiveCommand && options?.interactiveCommand.length > 0) {
-    command = `${options.interactiveCommand} | ${command}`;
-  }
-  const response = spawnSync(command, cleanedArgs, {
-    env: options?.env ?? {},
-    cwd: options?.cwd ?? process.cwd(),
-    shell: options?.shell ?? false,
-  });
-  if (response.error) {
-    throw response.error;
-  }
-  return response;
+  return replacedArgs.map((arg) => arg.replace(/^['"]|['"]$/g, ""));
 };
 
 export const getCliKintoneBinary = (): string => {
@@ -196,4 +211,26 @@ export const replacePlaceholders = (
       return replacementValue.toString();
     },
   );
+};
+
+export const waitUntil = (
+  condition: () => any,
+  interval = 1000,
+  timeout = 30000,
+) => {
+  const startTime = Date.now();
+
+  return new Promise<void>((resolve, reject) => {
+    const checkCondition = () => {
+      if (condition()) {
+        resolve();
+      } else if (Date.now() - startTime > timeout) {
+        reject(new Error("Timeout waiting for condition to be met"));
+      } else {
+        setTimeout(checkCondition, interval);
+      }
+    };
+
+    checkCondition();
+  });
 };

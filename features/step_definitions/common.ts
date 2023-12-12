@@ -176,7 +176,7 @@ When("I run the command with args {string}", function (args: string) {
 When(
   "I run the command with args {string} then I type {string} and press Enter",
   function (args: string, input: string) {
-    const interactiveCommand = `echo "${input}"`;
+    const interactiveCommand = `echo ${input}`;
     this.execCliKintoneWithInteractiveCommand(args, {
       interactiveCommand: interactiveCommand,
     });

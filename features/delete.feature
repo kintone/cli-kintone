@@ -273,6 +273,73 @@ Feature: cli-kintone delete command
     Then I should get the exit code is zero
     And The output error message should match with the pattern: "WARN: The specified app does not have any records."
 
+  Scenario: CliKintoneTest-167 Should not delete the records when specifying "N" in the confirmation prompt.
+    Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And The app "app_for_delete" has no records
+    And The app "app_for_delete" has some records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+    And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN" then I type "N" and press Enter
+    Then I should get the exit code is zero
+    And The app "app_for_delete" should have 3 records
+    And The app "app_for_delete" should have records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+
+  Scenario: CliKintoneTest-168 Should delete the records when specifying "Y" in the confirmation prompt.
+    Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And The app "app_for_delete" has no records
+    And The app "app_for_delete" has some records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+    And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN" then I type "Y" and press Enter
+    Then I should get the exit code is zero
+    And The app "app_for_delete" should have no records
+
+  Scenario: CliKintoneTest-169 Should not delete the records when specifying other than Y, n in the confirmation prompt.
+    Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And The app "app_for_delete" has no records
+    And The app "app_for_delete" has some records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+    And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN" then I type "abc" and press Enter
+    Then I should get the exit code is zero
+    And The app "app_for_delete" should have 3 records
+    And The app "app_for_delete" should have records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+
+  Scenario: CliKintoneTest-170 Should not delete the records when pressing Enter (without a specific answer) in the confirmation prompt.
+    Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And The app "app_for_delete" has no records
+    And The app "app_for_delete" has some records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+    And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN" then press Enter
+    Then I should get the exit code is zero
+    And The app "app_for_delete" should have 3 records
+    And The app "app_for_delete" should have records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+
   Scenario: CliKintoneTest-171 Should return the error message when the record number field code does not exist in the CSV file.
     Given The CSV file "CliKintoneTest-171.csv" with content as below:
       | Text  | Number |

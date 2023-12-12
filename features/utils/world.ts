@@ -2,7 +2,7 @@ import type { SpawnSyncReturns } from "child_process";
 import type { Credentials, AppCredential, Permission } from "./credentials";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
-import type { SupportedEncoding, Replacements } from "./helper";
+import type { SupportedEncoding, Replacements, ExecOptions } from "./helper";
 import {
   generateCsvFile,
   execCliKintoneSync,
@@ -70,6 +70,23 @@ export class OurWorld extends World {
         env: this.env,
         cwd: this.workingDir,
       },
+    );
+  }
+
+  public execCliKintoneWithInteractiveCommand(
+    args: string,
+    options: { interactiveCommand: string },
+  ) {
+    const execOptions: ExecOptions = {
+      env: this.env,
+      cwd: this.workingDir,
+      interactiveCommand: options.interactiveCommand,
+      shell: true,
+    };
+
+    this.response = execCliKintoneSync(
+      replacePlaceholders(args, this.replacements),
+      execOptions,
     );
   }
 

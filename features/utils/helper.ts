@@ -11,10 +11,14 @@ export type ReplacementValue = string | string[] | number | number[] | boolean;
 
 export type Replacements = { [key: string]: ReplacementValue };
 
-export const execCliKintoneSync = (
-  args: string,
-  options?: { env?: { [key: string]: string }; cwd?: string },
-) => {
+export type ExecOptions = {
+  env?: { [key: string]: string };
+  cwd?: string;
+  shell?: boolean | string;
+  interactiveCommand?: string;
+};
+
+export const execCliKintoneSync = (args: string, options?: ExecOptions) => {
   const replacedArgs = replaceTokenWithEnvVars(args, options?.env).match(
     /(?:[^\s'"]+|"[^"]*"|'[^']*')+/g,
   );
@@ -27,9 +31,14 @@ export const execCliKintoneSync = (
     arg.replace(/^['"]|['"]$/g, ""),
   );
 
-  const response = spawnSync(getCliKintoneBinary(), cleanedArgs, {
+  let command = getCliKintoneBinary();
+  if (options?.interactiveCommand && options?.interactiveCommand.length > 0) {
+    command = `${options.interactiveCommand} | ${command}`;
+  }
+  const response = spawnSync(command, cleanedArgs, {
     env: options?.env ?? {},
     cwd: options?.cwd ?? process.cwd(),
+    shell: options?.shell ?? false,
   });
   if (response.error) {
     throw response.error;

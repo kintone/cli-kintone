@@ -98,11 +98,11 @@ Feature: cli-kintone delete command
   Scenario: CliKintoneTest-135 Should delete the specified records successfully by --file-path option.
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Lisa   | 20     |
-      | Jenny  | 30     |
-      | Rose   | 40     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Lisa  | 20     |
+      | Jenny | 30     |
+      | Rose  | 40     |
     And Load the record numbers of the app "app_for_delete" as variable: "RECORD_NUMBERS"
     And The CSV file "CliKintoneTest-135.csv" with content as below:
       | Record_number      |
@@ -144,11 +144,11 @@ Feature: cli-kintone delete command
   Scenario: CliKintoneTest-139 Should delete the records of the app in which the Record_number field code has been changed.
     Given The app "app_has_changed_record_number" has no records
     And The app "app_has_changed_record_number" has some records as below:
-      | Text   | Number |
-      | Alice  | 10     |
-      | Lisa   | 20     |
-      | Jenny  | 30     |
-      | Rose   | 40     |
+      | Text  | Number |
+      | Alice | 10     |
+      | Lisa  | 20     |
+      | Jenny | 30     |
+      | Rose  | 40     |
     And Load the record numbers with field code "Cybozu_record_number" of the app "app_has_changed_record_number" as variable: "RECORD_NUMBERS"
     And The CSV file "CliKintoneTest-139.csv" with content as below:
       | Cybozu_record_number |
@@ -208,7 +208,7 @@ Feature: cli-kintone delete command
       | Rose  | 40     |
     And Load the record numbers of the app "app_has_set_app_code" as variable: "RECORD_NUMBERS"
     And The CSV file "CliKintoneTest-142.csv" with content as below:
-      | Record_number            |
+      | Record_number      |
       | $RECORD_NUMBERS[0] |
       | $RECORD_NUMBERS[1] |
     And Load app ID of the app "app_has_set_app_code" as env var: "APP_ID"
@@ -264,6 +264,82 @@ Feature: cli-kintone delete command
     When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --guest-space-id 1"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed.."
+
+  Scenario: CliKintoneTest-151 Should delete the records successfully with an encoded utf8 CSV file, and --encoding option is utf8.
+    Given The app "app_for_delete_encoding" has no records
+    And The app "app_for_delete_encoding" has some records as below:
+      | 文字列__1行_ |
+      | Alice    |
+      | Lisa     |
+      | Jenny    |
+      | Rose     |
+    And Load the record numbers with field code "レコード番号" of the app "app_for_delete_encoding" as variable: "RECORD_NUMBERS"
+    And The CSV file "CliKintoneTest-151.csv" with "utf8" encoded content as below:
+      | レコード番号             |
+      | $RECORD_NUMBERS[0] |
+      | $RECORD_NUMBERS[1] |
+    And Load app ID of the app "app_for_delete_encoding" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete_encoding" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path CliKintoneTest-151.csv --encoding utf8"
+    Then I should get the exit code is zero
+    And The app "app_for_delete_encoding" with the record number field code "レコード番号" should have 2 records
+    And The app "app_for_delete_encoding" should have records as below:
+      | レコード番号             | 文字列__1行_ |
+      | $RECORD_NUMBERS[2] | Jenny    |
+      | $RECORD_NUMBERS[3] | Rose     |
+
+  Scenario: CliKintoneTest-152 Should delete the records successfully with an encoded sjis CSV file, and --encoding option is sjis.
+    Given The app "app_for_delete_encoding" has no records
+    And The app "app_for_delete_encoding" has some records as below:
+      | 文字列__1行_ |
+      | Alice    |
+      | Lisa     |
+      | Jenny    |
+      | Rose     |
+    And Load the record numbers with field code "レコード番号" of the app "app_for_delete_encoding" as variable: "RECORD_NUMBERS"
+    And The CSV file "CliKintoneTest-152.csv" with "sjis" encoded content as below:
+      | レコード番号             |
+      | $RECORD_NUMBERS[0] |
+      | $RECORD_NUMBERS[1] |
+    And Load app ID of the app "app_for_delete_encoding" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete_encoding" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path CliKintoneTest-152.csv --encoding sjis"
+    Then I should get the exit code is zero
+    And The app "app_for_delete_encoding" with the record number field code "レコード番号" should have 2 records
+    And The app "app_for_delete_encoding" should have records as below:
+      | レコード番号             | 文字列__1行_ |
+      | $RECORD_NUMBERS[2] | Jenny    |
+      | $RECORD_NUMBERS[3] | Rose     |
+
+  Scenario: CliKintoneTest-153 Should return the error message when specifying an encoded sjis CSV file, and --encoding option is utf8.
+    Given The CSV file "CliKintoneTest-153.csv" with "sjis" encoded content as below:
+      | レコード番号 |
+      | 1      |
+    And Load app ID of the app "app_for_delete_encoding" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete_encoding" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path CliKintoneTest-153.csv --encoding utf8"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: The specified encoding \(utf8\) might mismatch the actual encoding of the CSV file."
+
+  Scenario: CliKintoneTest-154 Should return the error message when specifying an encoded utf8 CSV file, and --encoding option is sjis.
+    Given The CSV file "CliKintoneTest-154.csv" with "utf8" encoded content as below:
+      | レコード番号 |
+      | 1      |
+    And Load app ID of the app "app_for_delete_encoding" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete_encoding" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path CliKintoneTest-154.csv --encoding sjis"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: The record number field code \(レコード番号\) is not found."
+
+  Scenario: CliKintoneTest-155 Should return the error message when specifying an unsupported encoding.
+    Given The CSV file "CliKintoneTest-155.csv" with "utf8" encoded content as below:
+      | レコード番号 |
+      | 1      |
+    And Load app ID of the app "app_for_delete_encoding" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete_encoding" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path CliKintoneTest-155.csv --encoding unsupported_encoding"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Argument: encoding, Given: \"unsupported_encoding\", Choices: \"utf8\", \"sjis\""
 
   Scenario: CliKintoneTest-166 Should return the warning message when the specified app does not have any records.
     Given The app "app_for_delete" has no records

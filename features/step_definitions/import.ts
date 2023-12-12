@@ -20,7 +20,8 @@ Given(
       throw new Error(`The encoding ${encoding} is not supported`);
     }
 
-    await this.generateCsvFile(table.raw(), { filePath, encoding });
+    const csvObject = this.replacePlaceholdersInRawDataTables(table.raw());
+    await this.generateCsvFile(csvObject, { filePath, encoding });
   },
 );
 

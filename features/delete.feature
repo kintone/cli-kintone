@@ -88,6 +88,52 @@ Feature: cli-kintone delete command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
+  Scenario: CliKintoneTest-135 Should delete the specified records successfully by --file-path option.
+    Given The app "app_for_delete" has no records
+    And The app "app_for_delete" has some records as below:
+      | Text   | Number |
+      | Alice  | 10     |
+      | Lisa   | 20     |
+      | Jenny  | 30     |
+      | Rose   | 40     |
+    And Load the record numbers of the app "app_for_delete" as variable: "RECORD_NUMBERS"
+    And The CSV file "CliKintoneTest-135.csv" with content as below:
+      | Record_number      |
+      | $RECORD_NUMBERS[0] |
+      | $RECORD_NUMBERS[1] |
+    And Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path CliKintoneTest-135.csv"
+    Then I should get the exit code is zero
+    And The app "app_for_delete" should have 2 records
+    And The app "app_for_delete" should have records as below:
+      | Record_number      | Text  | Number |
+      | $RECORD_NUMBERS[2] | Jenny | 30     |
+      | $RECORD_NUMBERS[3] | Rose  | 40     |
+
+  Scenario: CliKintoneTest-136 Should return the error message when deleting records with a lacking value of --file-path option.
+    And Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "Not enough arguments following: file-path"
+
+  Scenario: CliKintoneTest-137 Should return the error message when deleting records with a non-existent file.
+    And Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path non_existent_file.csv"
+    Then I should get the exit code is non-zero
+    # Specifying (.*) to ignore the absolute path of the file on Windows
+    And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non_existent_file.csv'"
+
+  Scenario: CliKintoneTest-138 Should return the error message when deleting records with an unsupported file.
+    Given I have a file "unsupported_delete_file.txt" with content: "Record_number"
+    And Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path unsupported_delete_file.txt"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: Unexpected file type: txt is unacceptable."
+
   Scenario: CliKintoneTest-139 Should delete the records of the app in which the Record_number field code has been changed.
     Given The app "app_has_changed_record_number" has no records
     And The app "app_has_changed_record_number" has some records as below:

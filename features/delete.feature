@@ -88,6 +88,13 @@ Feature: cli-kintone delete command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
+  Scenario: CliKintoneTest-134 Should return the error message when authorizing with username/password.
+    Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And Load username and password of the app "app_for_delete" with exact permissions "view,delete" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --username $USERNAME --password $PASSWORD --yes"
+    Then I should get the exit code is non-zero
+    And The output error message should match with the pattern: "ERROR: The delete command only supports API token authentication."
+
   Scenario: CliKintoneTest-139 Should delete the records of the app in which the Record_number field code has been changed.
     Given The app "app_has_changed_record_number" has no records
     And The app "app_has_changed_record_number" has some records as below:
@@ -177,6 +184,27 @@ Feature: cli-kintone delete command
     When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path CliKintoneTest-143.csv"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Invalid record number. ID: NonExistentAppCode-1"
+
+  Scenario: CliKintoneTest-144 Should delete the records without the delete confirmation message when specifying the -y option.
+    Given The app "app_for_delete" has no records
+    And The app "app_for_delete" has some records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+    And Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN -y"
+    Then I should get the exit code is zero
+    And The app "app_for_delete" should have no records
+
+  Scenario: CliKintoneTest-166 Should return the warning message when the specified app does not have any records.
+    Given The app "app_for_delete" has no records
+    And Load app ID of the app "app_for_delete" as env var: "APP_ID"
+    And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
+    When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN --yes"
+    Then I should get the exit code is zero
+    And The output error message should match with the pattern: "WARN: The specified app does not have any records."
 
   Scenario: CliKintoneTest-171 Should return the error message when the record number field code does not exist in the CSV file.
     Given The CSV file "CliKintoneTest-171.csv" with content as below:

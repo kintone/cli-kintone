@@ -171,6 +171,7 @@ export class OurWorld extends World {
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
     return getRecordNumbers(credential.appId, apiToken, {
       fieldCode,
+      guestSpaceId: credential.guestSpaceId,
     });
   }
 

@@ -44,7 +44,7 @@ Feature: common test cases
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Missing required argument: app"
 
-  Scenario: CliKintoneTest-11 Should return the error message when lacking of the value of --app option
+  Scenario: CliKintoneTest-11 Should return the error message when lacking the value of --app option
     When I run the command with args "record export --base-url http://example.com --app"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Not enough arguments following: app"

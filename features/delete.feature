@@ -123,6 +123,7 @@ Feature: cli-kintone delete command
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
     When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path non_existent_file.csv"
     Then I should get the exit code is non-zero
+    # Specifying (.*) to ignore the absolute path of the file on Windows
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non_existent_file.csv'"
 
   Scenario: CliKintoneTest-138 Should return the error message when deleting records with an unsupported file.

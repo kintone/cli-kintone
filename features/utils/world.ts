@@ -93,12 +93,7 @@ export class OurWorld extends World {
     );
   }
 
-  private resetResponse() {
-    this._response = undefined;
-  }
-
   public execCliKintone(args: string) {
-    this.resetResponse();
     this.childProcess = execCliKintone(
       replacePlaceholders(args, this.replacements),
       {

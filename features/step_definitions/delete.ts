@@ -1,6 +1,5 @@
 import * as assert from "assert";
 import { Then, When } from "../utils/world";
-import { waitUntil } from "../utils/helper";
 
 Then("The app {string} should have no records", function (appKey) {
   const recordNumbers = this.getRecordNumbersByAppKey(appKey);
@@ -23,8 +22,12 @@ When("I type {string}", function (userInput) {
   this.childProcess.stdin.write(userInput);
 });
 
-When("I press Enter", async function () {
-  this.childProcess.stdin.write("\n");
-  this.childProcess.stdin.end();
-  await waitUntil(() => this.childProcess.exitCode !== null);
+When("I press Enter", function () {
+  return new Promise<void>((resolve) => {
+    this.childProcess.stdin.write("\n");
+    this.childProcess.stdin.end();
+    this.childProcess.on("close", () => {
+      resolve();
+    });
+  });
 });

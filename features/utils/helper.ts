@@ -212,25 +212,3 @@ export const replacePlaceholders = (
     },
   );
 };
-
-export const waitUntil = (
-  condition: () => any,
-  interval = 1000,
-  timeout = 30000,
-) => {
-  const startTime = Date.now();
-
-  return new Promise<void>((resolve, reject) => {
-    const checkCondition = () => {
-      if (condition()) {
-        resolve();
-      } else if (Date.now() - startTime > timeout) {
-        reject(new Error("Timeout waiting for condition to be met"));
-      } else {
-        setTimeout(checkCondition, interval);
-      }
-    };
-
-    checkCondition();
-  });
-};

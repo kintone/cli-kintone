@@ -113,7 +113,7 @@ export class OurWorld extends World {
       stderr = data;
     });
 
-    this.childProcess.on("close", (code: number) => {
+    this.childProcess.on("exit", (code: number) => {
       this.response = {
         stdout: stdout ?? Buffer.from(""),
         stderr: stderr ?? Buffer.from(""),

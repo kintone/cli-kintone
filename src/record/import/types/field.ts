@@ -86,3 +86,8 @@ export type OneOf =
   | Status
   | StatusAssignee
   | Subtable;
+
+export type SubtableRow = {
+  id?: string;
+  value: { [p: string]: InSubtable | string };
+};

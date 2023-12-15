@@ -1,7 +1,9 @@
 import type { KintoneRecordForParameter } from "../../../../kintone/types";
 import type { LocalRecord } from "../../types/record";
 import type * as Fields from "../../types/field";
-import type { FieldSchema, RecordSchema } from "../../types/schema";
+import type { FieldSchema, InSubtable, RecordSchema } from "../../types/schema";
+import type { SubtableRow } from "../../types/field";
+import { Subtable } from "../../types/field";
 
 export const recordConverter: (
   record: LocalRecord,
@@ -28,10 +30,39 @@ export const recordConverter: (
         );
       }
     }
+    if (fieldSchema.type === "SUBTABLE") {
+      // @ts-ignore
+      record.data[fieldSchema.code].value = setEmptyValueToTableField(
+        record.data[fieldSchema.code].value as Fields.SubtableRow[],
+        fieldSchema,
+      );
+    }
+
     newRecord[fieldSchema.code] = await task(
       record.data[fieldSchema.code],
       fieldSchema,
     );
   }
   return newRecord;
+};
+
+const setEmptyValueToTableField = (
+  rowsInTable: Fields.SubtableRow[],
+  fieldSchema: FieldSchema,
+) => {
+  rowsInTable.forEach(function (
+    element: Fields.SubtableRow,
+    index: number,
+    array: Fields.SubtableRow[],
+  ) {
+    if ("fields" in fieldSchema) {
+      fieldSchema.fields.forEach((field: InSubtable) => {
+        if (element.value[field.code as any] === undefined) {
+          array[index].value[field.code] = "";
+        }
+      });
+    }
+  });
+
+  return rowsInTable;
 };

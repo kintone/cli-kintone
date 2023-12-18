@@ -173,6 +173,13 @@ When("I run the command with args {string}", function (args: string) {
   this.execCliKintoneSync(args);
 });
 
+When(
+  "I run the command with a prompt with args {string}",
+  function (args: string) {
+    this.execCliKintone(args);
+  },
+);
+
 When("I type {string}", function (userInput) {
   this.childProcess.stdin.write(userInput);
 });

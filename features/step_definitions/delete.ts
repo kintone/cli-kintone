@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { Then, When } from "../utils/world";
+import { Then } from "../utils/world";
 
 Then("The app {string} should have no records", function (appKey) {
   const recordNumbers = this.getRecordNumbersByAppKey(appKey);
@@ -13,7 +13,3 @@ Then(
     assert.equal(recordNumbers.length, numberOfRecords);
   },
 );
-
-When("I run the delete command with args {string}", function (args: string) {
-  this.execCliKintone(args);
-});

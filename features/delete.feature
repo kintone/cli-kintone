@@ -358,7 +358,7 @@ Feature: cli-kintone delete command
       | Bob   | 20     |
       | Jenny | 30     |
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
-    When I run the delete command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN"
+    When I run the command with a prompt with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN"
     And I type "N"
     And I press Enter
     Then I should get the exit code is zero
@@ -378,7 +378,7 @@ Feature: cli-kintone delete command
       | Bob   | 20     |
       | Jenny | 30     |
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
-    When I run the delete command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN"
+    When I run the command with a prompt with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN"
     And I type "Y"
     And I press Enter
     Then I should get the exit code is zero
@@ -393,7 +393,7 @@ Feature: cli-kintone delete command
       | Bob   | 20     |
       | Jenny | 30     |
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
-    When I run the delete command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN"
+    When I run the command with a prompt with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN"
     And I type "abc"
     And I press Enter
     Then I should get the exit code is zero
@@ -413,7 +413,7 @@ Feature: cli-kintone delete command
       | Bob   | 20     |
       | Jenny | 30     |
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
-    When I run the delete command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN"
+    When I run the command with a prompt with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN"
     And I press Enter
     Then I should get the exit code is zero
     And The app "app_for_delete" should have 3 records

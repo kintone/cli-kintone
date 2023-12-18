@@ -17,17 +17,3 @@ Then(
 When("I run the delete command with args {string}", function (args: string) {
   this.execCliKintone(args);
 });
-
-When("I type {string}", function (userInput) {
-  this.childProcess.stdin.write(userInput);
-});
-
-When("I press Enter", function () {
-  return new Promise<void>((resolve) => {
-    this.childProcess.stdin.write("\n");
-    this.childProcess.stdin.end();
-    this.childProcess.on("close", () => {
-      resolve();
-    });
-  });
-});

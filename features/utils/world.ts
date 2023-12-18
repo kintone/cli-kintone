@@ -31,7 +31,7 @@ export class OurWorld extends World {
   private _childProcess?: ChildProcessByStdio<Writable, Readable, Readable>;
   private _workingDir?: string;
   private _credentials?: Credentials;
-  private _response?: SpawnSyncReturns<Buffer> | Response;
+  private _response?: Response;
 
   public get childProcess() {
     if (this._childProcess === undefined) {
@@ -84,13 +84,19 @@ export class OurWorld extends World {
   }
 
   public execCliKintoneSync(args: string) {
-    this.response = execCliKintoneSync(
+    const res: SpawnSyncReturns<Buffer> = execCliKintoneSync(
       replacePlaceholders(args, this.replacements),
       {
         env: this.env,
         cwd: this.workingDir,
       },
     );
+
+    this.response = {
+      stdout: res.stdout ?? Buffer.from(""),
+      stderr: res.stderr ?? Buffer.from(""),
+      status: res.status,
+    };
   }
 
   public execCliKintone(args: string) {

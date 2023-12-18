@@ -173,6 +173,20 @@ When("I run the command with args {string}", function (args: string) {
   this.execCliKintoneSync(args);
 });
 
+When("I type {string}", function (userInput) {
+  this.childProcess.stdin.write(userInput);
+});
+
+When("I press Enter", function () {
+  return new Promise<void>((resolve) => {
+    this.childProcess.stdin.write("\n");
+    this.childProcess.stdin.end();
+    this.childProcess.on("close", () => {
+      resolve();
+    });
+  });
+});
+
 Then("I should get the exit code is non-zero", function () {
   assert.notEqual(this.response.status, 0, this.response.stderr.toString());
 });

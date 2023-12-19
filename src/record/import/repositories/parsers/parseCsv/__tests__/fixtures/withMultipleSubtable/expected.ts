@@ -67,10 +67,34 @@ export const expected: LocalRecord[] = [
     data: {
       text: { value: "sample1" },
       subTable: {
-        value: [{ id: "102", value: {} }],
+        value: [
+          {
+            id: "102",
+            value: {
+              numberInSubtable: {
+                value: "",
+              },
+              textInSubtable: {
+                value: "",
+              },
+            },
+          },
+        ],
       },
       subTable2: {
-        value: [{ id: "202", value: {} }],
+        value: [
+          {
+            id: "202",
+            value: {
+              numberInSubtable2: {
+                value: "",
+              },
+              textInSubtable2: {
+                value: "",
+              },
+            },
+          },
+        ],
       },
     },
     metadata: {
@@ -85,6 +109,9 @@ export const expected: LocalRecord[] = [
           {
             id: "",
             value: {
+              numberInSubtable: {
+                value: "",
+              },
               textInSubtable: {
                 value: "carol",
               },
@@ -99,6 +126,9 @@ export const expected: LocalRecord[] = [
             value: {
               numberInSubtable2: {
                 value: "30",
+              },
+              textInSubtable2: {
+                value: "",
               },
             },
           },

@@ -1,7 +1,7 @@
 import type { KintoneRecordForParameter } from "../../../../kintone/types";
 import type { LocalRecord } from "../../types/record";
 import type * as Fields from "../../types/field";
-import type { FieldSchema, InSubtable, RecordSchema } from "../../types/schema";
+import type { FieldSchema, RecordSchema } from "../../types/schema";
 
 export const recordConverter: (
   record: LocalRecord,
@@ -28,32 +28,10 @@ export const recordConverter: (
         );
       }
     }
-
     newRecord[fieldSchema.code] = await task(
       record.data[fieldSchema.code],
       fieldSchema,
     );
   }
   return newRecord;
-};
-
-const setEmptyValueToTableField = (
-  rowsInTable: Fields.SubtableRow[],
-  fieldSchema: FieldSchema,
-) => {
-  rowsInTable.forEach(function (
-    element: Fields.SubtableRow,
-    index: number,
-    array: Fields.SubtableRow[],
-  ) {
-    if ("fields" in fieldSchema) {
-      fieldSchema.fields.forEach((field: InSubtable) => {
-        if (element.value[field.code as any] === undefined) {
-          array[index].value[field.code] = "";
-        }
-      });
-    }
-  });
-
-  return rowsInTable;
 };

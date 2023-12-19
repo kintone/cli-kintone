@@ -1,4 +1,4 @@
-import { spawnSync } from "child_process";
+import { spawn, spawnSync } from "child_process";
 import path from "path";
 import fs from "fs/promises";
 import iconv from "iconv-lite";
@@ -13,9 +13,44 @@ export type Replacements = { [key: string]: ReplacementValue };
 
 export const execCliKintoneSync = (
   args: string,
-  options?: { env?: { [key: string]: string }; cwd?: string },
+  options?: {
+    env?: { [key: string]: string };
+    cwd?: string;
+  },
 ) => {
-  const replacedArgs = replaceTokenWithEnvVars(args, options?.env).match(
+  const response = spawnSync(
+    getCliKintoneBinary(),
+    parseArgs(args, options?.env),
+    {
+      env: options?.env ?? {},
+      cwd: options?.cwd ?? process.cwd(),
+    },
+  );
+  if (response.error) {
+    throw response.error;
+  }
+  return response;
+};
+
+export const execCliKintone = (
+  args: string,
+  options: {
+    env?: { [key: string]: string };
+    cwd?: string;
+  },
+) => {
+  return spawn(getCliKintoneBinary(), parseArgs(args, options?.env), {
+    stdio: ["pipe", "pipe", "pipe"],
+    env: options?.env ?? {},
+    cwd: options?.cwd ?? process.cwd(),
+  });
+};
+
+const parseArgs = (
+  args: string,
+  envVars: { [key: string]: string } | undefined,
+) => {
+  const replacedArgs = replaceTokenWithEnvVars(args, envVars).match(
     /(?:[^\s'"]+|"[^"]*"|'[^']*')+/g,
   );
 
@@ -23,18 +58,7 @@ export const execCliKintoneSync = (
     throw new Error("Failed to parse command arguments.");
   }
 
-  const cleanedArgs = replacedArgs.map((arg) =>
-    arg.replace(/^['"]|['"]$/g, ""),
-  );
-
-  const response = spawnSync(getCliKintoneBinary(), cleanedArgs, {
-    env: options?.env ?? {},
-    cwd: options?.cwd ?? process.cwd(),
-  });
-  if (response.error) {
-    throw response.error;
-  }
-  return response;
+  return replacedArgs.map((arg) => arg.replace(/^['"]|['"]$/g, ""));
 };
 
 export const getCliKintoneBinary = (): string => {

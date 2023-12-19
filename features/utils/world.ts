@@ -1,4 +1,4 @@
-import type { SpawnSyncReturns } from "child_process";
+import type { SpawnSyncReturns, ChildProcessByStdio } from "child_process";
 import type { Credentials, AppCredential, Permission } from "./credentials";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
@@ -6,6 +6,7 @@ import type { SupportedEncoding, Replacements } from "./helper";
 import {
   generateCsvFile,
   execCliKintoneSync,
+  execCliKintone,
   generateFile,
   getRecordNumbers,
   replacePlaceholders,
@@ -16,13 +17,32 @@ import {
   getUserCredentialByUserKey,
   getUserCredentialByAppAndUserPermissions,
 } from "./credentials";
+import type { Writable, Readable } from "node:stream";
+
+type Response = {
+  stdout: Buffer;
+  stderr: Buffer;
+  status: number | null;
+};
 
 export class OurWorld extends World {
   public env: { [key: string]: string } = {};
   public replacements: Replacements = {};
+  private _childProcess?: ChildProcessByStdio<Writable, Readable, Readable>;
   private _workingDir?: string;
   private _credentials?: Credentials;
-  private _response?: SpawnSyncReturns<Buffer>;
+  private _response?: Response;
+
+  public get childProcess() {
+    if (this._childProcess === undefined) {
+      throw new Error("No child process found. Please run the command first.");
+    }
+    return this._childProcess;
+  }
+
+  public set childProcess(value) {
+    this._childProcess = value;
+  }
 
   public get response() {
     if (this._response === undefined) {
@@ -64,13 +84,52 @@ export class OurWorld extends World {
   }
 
   public execCliKintoneSync(args: string) {
-    this.response = execCliKintoneSync(
+    const res: SpawnSyncReturns<Buffer> = execCliKintoneSync(
       replacePlaceholders(args, this.replacements),
       {
         env: this.env,
         cwd: this.workingDir,
       },
     );
+
+    this.response = {
+      stdout: res.stdout ?? Buffer.from(""),
+      stderr: res.stderr ?? Buffer.from(""),
+      status: res.status,
+    };
+  }
+
+  public execCliKintone(args: string) {
+    this.childProcess = execCliKintone(
+      replacePlaceholders(args, this.replacements),
+      {
+        env: this.env,
+        cwd: this.workingDir,
+      },
+    );
+
+    let stdout: Buffer;
+    let stderr: Buffer;
+
+    this.childProcess.stdout.on("data", (data: Buffer) => {
+      stdout = data;
+    });
+
+    this.childProcess.stderr.on("data", (data: Buffer) => {
+      stderr = data;
+    });
+
+    this.childProcess.on("exit", (code: number) => {
+      this.response = {
+        stdout: stdout ?? Buffer.from(""),
+        stderr: stderr ?? Buffer.from(""),
+        status: code,
+      };
+    });
+
+    this.childProcess.on("error", (err) => {
+      throw new Error(`Error: ${err.message}`);
+    });
   }
 
   public async generateCsvFile(

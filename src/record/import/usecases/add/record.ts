@@ -28,13 +28,6 @@ export const recordConverter: (
         );
       }
     }
-    if (fieldSchema.type === "SUBTABLE") {
-      // @ts-ignore
-      record.data[fieldSchema.code].value = setEmptyValueToTableField(
-        record.data[fieldSchema.code].value as Fields.SubtableRow[],
-        fieldSchema,
-      );
-    }
 
     newRecord[fieldSchema.code] = await task(
       record.data[fieldSchema.code],

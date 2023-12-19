@@ -15,6 +15,7 @@ export const convertSubtableField = (
 ): Fields.Subtable => {
   const field: Fields.Subtable = { value: [] };
   for (const subtableRow of subtableRowReader(subtableField)) {
+    console.log("======subtableRow=====", subtableRow);
     field.value.push(convertSubtableRow(subtableRow));
   }
   return field;
@@ -95,9 +96,7 @@ function* fieldInSubtableReader({
   fields,
 }: SubtableRow): Generator<FieldInSubtable, void, undefined> {
   for (const fieldInSubtable of fields) {
-    if (
-      !(fieldInSubtable.code in row && row[fieldInSubtable.code].length > 0)
-    ) {
+    if (!(fieldInSubtable.code in row)) {
       continue;
     }
 

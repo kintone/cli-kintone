@@ -77,6 +77,15 @@ const subtableFieldProcessor = async (
   for (const row of subtableValue) {
     const fieldsInRow: KintoneRecordForParameter = {};
     for (const fieldInSubtableSchema of fieldSchema.fields) {
+      if (!row.value[fieldInSubtableSchema.code]) {
+        if (skipMissingFields) {
+          continue;
+        } else {
+          throw new Error(
+            `The specified field "${fieldInSubtableSchema.code}" does not exist on the CSV`,
+          );
+        }
+      }
       fieldsInRow[fieldInSubtableSchema.code] = await fieldProcessor(
         apiClient,
         row.value[fieldInSubtableSchema.code],

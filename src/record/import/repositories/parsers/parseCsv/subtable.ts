@@ -49,7 +49,7 @@ export function* subtableFieldReader(
   }
 }
 
-type SubtableRow = {
+export type SubtableRow = {
   id: string;
   row: CsvRow;
   fields: InSubtable[];
@@ -78,7 +78,7 @@ function* subtableRowReader(
   }
 }
 
-type FieldInSubtable = {
+export type FieldInSubtable = {
   code: string;
   value: string;
   type: InSubtable["type"];
@@ -90,14 +90,12 @@ const convertFieldInSubtable = (
 };
 
 // eslint-disable-next-line func-style
-function* fieldInSubtableReader({
+export function* fieldInSubtableReader({
   row,
   fields,
 }: SubtableRow): Generator<FieldInSubtable, void, undefined> {
   for (const fieldInSubtable of fields) {
-    if (
-      !(fieldInSubtable.code in row && row[fieldInSubtable.code].length > 0)
-    ) {
+    if (!(fieldInSubtable.code in row)) {
       continue;
     }
 

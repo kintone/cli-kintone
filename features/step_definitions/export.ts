@@ -3,6 +3,7 @@ import { Given, Then } from "../utils/world";
 import fs from "fs";
 import path from "path";
 import iconv from "iconv-lite";
+import { generateCsvRow } from "../utils/helper";
 
 Given("I have a directory {string}", function (directory: string) {
   fs.mkdirSync(path.join(this.workingDir, directory));
@@ -46,10 +47,8 @@ Then(
     const records = this.replacePlaceholdersInRawDataTables(table.raw());
     let matchStr = "";
     records.forEach((record: string[]) => {
-      const values = record
-        .map((field: string) => (field ? `"${field}"` : ""))
-        .join(",");
-      matchStr += `${values}(.*)\n`;
+      const csvRow = generateCsvRow(record);
+      matchStr += `${csvRow}(.*)\n`;
     });
     const reg = new RegExp(matchStr);
     assert.match(
@@ -67,20 +66,8 @@ Then(
   async function (table) {
     const records = this.replacePlaceholdersInRawDataTables(table.raw());
     records.forEach((record: string[]) => {
-      const values = record
-        .map((field: string) => {
-          if (!field) {
-            return "";
-          }
-
-          if (field === "*") {
-            return `\\${field}`;
-          }
-
-          return `"${field}"`;
-        })
-        .join(",");
-      assert.match(this.response.stdout.toString(), new RegExp(`${values}`));
+      const csvRow = generateCsvRow(record);
+      assert.match(this.response.stdout.toString(), new RegExp(`${csvRow}`));
     });
   },
 );
@@ -91,10 +78,8 @@ Then(
     const decodedOutputMsg = iconv.decode(this.response.stdout, encoding);
     const records = this.replacePlaceholdersInRawDataTables(table.raw());
     records.forEach((record: string[]) => {
-      const values = record
-        .map((field: string) => (field ? `"${field}"` : ""))
-        .join(",");
-      assert.match(decodedOutputMsg, new RegExp(`${values}`));
+      const csvRow = generateCsvRow(record);
+      assert.match(decodedOutputMsg, new RegExp(`${csvRow}`));
     });
   },
 );

@@ -2,7 +2,7 @@ import * as assert from "assert";
 import { Given, Then } from "../utils/world";
 import fs from "fs";
 import type { SupportedEncoding } from "../utils/helper";
-import { SUPPORTED_ENCODING } from "../utils/helper";
+import { SUPPORTED_ENCODING, generateCsvRow } from "../utils/helper";
 import path from "path";
 
 Given(
@@ -52,10 +52,8 @@ Then(
     const records = this.replacePlaceholdersInRawDataTables(table.raw());
     records.shift();
     records.forEach((record: string[]) => {
-      const values = record
-        .map((field: string) => (field ? `"${field}"` : ""))
-        .join(",");
-      assert.match(this.response.stdout.toString(), new RegExp(`${values}`));
+      const csvRow = generateCsvRow(record);
+      assert.match(this.response.stdout.toString(), new RegExp(`${csvRow}`));
     });
   },
 );
@@ -81,20 +79,8 @@ Then(
     const records = table.raw();
     records.shift();
     records.forEach((record: string[]) => {
-      const values = record
-        .map((field: string) => {
-          if (!field) {
-            return "";
-          }
-
-          if (field === "*") {
-            return `\\${field}`;
-          }
-
-          return `"${field}"`;
-        })
-        .join(",");
-      assert.match(this.response.stdout.toString(), new RegExp(`${values}`));
+      const csvRow = generateCsvRow(record);
+      assert.match(this.response.stdout.toString(), new RegExp(`${csvRow}`));
     });
   },
 );

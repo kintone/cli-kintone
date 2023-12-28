@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.7](https://github.com/kintone/cli-kintone/compare/v1.10.6...v1.10.7) (2023-12-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* The behavior for an empty string inside the Table field changed (#630 )
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^5.0.5 ([#632](https://github.com/kintone/cli-kintone/issues/632)) ([c2f43e5](https://github.com/kintone/cli-kintone/commit/c2f43e57c054040fbac5af29f62fe9093340ffc0))
+* update behaviour for an empty string inside Table field ([#630](https://github.com/kintone/cli-kintone/issues/630)) ([418ffdb](https://github.com/kintone/cli-kintone/commit/418ffdbb55f16be884237ab414e2c48ba97e6e29))
+
 ## [1.10.6](https://github.com/kintone/cli-kintone/compare/v1.10.5...v1.10.6) (2023-12-06)
 
 

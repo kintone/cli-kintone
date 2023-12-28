@@ -169,26 +169,28 @@ const generateErrorMessages = (errors: ErrorObject[]): string[] => {
   });
 };
 
-const loadFromKintone: () => Promise<Credentials> = async () => {
-  const kintoneBaseUrl = process.env.TEST_KINTONE_BASE_URL;
-  const kintoneAppCMAAppId =
-    process.env.TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID;
-  const kintoneAppCMAApiToken =
-    process.env.TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN;
-  const kintoneUserCMAAppId =
-    process.env.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_APP_ID;
-  const kintoneUserCMAApiToken =
-    process.env.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN;
-
-  if (
-    !kintoneBaseUrl ||
-    !kintoneAppCMAApiToken ||
-    !kintoneAppCMAAppId ||
-    !kintoneUserCMAAppId ||
-    !kintoneUserCMAApiToken
-  ) {
-    throw new Error("Missing env variables");
+const getEnvVar = (key: string): string => {
+  const value = process.env[key];
+  if (value === undefined) {
+    throw new Error(`Missing env variable: ${key}`);
   }
+  return value;
+};
+
+const loadFromKintone: () => Promise<Credentials> = async () => {
+  const kintoneBaseUrl = getEnvVar("TEST_KINTONE_BASE_URL");
+  const kintoneAppCMAAppId = getEnvVar(
+    "TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID",
+  );
+  const kintoneAppCMAApiToken = getEnvVar(
+    "TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN",
+  );
+  const kintoneUserCMAAppId = getEnvVar(
+    "TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_APP_ID",
+  );
+  const kintoneUserCMAApiToken = getEnvVar(
+    "TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN",
+  );
 
   const client = new KintoneRestAPIClient({
     baseUrl: kintoneBaseUrl,

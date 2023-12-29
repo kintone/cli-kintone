@@ -212,3 +212,19 @@ export const replacePlaceholders = (
     },
   );
 };
+
+export const generateCsvRow = (fields: string[]): string => {
+  return fields
+    .map((field: string) => {
+      if (!field) {
+        return "";
+      }
+
+      if (field === "*") {
+        return `\\${field}`;
+      }
+
+      return `"${field}"`;
+    })
+    .join(",");
+};

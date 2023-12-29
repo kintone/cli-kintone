@@ -2,6 +2,7 @@ import * as assert from "assert";
 import { Given, When, Then } from "../utils/world";
 import type { Permission } from "../utils/credentials";
 import { TOKEN_PERMISSIONS } from "../utils/credentials";
+import { generateCsvRow } from "../utils/helper";
 
 Given(
   "Load environment variable {string} as {string}",
@@ -223,10 +224,8 @@ Then(
   async function (table) {
     const records = this.replacePlaceholdersInRawDataTables(table.raw());
     records.forEach((record: string[]) => {
-      const values = record
-        .map((field: string) => (field ? `"${field}"` : ""))
-        .join(",");
-      assert.match(this.response.stdout.toString(), new RegExp(`${values}`));
+      const csvRow = generateCsvRow(record);
+      assert.match(this.response.stdout.toString(), new RegExp(`${csvRow}`));
     });
   },
 );

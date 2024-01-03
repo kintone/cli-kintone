@@ -50,22 +50,26 @@ async function* getAllRecordsRecursiveWithId(
 
   const { apiClient, condition, ...rest } = params;
   const conditionQuery = condition ? `(${condition}) and ` : "";
-  const query = `${conditionQuery}$id > ${id} order by $id asc limit ${GET_RECORDS_LIMIT}`;
-  const result = await apiClient.record.getRecords({ ...rest, query });
-  yield result.records;
 
-  if (result.records.length < GET_RECORDS_LIMIT) {
-    return;
+  let lastId = id;
+  while (true) {
+    const query = `${conditionQuery}$id > ${lastId} order by $id asc limit ${GET_RECORDS_LIMIT}`;
+    const result = await apiClient.record.getRecords({ ...rest, query });
+    yield result.records;
+
+    if (result.records.length < GET_RECORDS_LIMIT) {
+      break;
+    }
+
+    const lastRecord = result.records[result.records.length - 1];
+    if (lastRecord.$id.type === "__ID__") {
+      lastId = lastRecord.$id.value;
+    } else {
+      throw new Error(
+        "Missing `$id` in `getRecords` response. This error is likely caused by a bug in Kintone REST API Client. Please file an issue.",
+      );
+    }
   }
-  const lastRecord = result.records[result.records.length - 1];
-  if (lastRecord.$id.type === "__ID__") {
-    const lastId = lastRecord.$id.value;
-    yield* getAllRecordsRecursiveWithId(params, lastId);
-    return;
-  }
-  throw new Error(
-    "Missing `$id` in `getRecords` response. This error is likely caused by a bug in Kintone REST API Client. Please file an issue.",
-  );
 }
 
 // eslint-disable-next-line func-style
@@ -78,22 +82,15 @@ async function* getAllRecordsWithCursor(params: {
   const { apiClient, ...rest } = params;
   const { id } = await apiClient.record.createCursor(rest);
   try {
-    yield* getAllRecordsRecursiveByCursor({ apiClient, id });
+    while (true) {
+      const result = await apiClient.record.getRecordsByCursor({ id });
+      yield result.records;
+      if (!result.next) {
+        break;
+      }
+    }
   } catch (error) {
     await apiClient.record.deleteCursor({ id });
     throw error;
-  }
-}
-
-// eslint-disable-next-line func-style
-async function* getAllRecordsRecursiveByCursor(params: {
-  apiClient: KintoneRestAPIClient;
-  id: string;
-}): AsyncGenerator<KintoneRecordForResponse[], void, undefined> {
-  const { apiClient, id } = params;
-  const result = await apiClient.record.getRecordsByCursor({ id });
-  yield result.records;
-  if (result.next) {
-    yield* getAllRecordsRecursiveByCursor({ apiClient, id });
   }
 }

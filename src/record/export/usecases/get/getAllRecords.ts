@@ -1,6 +1,8 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { KintoneRecordForResponse } from "../../../../kintone/types";
 
+const GET_RECORDS_LIMIT = 500;
+
 // TODO: replace this function after @kintone/rest-api-client supports generator/stream
 // eslint-disable-next-line func-style
 export async function* getAllRecords(params: {
@@ -27,34 +29,22 @@ async function* getAllRecordsWithId(params: {
   fields?: string[];
   condition?: string;
 }): AsyncGenerator<KintoneRecordForResponse[], void, undefined> {
-  const { fields: originalFields, ...rest } = params;
+  const { apiClient, condition, fields: originalFields, ...rest } = params;
   let fields = originalFields;
   // Append $id if $id doesn't exist in fields
   if (fields && fields.length > 0 && fields.indexOf("$id") === -1) {
     fields = [...fields, "$id"];
   }
-  yield* getAllRecordsRecursiveWithId({ ...rest, fields }, "0");
-}
 
-// eslint-disable-next-line func-style
-async function* getAllRecordsRecursiveWithId(
-  params: {
-    apiClient: KintoneRestAPIClient;
-    app: string;
-    fields?: string[];
-    condition?: string;
-  },
-  id: string,
-): AsyncGenerator<KintoneRecordForResponse[], void, undefined> {
-  const GET_RECORDS_LIMIT = 500;
-
-  const { apiClient, condition, ...rest } = params;
   const conditionQuery = condition ? `(${condition}) and ` : "";
-
-  let lastId = id;
+  let lastId = "0";
   while (true) {
     const query = `${conditionQuery}$id > ${lastId} order by $id asc limit ${GET_RECORDS_LIMIT}`;
-    const result = await apiClient.record.getRecords({ ...rest, query });
+    const result = await apiClient.record.getRecords({
+      ...rest,
+      fields,
+      query,
+    });
     yield result.records;
 
     if (result.records.length < GET_RECORDS_LIMIT) {

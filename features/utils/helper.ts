@@ -1,7 +1,6 @@
 import { spawn, spawnSync } from "child_process";
 import path from "path";
 import fs from "fs/promises";
-import fsCallback from "fs";
 import iconv from "iconv-lite";
 
 export const SUPPORTED_ENCODING = <const>["utf8", "sjis"];

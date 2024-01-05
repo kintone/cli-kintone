@@ -157,7 +157,7 @@ Feature: cli-kintone export command
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
-  Scenario: CliKintoneTest-90 Should return the record contents and download attachments successfully with an existing directory.
+  Scenario: CliKintoneTest-90 Should return the record contents and download attachments successfully to an existing directory.
     Given The app "app_for_export_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And The app "app_for_export_attachments" has some records with attachments in directory "attachments" as below:
@@ -173,11 +173,11 @@ Feature: cli-kintone export command
     And The output message should match with the data below:
       | Record_number      | Text  | Attachment                                     |
       | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
-    And The directory "exported-attachments" should contain files as below:
+    And The directory "exported-attachments" should contain files with filename and content as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
 
-  Scenario: CliKintoneTest-91 Should return the record contents and download attachments successfully with a non-existent directory.
+  Scenario: CliKintoneTest-91 Should return the record contents and download attachments successfully to a non-existent directory.
     Given The app "app_for_export_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And The app "app_for_export_attachments" has some records with attachments in directory "attachments" as below:
@@ -191,51 +191,55 @@ Feature: cli-kintone export command
     And The output message should match with the data below:
       | Record_number      | Text  | Attachment                                     |
       | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
-    And The directory "new-directory" should contain files as below:
+    And The directory "new-directory" should contain files with filename and content as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
 
   Scenario: CliKintoneTest-92 Should return the record contents and download attachments successfully with attachments in different records.
     Given The app "app_for_export_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
-    And I have a file "attachments/file2.txt" with content: "abc"
+    And I have an image file in "attachments/image1.png"
     And The app "app_for_export_attachments" has some records with attachments in directory "attachments" as below:
       | Text  | Attachment |
       | Alice | file1.txt  |
-      | Bob   | file2.txt  |
+      | Bob   | image1.png |
     And Load the record numbers of the app "app_for_export_attachments" as variable: "RECORD_NUMBERS"
     And Load app ID of the app "app_for_export_attachments" as env var: "APP_ID"
     And Load app token of the app "app_for_export_attachments" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir exported-attachments"
     Then I should get the exit code is zero
     And The output message should match with the data below:
-      | Record_number      | Text  | Attachment                                     |
-      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
-      | $RECORD_NUMBERS[1] | Bob   | Attachment-$RECORD_NUMBERS[1][\/\\\\]file2.txt |
-    And The directory "exported-attachments" should contain files as below:
+      | Record_number      | Text  | Attachment                                      |
+      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt  |
+      | $RECORD_NUMBERS[1] | Bob   | Attachment-$RECORD_NUMBERS[1][\/\\\\]image1.png |
+    And The directory "exported-attachments" should contain files with filename and content as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
-      | Attachment-$RECORD_NUMBERS[1] | file2.txt | abc     |
+    And The directory "exported-attachments" should contain files as below:
+      | FilePath                      | FileName   |
+      | Attachment-$RECORD_NUMBERS[1] | image1.png |
 
   Scenario: CliKintoneTest-93 Should return the record contents and download attachments successfully with attachments in a record.
     Given The app "app_for_export_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
-    And I have a file "attachments/file2.txt" with content: "abc"
+    And I have an image file in "attachments/Image1.png"
     And The app "app_for_export_attachments" has some records with attachments in directory "attachments" as below:
-      | Text  | Attachment           |
-      | Alice | file1.txt\nfile2.txt |
+      | Text  | Attachment            |
+      | Alice | file1.txt\nImage1.png |
     And Load the record numbers of the app "app_for_export_attachments" as variable: "RECORD_NUMBERS"
     And Load app ID of the app "app_for_export_attachments" as env var: "APP_ID"
     And Load app token of the app "app_for_export_attachments" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir exported-attachments"
     Then I should get the exit code is zero
     And The output message should match with the data below:
-      | Record_number      | Text  | Attachment                                                                                     |
-      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt\nAttachment-$RECORD_NUMBERS[0][\/\\\\]file2.txt |
-    And The directory "exported-attachments" should contain files as below:
+      | Record_number      | Text  | Attachment                                                                                      |
+      | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt\nAttachment-$RECORD_NUMBERS[0][\/\\\\]Image1.png |
+    And The directory "exported-attachments" should contain files with filename and content as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
-      | Attachment-$RECORD_NUMBERS[0] | file2.txt | abc     |
+    And The directory "exported-attachments" should contain files as below:
+      | FilePath                      | FileName   |
+      | Attachment-$RECORD_NUMBERS[0] | Image1.png |
 
   Scenario: CliKintoneTest-94 Should return the record contents and download attachments successfully with a TXT file.
     Given The app "app_for_export_attachments" has no records
@@ -251,7 +255,7 @@ Feature: cli-kintone export command
     And The output message should match with the data below:
       | Record_number      | Text  | Attachment                                     |
       | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt |
-    And The directory "exported-attachments" should contain files as below:
+    And The directory "exported-attachments" should contain files with filename and content as below:
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
 
@@ -302,8 +306,8 @@ Feature: cli-kintone export command
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
       | Text  | Number |
-      | Alice | 10     |
-      | Bob   | 20     |
+      | Alice | 20     |
+      | Bob   | 10     |
       | Jenny | 30     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
@@ -312,8 +316,8 @@ Feature: cli-kintone export command
     And The output message should match the data in the order as below:
       | Record_number | Text  | Number |
       | \d+           | Jenny | 30     |
-      | \d+           | Bob   | 20     |
-      | \d+           | Alice | 10     |
+      | \d+           | Alice | 20     |
+      | \d+           | Bob   | 10     |
 
   Scenario: CliKintoneTest-99 Should return the error message when exporting the record with invalid order by query.
     Given The app "app_for_export" has no records
@@ -415,28 +419,28 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-111 Should return the record contents when exporting the record with --encoding option is utf8.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text       | Number |
+      | Text   | Number |
       | レコード番号 | 10     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --encoding utf8"
     Then I should get the exit code is zero
     And The output message with "utf8" encoded should match with the data below:
-      | Record_number | Text       | Number |
+      | Record_number | Text   | Number |
       | \d+           | レコード番号 | 10     |
 
   Scenario: CliKintoneTest-112 Should return the record contents when exporting the record with --encoding option is sjis.
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
-      | Text    | Number |
+      | Text | Number |
       | 作成日時 | 10     |
     And Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --encoding sjis"
     Then I should get the exit code is zero
     And The output message with "sjis" encoded should match with the data below:
-      | Record_number | Text        | Number |
-      | \d+           | 作成日時     | 10     |
+      | Record_number | Text | Number |
+      | \d+           | 作成日時 | 10     |
 
   Scenario: CliKintoneTest-113 Should return the error message when exporting the record with an unsupported character encoding.
     Given Load app ID of the app "app_for_export" as env var: "APP_ID"

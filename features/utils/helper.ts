@@ -2,14 +2,18 @@ import { spawn, spawnSync } from "child_process";
 import path from "path";
 import fs from "fs/promises";
 import iconv from "iconv-lite";
+import assert from "assert";
 
 export const SUPPORTED_ENCODING = <const>["utf8", "sjis"];
-
 export type SupportedEncoding = (typeof SUPPORTED_ENCODING)[number];
 
 export type ReplacementValue = string | string[] | number | number[] | boolean;
-
 export type Replacements = { [key: string]: ReplacementValue };
+
+export const IMAGE_DATA =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0" +
+  "NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO" +
+  "3gAAAABJRU5ErkJggg==";
 
 export const execCliKintoneSync = (
   args: string,
@@ -227,4 +231,36 @@ export const generateCsvRow = (fields: string[]): string => {
       return `"${field}"`;
     })
     .join(",");
+};
+
+export const generateImageFile = async (
+  filePath: string,
+  options: {
+    baseDir?: string;
+  },
+) => {
+  const data = IMAGE_DATA.replace(/^data:image\/\w+;base64,/, "");
+  const buffer = Buffer.from(data, "base64");
+
+  const actualFilePath = options.baseDir
+    ? path.join(options.baseDir, filePath)
+    : filePath;
+
+  await fs.mkdir(path.dirname(actualFilePath), { recursive: true });
+  await fs.writeFile(actualFilePath, buffer);
+
+  if (await fs.stat(actualFilePath)) {
+    throw new Error(`The image file "${actualFilePath}" is not found`);
+  }
+};
+
+export const validateRequireColumnsInTable = (
+  columns: string[],
+  requiredColumns: string[],
+) => {
+  requiredColumns.forEach((requiredColumn) => {
+    if (!columns.includes(requiredColumn)) {
+      throw new Error(`The table should have ${requiredColumn} column.`);
+    }
+  });
 };

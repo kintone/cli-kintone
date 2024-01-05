@@ -6,11 +6,11 @@ Feature: common test cases
     And The output error message should match with the pattern: "Unknown argument: foo"
 
   Scenario: CliKintoneTest-2 Should return the error message when specifying unknown subcommand
-    When I run the command with args "export"
+    When I run the command with args "foo"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "Unknown argument: export"
+    And The output error message should match with the pattern: "Unknown argument: foo"
 
-  Scenario: CliKintoneTest-3 Should return the correct cli-kintone version when using `cli-kintone --version`
+  Scenario: CliKintoneTest-3 Should return the cli-kintone version in correct format when using `cli-kintone --version`
     When I run the command with args "--version"
     Then I should get the version formatted in "\d+.\d+.\d+"
 

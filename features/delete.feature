@@ -1,7 +1,7 @@
 @isolated
 Feature: cli-kintone delete command
 
-  Scenario: CliKintoneTest-126 Should return the error message when the user has no privilege to delete records.
+  Scenario: CliKintoneTest-126 Should return the error message with an API Token without Delete permission.
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
       | Text  | Number |

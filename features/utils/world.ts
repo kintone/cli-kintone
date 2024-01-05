@@ -10,6 +10,7 @@ import {
   generateFile,
   getRecordNumbers,
   replacePlaceholders,
+  generateImageFile,
 } from "./helper";
 import {
   getAppCredentialByAppKey,
@@ -149,6 +150,10 @@ export class OurWorld extends World {
 
   public async generateFile(content: string, filePath: string) {
     return generateFile(content, filePath, { baseDir: this.workingDir });
+  }
+
+  public async generateImageFile(filePath: string) {
+    return generateImageFile(filePath, { baseDir: this.workingDir });
   }
 
   public getAppCredentialByAppKey(appKey: string): AppCredential {

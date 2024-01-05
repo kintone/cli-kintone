@@ -84,7 +84,7 @@ describe("Helper functions", () => {
 
   describe("generateImageFile", () => {
     it("should generate image file correctly", async () => {
-      const filePath = "./test.png";
+      const filePath = "/tmp/test.png";
       await generateImageFile(filePath, {});
 
       const actual = fs.statSync(filePath);
@@ -101,9 +101,9 @@ describe("Helper functions", () => {
     });
 
     it("should throw error when file path is invalid", async () => {
-      const filePath = "./invalid-path\\test.png";
+      const filePath = "";
       await expect(generateImageFile(filePath, {})).rejects.toThrowError(
-        `The image file "${filePath}" is not found`,
+        `The image file "${filePath}" cannot be created.`,
       );
     });
   });

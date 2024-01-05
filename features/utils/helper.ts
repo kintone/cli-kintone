@@ -1,8 +1,8 @@
 import { spawn, spawnSync } from "child_process";
 import path from "path";
 import fs from "fs/promises";
+import fsCallback from "fs";
 import iconv from "iconv-lite";
-import assert from "assert";
 
 export const SUPPORTED_ENCODING = <const>["utf8", "sjis"];
 export type SupportedEncoding = (typeof SUPPORTED_ENCODING)[number];
@@ -241,16 +241,15 @@ export const generateImageFile = async (
 ) => {
   const data = IMAGE_DATA.replace(/^data:image\/\w+;base64,/, "");
   const buffer = Buffer.from(data, "base64");
-
   const actualFilePath = options.baseDir
     ? path.join(options.baseDir, filePath)
     : filePath;
 
-  await fs.mkdir(path.dirname(actualFilePath), { recursive: true });
-  await fs.writeFile(actualFilePath, buffer);
-
-  if (await fs.stat(actualFilePath)) {
-    throw new Error(`The image file "${actualFilePath}" is not found`);
+  try {
+    await fs.mkdir(path.dirname(actualFilePath), { recursive: true });
+    await fs.writeFile(actualFilePath, buffer);
+  } catch (error) {
+    throw new Error(`The image file "${actualFilePath}" cannot be created.`);
   }
 };
 

@@ -3,6 +3,7 @@ import { Given, When, Then } from "../utils/world";
 import type { Permission } from "../utils/credentials";
 import { TOKEN_PERMISSIONS } from "../utils/credentials";
 import { generateCsvRow } from "../utils/helper";
+import { QueryBuilder } from "../utils/queryBuilder";
 
 Given(
   "Load environment variable {string} as {string}",
@@ -127,10 +128,15 @@ Given("The app {string} has no records", function (appKey) {
     "view",
     "delete",
   ]);
-  let command = `record delete --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --yes`;
-  if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
-    command += ` --guest-space-id ${appCredential.guestSpaceId}`;
-  }
+  const command = QueryBuilder.record()
+    .delete({
+      baseUrl: "$$TEST_KINTONE_BASE_URL",
+      app: appCredential.appId,
+      apiToken,
+      guestSpaceId: appCredential.guestSpaceId,
+      yes: true,
+    })
+    .getQuery();
   this.execCliKintoneSync(command);
   if (this.response.status !== 0) {
     throw new Error(`Resetting app failed. Error: \n${this.response.stderr}`);
@@ -144,10 +150,15 @@ Given(
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
     const csvObject = this.replacePlaceholdersInRawDataTables(table.raw());
     const tempFilePath = await this.generateCsvFile(csvObject);
-    let command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken}`;
-    if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
-      command += ` --guest-space-id ${appCredential.guestSpaceId}`;
-    }
+    const command = QueryBuilder.record()
+      .import({
+        baseUrl: "$$TEST_KINTONE_BASE_URL",
+        app: appCredential.appId,
+        apiToken,
+        guestSpaceId: appCredential.guestSpaceId,
+        filePath: tempFilePath,
+      })
+      .getQuery();
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
       throw new Error(`Importing CSV failed. Error: \n${this.response.stderr}`);
@@ -162,7 +173,16 @@ Given(
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["add"]);
     const csvObject = this.replacePlaceholdersInRawDataTables(table.raw());
     const tempFilePath = await this.generateCsvFile(csvObject);
-    const command = `record import --file-path ${tempFilePath} --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --attachments-dir ${attachmentDir} --api-token ${apiToken}`;
+    const command = QueryBuilder.record()
+      .import({
+        baseUrl: "$$TEST_KINTONE_BASE_URL",
+        app: appCredential.appId,
+        apiToken,
+        guestSpaceId: appCredential.guestSpaceId,
+        filePath: tempFilePath,
+        attachmentsDir: attachmentDir,
+      })
+      .getQuery();
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
       throw new Error(`Importing CSV failed. Error: \n${this.response.stderr}`);

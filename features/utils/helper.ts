@@ -1,5 +1,6 @@
 import { spawn, spawnSync } from "child_process";
 import path from "path";
+import { QueryBuilder } from "./queryBuilder";
 
 export const SUPPORTED_ENCODING = <const>["utf8", "sjis"];
 export type SupportedEncoding = (typeof SUPPORTED_ENCODING)[number];
@@ -109,11 +110,15 @@ export const getRecordNumbers = (
   options: { fieldCode?: string; guestSpaceId?: string } = {},
 ): string[] => {
   const recordNumberFieldCode = options.fieldCode ?? "Record_number";
-  let command = `record export --app ${appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${recordNumberFieldCode}`;
-
-  if (options.guestSpaceId && options.guestSpaceId.length > 0) {
-    command += ` --guest-space-id ${options.guestSpaceId}`;
-  }
+  const command = QueryBuilder.record()
+    .export({
+      baseUrl: "$$TEST_KINTONE_BASE_URL",
+      app: appId,
+      apiToken,
+      fields: [recordNumberFieldCode],
+      guestSpaceId: options.guestSpaceId,
+    })
+    .getQuery();
 
   const response = execCliKintoneSync(command);
   if (response.status !== 0) {

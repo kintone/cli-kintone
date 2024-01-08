@@ -224,7 +224,7 @@ Feature: cli-kintone export command
   Scenario: CliKintoneTest-93 Should return the record contents and download attachments successfully with attachments in a record.
     Given The app "app_for_export_attachments" has no records
     And I have a file in "attachments/file1.txt"
-    And I have a file in "attachments/image1.png"
+    And I have a file in "attachments/Image1.png"
     And The app "app_for_export_attachments" has some records with attachments in directory "attachments" as below:
       | Text  | Attachment            |
       | Alice | file1.txt\nImage1.png |
@@ -239,7 +239,7 @@ Feature: cli-kintone export command
     And The exported files should match as below:
       | Expected_FilePath      | Actual_FilePath                                               |
       | attachments/file1.txt  | exported-attachments/Attachment-$RECORD_NUMBERS[0]/file1.txt  |
-      | attachments/image1.png | exported-attachments/Attachment-$RECORD_NUMBERS[0]/image1.png |
+      | attachments/Image1.png | exported-attachments/Attachment-$RECORD_NUMBERS[0]/Image1.png |
 
   Scenario: CliKintoneTest-94 Should return the record contents and download attachments successfully with a TXT file.
     Given The app "app_for_export_attachments" has no records

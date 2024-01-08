@@ -197,12 +197,14 @@ Feature: cli-kintone export command
 
   Scenario: CliKintoneTest-92 Should return the record contents and download attachments successfully with attachments in different records.
     Given The app "app_for_export_attachments" has no records
-    And I have a file "attachments/file1.txt" with content: "123"
-    And I have an image file in "attachments/image1.png"
+    And I have a file in "attachments/file1.txt"
+    And I have a file in "attachments/image1.png"
+    And I have a file in "attachments/image2.jpg"
     And The app "app_for_export_attachments" has some records with attachments in directory "attachments" as below:
       | Text  | Attachment |
       | Alice | file1.txt  |
       | Bob   | image1.png |
+      | Jenny | image2.jpg |
     And Load the record numbers of the app "app_for_export_attachments" as variable: "RECORD_NUMBERS"
     And Load app ID of the app "app_for_export_attachments" as env var: "APP_ID"
     And Load app token of the app "app_for_export_attachments" with exact permissions "view" as env var: "API_TOKEN"
@@ -212,17 +214,17 @@ Feature: cli-kintone export command
       | Record_number      | Text  | Attachment                                      |
       | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt  |
       | $RECORD_NUMBERS[1] | Bob   | Attachment-$RECORD_NUMBERS[1][\/\\\\]image1.png |
-    And The directory "exported-attachments" should contain files with filename and content as below:
-      | FilePath                      | FileName  | Content |
-      | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
-    And The directory "exported-attachments" should contain files as below:
-      | FilePath                      | FileName   |
-      | Attachment-$RECORD_NUMBERS[1] | image1.png |
+      | $RECORD_NUMBERS[2] | Jenny | Attachment-$RECORD_NUMBERS[2][\/\\\\]image2.jpg |
+    And The exported files should match as below:
+      | Expected_FilePath      | Actual_FilePath                                               |
+      | attachments/file1.txt  | exported-attachments/Attachment-$RECORD_NUMBERS[0]/file1.txt  |
+      | attachments/image1.png | exported-attachments/Attachment-$RECORD_NUMBERS[1]/image1.png |
+      | attachments/image2.jpg | exported-attachments/Attachment-$RECORD_NUMBERS[2]/image2.jpg |
 
   Scenario: CliKintoneTest-93 Should return the record contents and download attachments successfully with attachments in a record.
     Given The app "app_for_export_attachments" has no records
-    And I have a file "attachments/file1.txt" with content: "123"
-    And I have an image file in "attachments/Image1.png"
+    And I have a file in "attachments/file1.txt"
+    And I have a file in "attachments/image1.png"
     And The app "app_for_export_attachments" has some records with attachments in directory "attachments" as below:
       | Text  | Attachment            |
       | Alice | file1.txt\nImage1.png |
@@ -234,12 +236,10 @@ Feature: cli-kintone export command
     And The output message should match with the data below:
       | Record_number      | Text  | Attachment                                                                                      |
       | $RECORD_NUMBERS[0] | Alice | Attachment-$RECORD_NUMBERS[0][\/\\\\]file1.txt\nAttachment-$RECORD_NUMBERS[0][\/\\\\]Image1.png |
-    And The directory "exported-attachments" should contain files with filename and content as below:
-      | FilePath                      | FileName  | Content |
-      | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
-    And The directory "exported-attachments" should contain files as below:
-      | FilePath                      | FileName   |
-      | Attachment-$RECORD_NUMBERS[0] | Image1.png |
+    And The exported files should match as below:
+      | Expected_FilePath      | Actual_FilePath                                               |
+      | attachments/file1.txt  | exported-attachments/Attachment-$RECORD_NUMBERS[0]/file1.txt  |
+      | attachments/image1.png | exported-attachments/Attachment-$RECORD_NUMBERS[0]/image1.png |
 
   Scenario: CliKintoneTest-94 Should return the record contents and download attachments successfully with a TXT file.
     Given The app "app_for_export_attachments" has no records

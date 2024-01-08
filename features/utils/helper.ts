@@ -1,18 +1,11 @@
 import { spawn, spawnSync } from "child_process";
 import path from "path";
-import fs from "fs/promises";
-import iconv from "iconv-lite";
 
 export const SUPPORTED_ENCODING = <const>["utf8", "sjis"];
 export type SupportedEncoding = (typeof SUPPORTED_ENCODING)[number];
 
 export type ReplacementValue = string | string[] | number | number[] | boolean;
 export type Replacements = { [key: string]: ReplacementValue };
-
-export const IMAGE_DATA =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0" +
-  "NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO" +
-  "3gAAAABJRU5ErkJggg==";
 
 export const execCliKintoneSync = (
   args: string,
@@ -110,59 +103,6 @@ const inputEnvReplacer = (envVars: { [key: string]: string } | undefined) => {
   };
 };
 
-export const generateCsvFile = async (
-  csvContent: string,
-  options: {
-    baseDir?: string;
-    destFilePath?: string;
-    encoding?: SupportedEncoding;
-  },
-): Promise<string> => {
-  let filePath = options.destFilePath;
-  if (filePath) {
-    filePath = options.baseDir
-      ? path.join(options.baseDir, filePath)
-      : filePath;
-    await fs.mkdir(path.dirname(filePath), { recursive: true });
-  } else {
-    const prefix = "cli-kintone-csv-file-";
-    const tempDir = await fs.mkdtemp(
-      options.baseDir ? path.join(options.baseDir, prefix) : prefix,
-    );
-    filePath = path.join(tempDir, "records.csv");
-  }
-
-  await _writeFile(csvContent, filePath, { encoding: options.encoding });
-
-  return filePath;
-};
-
-export const generateFile = async (
-  content: string,
-  filePath: string,
-  options: { baseDir?: string; encoding?: SupportedEncoding },
-): Promise<string> => {
-  const actualFilePath = options.baseDir
-    ? path.join(options.baseDir, filePath)
-    : filePath;
-  await fs.mkdir(path.dirname(actualFilePath), { recursive: true });
-  await _writeFile(content, actualFilePath, { encoding: options.encoding });
-
-  return actualFilePath;
-};
-
-const _writeFile = async (
-  content: string,
-  filePath: string,
-  options?: { encoding?: SupportedEncoding },
-): Promise<void> => {
-  if (options && options.encoding) {
-    return fs.writeFile(filePath, iconv.encode(content, options.encoding));
-  }
-
-  return fs.writeFile(filePath, content);
-};
-
 export const getRecordNumbers = (
   appId: string,
   apiToken: string,
@@ -232,26 +172,6 @@ export const generateCsvRow = (fields: string[]): string => {
     .join(",");
 };
 
-export const generateImageFile = async (
-  filePath: string,
-  options: {
-    baseDir?: string;
-  },
-) => {
-  const data = IMAGE_DATA.replace(/^data:image\/\w+;base64,/, "");
-  const buffer = Buffer.from(data, "base64");
-  const actualFilePath = options.baseDir
-    ? path.join(options.baseDir, filePath)
-    : filePath;
-
-  try {
-    await fs.mkdir(path.dirname(actualFilePath), { recursive: true });
-    await fs.writeFile(actualFilePath, buffer);
-  } catch (error) {
-    throw new Error(`The image file "${actualFilePath}" cannot be created.`);
-  }
-};
-
 export const validateRequireColumnsInTable = (
   columns: string[],
   requiredColumns: string[],
@@ -261,4 +181,18 @@ export const validateRequireColumnsInTable = (
       throw new Error(`The table should have ${requiredColumn} column.`);
     }
   });
+};
+
+export const compareBuffers = (buffer1: Buffer, buffer2: Buffer): boolean => {
+  if (buffer1.length !== buffer2.length) {
+    return false;
+  }
+
+  for (let i = 0; i < buffer1.length; i++) {
+    if (buffer1[i] !== buffer2[i]) {
+      return false;
+    }
+  }
+
+  return true;
 };

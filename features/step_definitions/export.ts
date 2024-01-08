@@ -3,7 +3,11 @@ import { Given, Then } from "../utils/world";
 import fs from "fs";
 import path from "path";
 import iconv from "iconv-lite";
-import { generateCsvRow, validateRequireColumnsInTable } from "../utils/helper";
+import {
+  compareBuffers,
+  generateCsvRow,
+  validateRequireColumnsInTable,
+} from "../utils/helper";
 
 Given("I have a directory {string}", function (directory: string) {
   fs.mkdirSync(path.join(this.workingDir, directory));
@@ -55,6 +59,38 @@ Then(
     }
   },
 );
+
+Then("The exported files should match as below:", function (table) {
+  validateRequireColumnsInTable(table.raw()[0], [
+    "Expected_FilePath",
+    "Actual_FilePath",
+  ]);
+
+  const records = this.replacePlaceholdersInHashesDataTables(table.hashes());
+  for (let index = 0; index < records.length; index++) {
+    const record = records[index];
+    const actualFilePath = path.join(this.workingDir, record.Actual_FilePath);
+    const expectedFilePath = path.join(
+      this.workingDir,
+      record.Expected_FilePath,
+    );
+
+    assert.ok(
+      fs.existsSync(actualFilePath),
+      `The file "${actualFilePath}" is not found.`,
+    );
+
+    assert.ok(
+      compareBuffers(
+        fs.readFileSync(actualFilePath),
+        fs.readFileSync(expectedFilePath),
+      ),
+      `The content of the file "${record.Actual_FilePath}" does not matched.\n` +
+        `Expected file path: ${expectedFilePath}\n` +
+        `Actual file path: ${actualFilePath}`,
+    );
+  }
+});
 
 Then(
   "The output message should match the data in the order as below:",

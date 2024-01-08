@@ -4,14 +4,16 @@ import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
 import type { SupportedEncoding, Replacements } from "./helper";
 import {
-  generateCsvFile,
   execCliKintoneSync,
   execCliKintone,
-  generateFile,
   getRecordNumbers,
   replacePlaceholders,
-  generateImageFile,
 } from "./helper";
+import {
+  generateFile,
+  generateCsvFile,
+  generateFileWithContent,
+} from "./fileGenerator";
 import {
   getAppCredentialByAppKey,
   getAPITokenByAppAndPermissions,
@@ -148,12 +150,14 @@ export class OurWorld extends World {
     });
   }
 
-  public async generateFile(content: string, filePath: string) {
-    return generateFile(content, filePath, { baseDir: this.workingDir });
+  public async generateFileWithContent(content: string, filePath: string) {
+    return generateFileWithContent(content, filePath, {
+      baseDir: this.workingDir,
+    });
   }
 
-  public async generateImageFile(filePath: string) {
-    return generateImageFile(filePath, { baseDir: this.workingDir });
+  public async generateFile(filePath: string) {
+    return generateFile(filePath, { baseDir: this.workingDir });
   }
 
   public getAppCredentialByAppKey(appKey: string): AppCredential {

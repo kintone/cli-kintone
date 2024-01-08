@@ -242,6 +242,6 @@ Then(
   },
 );
 
-Given("I have an image file in {string}", async function (filePath: string) {
-  await this.generateImageFile(filePath);
+Given("I have a file in {string}", async function (filePath: string) {
+  await this.generateFile(filePath);
 });

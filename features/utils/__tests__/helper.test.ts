@@ -1,10 +1,9 @@
 import {
+  compareBuffers,
   generateCsvRow,
   replacePlaceholders,
-  generateImageFile,
   validateRequireColumnsInTable,
 } from "../helper";
-import fs from "fs";
 
 describe("Helper functions", () => {
   describe("generateCsvRow", () => {
@@ -82,32 +81,6 @@ describe("Helper functions", () => {
     });
   });
 
-  describe("generateImageFile", () => {
-    it("should generate image file correctly", async () => {
-      const filePath = "/tmp/test.png";
-      await generateImageFile(filePath, {});
-
-      const actual = fs.statSync(filePath);
-      expect(actual).toBeTruthy();
-    });
-
-    it("should generate image file correctly with baseDir", async () => {
-      const filePath = "./test.png";
-      const baseDir = "./tmp";
-      await generateImageFile(filePath, { baseDir });
-
-      const actual = fs.statSync(`${baseDir}/${filePath}`);
-      expect(actual).toBeTruthy();
-    });
-
-    it("should throw error when file path is invalid", async () => {
-      const filePath = "";
-      await expect(generateImageFile(filePath, {})).rejects.toThrowError(
-        `The image file "${filePath}" cannot be created.`,
-      );
-    });
-  });
-
   describe("validateRequireColumnsInTable", () => {
     it("should throw error when required columns are not found", () => {
       const columns = ["FilePath"];
@@ -116,6 +89,22 @@ describe("Helper functions", () => {
       expect(() => {
         validateRequireColumnsInTable(columns, requiredColumns);
       }).toThrowError("The table should have FileName column");
+    });
+  });
+
+  describe("compareBuffers", () => {
+    it("should return TRUE if two buffers are the same", () => {
+      const buffer1 = Buffer.from("This is the same buffer");
+      const buffer2 = Buffer.from("This is the same buffer");
+
+      expect(compareBuffers(buffer1, buffer2)).toBe(true);
+    });
+
+    it("should return FALSE if two buffers are different", () => {
+      const buffer1 = Buffer.from("This is the first buffer");
+      const buffer2 = Buffer.from("This is the second buffer");
+
+      expect(compareBuffers(buffer1, buffer2)).toBe(false);
     });
   });
 });

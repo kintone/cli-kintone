@@ -1,4 +1,9 @@
-import { generateCsvRow, replacePlaceholders } from "../helper";
+import {
+  compareBuffers,
+  generateCsvRow,
+  replacePlaceholders,
+  validateRequireColumnsInTable,
+} from "../helper";
 
 describe("Helper functions", () => {
   describe("generateCsvRow", () => {
@@ -73,6 +78,33 @@ describe("Helper functions", () => {
         );
         expect(actual).toBe(testPattern.expected);
       });
+    });
+  });
+
+  describe("validateRequireColumnsInTable", () => {
+    it("should throw error when required columns are not found", () => {
+      const columns = ["FilePath"];
+      const requiredColumns = ["FilePath", "FileName"];
+
+      expect(() => {
+        validateRequireColumnsInTable(columns, requiredColumns);
+      }).toThrowError("The table should have FileName column");
+    });
+  });
+
+  describe("compareBuffers", () => {
+    it("should return TRUE if two buffers are the same", () => {
+      const buffer1 = Buffer.from("This is the same buffer");
+      const buffer2 = Buffer.from("This is the same buffer");
+
+      expect(compareBuffers(buffer1, buffer2)).toBe(true);
+    });
+
+    it("should return FALSE if two buffers are different", () => {
+      const buffer1 = Buffer.from("This is the first buffer");
+      const buffer2 = Buffer.from("This is the second buffer");
+
+      expect(compareBuffers(buffer1, buffer2)).toBe(false);
     });
   });
 });

@@ -241,3 +241,7 @@ Then(
     );
   },
 );
+
+Given("I have a file in {string}", async function (filePath: string) {
+  await this.generateFile(filePath);
+});

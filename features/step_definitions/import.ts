@@ -28,7 +28,7 @@ Given(
 Given(
   "I have a file {string} with content: {string}",
   async function (filePath: string, content: string) {
-    await this.generateFile(content, filePath);
+    await this.generateFileWithContent(content, filePath);
   },
 );
 

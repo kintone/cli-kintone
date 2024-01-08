@@ -25,7 +25,8 @@
     "typecheck": "tsc --pretty --noEmit",
     "test": "jest",
     "test:ci": "jest --runInBand",
-    "test:e2e": "cucumber-js",
+    "test:e2e": "cucumber-js ./features/common.feature",
+    "test:e2e:ci": "cucumber-js --format ./cucumber-reporter.js ./features/common.feature",
     "lint": "run-p -l lint:*",
     "lint:eslint": "eslint --ext .js,.mjs,.cjs,.ts,.mts,.cts ./ --max-warnings 0",
     "lint:prettier": "prettier --check '**/*.{json,md,yml,yaml}'",
@@ -78,7 +79,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "zx": "^7.2.3",
-    "ajv": "^8.12.0"
+    "ajv": "^8.12.0",
+    "allure-commandline": "^2.25.0",
+    "allure-cucumberjs": "^2.10.0"
   },
   "dependencies": {
     "@kintone/rest-api-client": "^5.0.5",

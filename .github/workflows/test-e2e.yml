@@ -37,6 +37,11 @@ jobs:
         os: ${{ fromJSON(needs.get-running-os.outputs.os) }}
     steps:
       - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
       - uses: pnpm/action-setup@v2
       - uses: actions/setup-node@v4
         with:
@@ -52,4 +57,28 @@ jobs:
           TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN: ${{ secrets.TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN }}
           TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_APP_ID: ${{ secrets.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_APP_ID }}
           TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN: ${{ secrets.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN }}
-        run: pnpm test:e2e
+        run: pnpm test:e2e:ci
+
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: allure-results
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: $
+          publish_branch: gh-pages
+          publish_dir: allure-history

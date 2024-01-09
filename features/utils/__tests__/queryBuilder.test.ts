@@ -61,11 +61,12 @@ describe("Query builder", () => {
         fields: ["field1", "field2"],
         condition: "field1='value1'",
         orderBy: "field1 asc",
+        destFilePath: "records.csv",
       };
 
       const query = QueryBuilder.record().export(args).getQuery();
       expect(query).toBe(
-        'record export --base-url https://example.com --app 1 --username user --password pass --api-token token1,token2 --guest-space-id 2 --attachments-dir attachments --encoding utf8 --fields field1,field2 --condition "field1=\'value1\'" --order-by "field1 asc"',
+        'record export --base-url https://example.com --app 1 --username user --password pass --api-token token1,token2 --guest-space-id 2 --attachments-dir attachments --encoding utf8 --fields field1,field2 --condition "field1=\'value1\'" --order-by "field1 asc" > records.csv',
       );
     });
 

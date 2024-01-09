@@ -1,6 +1,65 @@
+import type {
+  DeleteArgs,
+  ExportArgs,
+  ImportArgs,
+  SubCommandType,
+} from "./subCommand";
+import { DELETE, EXPORT, IMPORT } from "./subCommand";
+
 export interface Argument {
   getArgumentQuery: () => string;
 }
+
+export const getArgumentsListBySubCommand = (
+  args: ImportArgs | ExportArgs | DeleteArgs,
+  subCommandType: SubCommandType,
+): Argument[] => {
+  switch (subCommandType) {
+    case IMPORT: {
+      return [
+        new BaseUrl(args.baseUrl),
+        new App(args.app),
+        new ApiToken(args.apiToken),
+        new GuestSpaceId(args.guestSpaceId),
+        new Encoding(args.encoding),
+        new FilePath((args as ImportArgs).filePath),
+        new Username((args as ImportArgs).username),
+        new Password((args as ImportArgs).password),
+        new AttachmentsDir((args as ImportArgs).attachmentsDir),
+        new UpdateKey((args as ImportArgs).updateKey),
+        new Fields((args as ImportArgs).fields),
+      ];
+    }
+    case EXPORT: {
+      return [
+        new BaseUrl(args.baseUrl),
+        new App(args.app),
+        new ApiToken(args.apiToken),
+        new GuestSpaceId(args.guestSpaceId),
+        new Encoding(args.encoding),
+        new Username((args as ExportArgs).username),
+        new Password((args as ExportArgs).password),
+        new AttachmentsDir((args as ExportArgs).attachmentsDir),
+        new Fields((args as ExportArgs).fields),
+        new Condition((args as ExportArgs).condition),
+        new OrderBy((args as ExportArgs).orderBy),
+      ];
+    }
+    case DELETE: {
+      return [
+        new BaseUrl(args.baseUrl),
+        new App(args.app),
+        new ApiToken(args.apiToken),
+        new GuestSpaceId(args.guestSpaceId),
+        new Encoding(args.encoding),
+        new FilePath((args as DeleteArgs).filePath),
+        new Yes((args as DeleteArgs).yes),
+      ];
+    }
+    default:
+      return [];
+  }
+};
 
 export class BaseUrl implements Argument {
   private readonly baseUrl?: string;

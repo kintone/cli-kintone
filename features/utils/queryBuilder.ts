@@ -4,11 +4,26 @@ import type {
   ExportArgs,
   DeleteArgs,
 } from "./subCommand";
-import { ImportCommand, ExportCommand, DeleteCommand } from "./subCommand";
-import * as ArgumentsList from "./arguments";
+import {
+  ExportCommand,
+  ImportCommand,
+  DeleteCommand,
+  IMPORT,
+  EXPORT,
+  DELETE,
+} from "./subCommand";
 import type { Argument } from "./arguments";
+import { getArgumentsListBySubCommand } from "./arguments";
+import {
+  APP_IS_REQUIRED,
+  BASE_URL_IS_REQUIRED,
+  COMMAND_IS_NOT_INITIALIZED,
+  FILE_PATH_IS_REQUIRED,
+  SUB_COMMAND_IS_NOT_INITIALIZED,
+} from "./error";
 
-export const SUPPORTED_COMMANDS = <const>["record"];
+export const RECORD = "record";
+export const SUPPORTED_COMMANDS = <const>[RECORD];
 
 export type Command = (typeof SUPPORTED_COMMANDS)[number];
 
@@ -22,96 +37,65 @@ export class QueryBuilder {
   }
 
   static record() {
-    return new QueryBuilder({ command: "record" });
+    return new QueryBuilder({ command: RECORD });
   }
 
   import(args: ImportArgs) {
     if (args.baseUrl.length === 0) {
-      throw new Error(`The "baseUrl" argument is required.`);
+      throw new Error(BASE_URL_IS_REQUIRED);
     }
 
     if (args.app.length === 0) {
-      throw new Error(`The "app" argument is required.`);
+      throw new Error(APP_IS_REQUIRED);
     }
 
     if (args.filePath.length === 0) {
-      throw new Error(`The "filePath" argument is required.`);
+      throw new Error(FILE_PATH_IS_REQUIRED);
     }
 
-    const argsList: Argument[] = [
-      new ArgumentsList.BaseUrl(args.baseUrl),
-      new ArgumentsList.App(args.app),
-      new ArgumentsList.FilePath(args.filePath),
-      new ArgumentsList.Username(args.username),
-      new ArgumentsList.Password(args.password),
-      new ArgumentsList.ApiToken(args.apiToken),
-      new ArgumentsList.GuestSpaceId(args.guestSpaceId),
-      new ArgumentsList.AttachmentsDir(args.attachmentsDir),
-      new ArgumentsList.Encoding(args.encoding),
-      new ArgumentsList.UpdateKey(args.updateKey),
-      new ArgumentsList.Fields(args.fields),
-    ];
+    const argsList: Argument[] = getArgumentsListBySubCommand(args, IMPORT);
     this.subCommand = new ImportCommand(argsList);
+
     return this;
   }
 
   export(args: ExportArgs) {
     if (args.baseUrl.length === 0) {
-      throw new Error(`The "baseUrl" argument is required.`);
+      throw new Error(BASE_URL_IS_REQUIRED);
     }
 
     if (args.app.length === 0) {
-      throw new Error(`The "app" argument is required.`);
+      throw new Error(APP_IS_REQUIRED);
     }
 
-    const argsList: Argument[] = [
-      new ArgumentsList.BaseUrl(args.baseUrl),
-      new ArgumentsList.App(args.app),
-      new ArgumentsList.Username(args.username),
-      new ArgumentsList.Password(args.password),
-      new ArgumentsList.ApiToken(args.apiToken),
-      new ArgumentsList.GuestSpaceId(args.guestSpaceId),
-      new ArgumentsList.AttachmentsDir(args.attachmentsDir),
-      new ArgumentsList.Encoding(args.encoding),
-      new ArgumentsList.Fields(args.fields),
-      new ArgumentsList.Condition(args.condition),
-      new ArgumentsList.OrderBy(args.orderBy),
-    ];
+    const argsList: Argument[] = getArgumentsListBySubCommand(args, EXPORT);
+    this.subCommand = new ExportCommand(argsList);
 
-    this.subCommand = new ExportCommand(argsList, args.destFilePath);
     return this;
   }
 
   delete(args: DeleteArgs) {
     if (args.baseUrl.length === 0) {
-      throw new Error(`The "baseUrl" argument is required.`);
+      throw new Error(BASE_URL_IS_REQUIRED);
     }
 
     if (args.app.length === 0) {
-      throw new Error(`The "app" argument is required.`);
+      throw new Error(APP_IS_REQUIRED);
     }
 
-    const argsList: Argument[] = [
-      new ArgumentsList.BaseUrl(args.baseUrl),
-      new ArgumentsList.App(args.app),
-      new ArgumentsList.ApiToken(args.apiToken),
-      new ArgumentsList.GuestSpaceId(args.guestSpaceId),
-      new ArgumentsList.Encoding(args.encoding),
-      new ArgumentsList.FilePath(args.filePath),
-      new ArgumentsList.Yes(args.yes),
-    ];
-
+    const argsList: Argument[] = getArgumentsListBySubCommand(args, DELETE);
     this.subCommand = new DeleteCommand(argsList);
+
     return this;
   }
 
   getQuery() {
     if (!this.command) {
-      throw new Error("The command is not initialized.");
+      throw new Error(COMMAND_IS_NOT_INITIALIZED);
     }
 
     if (!this.subCommand) {
-      throw new Error("The sub command is not initialized.");
+      throw new Error(SUB_COMMAND_IS_NOT_INITIALIZED);
     }
 
     return `${

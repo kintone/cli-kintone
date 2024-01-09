@@ -1,5 +1,10 @@
 import type { Argument } from "./arguments";
 
+export const IMPORT = "import";
+export const EXPORT = "export";
+export const DELETE = "delete";
+export type SubCommandType = typeof IMPORT | typeof EXPORT | typeof DELETE;
+
 export interface SubCommand {
   getSubCommandName: () => string;
   getQuery: () => string;

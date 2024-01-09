@@ -1,4 +1,4 @@
-import * as ArgumentsList from "./arguments";
+import type { Argument } from "./arguments";
 
 export interface SubCommand {
   getSubCommandName: () => string;
@@ -45,9 +45,9 @@ export type DeleteArgs = {
 };
 
 export class ImportCommand implements SubCommand {
-  private args: ImportArgs;
+  private args: Argument[];
 
-  constructor(args: ImportArgs) {
+  constructor(args: Argument[]) {
     this.args = args;
   }
 
@@ -56,34 +56,8 @@ export class ImportCommand implements SubCommand {
   }
 
   getQuery() {
-    if (this.args.baseUrl.length === 0) {
-      throw new Error(`The "baseUrl" argument is required.`);
-    }
-
-    if (this.args.app.length === 0) {
-      throw new Error(`The "app" argument is required.`);
-    }
-
-    if (this.args.filePath.length === 0) {
-      throw new Error(`The "filePath" argument is required.`);
-    }
-
-    const argsList: ArgumentsList.Argument[] = [
-      new ArgumentsList.BaseUrl(this.args.baseUrl),
-      new ArgumentsList.App(this.args.app),
-      new ArgumentsList.FilePath(this.args.filePath),
-      new ArgumentsList.Username(this.args.username),
-      new ArgumentsList.Password(this.args.password),
-      new ArgumentsList.ApiToken(this.args.apiToken),
-      new ArgumentsList.GuestSpaceId(this.args.guestSpaceId),
-      new ArgumentsList.AttachmentsDir(this.args.attachmentsDir),
-      new ArgumentsList.Encoding(this.args.encoding),
-      new ArgumentsList.UpdateKey(this.args.updateKey),
-      new ArgumentsList.Fields(this.args.fields),
-    ];
-
     let queryString = "";
-    argsList.forEach((arg) => {
+    this.args.forEach((arg) => {
       const query = arg.getArgumentQuery();
       if (query.length > 0) {
         queryString += ` ${query}`;
@@ -95,10 +69,12 @@ export class ImportCommand implements SubCommand {
 }
 
 export class ExportCommand implements SubCommand {
-  private args: ExportArgs;
+  private readonly args: Argument[];
+  private readonly destFilePath?: string;
 
-  constructor(args: ExportArgs) {
+  constructor(args: Argument[], destFilePath?: string) {
     this.args = args;
+    this.destFilePath = destFilePath;
   }
 
   getSubCommandName() {
@@ -106,38 +82,16 @@ export class ExportCommand implements SubCommand {
   }
 
   getQuery() {
-    if (this.args.baseUrl.length === 0) {
-      throw new Error(`The "baseUrl" argument is required.`);
-    }
-
-    if (this.args.app.length === 0) {
-      throw new Error(`The "app" argument is required.`);
-    }
-
-    const argsList: ArgumentsList.Argument[] = [
-      new ArgumentsList.BaseUrl(this.args.baseUrl),
-      new ArgumentsList.App(this.args.app),
-      new ArgumentsList.Username(this.args.username),
-      new ArgumentsList.Password(this.args.password),
-      new ArgumentsList.ApiToken(this.args.apiToken),
-      new ArgumentsList.GuestSpaceId(this.args.guestSpaceId),
-      new ArgumentsList.AttachmentsDir(this.args.attachmentsDir),
-      new ArgumentsList.Encoding(this.args.encoding),
-      new ArgumentsList.Fields(this.args.fields),
-      new ArgumentsList.Condition(this.args.condition),
-      new ArgumentsList.OrderBy(this.args.orderBy),
-    ];
-
     let queryString = "";
-    argsList.forEach((arg) => {
+    this.args.forEach((arg) => {
       const query = arg.getArgumentQuery();
       if (query.length > 0) {
         queryString += ` ${query}`;
       }
     });
 
-    if (this.args.destFilePath && this.args.destFilePath.length > 0) {
-      queryString += ` > ${this.args.destFilePath}`;
+    if (this.destFilePath && this.destFilePath.length > 0) {
+      queryString += ` > ${this.destFilePath}`;
     }
 
     return queryString;
@@ -145,9 +99,9 @@ export class ExportCommand implements SubCommand {
 }
 
 export class DeleteCommand implements SubCommand {
-  private args: DeleteArgs;
+  private args: Argument[];
 
-  constructor(args: DeleteArgs) {
+  constructor(args: Argument[]) {
     this.args = args;
   }
 
@@ -156,26 +110,8 @@ export class DeleteCommand implements SubCommand {
   }
 
   getQuery() {
-    if (this.args.baseUrl.length === 0) {
-      throw new Error(`The "baseUrl" argument is required.`);
-    }
-
-    if (this.args.app.length === 0) {
-      throw new Error(`The "app" argument is required.`);
-    }
-
-    const argsList: ArgumentsList.Argument[] = [
-      new ArgumentsList.BaseUrl(this.args.baseUrl),
-      new ArgumentsList.App(this.args.app),
-      new ArgumentsList.ApiToken(this.args.apiToken),
-      new ArgumentsList.GuestSpaceId(this.args.guestSpaceId),
-      new ArgumentsList.Encoding(this.args.encoding),
-      new ArgumentsList.FilePath(this.args.filePath),
-      new ArgumentsList.Yes(this.args.yes),
-    ];
-
     let queryString = "";
-    argsList.forEach((arg) => {
+    this.args.forEach((arg) => {
       const query = arg.getArgumentQuery();
       if (query.length > 0) {
         queryString += ` ${query}`;

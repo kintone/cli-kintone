@@ -11,7 +11,7 @@ export class BaseUrl implements Argument {
 
   getArgumentQuery() {
     if (this.baseUrl && this.baseUrl.length > 0) {
-      return `--baseUrl ${this.baseUrl}`;
+      return `--base-url ${this.baseUrl}`;
     }
 
     return "";
@@ -43,7 +43,7 @@ export class FilePath implements Argument {
 
   getArgumentQuery() {
     if (this.filePath && this.filePath.length > 0) {
-      return `--filePath ${this.filePath}`;
+      return `--file-path ${this.filePath}`;
     }
 
     return "";
@@ -92,10 +92,10 @@ export class ApiToken implements Argument {
   getArgumentQuery() {
     if (this.apiToken) {
       if (typeof this.apiToken === "string") {
-        return `--apiToken ${this.apiToken}`;
+        return `--api-token ${this.apiToken}`;
       }
 
-      return `--apiToken ${this.apiToken.join(",")}`;
+      return `--api-token ${this.apiToken.join(",")}`;
     }
 
     return "";
@@ -111,7 +111,7 @@ export class GuestSpaceId implements Argument {
 
   getArgumentQuery() {
     if (this.guestSpaceId && this.guestSpaceId.length > 0) {
-      return `--guestSpaceId ${this.guestSpaceId}`;
+      return `--guest-space-id ${this.guestSpaceId}`;
     }
 
     return "";
@@ -159,7 +159,8 @@ export class Condition implements Argument {
 
   getArgumentQuery() {
     if (this.condition && this.condition.length > 0) {
-      return `--condition ${this.condition}`;
+      const escapedCondition = this.condition.replace(/"/g, '\\"');
+      return `--condition "${escapedCondition}"`;
     }
 
     return "";
@@ -175,7 +176,7 @@ export class OrderBy implements Argument {
 
   getArgumentQuery() {
     if (this.orderBy && this.orderBy.length > 0) {
-      return `--orderBy ${this.orderBy}`;
+      return `--order-by "${this.orderBy}"`;
     }
 
     return "";
@@ -207,7 +208,7 @@ export class UpdateKey implements Argument {
 
   getArgumentQuery() {
     if (this.updateKey && this.updateKey.length > 0) {
-      return `--updateKey ${this.updateKey}`;
+      return `--update-key ${this.updateKey}`;
     }
 
     return "";
@@ -223,7 +224,7 @@ export class AttachmentsDir implements Argument {
 
   getArgumentQuery() {
     if (this.attachmentsDir && this.attachmentsDir.length > 0) {
-      return `--attachmentsDir ${this.attachmentsDir}`;
+      return `--attachments-dir ${this.attachmentsDir}`;
     }
 
     return "";

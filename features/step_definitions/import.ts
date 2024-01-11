@@ -4,6 +4,7 @@ import fs from "fs";
 import type { SupportedEncoding } from "../utils/helper";
 import { SUPPORTED_ENCODING, generateCsvRow } from "../utils/helper";
 import path from "path";
+import { QueryBuilder } from "../utils/queryBuilder";
 
 Given(
   "The CSV file {string} with content as below:",
@@ -37,11 +38,16 @@ Then(
   function (appKey, table) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
-    const fields = table.raw()[0].join(",");
-    let command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${fields}`;
-    if (appCredential.guestSpaceId && appCredential.guestSpaceId.length > 0) {
-      command += ` --guest-space-id ${appCredential.guestSpaceId}`;
-    }
+    const fields = table.raw()[0];
+    const command = QueryBuilder.record()
+      .export({
+        baseUrl: "$$TEST_KINTONE_BASE_URL",
+        app: appCredential.appId,
+        apiToken,
+        fields,
+        guestSpaceId: appCredential.guestSpaceId,
+      })
+      .getQuery();
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
       throw new Error(
@@ -65,10 +71,18 @@ Then(
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
     const allFields = table.raw()[0];
     const regex = /^[a-zA-Z0-9_]+$/;
-    const filteredFields = allFields
-      .filter((field: string) => regex.test(field))
-      .join(",");
-    const command = `record export --app ${appCredential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --fields ${filteredFields}`;
+    const filteredFields = allFields.filter((field: string) =>
+      regex.test(field),
+    );
+    const command = QueryBuilder.record()
+      .export({
+        baseUrl: "$$TEST_KINTONE_BASE_URL",
+        app: appCredential.appId,
+        apiToken,
+        fields: filteredFields,
+        guestSpaceId: appCredential.guestSpaceId,
+      })
+      .getQuery();
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
       throw new Error(
@@ -104,7 +118,15 @@ Then(
     const attachmentDir = "attachments";
     const credential = this.getAppCredentialByAppKey(appKey);
     const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
-    const command = `record export --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --attachments-dir ${this.workingDir}/${attachmentDir}`;
+    const command = QueryBuilder.record()
+      .export({
+        baseUrl: "$$TEST_KINTONE_BASE_URL",
+        app: credential.appId,
+        apiToken,
+        attachmentsDir: `${this.workingDir}/${attachmentDir}`,
+        guestSpaceId: credential.guestSpaceId,
+      })
+      .getQuery();
     this.execCliKintoneSync(command);
     if (this.response.status !== 0) {
       throw new Error(
@@ -141,7 +163,15 @@ Then("The app {string} should have no attachments", function (appKey) {
   );
   const credential = this.getAppCredentialByAppKey(appKey);
   const apiToken = this.getAPITokenByAppAndPermissions(appKey, ["view"]);
-  const command = `record export --app ${credential.appId} --base-url $$TEST_KINTONE_BASE_URL --api-token ${apiToken} --attachments-dir ${attachmentDir}`;
+  const command = QueryBuilder.record()
+    .export({
+      baseUrl: "$$TEST_KINTONE_BASE_URL",
+      app: credential.appId,
+      apiToken,
+      attachmentsDir: attachmentDir,
+      guestSpaceId: credential.guestSpaceId,
+    })
+    .getQuery();
   this.execCliKintoneSync(command);
   if (this.response.status !== 0) {
     throw new Error(`Getting records failed. Error: \n${this.response.stderr}`);

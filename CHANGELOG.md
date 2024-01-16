@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.8](https://github.com/kintone/cli-kintone/compare/v1.10.7...v1.10.8) (2024-01-16)
+
+
+### Bug Fixes
+
+* fixing maximum call stack size exceeded error ([#639](https://github.com/kintone/cli-kintone/issues/639)) ([e9e20d4](https://github.com/kintone/cli-kintone/commit/e9e20d47fadc8640bc3826dc44949f63eac1fe2f))
+
 ## [1.10.7](https://github.com/kintone/cli-kintone/compare/v1.10.6...v1.10.7) (2023-12-21)
 
 

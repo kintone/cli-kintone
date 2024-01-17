@@ -63,7 +63,7 @@
     "@cybozu/eslint-config": "^22.0.2",
     "@types/inquirer": "^8.2.10",
     "@types/jest": "^29.5.11",
-    "@types/node": "^18.19.7",
+    "@types/node": "^18.19.8",
     "@types/rollup-plugin-auto-external": "^2.0.5",
     "@types/yargs": "^17.0.32",
     "@vercel/ncc": "^0.38.1",

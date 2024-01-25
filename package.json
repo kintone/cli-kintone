@@ -56,8 +56,8 @@
   },
   "devDependencies": {
     "@actions/core": "^1.10.1",
-    "@babel/core": "^7.23.7",
-    "@babel/preset-env": "^7.23.8",
+    "@babel/core": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
     "@babel/preset-typescript": "^7.23.3",
     "@cucumber/cucumber": "^10.3.1",
     "@cybozu/eslint-config": "^22.0.2",

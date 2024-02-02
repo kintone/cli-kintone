@@ -1,4 +1,4 @@
-const { isMatchPackage } = require("@cybozu/license-manager");
+const { isMatchName } = require("@cybozu/license-manager");
 
 const config = {
   packageManager: "pnpm",
@@ -27,9 +27,9 @@ const config = {
     output: "./.licenses/NOTICE",
   },
   overrideLicenseText: (dep) => {
-    for (const thirdParty of Object.keys(OVERRIDE_LICENSES_TEXT)) {
-      if (isMatchPackage(dep, thirdParty)) {
-        return OVERRIDE_LICENSES_TEXT[thirdParty];
+    for (const packageName of Object.keys(OVERRIDE_LICENSES_TEXT)) {
+      if (isMatchName(dep, packageName)) {
+        return OVERRIDE_LICENSES_TEXT[packageName];
       }
     }
     return undefined;

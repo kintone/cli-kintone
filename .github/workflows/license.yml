@@ -8,7 +8,7 @@ on:
 
 jobs:
   licensed:
-    name: Licensed
+    name: Analyze and extract licenses
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository

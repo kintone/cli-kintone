@@ -1,5 +1,5 @@
 name: "🐛 Bug report"
-description: Report for reproducible bug of cli-kintone
+description: Report a reproducible bug of cli-kintone
 labels: ["bug"]
 title: "[Bug] "
 body:

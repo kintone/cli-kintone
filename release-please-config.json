@@ -2,6 +2,7 @@
   "bootstrap-sha": "6cd3804556cc650b8c6d4a209ddb90555ebde6dc",
   "packages": {
     ".": {
+      "release-type": "node",
       "draft": true,
       "prerelease": false,
       "bump-minor-pre-major": true,

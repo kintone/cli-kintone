@@ -21,7 +21,6 @@ jobs:
         id: release
         with:
           token: ${{ steps.create-iat.outputs.token }}
-          command: manifest
 
   rename:
     name: Rename release title

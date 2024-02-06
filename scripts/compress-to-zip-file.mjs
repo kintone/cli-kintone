@@ -14,7 +14,7 @@ cd(projectRoot);
 
 const executableDir = path.join(projectRoot, "bin");
 const licenseFile = path.join(projectRoot, "LICENSE");
-const thirdPartyNoticeFile = path.join(projectRoot, ".licenses", "NOTICE");
+const thirdPartyNoticeFile = path.join(projectRoot, "NOTICE");
 
 try {
   await $`test -e ${executableDir}`;

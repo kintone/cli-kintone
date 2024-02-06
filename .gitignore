@@ -11,8 +11,8 @@ yarn-error.log*
 coverage/
 stats.html
 
-# licensed
-.licenses
+# Third party licenses file
+NOTICE
 
 # artifacts
 lib

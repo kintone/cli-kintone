@@ -2,7 +2,6 @@
 lib
 dist
 coverage
-.licenses/
 
 # Ignore all HTML files:
 *.html

@@ -24,7 +24,7 @@ const config = {
     allowPackages: ["map-stream", "pause-stream"],
   },
   extract: {
-    output: "./.licenses/NOTICE",
+    output: "./NOTICE",
   },
   overrideLicenseText: (dep) => {
     for (const packageName of Object.keys(OVERRIDE_LICENSES_TEXT)) {

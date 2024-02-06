@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  licensed:
+  analyze-and-extract:
     name: Analyze and extract licenses
     runs-on: ubuntu-latest
     steps:
@@ -27,5 +27,5 @@ jobs:
 
       - name: Check licenses
         run: |
-          npx license-manager analyze
-          npx license-manager extract
+          pnpm license:analyze
+          pnpm license:extract

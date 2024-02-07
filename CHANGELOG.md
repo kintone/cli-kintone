@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.11](https://github.com/kintone/cli-kintone/compare/v1.10.10...v1.10.11) (2024-02-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^5.0.8 ([#666](https://github.com/kintone/cli-kintone/issues/666)) ([9cf4af5](https://github.com/kintone/cli-kintone/commit/9cf4af5944cf057a6ed15776fdfbf4e865143c57))
+
 ## [1.10.10](https://github.com/kintone/cli-kintone/compare/v1.10.9...v1.10.10) (2024-01-26)
 
 

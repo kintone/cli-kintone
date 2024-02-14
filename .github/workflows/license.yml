@@ -11,6 +11,8 @@ jobs:
     name: Analyze and extract licenses
     runs-on: ubuntu-latest
     steps:
+      - uses: Kesin11/actions-timeline@v2
+
       - name: Check out repository
         uses: actions/checkout@v4
 

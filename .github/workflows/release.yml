@@ -78,3 +78,10 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - run: gh release edit ${{ needs.release.outputs.tag_name }} --draft=false
+
+  actions-timeline:
+    needs: [publish]
+    runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
+    steps:
+      - uses: Kesin11/actions-timeline@v2

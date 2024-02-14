@@ -53,3 +53,10 @@ jobs:
           TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_APP_ID: ${{ secrets.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_APP_ID }}
           TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN: ${{ secrets.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN }}
         run: pnpm test:e2e
+
+  actions-timeline:
+    needs: [test-e2e]
+    runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
+    steps:
+      - uses: Kesin11/actions-timeline@v2

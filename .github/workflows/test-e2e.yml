@@ -11,30 +11,22 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  get-running-os:
-    name: Get running OS
-    runs-on: ubuntu-latest
-    outputs:
-      os: ${{ steps.get-os.outputs.os }}
-    steps:
-      - id: get-os
-        run: |
-          if [ "${{ github.event_name }}" == "push" ]; then
-            echo "os=['ubuntu-latest','windows-latest','macos-latest']" >> $GITHUB_OUTPUT
-          elif [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "os=['ubuntu-latest','windows-latest']" >> $GITHUB_OUTPUT
-          fi
-
   test-e2e:
     name: Node.js ${{ matrix.os }} ${{ matrix.node-version }}
     runs-on: ${{ matrix.os }}
-    needs: get-running-os
 
     strategy:
       max-parallel: 1
       matrix:
         node-version: [18.x]
-        os: ${{ fromJSON(needs.get-running-os.outputs.os) }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    # Run on limited OS when "pull_request" event to reduce wait time.
+    # We can remove this WA when we can run E2E tests in parallel.
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'pull_request' && (runner.os == 'Linux' || runner.os == 'Windows'))
+
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2

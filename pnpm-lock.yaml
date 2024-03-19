@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@kintone/rest-api-client':
-    specifier: ^5.0.8
-    version: 5.0.8
+    specifier: ^5.4.0
+    version: 5.4.0
   chalk:
     specifier: '4'
     version: 4.0.0
@@ -1989,14 +1989,14 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@kintone/rest-api-client@5.0.8:
-    resolution: {integrity: sha512-6WFY6P/rsF5n246Bgaa7wvn6ByvODWKWOL/m/0zudElcNPSRIi8YjSMoMEoCP2RpGeKD90HOlwaDcyNjBMMbCw==}
+  /@kintone/rest-api-client@5.4.0:
+    resolution: {integrity: sha512-S9IU96IzUqu329nViG84pcGhyuUJC9mfowRKTYdeL1xn+z+1SLXlO5zbCThbQ96/C+XVoMH4gp6zpt1slSaIFQ==}
     engines: {node: '>=18'}
     dependencies:
-      axios: 1.6.7
+      axios: 1.6.8
       core-js: 3.35.1
       form-data: 4.0.0
-      js-base64: 3.7.6
+      js-base64: 3.7.7
       mime: 3.0.0
       qs: 6.11.2
     transitivePeerDependencies:
@@ -2609,10 +2609,10 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /axios@1.6.7:
-    resolution: {integrity: sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==}
+  /axios@1.6.8:
+    resolution: {integrity: sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==}
     dependencies:
-      follow-redirects: 1.15.5
+      follow-redirects: 1.15.6
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -3849,8 +3849,8 @@ packages:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
     dev: true
 
-  /follow-redirects@1.15.5:
-    resolution: {integrity: sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==}
+  /follow-redirects@1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -5027,8 +5027,8 @@ packages:
       - ts-node
     dev: true
 
-  /js-base64@3.7.6:
-    resolution: {integrity: sha512-NPrWuHFxFUknr1KqJRDgUQPexQF0uIJWjeT+2KjEePhitQxQEx5EJBG1lVn5/hc8aLycTpXrDOgPQ6Zq+EDiTA==}
+  /js-base64@3.7.7:
+    resolution: {integrity: sha512-7rCnleh0z2CkXhH67J8K1Ytz0b2Y+yxTPL+/KOJoa20hfnVQ/3/T6W/KflYI4bRHRagNeXeU2bkNGI3v1oS/lw==}
     dev: false
 
   /js-tokens@4.0.0:

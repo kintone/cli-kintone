@@ -44,8 +44,8 @@ devDependencies:
     specifier: ^7.24.1
     version: 7.24.1(@babel/core@7.24.3)
   '@cucumber/cucumber':
-    specifier: ^10.3.1
-    version: 10.3.1
+    specifier: ^10.3.2
+    version: 10.3.2
   '@cybozu/eslint-config':
     specifier: ^22.0.2
     version: 22.0.2(eslint@8.57.0)(prettier@3.2.5)(typescript@5.4.3)
@@ -1449,8 +1449,8 @@ packages:
       regexp-match-indices: 1.0.2
     dev: true
 
-  /@cucumber/cucumber@10.3.1:
-    resolution: {integrity: sha512-0H0NkOXcYTCG1qCh3o0p1HPSMODGJmlHi1rm5yfoiMx5tJbBjxVNI2VVD2xtPWA+D6ehHQD9asewuzjMXrbPIw==}
+  /@cucumber/cucumber@10.3.2:
+    resolution: {integrity: sha512-b5VILjhlrMqceRcQKtO1y6fGMUavJzzzkLKr2l/txM0MALN8HTxe39CE3pE67DG4huhqpQNhYfc2ICvqE72BcQ==}
     engines: {node: 18 || >=20}
     hasBin: true
     dependencies:
@@ -1489,7 +1489,7 @@ packages:
       string-argv: 0.3.1
       strip-ansi: 6.0.1
       supports-color: 8.1.1
-      tmp: 0.2.1
+      tmp: 0.2.3
       type-fest: 4.8.3
       util-arity: 1.1.0
       xmlbuilder: 15.1.1
@@ -5646,7 +5646,7 @@ packages:
     resolution: {integrity: sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==}
     engines: {node: '>=8'}
     dependencies:
-      '@babel/code-frame': 7.24.1
+      '@babel/code-frame': 7.24.2
       error-ex: 1.3.2
       json-parse-even-better-errors: 2.3.1
       lines-and-columns: 1.2.4
@@ -6608,11 +6608,9 @@ packages:
       os-tmpdir: 1.0.2
     dev: false
 
-  /tmp@0.2.1:
-    resolution: {integrity: sha512-76SUhtfqR2Ijn+xllcI5P1oyannHNHByD80W1q447gU3mp9G9PSpGdWmjUOHRDPiHYacIk66W7ubDTuPF3BEtQ==}
-    engines: {node: '>=8.17.0'}
-    dependencies:
-      rimraf: 3.0.2
+  /tmp@0.2.3:
+    resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
+    engines: {node: '>=14.14'}
     dev: true
 
   /tmpl@1.0.5:

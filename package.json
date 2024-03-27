@@ -57,15 +57,15 @@
   },
   "devDependencies": {
     "@actions/core": "^1.10.1",
-    "@babel/core": "^7.23.9",
-    "@babel/preset-env": "^7.23.9",
-    "@babel/preset-typescript": "^7.23.3",
+    "@babel/core": "^7.24.3",
+    "@babel/preset-env": "^7.24.3",
+    "@babel/preset-typescript": "^7.24.1",
     "@cucumber/cucumber": "^10.3.1",
     "@cybozu/eslint-config": "^22.0.2",
     "@cybozu/license-manager": "^1.1.0",
     "@types/inquirer": "^8.2.10",
     "@types/jest": "^29.5.12",
-    "@types/node": "^18.19.18",
+    "@types/node": "^18.19.26",
     "@types/rollup-plugin-auto-external": "^2.0.5",
     "@types/yargs": "^17.0.32",
     "@vercel/ncc": "^0.38.1",
@@ -78,7 +78,7 @@
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.3",
     "zx": "^7.2.3",
     "ajv": "^8.12.0"
   },
@@ -92,5 +92,5 @@
     "inquirer": "^8.2.6",
     "yargs": "^17.7.2"
   },
-  "packageManager": "pnpm@8.15.3"
+  "packageManager": "pnpm@8.15.5"
 }

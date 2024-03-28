@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - investigate/reduce-execution-time-e2e-test
   pull_request:
 
 concurrency:
@@ -34,7 +35,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        node-version: [18.x]
+        node-version: [ 18.x ]
         os: ${{ fromJSON(needs.get-running-os.outputs.os) }}
     steps:
       - uses: actions/checkout@v4
@@ -56,7 +57,7 @@ jobs:
         run: pnpm test:e2e
 
   actions-timeline:
-    needs: [test-e2e]
+    needs: [ test-e2e ]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:

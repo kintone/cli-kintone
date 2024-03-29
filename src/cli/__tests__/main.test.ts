@@ -25,7 +25,7 @@ describe("main", () => {
   it("should throw error when no commands are passed", () => {
     return checkRejectArg({
       arg: "",
-      errorMessage: "Not enough non-option arguments: got 0, need at least 2",
+      errorMessage: "Not enough non-option arguments: got 0, need at least 1",
     });
   });
   it("should throw error when an undefined command is passed", () => {

@@ -50,8 +50,8 @@ devDependencies:
     specifier: ^22.0.2
     version: 22.0.2(eslint@8.57.0)(prettier@3.2.5)(typescript@5.4.3)
   '@cybozu/license-manager':
-    specifier: ^1.2.0
-    version: 1.2.0
+    specifier: ^1.2.1
+    version: 1.2.1
   '@types/inquirer':
     specifier: ^8.2.10
     version: 8.2.10
@@ -1599,8 +1599,8 @@ packages:
       - supports-color
     dev: true
 
-  /@cybozu/license-manager@1.2.0:
-    resolution: {integrity: sha512-9MPmvAIC1C8kZDlK4N7oKA4lRhO9Qnux3Q6wj5WCblJ+/ewh5Ynij+kOFW1BhswrLieE/IlW3MUE5oEjhcH2ng==}
+  /@cybozu/license-manager@1.2.1:
+    resolution: {integrity: sha512-my0f4N/e6XVNZ5q9vJlkA/MBiY7scy7neBRhf2dXpdaYGR5Ti1Xjig4dkKlgy/u0+h4hnkE/8sd5MlhjPNqwuw==}
     engines: {node: '>=18.14.0', npm: '>=9.3.1', pnpm: '>=8.10.0'}
     hasBin: true
     dependencies:

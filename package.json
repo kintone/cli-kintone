@@ -27,7 +27,7 @@
     "test": "jest",
     "test:ci": "pnpm clean:test && jest --runInBand -c jest.config.ci.js",
     "test:e2e": "cucumber-js",
-    "test:e2e:ci": "pnpm clean:test && cucumber-js --format ./cucumber-reporter.js:./allure-results/dummy.txt ./features/common.feature",
+    "test:e2e:ci": "pnpm clean:test && cucumber-js --format ./cucumber-reporter.js:./allure-results/dummy.txt",
     "lint": "run-p -l lint:*",
     "lint:eslint": "eslint --ext .js,.mjs,.cjs,.ts,.mts,.cts ./ --max-warnings 0 --cache --cache-location ./node_modules/.cache/eslint/",
     "lint:prettier": "prettier --check '**/*.{json,md,yml,yaml}' --cache",

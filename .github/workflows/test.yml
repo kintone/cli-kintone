@@ -106,7 +106,7 @@ jobs:
       artifact-id: ${{ steps.upload-allure-results.outputs.artifact-id || '' }}
 
   report:
-    name: Generate report
+    name: Report
     permissions:
       contents: write
     if: ${{ always() && (needs.test-e2e.outputs.artifact-id != '' || needs.test-unit.outputs.artifact-id != '') }}

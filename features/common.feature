@@ -3,7 +3,7 @@ Feature: cli-kintone common test cases
   Scenario: CliKintoneTest-1 Should return the error message when specifying unknown option
     When I run the command with args "record export --app 1 --base-url http://example.com --foo"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "Unknown argument: foo"
+    And The output error message should match with the pattern: "Unknown argument: foobar"
 
   Scenario: CliKintoneTest-2 Should return the error message when specifying unknown subcommand
     When I run the command with args "foo"

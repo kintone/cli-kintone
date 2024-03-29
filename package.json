@@ -25,15 +25,17 @@
     "compress": "zx ./scripts/compress-to-zip-file.mjs",
     "typecheck": "tsc --pretty --noEmit",
     "test": "jest",
-    "test:ci": "jest --runInBand",
+    "test:ci": "pnpm clean:test && jest --runInBand -c jest.config.ci.js",
     "test:e2e": "cucumber-js",
+    "test:e2e:ci": "pnpm clean:test && cucumber-js --format ./cucumber-reporter.js:./allure-results/dummy.txt ./features/common.feature",
     "lint": "run-p -l lint:*",
     "lint:eslint": "eslint --ext .js,.mjs,.cjs,.ts,.mts,.cts ./ --max-warnings 0 --cache --cache-location ./node_modules/.cache/eslint/",
     "lint:prettier": "prettier --check '**/*.{json,md,yml,yaml}' --cache",
     "fix": "run-p fix:*",
     "fix:lint": "run-s 'lint:eslint --fix'",
     "fix:prettier": "run-s 'lint:prettier --write'",
-    "clean": "rimraf lib bin artifacts dist"
+    "clean": "rimraf lib bin artifacts dist",
+    "clean:test": "rimraf allure-results allure-report"
   },
   "repository": {
     "type": "git",
@@ -80,7 +82,10 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3",
     "zx": "^7.2.3",
-    "ajv": "^8.12.0"
+    "ajv": "^8.12.0",
+    "allure-commandline": "^2.25.0",
+    "allure-cucumberjs": "^2.10.0",
+    "allure-jest": "^2.10.0"
   },
   "dependencies": {
     "@kintone/rest-api-client": "^5.4.0",

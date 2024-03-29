@@ -2,6 +2,8 @@
 lib
 dist
 coverage
+allure-report
+allure-results
 
 # Ignore all HTML files:
 *.html

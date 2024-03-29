@@ -1,4 +1,4 @@
-Feature: common test cases
+Feature: cli-kintone common test cases
 
   Scenario: CliKintoneTest-1 Should return the error message when specifying unknown option
     When I run the command with args "record export --app 1 --base-url http://example.com --foo"

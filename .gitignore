@@ -36,3 +36,7 @@ attachments
 # secrets
 .env
 .envrc
+
+# allure report
+allure-report
+allure-results

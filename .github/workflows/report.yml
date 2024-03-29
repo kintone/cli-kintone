@@ -1,0 +1,55 @@
+name: Generate Report
+
+on:
+  workflow_call:
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
+      - name: Download allure results
+        id: download-allure-results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure_results_*
+          merge-multiple: true
+          path: allure-results
+
+      - name: Load test report history
+        id: allure-history
+        uses: actions/checkout@v3
+        continue-on-error: true # in case run without branch for GitHub page source
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build test report
+        id: allure-report
+        if: always()
+        uses: simple-elf/allure-report-action@v1.8
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: allure-results
+          allure_report: allure-report
+          keep_reports: 10
+
+      - name: Publish test report
+        id: deploy-allure-report-page
+        if: steps.allure-report.outcome == 'success' # make sure the allure report is generated successfully
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
+
+      - name: Create job summaries
+        if: steps.deploy-allure-report-page.outcome == 'success'
+        run: |
+          pages_url=https://$(echo $GITHUB_REPOSITORY | awk -F '/' '{print $1}').github.io/$(echo $GITHUB_REPOSITORY | awk -F '/' '{print $2}')/${{ github.run_number }}/#behaviors
+          echo "[Allure report 📝](${pages_url})" >> $GITHUB_STEP_SUMMARY

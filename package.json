@@ -65,7 +65,7 @@
     "@cybozu/license-manager": "^1.2.1",
     "@types/inquirer": "^8.2.10",
     "@types/jest": "^29.5.12",
-    "@types/node": "^18.19.26",
+    "@types/node": "^18.19.28",
     "@types/rollup-plugin-auto-external": "^2.0.5",
     "@types/yargs": "^17.0.32",
     "@vercel/ncc": "^0.38.1",

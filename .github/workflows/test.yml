@@ -33,11 +33,11 @@ jobs:
       - run: pnpm build
       - run: pnpm test:ci
       - name: Extract platform
-        if: always()
+        if: ${{ !cancelled() }}
         run: echo "platform=$(echo ${{ matrix.os }} | cut -d '-' -f 1)" >> $GITHUB_ENV
       - name: Upload allure results
         id: upload-allure-results
-        if: ${{ env.platform == 'ubuntu' && always() }}
+        if: ${{ env.platform == 'ubuntu' && !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: allure_results_unit_${{ env.platform }}
@@ -92,11 +92,11 @@ jobs:
           TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN: ${{ secrets.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN }}
         run: pnpm test:e2e:ci
       - name: Extract platform
-        if: always()
+        if: ${{ !cancelled() }}
         run: echo "platform=$(echo ${{ matrix.os }} | cut -d '-' -f 1)" >> $GITHUB_ENV
       - name: Upload allure results
         id: upload-allure-results
-        if: ${{ env.platform == 'ubuntu' && always() }}
+        if: ${{ env.platform == 'ubuntu' && !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: allure_results_e2e_${{ env.platform }}
@@ -109,7 +109,7 @@ jobs:
     name: Report
     permissions:
       contents: write
-    if: ${{ always() && (needs.test-e2e.outputs.artifact-id != '' || needs.test-unit.outputs.artifact-id != '') }}
+    if: ${{ !cancelled() && (needs.test-e2e.outputs.artifact-id != '' || needs.test-unit.outputs.artifact-id != '') }}
     needs: [test-unit, test-e2e]
     uses: ./.github/workflows/report.yml
 

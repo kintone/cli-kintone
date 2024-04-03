@@ -51,5 +51,5 @@ jobs:
       - name: Create job summaries
         if: steps.deploy-allure-report-page.outcome == 'success'
         run: |
-          pages_url=https://$(echo $GITHUB_REPOSITORY | awk -F '/' '{print $1}').github.io/$(echo $GITHUB_REPOSITORY | awk -F '/' '{print $2}')/${{ github.run_number }}/#behaviors
+          pages_url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}/${{ github.run_number }}/#behaviors
           echo "[Allure report 📝](${pages_url})" >> $GITHUB_STEP_SUMMARY

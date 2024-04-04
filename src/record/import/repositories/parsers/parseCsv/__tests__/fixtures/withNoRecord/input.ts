@@ -1,1 +1,0 @@
-export const csv = `"*","recordNumber","updatedTime","dropDown","creator","subTable","subTableText","subTableCheckbox","userSelect","organizationSelect","groupSelect","date","dateTime","time","modifier","richText","singleLineText","number","radioButton","multiLineText","createdTime","checkBox","calc","multiSelect"`;

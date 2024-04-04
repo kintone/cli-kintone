@@ -1,1 +1,0 @@
-export const csv = `"singleLineText","multiLineText","multiSelect"\n"""single line text""","multi\nline\ntext","""sample3""\nsample4,sample5"\n"""single line text""","multi\nline\ntext","""sample4""\nsample5,sample6"\n`;

@@ -8,8 +8,8 @@ on:
   pull_request:
 
 jobs:
-  test:
-    name: Node.js ${{ matrix.os }} ${{ matrix.node-version }}
+  test-unit:
+    name: Unit test - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -32,9 +32,89 @@ jobs:
         run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm test:ci
+      - name: Extract platform
+        if: ${{ !cancelled() }}
+        run: echo "platform=$(echo ${{ matrix.os }} | cut -d '-' -f 1)" >> $GITHUB_ENV
+      - name: Upload allure results
+        id: upload-allure-results
+        if: ${{ env.platform == 'ubuntu' && !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure_results_unit_${{ env.platform }}
+          path: allure-results
+          if-no-files-found: ignore
+    outputs:
+      artifact-id: ${{ steps.upload-allure-results.outputs.artifact-id || '' }}
+
+  get-running-os-for-test-e2e:
+    name: Get running OS for e2e test
+    runs-on: ubuntu-latest
+    outputs:
+      os: ${{ steps.get-os.outputs.os }}
+    steps:
+      - id: get-os
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+            echo "os=['ubuntu-latest','windows-latest','macos-latest']" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "os=['ubuntu-latest','windows-latest']" >> $GITHUB_OUTPUT
+          fi
+
+  test-e2e:
+    name: E2E test - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+    concurrency:
+      group: test-e2e-workflow-concurrency-group
+      cancel-in-progress: false
+    needs: get-running-os-for-test-e2e
+
+    strategy:
+      max-parallel: 1
+      matrix:
+        node-version: [18.x]
+        os: ${{ fromJSON(needs.get-running-os-for-test-e2e.outputs.os) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Run e2e tests
+        env:
+          TEST_KINTONE_BASE_URL: ${{ secrets.TEST_KINTONE_BASE_URL }}
+          TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID: ${{ secrets.TEST_KINTONE_CREDENTIAL_MANAGEMENT_APP_ID }}
+          TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN: ${{ secrets.TEST_KINTONE_CREDENTIAL_MANAGEMENT_API_TOKEN }}
+          TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_APP_ID: ${{ secrets.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_APP_ID }}
+          TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN: ${{ secrets.TEST_KINTONE_USER_CREDENTIAL_MANAGEMENT_API_TOKEN }}
+        run: pnpm test:e2e:ci
+      - name: Extract platform
+        if: ${{ !cancelled() }}
+        run: echo "platform=$(echo ${{ matrix.os }} | cut -d '-' -f 1)" >> $GITHUB_ENV
+      - name: Upload allure results
+        id: upload-allure-results
+        if: ${{ env.platform == 'ubuntu' && !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure_results_e2e_${{ env.platform }}
+          path: allure-results
+          if-no-files-found: ignore
+    outputs:
+      artifact-id: ${{ steps.upload-allure-results.outputs.artifact-id || '' }}
+
+  report:
+    name: Report
+    permissions:
+      contents: write
+    if: ${{ !cancelled() && (needs.test-e2e.outputs.artifact-id != '' || needs.test-unit.outputs.artifact-id != '') }}
+    needs: [test-unit, test-e2e]
+    uses: ./.github/workflows/report.yml
 
   actions-timeline:
-    needs: [test]
+    needs: [test-unit, test-e2e]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:

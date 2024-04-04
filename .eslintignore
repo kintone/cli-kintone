@@ -2,3 +2,5 @@
 lib
 dist
 coverage
+allure-report
+allure-results

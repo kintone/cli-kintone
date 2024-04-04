@@ -2,6 +2,10 @@
 const config = {
   roots: ["<rootDir>/src", "<rootDir>/features"],
   clearMocks: true,
-  testPathIgnorePatterns: ["<rootDir>/node_modules/", "fixtures"],
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/src/__tests__/setup.ts",
+    "fixtures",
+  ],
 };
 module.exports = config;

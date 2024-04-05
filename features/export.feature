@@ -9,14 +9,14 @@ Feature: cli-kintone export command
     And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed."
 
   Scenario: CliKintoneTest-79 Should return the record contents in CSV format of the app in a space.
-    Given The app "app_in_space" has no records
-    And The app "app_in_space" has some records as below:
+    Given The app "app_in_space_for_export" has no records
+    And The app "app_in_space_for_export" has some records as below:
       | Text  | Number |
       | Alice | 10     |
       | Bob   | 20     |
       | Jenny | 30     |
-    And Load app ID of the app "app_in_space" as env var: "APP_ID"
-    And Load app token of the app "app_in_space" with exact permissions "view" as env var: "API_TOKEN"
+    And Load app ID of the app "app_in_space_for_export" as env var: "APP_ID"
+    And Load app token of the app "app_in_space_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN"
     Then I should get the exit code is zero
     And The output message should match with the data below:

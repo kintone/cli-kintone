@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - "renovate/**"
+      - test/reduce-execution-e2e-test
   pull_request:
 
 jobs:
@@ -14,8 +15,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [ 18.x ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
       - run: git config --global core.autocrlf false
@@ -71,7 +72,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        node-version: [18.x]
+        node-version: [ 18.x ]
         os: ${{ fromJSON(needs.get-running-os-for-test-e2e.outputs.os) }}
     steps:
       - uses: actions/checkout@v4
@@ -110,11 +111,11 @@ jobs:
     permissions:
       contents: write
     if: ${{ !cancelled() && (needs.test-e2e.outputs.artifact-id != '' || needs.test-unit.outputs.artifact-id != '') }}
-    needs: [test-unit, test-e2e]
+    needs: [ test-unit, test-e2e ]
     uses: ./.github/workflows/report.yml
 
   actions-timeline:
-    needs: [test-unit, test-e2e]
+    needs: [ test-unit, test-e2e ]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:

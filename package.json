@@ -62,7 +62,7 @@
     "@babel/core": "^7.24.4",
     "@babel/preset-env": "^7.24.4",
     "@babel/preset-typescript": "^7.24.1",
-    "@cucumber/cucumber": "^10.3.2",
+    "@cucumber/cucumber": "^10.4.0",
     "@cybozu/eslint-config": "^23.0.0",
     "@cybozu/license-manager": "^1.2.1",
     "@types/inquirer": "^8.2.10",

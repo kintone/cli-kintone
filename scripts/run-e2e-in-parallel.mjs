@@ -1,7 +1,9 @@
 import runAll from "npm-run-all";
 import { globSync } from "glob";
+import path from "path";
 
-const featureFiles = globSync("features/**/*.{feature,feature.md}");
+const featuresPath = path.posix.join("features", "**", "*.{feature,feature.md}");
+const featureFiles = globSync(featuresPath, {posix: true});
 
 const patterns = [];
 featureFiles.forEach((file) => {

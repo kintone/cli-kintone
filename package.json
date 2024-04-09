@@ -84,7 +84,7 @@
     "typescript": "^5.4.3",
     "zx": "^7.2.3",
     "ajv": "^8.12.0",
-    "allure-commandline": "^2.25.0",
+    "allure-commandline": "^2.27.0",
     "allure-cucumberjs": "^2.10.0",
     "allure-jest": "^2.10.0",
     "glob": "^10.3.12"

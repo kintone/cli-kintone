@@ -5,14 +5,14 @@ import path from "path";
 const featuresPath = path.posix.join(
   "features",
   "**",
-  "*.{feature,feature.md}",
+  "*.{feature,feature.md}"
 );
 const featureFiles = globSync(featuresPath, { posix: true });
 
 const patterns = [];
 featureFiles.forEach((file) => {
   patterns.push(
-    `test:e2e ${file} --format ./cucumber-reporter.js:./allure-results/dummy.txt`,
+    `test:e2e ${file} --format ./cucumber-reporter.js:./allure-results/dummy.txt`
   );
 });
 
@@ -22,13 +22,13 @@ runAll(patterns, {
   stdout: process.stdout,
   stdin: process.stdin,
   stderr: process.stderr,
-  continueOnError: true,
+  continueOnError: true
 }).catch((error) => {
   if (error.results) {
     error.results
       .filter(({ code }) => code)
       .forEach(({ name }) => {
-        console.error(`"npm run ${name}" was failed`);
+        console.error(`"pnpm run ${name}" was failed`);
       });
   } else {
     console.error(error);

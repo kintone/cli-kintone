@@ -49,6 +49,7 @@ jobs:
   get-running-os-for-test-e2e:
     name: Get running OS for e2e test
     runs-on: ubuntu-latest
+    if: ${{ ! startsWith(github.ref, 'refs/heads/renovate/') }}
     outputs:
       os: ${{ steps.get-os.outputs.os }}
     steps:
@@ -73,7 +74,6 @@ jobs:
       matrix:
         node-version: [ 18.x ]
         os: ${{ fromJSON(needs.get-running-os-for-test-e2e.outputs.os) }}
-    if: ${{ ! startsWith(github.ref, 'refs/heads/renovate/') }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3

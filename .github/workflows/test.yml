@@ -63,7 +63,6 @@ jobs:
   test-e2e:
     name: E2E test - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
     runs-on: ${{ matrix.os }}
-    if: ${{ ! startsWith(github.ref, 'refs/heads/renovate/') }}
     concurrency:
       group: test-e2e-workflow-concurrency-group
       cancel-in-progress: false
@@ -74,6 +73,7 @@ jobs:
       matrix:
         node-version: [ 18.x ]
         os: ${{ fromJSON(needs.get-running-os-for-test-e2e.outputs.os) }}
+    if: ${{ ! startsWith(github.ref, 'refs/heads/renovate/') }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3

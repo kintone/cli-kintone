@@ -49,6 +49,7 @@ jobs:
   get-running-os-for-test-e2e:
     name: Get running OS for e2e test
     runs-on: ubuntu-latest
+    if: ${{ ! startsWith(github.ref, 'refs/heads/renovate/') }}
     outputs:
       os: ${{ steps.get-os.outputs.os }}
     steps:

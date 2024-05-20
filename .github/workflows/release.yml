@@ -72,7 +72,7 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    needs: [ release, rename, upload ]
+    needs: [release, rename, upload]
     env:
       GH_REPO: ${{ github.repository }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -80,7 +80,7 @@ jobs:
       - run: gh release edit ${{ needs.release.outputs.tag_name }} --draft=false
 
   actions-timeline:
-    needs: [ publish ]
+    needs: [publish]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:

@@ -14,3 +14,13 @@ tsconfig.json
 # Ignore auto generated files
 pnpm-lock.yaml
 CHANGELOG.md
+
+# website package
+## Ignore artifacts:
+website/.docusaurus
+website/build
+## Ignore tsconfig file
+website/tsconfig.json
+## Ignore auto generated files
+website/pnpm-lock.yaml
+website/CHANGELOG.md

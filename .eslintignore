@@ -4,3 +4,7 @@ dist
 coverage
 allure-report
 allure-results
+
+# website package
+website/.docusaurus
+website/build

@@ -12,7 +12,9 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "lint": "pnpm -w lint",
+    "fix": "pnpm -w fix"
   },
   "dependencies": {
     "@docusaurus/core": "3.3.2",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.3.2",
+    "@docusaurus/plugin-content-docs": "^3.3.2",
     "@docusaurus/tsconfig": "3.3.2",
     "@docusaurus/types": "3.3.2",
     "typescript": "~5.2.2"

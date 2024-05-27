@@ -99,5 +99,5 @@
     "inquirer": "^8.2.6",
     "yargs": "^17.7.2"
   },
-  "packageManager": "pnpm@8.15.7"
+  "packageManager": "pnpm@8.15.8"
 }

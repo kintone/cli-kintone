@@ -77,8 +77,8 @@ devDependencies:
     specifier: ^2.28.0
     version: 2.28.0
   allure-cucumberjs:
-    specifier: ^2.10.0
-    version: 2.15.0
+    specifier: ^2.15.1
+    version: 2.15.1
   allure-jest:
     specifier: ^2.10.0
     version: 2.15.0
@@ -2676,8 +2676,8 @@ packages:
     hasBin: true
     dev: true
 
-  /allure-cucumberjs@2.15.0:
-    resolution: {integrity: sha512-qoHiCehCmUskyUumJr6pWX6OyDpJecmgz173YLDTizZYvB1mJkcDwckSats1fQ6JeKSYyCIzeNpK/s3YFO7MKw==}
+  /allure-cucumberjs@2.15.1:
+    resolution: {integrity: sha512-T6hWVZLmq29pfTePqEs5D+6qUsvPrGOwoEtHkIs8pPpdwQMbmn78+KR/s6uispIevA1r0SDZOrHGKiJSfJs+2g==}
     dependencies:
       '@cucumber/cucumber': 9.6.0
       '@cucumber/gherkin': 27.0.0
@@ -2685,7 +2685,7 @@ packages:
       '@cucumber/gherkin-utils': 8.0.5
       '@cucumber/message-streams': 4.0.1(@cucumber/messages@22.0.0)
       '@cucumber/messages': 22.0.0
-      allure-js-commons: 2.15.0
+      allure-js-commons: 2.15.1
     dev: true
 
   /allure-jest@2.15.0:
@@ -2707,6 +2707,14 @@ packages:
 
   /allure-js-commons@2.15.0:
     resolution: {integrity: sha512-ON9HO2hQ6Fp73WvfR3t7fKaoFraw6hxTVTnUL+ynDrPFn6GnI4DJivYZ9jR+ZLdUdI0O2iJGtAEmnBa/BkIEGQ==}
+    dependencies:
+      md5: 2.3.0
+      properties: 1.2.1
+      strip-ansi: 5.2.0
+    dev: true
+
+  /allure-js-commons@2.15.1:
+    resolution: {integrity: sha512-5V/VINplbu0APnfSZOkYpKOzucO36Q2EtTD1kqjWjl7n6tj7Hh+IHCZsH3Vpk/LXRDfj9RuXugBBvwYKV5YMJw==}
     dependencies:
       md5: 2.3.0
       properties: 1.2.1

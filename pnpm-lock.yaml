@@ -74,8 +74,8 @@ devDependencies:
     specifier: ^8.14.0
     version: 8.14.0
   allure-commandline:
-    specifier: ^2.28.0
-    version: 2.28.0
+    specifier: ^2.29.0
+    version: 2.29.0
   allure-cucumberjs:
     specifier: ^2.15.1
     version: 2.15.1
@@ -2671,8 +2671,8 @@ packages:
       uri-js: 4.4.1
     dev: true
 
-  /allure-commandline@2.28.0:
-    resolution: {integrity: sha512-TZ3oxop0zseJp2bRKb8Zzkxa4/aB+RvKEMnhylbY6UiOkqhNAHovRJx03bFA9bbvE/nsR70sX+ktU5xI2WJiqQ==}
+  /allure-commandline@2.29.0:
+    resolution: {integrity: sha512-he/oWJflViIdEmuQ4er5k+xRd//PaVVElHHTx01h6W71KM9qKiLeF5MloV93UBYoJRzjD9fgbZedSMKemCEGkQ==}
     hasBin: true
     dev: true
 

@@ -80,8 +80,8 @@ devDependencies:
     specifier: ^2.15.1
     version: 2.15.1
   allure-jest:
-    specifier: ^2.10.0
-    version: 2.15.0
+    specifier: ^2.15.1
+    version: 2.15.1
   babel-jest:
     specifier: ^29.7.0
     version: 29.7.0(@babel/core@7.24.6)
@@ -2688,11 +2688,11 @@ packages:
       allure-js-commons: 2.15.1
     dev: true
 
-  /allure-jest@2.15.0:
-    resolution: {integrity: sha512-N1F+JOUB7cw0Sp0g2T94m8wBFO0pPOZLhrBbQH8d2qqRYR96Alf0DithYIPrq8arnaYxrz24mHYGSVFDRV4csw==}
+  /allure-jest@2.15.1:
+    resolution: {integrity: sha512-mXTaP2CVmhuXUBtV3ITaDTzCNHIUNAF/Bf9JQsDFVhBPIYntAR4DrfFdvJXetZ7wqur4YTfd3xf2xL14eiQDFQ==}
     dependencies:
       '@jest/expect': 29.7.0
-      allure-js-commons: 2.15.0
+      allure-js-commons: 2.15.1
       jest-circus: 29.7.0
       jest-environment-jsdom: 29.7.0
       jest-environment-node: 29.7.0
@@ -2703,14 +2703,6 @@ packages:
       - canvas
       - supports-color
       - utf-8-validate
-    dev: true
-
-  /allure-js-commons@2.15.0:
-    resolution: {integrity: sha512-ON9HO2hQ6Fp73WvfR3t7fKaoFraw6hxTVTnUL+ynDrPFn6GnI4DJivYZ9jR+ZLdUdI0O2iJGtAEmnBa/BkIEGQ==}
-    dependencies:
-      md5: 2.3.0
-      properties: 1.2.1
-      strip-ansi: 5.2.0
     dev: true
 
   /allure-js-commons@2.15.1:

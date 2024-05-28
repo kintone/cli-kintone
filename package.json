@@ -30,7 +30,7 @@
     "test:e2e:dev": "pnpm test:e2e --fail-fast",
     "test:e2e:ci": "pnpm clean:test && node ./scripts/run-e2e-in-parallel.mjs",
     "lint": "run-p -l lint:*",
-    "lint:eslint": "eslint --ext .js,.mjs,.cjs,.ts,.mts,.cts ./ --max-warnings 0 --cache --cache-location ./node_modules/.cache/eslint/",
+    "lint:eslint": "eslint --ext .js,.mjs,.cjs,.jsx,.ts,.mts,.cts,.tsx ./ --max-warnings 0 --cache --cache-location ./node_modules/.cache/eslint/",
     "lint:prettier": "prettier --check '**/*.{json,md,yml,yaml}' --cache",
     "fix": "run-p fix:*",
     "fix:lint": "run-s 'lint:eslint --fix'",

@@ -36,7 +36,9 @@
     "fix:lint": "run-s 'lint:eslint --fix'",
     "fix:prettier": "run-s 'lint:prettier --write'",
     "clean": "rimraf lib bin artifacts dist",
-    "clean:test": "rimraf allure-results allure-report"
+    "clean:test": "rimraf allure-results allure-report",
+    "doc:start": "pnpm --filter ./website start",
+    "doc:build": "pnpm --filter ./website build"
   },
   "repository": {
     "type": "git",

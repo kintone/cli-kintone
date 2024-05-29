@@ -35,18 +35,19 @@ const config: Config = {
       "classic",
       {
         docs: {
+          routeBasePath: "/",
           sidebarPath: "./sidebars.ts",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+            "https://github.com/kintone/cli-kintone/tree/docs/create-doc-site/website",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+            "https://github.com/kintone/cli-kintone/tree/docs/create-doc-site/website",
         },
         theme: {
           customCss: "./src/css/custom.css",
@@ -67,13 +68,19 @@ const config: Config = {
       items: [
         {
           type: "docSidebar",
-          sidebarId: "tutorialSidebar",
+          sidebarId: "guidesSidebar",
           position: "left",
-          label: "Tutorial",
+          label: "Guides",
         },
         { to: "/blog", label: "Blog", position: "left" },
         {
-          href: "https://github.com/facebook/docusaurus",
+          type: "docSidebar",
+          sidebarId: "referencesSidebar",
+          position: "left",
+          label: "References",
+        },
+        {
+          href: "https://github.com/kintone/cli-kintone",
           label: "GitHub",
           position: "right",
         },
@@ -95,16 +102,20 @@ const config: Config = {
           title: "Community",
           items: [
             {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
+              label: "cybozu developer network",
+              href: "https://cybozu.dev/ja/",
             },
             {
-              label: "Discord",
-              href: "https://discordapp.com/invite/docusaurus",
+              label: "cybozu developer community (ja)",
+              href: "https://community.cybozu.dev/c/best-practices/8",
+            },
+            {
+              label: "kintone developer forum (en)",
+              href: "https://forum.kintone.dev/",
             },
             {
               label: "Twitter",
-              href: "https://twitter.com/docusaurus",
+              href: "https://twitter.com/kintonedevjp",
             },
           ],
         },
@@ -117,7 +128,7 @@ const config: Config = {
             },
             {
               label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
+              href: "https://github.com/kintone/cli-kintone",
             },
           ],
         },

@@ -1,0 +1,8 @@
+{
+  "label": "Commands",
+  "position": 300,
+  "link": {
+    "type": "generated-index",
+    "description": "Commands you can run on cli-kintone"
+  }
+}

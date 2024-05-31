@@ -68,16 +68,16 @@ const config: Config = {
       items: [
         {
           type: "docSidebar",
-          sidebarId: "guidesSidebar",
+          sidebarId: "guideSidebar",
           position: "left",
-          label: "Guides",
+          label: "Guide",
         },
         { to: "/blog", label: "Blog", position: "left" },
         {
           type: "docSidebar",
-          sidebarId: "referencesSidebar",
+          sidebarId: "referenceSidebar",
           position: "left",
-          label: "References",
+          label: "Reference",
         },
         {
           type: "docSidebar",
@@ -99,12 +99,12 @@ const config: Config = {
           title: "Docs",
           items: [
             {
-              label: "User Guides",
-              to: "/guides",
+              label: "User Guide",
+              to: "/guide",
             },
             {
-              label: "References",
-              to: "/references",
+              label: "Reference",
+              to: "/reference",
             },
           ],
         },

@@ -21,7 +21,7 @@
     "build:artifacts": "run-s build license:analyze license:extract compress",
     "package": "pkg ./dist/index.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
     "license:analyze": "license-manager analyze -c license-manager.config.js",
-    "license:extract": "license-manager extract -c license-manager.config.js",
+    "license:extract": "license-manager extract -c license-manager.config.js -w .",
     "compress": "zx ./scripts/compress-to-zip-file.mjs",
     "typecheck": "tsc --pretty --noEmit",
     "test": "jest",

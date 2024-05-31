@@ -37,15 +37,15 @@ const config: Config = {
         docs: {
           routeBasePath: "/",
           sidebarPath: "./sidebars.ts",
-          // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
+          // TODO: Change branch to main
           editUrl:
             "https://github.com/kintone/cli-kintone/tree/docs/create-doc-site/website",
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
+          // TODO: Change branch to main
           editUrl:
             "https://github.com/kintone/cli-kintone/tree/docs/create-doc-site/website",
         },
@@ -58,6 +58,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
+    // TODO: Change social card
     image: "img/docusaurus-social-card.jpg",
     colorMode: {
       defaultMode: "dark",

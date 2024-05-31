@@ -2,6 +2,6 @@
 sidebar_position: 100
 ---
 
-# References
+# Community
 
 Coming soon!

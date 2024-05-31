@@ -80,6 +80,12 @@ const config: Config = {
           label: "References",
         },
         {
+          type: "docSidebar",
+          sidebarId: "communitySidebar",
+          position: "right",
+          label: "Community",
+        },
+        {
           href: "https://github.com/kintone/cli-kintone",
           label: "GitHub",
           position: "right",
@@ -93,8 +99,12 @@ const config: Config = {
           title: "Docs",
           items: [
             {
-              label: "Tutorial",
-              to: "/docs/intro",
+              label: "User Guides",
+              to: "/guides",
+            },
+            {
+              label: "References",
+              to: "/references",
             },
           ],
         },

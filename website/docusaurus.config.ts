@@ -78,7 +78,6 @@ const config: Config = {
           position: "left",
           label: "Guide",
         },
-        { to: "/blog", label: "Blog", position: "left" },
         {
           type: "docSidebar",
           sidebarId: "referenceSidebar",
@@ -88,9 +87,10 @@ const config: Config = {
         {
           type: "docSidebar",
           sidebarId: "communitySidebar",
-          position: "right",
+          position: "left",
           label: "Community",
         },
+        { to: "/blog", label: "Blog", position: "left" },
         {
           href: "https://github.com/kintone/cli-kintone",
           label: "GitHub",

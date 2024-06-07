@@ -1,20 +1,23 @@
 import runAll from "npm-run-all";
-import { globSync } from "glob";
-import path from "path";
+// import { globSync } from "glob";
+// import path from "path";
 
-const featuresPath = path.posix.join(
-  "features",
-  "**",
-  "*.{feature,feature.md}",
-);
-const featureFiles = globSync(featuresPath, { posix: true });
+// const featuresPath = path.posix.join(
+//   "features",
+//   "**",
+//   "*.{feature,feature.md}",
+// );
+// const featureFiles = globSync(featuresPath, { posix: true });
 
 const patterns = [];
-featureFiles.forEach((file) => {
-  patterns.push(
-    `test:e2e ${file} --format ./cucumber-reporter.js:./allure-results/dummy.txt`,
-  );
-});
+patterns.push(
+  `test:e2e features/delete.feature:55 --format ./cucumber-reporter.js:./allure-results/dummy.txt`,
+);
+// featureFiles.forEach((file) => {
+//   patterns.push(
+//     `test:e2e features/delete.feature:55 --format ./cucumber-reporter.js:./allure-results/dummy.txt`,
+//   );
+// });
 
 runAll(patterns, {
   parallel: true,
@@ -33,4 +36,7 @@ runAll(patterns, {
   } else {
     console.error(error);
   }
+
+  // eslint-disable-next-line no-process-exit
+  process.exit(1);
 });

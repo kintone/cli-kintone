@@ -12,7 +12,7 @@ const featureFiles = globSync(featuresPath, { posix: true });
 const patterns = [];
 featureFiles.forEach((file) => {
   patterns.push(
-    `test:e2e features/delete.feature:55 --format ./cucumber-reporter.js:./allure-results/dummy.txt`,
+    `test:e2e ${file} --format ./cucumber-reporter.js:./allure-results/dummy.txt`,
   );
 });
 

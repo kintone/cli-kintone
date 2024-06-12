@@ -1,7 +1,0 @@
-"Epic","Feature","Story","FAILED","BROKEN","PASSED","SKIPPED","UNKNOWN"
-"Unit tests","","","0","0","208","0","0"
-"","cli-kintone export command","","1","0","33","0","0"
-"","cli-kintone import command","","1","0","43","0","0"
-"","cli-kintone delete command","","1","0","31","0","0"
-"","cli-kintone common test cases","","0","0","17","0","0"
-"","","","0","0","0","2","0"

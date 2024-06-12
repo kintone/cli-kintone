@@ -17,8 +17,8 @@
     "fix": "pnpm -w fix"
   },
   "dependencies": {
-    "@docusaurus/core": "3.3.2",
-    "@docusaurus/preset-classic": "3.3.2",
+    "@docusaurus/core": "3.4.0",
+    "@docusaurus/preset-classic": "3.4.0",
     "@mdx-js/react": "^3.0.1",
     "clsx": "^2.1.1",
     "prism-react-renderer": "^2.3.1",
@@ -26,11 +26,11 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@docusaurus/eslint-plugin": "^3.3.2",
-    "@docusaurus/module-type-aliases": "3.3.2",
-    "@docusaurus/plugin-content-docs": "^3.3.2",
-    "@docusaurus/tsconfig": "3.3.2",
-    "@docusaurus/types": "3.3.2",
+    "@docusaurus/eslint-plugin": "^3.4.0",
+    "@docusaurus/module-type-aliases": "3.4.0",
+    "@docusaurus/plugin-content-docs": "^3.4.0",
+    "@docusaurus/tsconfig": "3.4.0",
+    "@docusaurus/types": "3.4.0",
     "typescript": "~5.4.5"
   },
   "browserslist": {

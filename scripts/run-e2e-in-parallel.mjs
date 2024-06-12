@@ -33,4 +33,7 @@ runAll(patterns, {
   } else {
     console.error(error);
   }
+
+  // eslint-disable-next-line no-process-exit
+  process.exit(1);
 });

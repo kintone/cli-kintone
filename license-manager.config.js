@@ -1,6 +1,6 @@
-const { isMatchName } = require("@cybozu/license-manager");
+const { isMatchName, createConfig } = require("@cybozu/license-manager");
 
-const config = {
+const config = createConfig({
   packageManager: "pnpm",
   analyze: {
     allowLicenses: [
@@ -17,14 +17,22 @@ const config = {
       "CC-BY-4.0",
       "(MIT OR CC0-1.0)",
       "(MIT OR WTFPL)",
+      "(WTFPL OR MIT)",
       "BlueOak-1.0.0",
       "(BSD-2-Clause OR MIT OR Apache-2.0)",
       "Unlicense",
     ],
-    allowPackages: ["map-stream", "pause-stream"],
+    allowPackages: ["map-stream", "pause-stream", "node-forge"],
   },
   extract: {
     output: "./NOTICE",
+  },
+  overrideLicense: (dep) => {
+    // https://github.com/felixge/node-require-like/blob/master/License
+    if (dep.name === "require-like") {
+      return "MIT";
+    }
+    return undefined;
   },
   overrideLicenseText: (dep) => {
     for (const packageName of Object.keys(OVERRIDE_LICENSES_TEXT)) {
@@ -34,7 +42,7 @@ const config = {
     }
     return undefined;
   },
-};
+});
 
 const OVERRIDE_LICENSES_TEXT = {
   "https-proxy-agent": {

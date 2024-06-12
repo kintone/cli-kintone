@@ -21,7 +21,7 @@
     "build:artifacts": "run-s build license:analyze license:extract compress",
     "package": "pkg ./dist/index.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
     "license:analyze": "license-manager analyze -c license-manager.config.js",
-    "license:extract": "license-manager extract -c license-manager.config.js",
+    "license:extract": "license-manager extract -c license-manager.config.js -w .",
     "compress": "zx ./scripts/compress-to-zip-file.mjs",
     "typecheck": "tsc --pretty --noEmit",
     "test": "jest",
@@ -30,13 +30,15 @@
     "test:e2e:dev": "pnpm test:e2e --fail-fast",
     "test:e2e:ci": "pnpm clean:test && node ./scripts/run-e2e-in-parallel.mjs",
     "lint": "run-p -l lint:*",
-    "lint:eslint": "eslint --ext .js,.mjs,.cjs,.ts,.mts,.cts ./ --max-warnings 0 --cache --cache-location ./node_modules/.cache/eslint/",
+    "lint:eslint": "eslint --ext .js,.mjs,.cjs,.jsx,.ts,.mts,.cts,.tsx ./ --max-warnings 0 --cache --cache-location ./node_modules/.cache/eslint/",
     "lint:prettier": "prettier --check '**/*.{json,md,yml,yaml}' --cache",
     "fix": "run-p fix:*",
     "fix:lint": "run-s 'lint:eslint --fix'",
     "fix:prettier": "run-s 'lint:prettier --write'",
     "clean": "rimraf lib bin artifacts dist",
-    "clean:test": "rimraf allure-results allure-report"
+    "clean:test": "rimraf allure-results allure-report",
+    "doc:start": "pnpm --filter ./website start",
+    "doc:build": "pnpm --filter ./website build"
   },
   "repository": {
     "type": "git",

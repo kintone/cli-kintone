@@ -1,1 +1,0 @@
-{"total":4,"items":[{"uid":"48d43f036d27bf676d558f3809c91472","name":"cli-kintone delete command","statistic":{"failed":1,"broken":0,"skipped":0,"passed":0,"unknown":0,"total":1}},{"uid":"3b7d8d899c53a3ac80440ea9ff4ff38a","name":"Unit tests","statistic":{"failed":0,"broken":0,"skipped":0,"passed":208,"unknown":0,"total":208}}]}

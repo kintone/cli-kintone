@@ -38,3 +38,34 @@
   --ifm-color-primary-lightest: #ffd24d;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* Table colors in logging page */
+table .debug {
+  background-color: limegreen;
+}
+table .info {
+  background-color: dodgerblue;
+}
+table .warn {
+  background-color: gold;
+}
+table .error {
+  background-color: orangered;
+}
+table .fatal {
+  background-color: orangered;
+}
+table .included {
+  background-color: lime;
+}
+table .excluded {
+  background-color: salmon;
+}
+[data-theme='dark'] {
+  table .included {
+    background-color: green;
+  }
+  table .excluded {
+    background-color: maroon;
+  }
+}

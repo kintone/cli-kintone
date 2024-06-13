@@ -1,0 +1,7 @@
+{
+  "label": "Proxy",
+  "position": 100000,
+  "link": {
+    "type": "generated-index"
+  }
+}

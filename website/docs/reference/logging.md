@@ -1,4 +1,8 @@
-## Logging
+---
+sidebar_position: 600
+---
+
+# Logging
 
 ## Overview
 

@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Commands you can run on cli-kintone"
-  }
+  },
+  "collapsed": false
 }

@@ -34,7 +34,7 @@ cli-kintone provides a command-completion feature that lets you use the **Tab** 
 cli-kintone command completion is now supported for `bash` and `zsh` shells.
 :::
 
-### zsh
+#### zsh
 
 To enable it in `zsh`, `cd` to the directory that contains the cli-kintone executable file, then run the following commands:
 
@@ -57,7 +57,7 @@ echo 'autoload -Uz compinit && compinit' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### bash
+#### bash
 
 To enable it in `bash`, `cd` to the directory that contains the cli-kintone executable file, then run the following commands:
 
@@ -79,7 +79,7 @@ echo 'source ~/.bash_completion.d/_cli-kintone' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### For Windows OS
+#### For Windows OS
 
 For Windows OS, you can use cli-kintone command completion via `bash` on [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
 

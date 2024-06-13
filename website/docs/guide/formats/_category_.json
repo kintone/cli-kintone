@@ -1,0 +1,9 @@
+{
+  "label": "Supported file formats",
+  "position": 300,
+  "link": {
+    "type": "generated-index",
+    "description": "cli-kintone supports the following formats for both import & export commands."
+  },
+  "collapsed": false
+}

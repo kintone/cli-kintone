@@ -40,26 +40,28 @@
 }
 
 /* Table colors in logging page */
-table .debug {
-  background-color: limegreen;
-}
-table .info {
-  background-color: dodgerblue;
-}
-table .warn {
-  background-color: gold;
-}
-table .error {
-  background-color: orangered;
-}
-table .fatal {
-  background-color: orangered;
-}
-table .included {
-  background-color: lime;
-}
-table .excluded {
-  background-color: salmon;
+table {
+  .debug {
+    background-color: limegreen;
+  }
+  .info {
+    background-color: dodgerblue;
+  }
+  .warn {
+    background-color: gold;
+  }
+  .error {
+    background-color: orangered;
+  }
+  .fatal {
+    background-color: orangered;
+  }
+  .included {
+    background-color: lime;
+  }
+  .excluded {
+    background-color: salmon;
+  }
 }
 [data-theme='dark'] {
   table .included {

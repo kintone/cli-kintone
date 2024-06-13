@@ -8,3 +8,5 @@ allure-results
 # website package
 website/.docusaurus
 website/build
+## Auto generated file
+website/contributors.json

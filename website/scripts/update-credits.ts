@@ -2,7 +2,7 @@
 import { Octokit } from "@octokit/rest";
 import * as fs from "fs/promises";
 
-const ignoredAccounts = [
+const ignoredUsers = [
   "renovate[bot]",
   "github-actions[bot]",
   "trigger-github-actions-release[bot]",
@@ -12,16 +12,22 @@ const ignoredAccounts = [
 (async () => {
   const octokit = new Octokit();
 
-  const resp = await octokit.paginate(
-    "GET /repos/{owner}/{repo}/contributors",
-    { owner: "kintone", repo: "cli-kintone" },
-  );
+  // We use stats because the response of octokit.repos.listContributors is missing some contributors.
+  const resp = await octokit.repos.getContributorsStats({
+    owner: "kintone",
+    repo: "cli-kintone",
+  });
 
-  const contributors = resp
+  const contributors = resp.data
     .filter(
-      (c) => c.type === "User" && !ignoredAccounts.includes(c.login ?? ""),
+      (c) =>
+        c.author?.type === "User" && !ignoredUsers.includes(c.author.login),
     )
-    .map((c) => ({ login: c.login, avatar_url: c.avatar_url }));
+    .sort((c1, c2) => c2.total - c1.total)
+    .map((c) => ({
+      login: c.author?.login,
+      avatar_url: c.author?.avatar_url,
+    }));
 
   const json = JSON.stringify(contributors, null, 2);
   await fs.writeFile("contributors.json", json);

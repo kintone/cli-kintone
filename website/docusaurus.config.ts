@@ -149,7 +149,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Cybozu, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Cybozu, Inc.`,
     },
     prism: {
       theme: prismThemes.github,

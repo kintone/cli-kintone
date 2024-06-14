@@ -5,6 +5,7 @@ describe("StandardLogger", () => {
   const mockDate = new Date(0);
   const spy = jest.spyOn(global, "Date").mockImplementation(() => mockDate);
   const patternTest = [
+    ["TRACE", "trace"],
     ["DEBUG", "debug"],
     ["INFO", "info"],
     ["WARN", "warn"],
@@ -75,6 +76,7 @@ describe("StandardLogger", () => {
     const standardLogger = new StandardLogger(options);
     const formatSpy = jest.spyOn(standardLogger as any, "format");
     standardLogger.setLogConfigLevel("warn");
+    standardLogger.trace(message);
     standardLogger.debug(message);
     standardLogger.info(message);
     standardLogger.warn(message);

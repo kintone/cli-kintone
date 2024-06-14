@@ -65,6 +65,11 @@ We have two types of log levels: **log event level** and **log config level**.
     <th>Description</th>
   </tr>
   <tr>
+    <td>trace</td>
+    <td class="trace">background green</td>
+    <td>Detailed information about internal process status.<br/>e.g. internal process status.</td>
+  </tr>
+  <tr>
     <td>debug</td>
     <td class="debug">green</td>
     <td>Diagnostic information that is helpful for troubleshooting or testing.<br/>e.g. detailed progress (nth record processing, ),</td>
@@ -98,10 +103,11 @@ The default log config level is `info`.
 <table>
   <tr>
     <th>Event level</th>
-    <th colspan="6">Config level</th>
+    <th colspan="7">Config level</th>
   </tr>
   <tr>
     <th></th>
+    <th>trace</th>
     <th>debug</th>
     <th>info</th>
     <th>warn</th>
@@ -110,7 +116,18 @@ The default log config level is `info`.
     <th>none</th>
   </tr>
   <tr>
+    <td>trace</td>
+    <td class="included">included</td>
+    <td class="excluded">excluded</td>
+    <td class="excluded">excluded</td>
+    <td class="excluded">excluded</td>
+    <td class="excluded">excluded</td>
+    <td class="excluded">excluded</td>
+    <td class="excluded">excluded</td>
+  </tr>
+  <tr>
     <td>debug</td>
+    <td class="included">included</td>
     <td class="included">included</td>
     <td class="excluded">excluded</td>
     <td class="excluded">excluded</td>
@@ -122,6 +139,7 @@ The default log config level is `info`.
     <td>info</td>
     <td class="included">included</td>
     <td class="included">included</td>
+    <td class="included">included</td>
     <td class="excluded">excluded</td>
     <td class="excluded">excluded</td>
     <td class="excluded">excluded</td>
@@ -129,6 +147,7 @@ The default log config level is `info`.
   </tr>
   <tr>
     <td>warn</td>
+    <td class="included">included</td>
     <td class="included">included</td>
     <td class="included">included</td>
     <td class="included">included</td>
@@ -142,11 +161,13 @@ The default log config level is `info`.
     <td class="included">included</td>
     <td class="included">included</td>
     <td class="included">included</td>
+    <td class="included">included</td>
     <td class="excluded">excluded</td>
     <td class="excluded">excluded</td>
   </tr>
   <tr>
     <td>fatal</td>
+    <td class="included">included</td>
     <td class="included">included</td>
     <td class="included">included</td>
     <td class="included">included</td>

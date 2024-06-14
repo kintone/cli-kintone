@@ -41,6 +41,9 @@
 
 /* Table colors in logging page */
 table {
+  .trace {
+    background-color: green;
+  }
   .debug {
     background-color: limegreen;
   }
@@ -54,7 +57,7 @@ table {
     background-color: orangered;
   }
   .fatal {
-    background-color: orangered;
+    background-color: maroon;
   }
   .included {
     background-color: lime;

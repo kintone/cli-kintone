@@ -1,0 +1,143 @@
+---
+sidebar_position: 100
+---
+
+# Getting Started
+
+## What is cli-kintone?
+
+cli-kintone (Pronounced `/ˈkuː.ri ˈkiːn.toʊn/`, named after the Japanese sweet [Kurikinton](https://visitgifu.com/see-do/kurikinton/)) is the CLI tool for importing and exporting [kintone](https://www.kintone.com/en-us/) records. It is suitable for batch record operations.
+
+- Backup/restore kintone records
+- Data synchronization between kintone and other BI platforms
+- Data migration from other systems
+
+## Why cli-kintone?
+
+cli-kintone enhance non-engineers work performance.
+
+Here is a comparison of Web GUI, CLI, and API:
+
+- Web GUI
+  - Low learning cost
+  - Easy to operate
+  - Difficult to automate
+  - Mainly for end users
+- CLI
+  - Moderate learning cost
+  - Modestly easy to operate
+  - Easy to automate with shell scripts
+  - Mainly used by IT personnel
+- API
+  - High learning cost
+  - Application development required to operate
+  - High level automation can be built
+  - Mainly used by plugin developers
+
+**With cli-kintone, non-engineers can automate their routine and regular tasks with a little shell scripting skill.**
+
+## Try cli-kintone
+
+In this section,
+
+### Requirements
+
+To run cli-kintone, a kintone subscription with API access is required.
+
+### Installing
+
+1. Jump to the [Releases](https://github.com/kintone/cli-kintone/releases) page.
+2. Download latest cli-kintone ZIP file and extract it.
+
+For more details, see [Installation](./installation) page.
+
+### Operation check
+
+Run cli-kintone with `--version` option.
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="linux-macos" label="Linux/macOS" default>
+    ```shell
+    ./cli-kintone --version
+
+    # A version should be printed
+    # 1.10.0
+    ```
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+    ```powershell
+    ./cli-kintone.exe --version
+
+    # A version should be printed
+    # 1.10.0
+    ```
+  </TabItem>
+</Tabs>
+
+
+If you see the version you downloaded, you are ready to go!
+
+### Configuring
+
+To access kintone from cli-kintone, you need to set authentication information.
+We recommend setting environment variables to reduce repetition.
+
+Here are the environment variables to set.
+
+|Key|Description|
+|-|-|
+|`KINTONE_BASE_URL`|Base URL of kintone you want to access.<br/>e.g. `https:example.cybozu.com/`|
+|`KINTONE_API_TOKEN`|API token of the app you want to access|
+
+:::tip
+Alternatively, you can set `KINTONE_USERNAME` and `KINTONE_PASSWORD` to use password authentication.
+:::
+
+<Tabs>
+  <TabItem value="linux-macos" label="Linux/macOS" default>
+    ```shell
+    export KINTONE_BASE_URL='https://example.cybozu.com/'
+    export KINTONE_API_TOKEN='YourAPIToken'
+    ```
+  </TabItem>
+  <TabItem value="windows-powershell" label="Windows (PowerShell)">
+    ```powershell
+    $Env:KINTONE_BASE_URL='https://example.cybozu.com/'
+    $Env:KINTONE_API_TOKEN='YourAPIToken'
+    ```
+  </TabItem>
+  <TabItem value="windows-cmd" label="Windows (Cmd)">
+    ```powershell
+    set KINTONE_BASE_URL=https://example.cybozu.com/
+    set KINTONE_API_TOKEN=YourAPIToken
+    ```
+  </TabItem>
+</Tabs>
+
+### Exporting record
+
+Now, it's time. Use the `record export` command to retrive records from kintone App.
+
+<Tabs>
+  <TabItem value="linux-macos" label="Linux/macOS" default>
+    ```shell
+    ./cli-kintone --app 123
+
+    # Exported records will be printed in CSV format
+    ```
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+    ```powershell
+    ./cli-kintone.exe --app 123
+
+    # Exported records will be printed in CSV format
+    ```
+  </TabItem>
+</Tabs>
+
+## Next steps
+
+See [Commands](/commands) section to check all features.

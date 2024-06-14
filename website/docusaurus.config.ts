@@ -41,6 +41,8 @@ const config: Config = {
           // TODO: Change branch to main
           editUrl:
             "https://github.com/kintone/cli-kintone/tree/docs/create-doc-site/website",
+          // showLastUpdateTime: true,
+          // showLastUpdateAuthor: true,
         },
         blog: {
           showReadingTime: true,

@@ -30,5 +30,5 @@ const ignoredUsers = [
     }));
 
   const json = JSON.stringify(contributors, null, 2);
-  await fs.writeFile("contributors.json", json);
+  await fs.writeFile("contributors.json", json + "\n");
 })();

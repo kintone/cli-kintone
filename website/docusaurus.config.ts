@@ -38,18 +38,14 @@ const config: Config = {
           routeBasePath: "/",
           sidebarPath: "./sidebars.ts",
           // Remove this to remove the "edit this page" links.
-          // TODO: Change branch to main
-          editUrl:
-            "https://github.com/kintone/cli-kintone/tree/docs/create-doc-site/website",
+          editUrl: "https://github.com/kintone/cli-kintone/tree/main/website",
           // showLastUpdateTime: true,
           // showLastUpdateAuthor: true,
         },
         blog: {
           showReadingTime: true,
           // Remove this to remove the "edit this page" links.
-          // TODO: Change branch to main
-          editUrl:
-            "https://github.com/kintone/cli-kintone/tree/docs/create-doc-site/website",
+          editUrl: "https://github.com/kintone/cli-kintone/tree/main/website",
         },
         theme: {
           customCss: "./src/css/custom.css",

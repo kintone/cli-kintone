@@ -54,6 +54,9 @@ importers:
       '@cybozu/license-manager':
         specifier: ^1.2.1
         version: 1.2.1
+      '@octokit/rest':
+        specifier: ^20.1.1
+        version: 20.1.1
       '@types/inquirer':
         specifier: ^8.2.10
         version: 8.2.10

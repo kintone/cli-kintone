@@ -2,6 +2,7 @@ import { stderr as chalkStderr } from "chalk";
 import { CliKintoneError } from "./error";
 
 export interface Logger {
+  trace: (message: any) => void;
   debug: (message: any) => void;
   info: (message: any) => void;
   warn: (message: any) => void;
@@ -10,6 +11,7 @@ export interface Logger {
 }
 
 export const LOG_CONFIG_LEVELS = <const>[
+  "trace",
   "debug",
   "info",
   "warn",
@@ -20,7 +22,13 @@ export const LOG_CONFIG_LEVELS = <const>[
 
 export type LogConfigLevel = (typeof LOG_CONFIG_LEVELS)[number];
 
-export type LogEventLevel = "debug" | "info" | "warn" | "error" | "fatal";
+export type LogEventLevel =
+  | "trace"
+  | "debug"
+  | "info"
+  | "warn"
+  | "error"
+  | "fatal";
 
 export type LogEvent = {
   level: LogEventLevel;
@@ -44,6 +52,10 @@ export class StandardLogger implements Logger {
     if (options?.logConfigLevel) {
       this.logConfigLevel = options.logConfigLevel;
     }
+  }
+
+  trace(message: any): void {
+    this.log({ level: "trace", message });
   }
 
   debug(message: any): void {
@@ -79,6 +91,7 @@ export class StandardLogger implements Logger {
     const logConfigLevelMatrix: {
       [configLevel in LogConfigLevel]: LogEventLevel[];
     } = {
+      trace: ["trace", "debug", "info", "warn", "error", "fatal"],
       debug: ["debug", "info", "warn", "error", "fatal"],
       info: ["info", "warn", "error", "fatal"],
       warn: ["warn", "error", "fatal"],
@@ -93,6 +106,7 @@ export class StandardLogger implements Logger {
   private format(event: LogEvent): string {
     const timestamp = new Date().toISOString();
     const eventLevelLabels: { [level in LogEventLevel]: string } = {
+      trace: chalkStderr.bgGreen("TRACE"),
       debug: chalkStderr.green("DEBUG"),
       info: chalkStderr.blue("INFO"),
       warn: chalkStderr.yellow("WARN"),

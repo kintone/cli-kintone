@@ -18,41 +18,17 @@ $ cli-kintone record export \
 
 ## Options
 
-Some options use environment variables starting with `KINTONE_` as default values.
+See [Options](/options) page for common options.
 
-```text
-Options:
-      --version              Show version number                       [boolean]
-      --help                 Show help                                 [boolean]
-      --base-url             Kintone Base Url
-                                 [string] [required] [default: KINTONE_BASE_URL]
-  -u, --username             Kintone Username
-                                            [string] [default: KINTONE_USERNAME]
-  -p, --password             Kintone Password
-                                            [string] [default: KINTONE_PASSWORD]
-      --api-token            App's API token[array] [default: KINTONE_API_TOKEN]
-      --basic-auth-username  Kintone Basic Auth Username
-                                 [string] [default: KINTONE_BASIC_AUTH_USERNAME]
-      --basic-auth-password  Kintone Basic Auth Password
-                                 [string] [default: KINTONE_BASIC_AUTH_PASSWORD]
-      --app                  The ID of the app               [string] [required]
-      --guest-space-id       The ID of guest space
-                                      [string] [default: KINTONE_GUEST_SPACE_ID]
-      --attachments-dir      Attachment file directory                  [string]
-      --encoding             Character encoding
-                                     [choices: "utf8", "sjis"] [default: "utf8"]
-  -c, --condition            The query string                           [string]
-      --order-by             The sort order as a query                  [string]
-      --fields               The fields to be exported in comma-separated
-                                                                        [string]
-      --pfx-file-path        The path to the client certificate file        [string]
-      --pfx-file-password    The password of the client certificate file    [string]
-      --proxy                The URL of a proxy server
-                                                 [string] [default: HTTPS_PROXY]
-      --log-level            The log config level
-                                     [choices: "debug", "info", "warn", "error", "fatal", "none"] [default: "info"]
-      --verbose              Set the log config level to "debug"                                   [boolean]
-```
+| Option              | Required | Description                                                               |
+| ------------------- | -------- | ------------------------------------------------------------------------- |
+| `--app`             | Yes      | The ID of the app                                                         |
+| `--attachments-dir` |          | Attachment file directory                                                 |
+| `--condition`, `-c` |          | The query string                                                          |
+| `--order-by`        |          | The sort order as a query                                                 |
+| `--fields`          |          | The fields to be exported in comma-separated                              |
+| `--encoding  `      |          | Character encoding<br/>Default to `utf8`<br/>Encodings: `utf8` and `sjis` |
+| `--yes`             |          | Force to delete records                                                   |
 
 ### Notes
 

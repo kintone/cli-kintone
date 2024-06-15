@@ -14,7 +14,7 @@ The `delete` command allows you to delete records of a specified Kintone app.
 ## Example
 
 ```shell
-$ cli-kintone record delete \
+cli-kintone record delete \
 --base-url https://${yourDomain} \
 --api-token ${apiToken} \
 --app ${kintoneAppId} \
@@ -25,35 +25,14 @@ You can bypass the confirmation step by using the options `--yes` or `-y`.
 
 ## Options
 
-Some options use environment variables starting with `KINTONE_` as default values.
+See [Options](/options) page for common options.
 
-```text
-Options:
-      --version              Show version number                       [boolean]
-      --help                 Show help                                 [boolean]
-      --base-url             Kintone Base Url
-                                 [string] [required] [default: KINTONE_BASE_URL]
-      --api-token            App's API token[array] [default: KINTONE_API_TOKEN]
-      --basic-auth-username  Kintone Basic Auth Username
-                                 [string] [default: KINTONE_BASIC_AUTH_USERNAME]
-      --basic-auth-password  Kintone Basic Auth Password
-                                 [string] [default: KINTONE_BASIC_AUTH_PASSWORD]
-      --app                  The ID of the app               [string] [required]
-      --file-path            The path to the source file.
-                             The file extension should be ".csv"        [string]
-      --encoding             Character encoding
-                                     [choices: "utf8", "sjis"] [default: "utf8"]
-      --guest-space-id       The ID of guest space
-                                      [string] [default: KINTONE_GUEST_SPACE_ID]
-      --pfx-file-path        The path to the client certificate file        [string]
-      --pfx-file-password    The password of the client certificate file    [string]
-      --proxy                The URL of a proxy server
-                                                 [string] [default: HTTPS_PROXY]
-  -y, --yes                  Force to delete records                   [boolean]
-      --log-level            The log config level
-                                     [choices: "debug", "info", "warn", "error", "fatal", "none"] [default: "info"]
-      --verbose              Set the log config level to "debug"                                   [boolean]
-```
+| Option         | Required | Description                                                               |
+| -------------- | -------- | ------------------------------------------------------------------------- |
+| `--app`        | Yes      | The ID of the app                                                         |
+| `--file-path`  |          | The path to the source file.                                              |
+| `--encoding  ` |          | Character encoding<br/>Default to `utf8`<br/>Encodings: `utf8` and `sjis` |
+| `--yes`, `-y`  |          | Force to delete records                                                   |
 
 ## Delete all records
 

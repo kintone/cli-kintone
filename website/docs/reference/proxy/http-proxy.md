@@ -24,9 +24,12 @@ We use HTTP Tunneling for the request.
 - The Proxy server creates a TCP connection to the destination server
 - The client sends an encrypted request to the destination server via the proxy server
 
-TODO: Add diagram
+![Sequence of HTTP Tunneling](./img/http-tunneling.png)
 
-ref. https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling#http_tunneling
+### refs.
+
+- [Proxy servers and tunneling - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling#http_tunneling)
+- [Issue #24 · kintone/js-sdk-ja](https://github.com/kintone/js-sdk-ja/issues/24#issuecomment-996485078)
 
 ## Implementation
 

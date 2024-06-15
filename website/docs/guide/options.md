@@ -19,6 +19,8 @@ Some options use environment variables as default values.
 
 ## Logging
 
+See [Logging](/reference/logging) reference for more details.
+
 | Option        | Description                                                                           |
 | ------------- | ------------------------------------------------------------------------------------- |
 | `--log-level` | Change log config level<br/>Levels: `debug`, `info`, `warn`, `error`, `fatal`, `none` |
@@ -39,6 +41,6 @@ Some options use environment variables as default values.
 
 ## Network
 
-| Option    | Description                                                                                             |
-| --------- | ------------------------------------------------------------------------------------------------------- |
-| `--proxy` | The URL of a proxy server<br/>Format: `http://username:password@host:port`<br/>Default to `HTTPS_PROXY` |
+| Option    | Description                                                                                                                                                                      |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--proxy` | The URL of a proxy server<br/>Format: `http://username:password@host:port`<br/>Default to `HTTPS_PROXY`<br/>See [Proxy](/reference/proxy/http-proxy) reference for more details. |

@@ -6,10 +6,10 @@ sidebar_position: 100
 
 ## What is cli-kintone?
 
-cli-kintone (Pronounced `/ˈkuː.ri ˈkiːn.toʊn/`, named after the Japanese sweet [Kurikinton](https://visitgifu.com/see-do/kurikinton/)) is the CLI tool for importing and exporting [kintone](https://www.kintone.com/en-us/) records. It is suitable for batch record operations.
+cli-kintone (Pronounced `/ˈkuː.ri ˈkiːn.toʊn/`, named after the Japanese sweet [Kurikinton](https://visitgifu.com/see-do/kurikinton/)) is the CLI tool for importing and exporting [Kintone](https://www.kintone.com/en-us/) records. It is suitable for batch record operations.
 
-- Backup/restore kintone records
-- Data synchronization between kintone and other BI platforms
+- Backup/restore Kintone records
+- Data synchronization between Kintone and other BI platforms
 - Data migration from other systems
 
 ## Why cli-kintone?
@@ -42,7 +42,7 @@ In this section,
 
 ### Requirements
 
-To run cli-kintone, a kintone subscription with API access is required.
+To run cli-kintone, a Kintone subscription with API access is required.
 
 ### Installing
 
@@ -82,14 +82,14 @@ If you see the version you downloaded, you are ready to go!
 
 ### Configuring
 
-To access kintone from cli-kintone, you need to set authentication information.
+To access Kintone from cli-kintone, you need to set authentication information.
 We recommend setting environment variables to reduce repetition.
 
 Here are the environment variables to set.
 
 |Key|Description|
 |-|-|
-|`KINTONE_BASE_URL`|Base URL of kintone you want to access.<br/>e.g. `https:example.cybozu.com/`|
+|`KINTONE_BASE_URL`|Base URL of Kintone you want to access.<br/>e.g. `https:example.cybozu.com/`|
 |`KINTONE_API_TOKEN`|API token of the app you want to access|
 
 :::tip
@@ -119,7 +119,7 @@ Alternatively, you can set `KINTONE_USERNAME` and `KINTONE_PASSWORD` to use pass
 
 ### Exporting record
 
-Now, it's time. Use the `record export` command to retrive records from kintone App.
+Now, it's time. Use the `record export` command to retrive records from Kintone app.
 
 <Tabs>
   <TabItem value="linux-macos" label="Linux/macOS" default>

@@ -77,7 +77,7 @@ INFO: Starting to delete all records...
 WARN: The specified app does not have any records.
 ```
 
-If the API Token does not have the delete permission, an error will be shown. Ref to [Errors](#Errors) section.
+If the API Token does not have the delete permission, an error will be shown. Ref to [Errors](#errors) section.
 
 ## Implementation
 

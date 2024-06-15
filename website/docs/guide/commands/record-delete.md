@@ -25,7 +25,7 @@ You can bypass the confirmation step by using the options `--yes` or `-y`.
 
 ## Options
 
-See [Options](/options) page for common options.
+See [Options](/guide/options) page for common options.
 
 | Option         | Required | Description                                                               |
 | -------------- | -------- | ------------------------------------------------------------------------- |

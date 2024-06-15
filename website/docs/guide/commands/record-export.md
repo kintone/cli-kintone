@@ -18,7 +18,7 @@ cli-kintone record export \
 
 ## Options
 
-See [Options](/options) page for common options.
+See [Options](/guide/options) page for common options.
 
 | Option              | Required | Description                                                               |
 | ------------------- | -------- | ------------------------------------------------------------------------- |

@@ -13,7 +13,7 @@ This website aims to provide cli-kintone users with common usage and reference. 
 
 - [User Guide](/guide): Comprehensive assistance from installation to common usage.
 - [Reference](/reference): Detailed specifications.
-- [Community](community): Link to forum and support, contribution guide
+- [Community](/community): Link to forum and support, contribution guide
 - [Blog](/blog): Official announcements, roadmaps, and more!
 
 We always welcome your contribution! Please see [Contributing](/community/contributing) page to know how to contribute to cli-kintone.

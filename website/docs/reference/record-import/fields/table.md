@@ -85,7 +85,7 @@ With the [--fields](../target-fields) option and the specified field is a Table 
 - If the field inside the Table is missing on the CSV header => cli-kintone will throw an error.
 - If the field inside the Table value in the row is an empty string => cli-kintone will add/update that field with an empty string.
 
-For the field outside the Table, refer to [Fields](../).
+For the field outside the Table, refer to [Fields](./).
 
 #### Errors
 

@@ -14,6 +14,15 @@ Currently, this command only supports API Token.
 
 TODO: add reason
 
+:::note[Why?]
+This is because making password authentication available would significantly complicate the specification and implementation or degrade performance.
+
+To check whether a user has record deletion permissions, we need to call the [Evaluate Record Permissions](https://kintone.dev/en/docs/kintone/rest-api/apps/evaluate-record-permissions/) API.
+This API can only evaluate 100 record per request.
+
+On the other hand, if we perform record deletion without evaluation, we need to consider a complex retry process.
+:::
+
 If the user specifies username or password via the command option or ENV variable without api-token, an error will be thrown.
 
 ```shell

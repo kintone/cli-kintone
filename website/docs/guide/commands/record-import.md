@@ -9,11 +9,11 @@ The `import` command allows you to import record data into a specified Kintone a
 ## Example
 
 ```shell
-$ cli-kintone record import \
---base-url https://${yourDomain} \
---api-token ${apiToken} \
---app ${kintoneAppId} \
---file-path ${filepath}
+cli-kintone record import \
+  --base-url https://${yourDomain} \
+  --api-token ${apiToken} \
+  --app ${kintoneAppId} \
+  --file-path ${filepath}
 ```
 
 ## Options

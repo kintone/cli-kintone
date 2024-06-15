@@ -15,10 +15,10 @@ The `delete` command allows you to delete records of a specified Kintone app.
 
 ```shell
 cli-kintone record delete \
---base-url https://${yourDomain} \
---api-token ${apiToken} \
---app ${kintoneAppId} \
---file-path ${filepath}
+  --base-url https://${yourDomain} \
+  --api-token ${apiToken} \
+  --app ${kintoneAppId} \
+  --file-path ${filepath}
 ```
 
 You can bypass the confirmation step by using the options `--yes` or `-y`.

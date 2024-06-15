@@ -7,7 +7,7 @@ The `delete` command allows you to delete all permitted records of a specified k
 Command-line interface:
 
 ```shell
-$ cli-kintone record delete --base-url https://${yourDomain} --api-token ${apiToken} --app ${kintoneAppId}
+cli-kintone record delete --base-url https://${yourDomain} --api-token ${apiToken} --app ${kintoneAppId}
 ```
 
 Currently, this command only supports API Token.
@@ -48,7 +48,7 @@ api-token: none
 Before the command is executed, the user must confirm the action by answering the prompt yes/no.
 
 ```shell
-$ cli-kintone record delete --base-url https://${yourDomain} --api-token ${apiToken} --app ${kintoneAppId}
+cli-kintone record delete --base-url https://${yourDomain} --api-token ${apiToken} --app ${kintoneAppId}
 > Are you sure want to delete records? (y/N)
 ```
 
@@ -60,7 +60,7 @@ Notes:
 Or, the user can specify the option `--yes` or `-y` to execute the command without prompt.
 
 ```shell
-$ cli-kintone record delete --yes --base-url https://${yourDomain} --api-token ${apiToken} --app ${kintoneAppId}
+cli-kintone record delete --yes --base-url https://${yourDomain} --api-token ${apiToken} --app ${kintoneAppId}
 ```
 
 Once the command is executed successfully, the below message will be shown.

@@ -7,13 +7,13 @@ By specifying the option `--file-path`, the `delete` command allows users to del
 Command-line interface:
 
 ```shell
-$ cli-kintone record delete --api-token <API_Token> --file-path <path_of_csv_file>
+cli-kintone record delete --api-token <API_Token> --file-path <path_of_csv_file>
 ```
 
 Example:
 
 ```shell
-$ cli-kintone record delete --api-token <API_Token> --file-path records_need_to_be_deleted.csv
+cli-kintone record delete --api-token <API_Token> --file-path records_need_to_be_deleted.csv
 ```
 
 Currently, this command only supports API Token.
@@ -48,7 +48,7 @@ The user also can specify the encoding of the CSV file. Supported character enco
 Before the command is executed, the user must confirm the action by answering the prompt yes/no.
 
 ```shell
-$ cli-kintone record delete --app ${kintoneAppId} --file-path ${pathToCsvFile}
+cli-kintone record delete --app ${kintoneAppId} --file-path ${pathToCsvFile}
 > Are you sure want to delete records? (y/N)
 ```
 
@@ -60,7 +60,7 @@ Notes:
 Or, the user can specify the option `--yes` or `-y` to execute the command without a prompt.
 
 ```shell
-$ cli-kintone record delete --yes --app ${kintoneAppId} --file-path ${pathToCsvFile}
+cli-kintone record delete --yes --app ${kintoneAppId} --file-path ${pathToCsvFile}
 ```
 
 Once the command is executed successfully, the below message will be shown.

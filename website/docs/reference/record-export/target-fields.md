@@ -17,7 +17,7 @@ cli-kintone export --app 8 --fields 'Number,Text,'
 All fields are exported
 
 ```shell
-$ node cli.js record export --app 27 | xsv table
+node cli.js record export --app 27 | xsv table
 *   Record_number  Number  Table     Number_0  Number_1  Table_0  Number_2  Number_3  Created_by             Created_datetime      Updated_by             Updated_datetime
 *   1              1       53783     2         3                                      user01  2022-08-12T07:15:00Z  user01  2022-08-12T07:15:00Z
     1              1       53785     2         3                                      user01  2022-08-12T07:15:00Z  user01  2022-08-12T07:15:00Z
@@ -34,7 +34,7 @@ $ node cli.js record export --app 27 | xsv table
 The specified fields are exported. The PRIMARY_MARK (\*) does not appear when the specified fields do not contain a table, even if the app has the table.
 
 ```shell
-$ node cli.js record export --app 27 --fields Record_number,Number | xsv table
+node cli.js record export --app 27 --fields Record_number,Number | xsv table
 Record_number Number
 1 1
 2 1
@@ -45,7 +45,7 @@ Record_number Number
 The specified fields with every rows on the table are exported.
 
 ```shell
-$ node cli.js record export --app 27 --fields Table | xsv table
+node cli.js record export --app 27 --fields Table | xsv table
 
 * Table Number_0 Number_1
 * 53783 2 3
@@ -59,20 +59,20 @@ $ node cli.js record export --app 27 --fields Table | xsv table
 #### Specified a fields on the table
 
 ```shell
-$ cli-kintone record export --app 27 --fields Number_0 | xsv table
+cli-kintone record export --app 27 --fields Number_0 | xsv table
 Error: The specified field "Number_0" in a table cannot be specified to fields option
 ```
 
 #### Specified PRIMARY_MARK(`*`)
 
 ```shell
-$ cli-kintone record export --app 27 --fields '*' | xsv table
+cli-kintone record export --app 27 --fields '*' | xsv table
 Error: The specified field "*" does not exist on the app
 ```
 
 #### Specified a fields which does not exist
 
 ```shell
-$ cli-kintone record export --app 27 --fields Rich_textan | xsv table
+cli-kintone record export --app 27 --fields Rich_textan | xsv table
 Error: The specified field "Rich_textan" does not exist on the app
 ```

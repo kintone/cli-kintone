@@ -9,10 +9,10 @@ The `export` command allows you to export record data from a specified Kintone a
 ## Example
 
 ```shell
-$ cli-kintone record export \
---base-url https://${yourDomain} \
---api-token ${apiToken} \
---app ${kintoneAppId} \
+cli-kintone record export \
+  --base-url https://${yourDomain} \
+  --api-token ${apiToken} \
+  --app ${kintoneAppId} \
 > ${filepath}
 ```
 

@@ -1,16 +1,10 @@
 import clsx from "clsx";
 import Heading from "@theme/Heading";
 import styles from "./styles.module.css";
-// https://github.com/facebook/docusaurus/issues/7986#issuecomment-1969481536
-import ThemedImage from "@theme/ThemedImage";
-import useBaseUrl from "@docusaurus/core/lib/client/exports/useBaseUrl";
 
 type FeatureItem = {
   title: string;
-  svg: {
-    light: string;
-    dark: string;
-  };
+  Svg: React.ComponentType<React.ComponentProps<"svg">>;
   description: JSX.Element;
 };
 
@@ -19,10 +13,7 @@ const FeatureList: FeatureItem[] = [
   {
     title: "Easy to Use",
     // eslint-disable-next-line node/no-missing-require
-    svg: {
-      light: "/img/undraw_well_done_re_3hpo_light.svg",
-      dark: "/img/undraw_well_done_re_3hpo.svg",
-    },
+    Svg: require("@site/static/img/undraw_well_done_re_3hpo.svg").default,
     description: (
       <>
         The cli-kintone was designed for IT personnel and non-engineers. You
@@ -32,10 +23,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "Attachment field support",
-    svg: {
-      light: "/img/undraw_add_files_re_v09g_light.svg",
-      dark: "/img/undraw_add_files_re_v09g.svg",
-    },
+    Svg: require("@site/static/img/undraw_add_files_re_v09g.svg").default,
     description: (
       <>
         The cli-kintone supports Attachment fields. You can download or upload
@@ -45,10 +33,8 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "Suitable for automation",
-    svg: {
-      light: "/img/undraw_software_engineer_re_tnjc_light.svg",
-      dark: "/img/undraw_software_engineer_re_tnjc.svg",
-    },
+    Svg: require("@site/static/img/undraw_software_engineer_re_tnjc.svg")
+      .default,
     description: (
       <>
         The cli-kintone works well with shell scripts. You can automate your
@@ -58,18 +44,11 @@ const FeatureList: FeatureItem[] = [
   },
 ];
 
-const Feature = ({ title, svg, description }: FeatureItem) => {
+const Feature = ({ title, Svg, description }: FeatureItem) => {
   return (
     <div className={clsx("col col--4")}>
       <div className="text--center">
-        <ThemedImage
-          className={styles.featureSvg}
-          role="img"
-          sources={{
-            light: useBaseUrl(svg.light),
-            dark: useBaseUrl(svg.dark),
-          }}
-        />
+        <Svg className={styles.featureSvg} role="img" />
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>

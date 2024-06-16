@@ -7,7 +7,7 @@ export default function ContributorsList() {
   return (
     <ul className={styles.credits}>
       {contributors.map((contributor) => (
-        <li>
+        <li key={contributor.login}>
           <Link
             href={`https://github.com/kintone/cli-kintone/commits?author=${contributor.login}`}
           >

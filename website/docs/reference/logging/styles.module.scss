@@ -1,0 +1,31 @@
+.trace {
+  background-color: green;
+}
+.debug {
+  background-color: limegreen;
+}
+.info {
+  background-color: dodgerblue;
+}
+.warn {
+  background-color: gold;
+}
+.error {
+  background-color: orangered;
+}
+.fatal {
+  background-color: maroon;
+}
+
+.included {
+  background-color: lime;
+  [data-theme='dark'] {
+    background-color: green;
+  }
+}
+.excluded {
+  background-color: salmon;
+  [data-theme='dark'] {
+    background-color: maroon;
+  }
+}

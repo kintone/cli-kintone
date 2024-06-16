@@ -1,12 +1,16 @@
 import clsx from "clsx";
 import Heading from "@theme/Heading";
 import styles from "./styles.module.css";
-import { useColorMode } from "@docusaurus/theme-common";
+// https://github.com/facebook/docusaurus/issues/7986#issuecomment-1969481536
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/core/lib/client/exports/useBaseUrl";
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<"svg">>;
-  SvgDark?: React.ComponentType<React.ComponentProps<"svg">>;
+  svg: {
+    light: string;
+    dark: string;
+  };
   description: JSX.Element;
 };
 
@@ -15,8 +19,10 @@ const FeatureList: FeatureItem[] = [
   {
     title: "Easy to Use",
     // eslint-disable-next-line node/no-missing-require
-    Svg: require("@site/static/img/undraw_well_done_re_3hpo_light.svg").default,
-    SvgDark: require("@site/static/img/undraw_well_done_re_3hpo.svg").default,
+    svg: {
+      light: "/img/undraw_well_done_re_3hpo_light.svg",
+      dark: "/img/undraw_well_done_re_3hpo.svg",
+    },
     description: (
       <>
         The cli-kintone was designed for IT personnel and non-engineers. You
@@ -26,8 +32,10 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "Attachment field support",
-    Svg: require("@site/static/img/undraw_add_files_re_v09g_light.svg").default,
-    SvgDark: require("@site/static/img/undraw_add_files_re_v09g.svg").default,
+    svg: {
+      light: "/img/undraw_add_files_re_v09g_light.svg",
+      dark: "/img/undraw_add_files_re_v09g.svg",
+    },
     description: (
       <>
         The cli-kintone supports Attachment fields. You can download or upload
@@ -37,10 +45,10 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "Suitable for automation",
-    Svg: require("@site/static/img/undraw_software_engineer_re_tnjc_light.svg")
-      .default,
-    SvgDark: require("@site/static/img/undraw_software_engineer_re_tnjc.svg")
-      .default,
+    svg: {
+      light: "/img/undraw_software_engineer_re_tnjc_light.svg",
+      dark: "/img/undraw_software_engineer_re_tnjc.svg",
+    },
     description: (
       <>
         The cli-kintone works well with shell scripts. You can automate your
@@ -50,17 +58,18 @@ const FeatureList: FeatureItem[] = [
   },
 ];
 
-const Feature = ({ title, Svg, SvgDark, description }: FeatureItem) => {
-  const { colorMode } = useColorMode();
-
+const Feature = ({ title, svg, description }: FeatureItem) => {
   return (
     <div className={clsx("col col--4")}>
       <div className="text--center">
-        {SvgDark && colorMode === "dark" ? (
-          <SvgDark className={styles.featureSvg} role="img" />
-        ) : (
-          <Svg className={styles.featureSvg} role="img" />
-        )}
+        <ThemedImage
+          className={styles.featureSvg}
+          role="img"
+          sources={{
+            light: useBaseUrl(svg.light),
+            dark: useBaseUrl(svg.dark),
+          }}
+        />
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>

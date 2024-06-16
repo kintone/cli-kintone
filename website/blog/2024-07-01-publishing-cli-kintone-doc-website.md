@@ -16,4 +16,10 @@ This website aims to provide cli-kintone users with common usage and reference. 
 - [Community](/community): Link to forum and support, contribution guide
 - [Blog](/blog): Official announcements, roadmaps, and more!
 
-We always welcome your contribution! Please see [Contributing](/community/contributing) page to know how to contribute to cli-kintone.
+We will continually improve our documentation.
+Follow our official Twitter accounts for the latest news.
+
+- English: [Kintone Developer Program (@kintonedev)](https://x.com/kintonedev)
+- Japanese: [kintone developer JP (@kintonedevjp)](https://x.com/kintonedevjp)
+
+Lastly, we always welcome your contribution! Please see [Contributing](/community/contributing) page to know how to contribute to cli-kintone.

@@ -48,7 +48,7 @@ const config: Config = {
           editUrl: "https://github.com/kintone/cli-kintone/tree/main/website",
         },
         theme: {
-          customCss: "./src/css/custom.css",
+          customCss: "./src/css/custom.scss",
         },
       } satisfies Preset.Options,
     ],
@@ -153,6 +153,7 @@ const config: Config = {
       additionalLanguages: ["bash", "powershell", "csv"],
     },
   } satisfies Preset.ThemeConfig,
+  plugins: ["docusaurus-plugin-sass"],
 };
 
 export default config;

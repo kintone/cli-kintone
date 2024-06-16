@@ -67,10 +67,12 @@ table {
   }
 }
 [data-theme='dark'] {
-  table .included {
-    background-color: green;
-  }
-  table .excluded {
-    background-color: maroon;
+  table {
+    .included {
+      background-color: green;
+    }
+    .excluded {
+      background-color: maroon;
+    }
   }
 }

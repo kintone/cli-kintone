@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import contributors from "../../../contributors.json";
-import styles from "./styles.module.css";
+import styles from "./styles.module.scss";
 
 export default function ContributorsList() {
   return (

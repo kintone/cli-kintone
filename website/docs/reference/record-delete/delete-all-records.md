@@ -12,8 +12,6 @@ cli-kintone record delete --base-url https://${yourDomain} --api-token ${apiToke
 
 Currently, this command only supports API Token.
 
-TODO: add reason
-
 :::note[Why?]
 This is because making password authentication available would significantly complicate the specification and implementation or degrade performance.
 

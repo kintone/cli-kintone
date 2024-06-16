@@ -55,9 +55,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    // TODO: Change social card
-    image: "img/docusaurus-social-card.jpg",
+    image: "img/cli-kintone_social.png",
     colorMode: {
       defaultMode: "dark",
       disableSwitch: false,

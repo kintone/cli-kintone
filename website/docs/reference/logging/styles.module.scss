@@ -19,13 +19,16 @@
 
 .included {
   background-color: lime;
-  [data-theme='dark'] {
-    background-color: green;
-  }
 }
 .excluded {
   background-color: salmon;
-  [data-theme='dark'] {
+}
+
+[data-theme='dark'] {
+  .included {
+      background-color: green;
+  }
+  .excluded {
     background-color: maroon;
   }
 }

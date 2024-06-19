@@ -28,7 +28,6 @@ See [Options](/guide/options) page for common options.
 | `--order-by`        |          | The sort order as a query                                                 |
 | `--fields`          |          | The fields to be exported in comma-separated                              |
 | `--encoding  `      |          | Character encoding<br/>Default to `utf8`<br/>Encodings: `utf8` and `sjis` |
-| `--yes`             |          | Force to delete records                                                   |
 
 ### Notes
 

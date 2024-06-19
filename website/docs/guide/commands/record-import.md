@@ -20,14 +20,14 @@ cli-kintone record import \
 
 See [Options](/guide/options) page for common options.
 
-| Option              | Required | Description                                                               |
-| ------------------- | -------- | ------------------------------------------------------------------------- |
-| `--app`             | Yes      | The ID of the app                                                         |
-| `--attachments-dir` |          | Attachment file directory                                                 |
-| `--file-path`       | Yes      | The path to the source file.<br/>The file extension should be ".csv"      |
-| `--encoding  `      |          | Character encoding<br/>Default to `utf8`<br/>Encodings: `utf8` and `sjis` |
-| `--update-key`      |          | The key to Bulk Update                                                    |
-| `--fields  `        |          | The fields to be imported in comma-separated                              |
+| Option              | Required | Description                                                                                                                                                     |
+| ------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--app`             | Yes      | The ID of the app                                                                                                                                               |
+| `--attachments-dir` |          | Attachment file directory                                                                                                                                       |
+| `--file-path`       | Yes      | The path to the source file.<br/>The file extension should be ".csv"                                                                                            |
+| `--encoding  `      |          | Character encoding<br/>Default to `utf8`<br/>Encodings: `utf8` and `sjis`                                                                                       |
+| `--update-key`      |          | The key to Bulk Update<br/>When this option is set, cli-kintone will be in the UPSERT mode.<br/>See [Upsert records](#upsert-records) section for more details. |
+| `--fields  `        |          | The fields to be imported in comma-separated                                                                                                                    |
 
 :::note
 A field within a Table cannot be specified to the `fields` option.

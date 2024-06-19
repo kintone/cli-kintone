@@ -17,7 +17,7 @@ For example, the app has the following form layout:
 ==> The column has the following order
 
 ```shell
-node cli.js record export --app 27 | xsv table
+cli-kintone record export --app 27 | xsv table
 Record_number Created_datetime Updated_datetime Created_by Updated_by Text Number Text_area
 1 2022-08-12T07:15:00Z 2022-08-12T07:15:00Z user01 user01 hello 1 content
 2 2022-08-12T07:15:00Z 2022-08-12T07:15:00Z user01 user01 goodbye 2 body
@@ -40,7 +40,7 @@ For example, the app has the following form layout:
 ==> The column has the following order
 
 ```shell
-node cli.js record export --app 27 --fields Record_number,Number,Text_area,Text | xsv table
+cli-kintone record export --app 27 --fields Record_number,Number,Text_area,Text | xsv table
 Record_number Number Text_area Text
 1 1 content hello
 2 2 body goodbye
@@ -62,7 +62,7 @@ For example, the app has the following form layout:
 ==> The column has the following order
 
 ```shell
-node cli.js record export --app 29 --fields Record_number,Name,Class,Learning_score | xsv table
+cli-kintone record export --app 29 --fields Record_number,Name,Class,Learning_score | xsv table
 
 * Record_number Name Class Learning_score Subject Score
 * 1 user01 SP01 53783 Math A

@@ -23,7 +23,7 @@ Please check the below section for more details.
 Only specified fields are imported
 
 ```shell
-node cli.js record import --app 27 --file-path records.csv --fields "Record_number,Text"
+cli-kintone record import --app 27 --file-path records.csv --fields "Record_number,Text"
 ```
 
 ### Specify a table field
@@ -31,7 +31,7 @@ node cli.js record import --app 27 --file-path records.csv --fields "Record_numb
 All fields on the table are imported
 
 ```shell
-node cli.js record import --app 27 --file-path records.csv --fields Table
+cli-kintone record import --app 27 --file-path records.csv --fields Table
 ```
 
 ### The target fields do not include the update key
@@ -39,7 +39,7 @@ node cli.js record import --app 27 --file-path records.csv --fields Table
 The update key is appended to target fields automatically
 
 ```shell
-node cli.js record import --app 27 --file-path records.csv \
+cli-kintone record import --app 27 --file-path records.csv \
     --update-key UniqueText \
     --fields Number
 # The UniqueText field is appended to the target fields, and import is finished successfully
@@ -64,7 +64,7 @@ node cli.js record import --app 27 --file-path records.csv \
 #### Specified the field inside the table
 
 ```shell
-node cli.js record import --app 27 --file-path records.csv --fields textInTable
+cli-kintone record import --app 27 --file-path records.csv --fields textInTable
 Error: The specified field "textInTable" in a table cannot be specified to fields option
 ```
 
@@ -74,28 +74,28 @@ Error: The specified field "textInTable" in a table cannot be specified to field
 # records.csv as below
 # "*","Text_0","Table","Text","Number"
 # "*","Alice",,,
-node cli.js record import --app 27 --file-path records.csv --fields Table
+cli-kintone record import --app 27 --file-path records.csv --fields Table
 Error: The specified field "Table" does not exist on the CSV
 ```
 
 #### Specified PRIMARY_MARK(`*`)
 
 ```shell
-node cli.js record import --app 27 --file-path records.csv --fields '*'
+cli-kintone record import --app 27 --file-path records.csv --fields '*'
 Error:The specified field "*" does not exist on the app
 ```
 
 #### Specified the field that does not exist on the Kintone app
 
 ```shell
-node cli.js record import --app 27 --file-path records.csv --fields KintoneHyperField
+cli-kintone record import --app 27 --file-path records.csv --fields KintoneHyperField
 Error:The specified field "KintoneHyperField" does not exist on the app
 ```
 
 #### Specified unsupported field
 
 ```shell
-node cli.js record import --app 27 --file-path records.csv --fields Category
+cli-kintone record import --app 27 --file-path records.csv --fields Category
 Error:The specified field "Category" is not supported
 ```
 
@@ -103,6 +103,6 @@ Error:The specified field "Category" is not supported
 
 ```shell
 # records.csv does not have Text column
-node cli.js record import --app 27 --file-path records.csv --fields Text,Number
+cli-kintone record import --app 27 --file-path records.csv --fields Text,Number
 Error: The specified field "Text" does not exist on the CSV
 ```

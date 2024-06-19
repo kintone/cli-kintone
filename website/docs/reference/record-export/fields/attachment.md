@@ -3,7 +3,7 @@
 ## Command-line interface
 
 ```shell
-cli-kintone export --app 8 --attachment-dir ./attachments
+cli-kintone record export --app 8 --attachment-dir ./attachments
 ```
 
 | Parameter name      | Short name | Description                                            |
@@ -81,7 +81,7 @@ NOTE: The destination directory will be created automatically if it doesn’t ex
 
 An example of a CSV file that contains attachment files
 
-```
+```csv
 "Record_number","Created_by","Portfolio","UserPhoto"
 "1","tasshi","Portfolio-1/Profile.pdf","UserPhoto-1/Photo1.png
 UserPhoto-1/Photo2.png"

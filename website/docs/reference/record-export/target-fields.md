@@ -3,7 +3,7 @@
 ## Command-line interface
 
 ```shell
-cli-kintone export --app 8 --fields 'Number,Text,'
+cli-kintone record export --app 8 --fields 'Number,Text,'
 ```
 
 | Parameter name | Short name | Description                                |

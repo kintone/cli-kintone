@@ -33,4 +33,4 @@ UserPhoto-1/Photo2.png"
 - An error occurs when the imported fields have an attachment field, but the `--attachments-dir` is not specified.
 - Importing records aborts when the uploading files fail. Examples of uploading failure:
   - The file does not exist
-  - The file is too large
+  - The file size is over 1 GB ([Field Entry Limits](https://get.kintone.help/k/en/user/app_settings/form/form_parts/field_restriction.html))

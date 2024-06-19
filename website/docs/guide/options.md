@@ -44,3 +44,9 @@ See [Logging](/reference/logging) reference for more details.
 | Option    | Description                                                                                                                                                                      |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--proxy` | The URL of a proxy server<br/>Format: `http://username:password@host:port`<br/>Default to `HTTPS_PROXY`<br/>See [Proxy](/reference/proxy/http-proxy) reference for more details. |
+
+## Guest space
+
+| Option             | Description                                                   |
+| ------------------ | ------------------------------------------------------------- |
+| `--guest-space-id` | The ID of guest space<br/>Default to `KINTONE_GUEST_SPACE_ID` |

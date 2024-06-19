@@ -3,14 +3,14 @@
 When a network error occurs, an error message will be thrown as below.
 
 ```shell
-ERROR: [ECONNABORTED] timeout of 1ms exceeded
+ERROR: [ECONNABORTED] timeout of 600000ms exceeded
 ERROR: The cli-kintone aborted due to a network error.
 ERROR: Please check your network connection.
 ```
 
 Below is the list of network timeout errors that cli-kintone handles
 
-- Socket timeout - Default is 60 seconds
+- Socket timeout - Default is 600 seconds
 
 ## Implementation
 

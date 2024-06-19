@@ -53,7 +53,7 @@ When running the import command
 - Without the `--fields` option:
   - All fields in the CSV file that exist on the Kintone app will be imported.
 - With the `--fields` option:
-  - Refer to spec: Specify target fields on importing
+  - See the [Specify target fields](../target-fields) page.
 
 ## How cli-kintone treats missing field/empty string in CSV
 

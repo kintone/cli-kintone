@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.0](https://github.com/kintone/cli-kintone/compare/v1.10.14...v1.11.0) (2024-06-18)
+
+
+### Features
+
+* support trace log level ([#787](https://github.com/kintone/cli-kintone/issues/787)) ([5878c89](https://github.com/kintone/cli-kintone/commit/5878c896d8665d39ad3c11d994052aae0fafa5e4))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^5.5.2 ([#777](https://github.com/kintone/cli-kintone/issues/777)) ([eb51e27](https://github.com/kintone/cli-kintone/commit/eb51e2705c7aa2eb80c7741a0f6d9b04a3b49399))
+* **deps:** update dependency @mdx-js/react to ^3.0.1 ([#778](https://github.com/kintone/cli-kintone/issues/778)) ([10ec6f8](https://github.com/kintone/cli-kintone/commit/10ec6f8f7bb2005ec29670226789ef7c7c040b0a))
+* **deps:** update dependency clsx to ^2.0.1 ([#779](https://github.com/kintone/cli-kintone/issues/779)) ([37b872c](https://github.com/kintone/cli-kintone/commit/37b872c1f5fc8fc1e1c103846f0ada7b51738bd6))
+* **deps:** update dependency clsx to ^2.1.1 ([#780](https://github.com/kintone/cli-kintone/issues/780)) ([f8cc39a](https://github.com/kintone/cli-kintone/commit/f8cc39ad5056224a13f346a4b1719a9ad36c4fbe))
+* **deps:** update dependency prism-react-renderer to ^2.3.1 ([#781](https://github.com/kintone/cli-kintone/issues/781)) ([d489d90](https://github.com/kintone/cli-kintone/commit/d489d909fbd11d68ac83d4e50f82f58c4c6dc020))
+* **deps:** update react monorepo to ^18.3.1 (patch) ([#782](https://github.com/kintone/cli-kintone/issues/782)) ([4aa2f38](https://github.com/kintone/cli-kintone/commit/4aa2f38aef94a4fe81a34e8a0b5821d2a44bd229))
+
 ## [1.10.14](https://github.com/kintone/cli-kintone/compare/v1.10.13...v1.10.14) (2024-06-12)
 
 

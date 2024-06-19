@@ -77,7 +77,7 @@ INFO: Starting to delete records...
 INFO: <number_of_deleted_records> records are deleted successfully
 ```
 
-## Valida cases
+## Valid cases
 
 ### valid record number value
 

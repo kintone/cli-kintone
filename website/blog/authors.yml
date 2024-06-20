@@ -1,8 +1,13 @@
 tasshi:
   name: tasshi (Masaharu Tashiro)
-  title: Product Owner of kintone DX team
+  title: Product Owner of kintone DX Team
   url: https://github.com/tasshi-me
   image_url: https://github.com/tasshi-me.png
+
+dx-team:
+  name: kintone DX Team
+  url: https://github.com/kintone
+  image_url: https://github.com/kintone.png
 
 ueokande:
   name: Shin'ya Ueoka

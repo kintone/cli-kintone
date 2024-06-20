@@ -1,7 +1,7 @@
 ---
 slug: announcing-doc-website
 title: The documentation website is launched 🎉
-authors: [tasshi]
+authors: [tasshi, dx-team]
 tags: [announcement]
 ---
 

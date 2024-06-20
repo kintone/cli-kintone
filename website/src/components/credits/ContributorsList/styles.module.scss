@@ -1,0 +1,17 @@
+ul.contributors {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  li {
+    width: 150px;
+    border: solid 1px;
+    margin: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    > a {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+}

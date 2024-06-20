@@ -14,23 +14,30 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
     "lint": "pnpm -w lint",
-    "fix": "pnpm -w fix"
+    "fix": "pnpm -w fix",
+    "update-credits": "ts-node scripts/update-credits.ts"
   },
   "dependencies": {
-    "@docusaurus/core": "3.3.2",
-    "@docusaurus/preset-classic": "3.3.2",
+    "@docusaurus/core": "3.4.0",
+    "@docusaurus/preset-classic": "3.4.0",
+    "@docusaurus/theme-common": "^3.4.0",
     "@mdx-js/react": "^3.0.1",
     "clsx": "^2.1.1",
+    "docusaurus-plugin-sass": "^0.2.5",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "sass": "^1.77.5"
   },
   "devDependencies": {
-    "@docusaurus/eslint-plugin": "^3.3.2",
-    "@docusaurus/module-type-aliases": "3.3.2",
-    "@docusaurus/plugin-content-docs": "^3.3.2",
-    "@docusaurus/tsconfig": "3.3.2",
-    "@docusaurus/types": "3.3.2",
+    "@docusaurus/eslint-plugin": "^3.4.0",
+    "@docusaurus/module-type-aliases": "3.4.0",
+    "@docusaurus/plugin-content-docs": "^3.4.0",
+    "@docusaurus/tsconfig": "3.4.0",
+    "@docusaurus/types": "3.4.0",
+    "@octokit/rest": "^20.1.1",
+    "@types/node": "^18.19.34",
+    "ts-node": "^10.9.2",
     "typescript": "~5.4.5"
   },
   "browserslist": {

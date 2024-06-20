@@ -1,88 +1,51 @@
 ---
-sidebar_position: 2
+sidebar_position: 300
 ---
 
 # record delete
 
-Let's translate `docs/intro.md` to French.
+The `delete` command allows you to delete records of a specified Kintone app.
 
-## Configure i18n
+**Notice**
 
-Modify `docusaurus.config.js` to add support for the `fr` locale:
+- This command only supports API token authentication.
+- This action cannot be rollback.
 
-```js title="docusaurus.config.js"
-export default {
-  i18n: {
-    defaultLocale: "en",
-    locales: ["en", "fr"],
-  },
-};
+## Example
+
+```shell
+cli-kintone record delete \
+  --base-url https://${yourDomain} \
+  --api-token ${apiToken} \
+  --app ${kintoneAppId} \
+  --file-path ${filepath}
 ```
 
-## Translate a doc
+You can bypass the confirmation step by using the options `--yes` or `-y`.
 
-Copy the `docs/intro.md` file to the `i18n/fr` folder:
+## Options
 
-```bash
-mkdir -p i18n/fr/docusaurus-plugin-content-docs/current/
+See [Options](/guide/options) page for common options.
 
-cp docs/intro.md i18n/fr/docusaurus-plugin-content-docs/current/intro.md
-```
+| Option         | Required | Description                                                               |
+| -------------- | -------- | ------------------------------------------------------------------------- |
+| `--app`        | Yes      | The ID of the app                                                         |
+| `--file-path`  |          | The path to the source file.                                              |
+| `--encoding  ` |          | Character encoding<br/>Default to `utf8`<br/>Encodings: `utf8` and `sjis` |
+| `--yes`, `-y`  |          | Force to delete records                                                   |
 
-Translate `i18n/fr/docusaurus-plugin-content-docs/current/intro.md` in French.
+## Delete all records
 
-## Start your localized site
+All records of the target app will be deleted if the option `--file-path` is not specified.
 
-Start your site on the French locale:
+## Delete specific records
 
-```bash
-npm run start -- --locale fr
-```
+Specific records can be deleted by specifying the option `--file-path`.
 
-Your localized site is accessible at [http://localhost:3000/fr/](http://localhost:3000/fr/) and the `Getting Started` page is translated.
+The value of the `--file-path` must be the path to the CSV file and should meet the following requirements:
 
-:::caution
-
-In development, you can only use one locale at a time.
-
-:::
-
-## Add a Locale Dropdown
-
-To navigate seamlessly across languages, add a locale dropdown.
-
-Modify the `docusaurus.config.js` file:
-
-```js title="docusaurus.config.js"
-export default {
-  themeConfig: {
-    navbar: {
-      items: [
-        // highlight-start
-        {
-          type: "localeDropdown",
-        },
-        // highlight-end
-      ],
-    },
-  },
-};
-```
-
-The locale dropdown now appears in your navbar:
-
-![Locale Dropdown](./img/localeDropdown.png)
-
-## Build your localized site
-
-Build your site for a specific locale:
-
-```bash
-npm run build -- --locale fr
-```
-
-Or build your site to include all the locales at once:
-
-```bash
-npm run build
-```
+- The file extension should be ".csv".
+- The header row of the CSV file must be the record number field code defined in the target app.
+- If using the app code in the record number:
+  - Every row should contain the same app code (not mixed).
+  - The app code is equal to the target app's one.

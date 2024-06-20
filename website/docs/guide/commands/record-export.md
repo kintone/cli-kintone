@@ -1,55 +1,50 @@
 ---
-sidebar_position: 1
+sidebar_position: 100
 ---
 
 # record export
 
-Docusaurus can manage multiple versions of your docs.
+The `export` command allows you to export record data from a specified Kintone app.
 
-## Create a docs version
+## Example
 
-Release a version 1.0 of your project:
-
-```bash
-npm run docusaurus docs:version 1.0
+```shell
+cli-kintone record export \
+  --base-url https://${yourDomain} \
+  --api-token ${apiToken} \
+  --app ${kintoneAppId} \
+> ${filepath}
 ```
 
-The `docs` folder is copied into `versioned_docs/version-1.0` and `versions.json` is created.
+## Options
 
-Your docs now have 2 versions:
+See [Options](/guide/options) page for common options.
 
-- `1.0` at `http://localhost:3000/docs/` for the version 1.0 docs
-- `current` at `http://localhost:3000/docs/next/` for the **upcoming, unreleased docs**
+| Option              | Required | Description                                                               |
+| ------------------- | -------- | ------------------------------------------------------------------------- |
+| `--app`             | Yes      | The ID of the app                                                         |
+| `--attachments-dir` |          | Attachment file directory                                                 |
+| `--condition`, `-c` |          | The query string                                                          |
+| `--order-by`        |          | The sort order as a query                                                 |
+| `--fields`          |          | The fields to be exported in comma-separated                              |
+| `--encoding  `      |          | Character encoding<br/>Default to `utf8`<br/>Encodings: `utf8` and `sjis` |
 
-## Add a Version Dropdown
+### Notes
 
-To navigate seamlessly across versions, add a version dropdown.
+- A field within a Table cannot be specified to the `fields` option.
 
-Modify the `docusaurus.config.js` file:
+## `--condition` and `--order-by` options
 
-```js title="docusaurus.config.js"
-export default {
-  themeConfig: {
-    navbar: {
-      items: [
-        // highlight-start
-        {
-          type: "docsVersionDropdown",
-        },
-        // highlight-end
-      ],
-    },
-  },
-};
-```
+You can filter and reorder records with `--condition` and `--order-by` options.
 
-The docs version dropdown appears in your navbar:
+These options are passed to `getAllRecords()` of [@kintone/rest-api-client](https://github.com/kintone/js-sdk/tree/master/packages/rest-api-client#readme).
 
-![Docs Version Dropdown](./img/docsVersionDropdown.png)
+Refer to the [`getAllRecords()`](https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/docs/record.md#getallrecords) document for more information.
 
-## Update an existing version
+## Download attachment files
 
-It is possible to edit versioned docs in their respective folder:
+If the `--attachments-dir` option is set, attachment files will be downloaded to the local directory.
 
-- `versioned_docs/version-1.0/hello.md` updates `http://localhost:3000/docs/hello`
-- `docs/hello.md` updates `http://localhost:3000/docs/next/hello`
+- The file path is `<attachmentsDir>/<fieldCode>-<recordId>/<filename>`.
+  - For attachment fields in a Table, the file path is `<attachmentsDir>/<fieldCode>-<recordId>-<tableRowIndex>/<filename>`.
+- For files with the same name in the same Attachment field, the files will be renamed to `<filename> (<index>).<ext>`.

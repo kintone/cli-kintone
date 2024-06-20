@@ -5,7 +5,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "cli-kintone",
-  tagline: "The CLI tool to import and export kintone records.",
+  tagline: "The CLI tool for importing and exporting Kintone records.",
   favicon: "img/cli-kintone_logo.svg",
 
   // Set the production url of your site here
@@ -38,28 +38,24 @@ const config: Config = {
           routeBasePath: "/",
           sidebarPath: "./sidebars.ts",
           // Remove this to remove the "edit this page" links.
-          // TODO: Change branch to main
-          editUrl:
-            "https://github.com/kintone/cli-kintone/tree/docs/create-doc-site/website",
+          editUrl: "https://github.com/kintone/cli-kintone/tree/main/website",
+          // showLastUpdateTime: true,
+          // showLastUpdateAuthor: true,
         },
         blog: {
           showReadingTime: true,
           // Remove this to remove the "edit this page" links.
-          // TODO: Change branch to main
-          editUrl:
-            "https://github.com/kintone/cli-kintone/tree/docs/create-doc-site/website",
+          editUrl: "https://github.com/kintone/cli-kintone/tree/main/website",
         },
         theme: {
-          customCss: "./src/css/custom.css",
+          customCss: "./src/css/custom.scss",
         },
       } satisfies Preset.Options,
     ],
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    // TODO: Change social card
-    image: "img/docusaurus-social-card.jpg",
+    image: "img/cli-kintone_social.png",
     colorMode: {
       defaultMode: "dark",
       disableSwitch: false,
@@ -126,7 +122,7 @@ const config: Config = {
               href: "https://community.cybozu.dev/c/best-practices/8",
             },
             {
-              label: "kintone developer forum (en)",
+              label: "Kintone Developer Forum (en)",
               href: "https://forum.kintone.dev/",
             },
             {
@@ -149,13 +145,15 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Cybozu, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Cybozu, Inc.`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+      additionalLanguages: ["bash", "powershell", "csv"],
     },
   } satisfies Preset.ThemeConfig,
+  plugins: ["docusaurus-plugin-sass"],
 };
 
 export default config;

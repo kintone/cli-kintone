@@ -4,6 +4,7 @@ const docusaurusModuleAliases = [
   "@docusaurus/useDocusaurusContext",
   "@theme/Heading",
   "@theme/Layout",
+  "@theme/ThemedImage",
   "@site/static",
   "@site/src",
 ];

@@ -71,7 +71,7 @@
     "@cucumber/cucumber": "^10.8.0",
     "@cybozu/eslint-config": "^23.0.0",
     "@cybozu/license-manager": "^1.2.1",
-    "@octokit/rest": "^20.1.1",
+    "@octokit/rest": "^21.0.0",
     "@types/inquirer": "^8.2.10",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.19.37",

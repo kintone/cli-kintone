@@ -50,6 +50,9 @@ const config: Config = {
         theme: {
           customCss: "./src/css/custom.scss",
         },
+        googleTagManager: {
+          containerId: "GTM-5N49D3",
+        },
       } satisfies Preset.Options,
     ],
   ],

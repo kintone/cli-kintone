@@ -72,7 +72,7 @@
     "@cybozu/eslint-config": "^23.0.0",
     "@cybozu/license-manager": "^1.2.1",
     "@octokit/rest": "^20.1.1",
-    "@types/inquirer": "^8.2.10",
+    "@types/inquirer": "^9.0.7",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.19.37",
     "@types/rollup-plugin-auto-external": "^2.0.5",

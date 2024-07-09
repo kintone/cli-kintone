@@ -101,8 +101,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       glob:
-        specifier: ^10.4.3
-        version: 10.4.3
+        specifier: ^10.4.5
+        version: 10.4.5
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@18.19.37)(ts-node@10.9.2)
@@ -1853,7 +1853,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       error-stack-parser: 2.1.4
       figures: 3.2.0
-      glob: 10.4.3
+      glob: 10.4.5
       has-ansi: 4.0.1
       indent-string: 4.0.0
       is-installed-globally: 0.4.0
@@ -7424,9 +7424,8 @@ packages:
   /glob-to-regexp@0.4.1:
     resolution: {integrity: sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==}
 
-  /glob@10.4.3:
-    resolution: {integrity: sha512-Q38SGlYRpVtDBPSWEylRyctn7uDeTp4NQERTLiCT1FqA9JXPYWqAVmQU6qh4r/zMM5ehxTcbaO8EjhWnvEhmyg==}
-    engines: {node: '>=18'}
+  /glob@10.4.5:
+    resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
     dependencies:
       foreground-child: 3.1.1
@@ -11767,7 +11766,7 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
-      glob: 10.4.3
+      glob: 10.4.5
     dev: true
 
   /rollup@3.27.0:

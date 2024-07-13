@@ -78,7 +78,7 @@
     "@types/rollup-plugin-auto-external": "^2.0.5",
     "@types/yargs": "^17.0.32",
     "@vercel/ncc": "^0.38.1",
-    "ajv": "^8.16.0",
+    "ajv": "^8.17.1",
     "allure-commandline": "^2.29.0",
     "allure-cucumberjs": "^2.15.1",
     "allure-jest": "^2.15.1",

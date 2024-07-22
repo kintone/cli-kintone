@@ -125,8 +125,8 @@ importers:
         specifier: ^5.4.5
         version: 5.4.5
       zx:
-        specifier: ^8.1.2
-        version: 8.1.2
+        specifier: ^8.1.4
+        version: 8.1.4
 
   website:
     dependencies:
@@ -14836,8 +14836,8 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
-  /zx@8.1.2:
-    resolution: {integrity: sha512-zkCiXKh8D/eo6r58OmJvO5mc2NthcSRvysb3fuS6VQlHPbEPBcxduRwM3m6ZfHj+7cLHcrahCnuO2TDAbW+6xw==}
+  /zx@8.1.4:
+    resolution: {integrity: sha512-QFDYYpnzdpRiJ3dL2102Cw26FpXpWshW4QLTGxiYfIcwdAqg084jRCkK/kuP/NOSkxOjydRwNFG81qzA5r1a6w==}
     engines: {node: '>= 12.17.0'}
     hasBin: true
     optionalDependencies:

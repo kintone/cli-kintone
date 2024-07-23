@@ -6,6 +6,16 @@
   npm: {
     packageRules: [
       {
+        // set `chore` to the commit for updating deps and devDeps
+        matchPackagePatterns: [
+          "*"
+        ],
+        matchDepTypes: [
+          "devDependencies"
+        ],
+        semanticCommitType: "chore",
+      },
+      {
         // automerge minor updates of devDependencies
         matchPackagePatterns: [
           "*"

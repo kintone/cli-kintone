@@ -1,10 +1,9 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { run } from "../../record/delete";
-import inquirer from "inquirer";
-import type { Question } from "inquirer";
 import type { SupportedImportEncoding } from "../../utils/file";
 import { logger } from "../../utils/log";
+import { confirm } from "@inquirer/prompts";
 
 const command = "delete";
 
@@ -138,20 +137,13 @@ const handler = async (args: Args) => {
     return execute(args);
   }
 
-  const prompt = inquirer.createPromptModule();
-  const questions: Question[] = [
-    {
-      name: FORCE_DELETE_KEY,
-      type: "confirm",
-      message: `Are you sure want to delete ${
-        args["file-path"] ? "" : "all "
-      }records?`,
-      default: false,
-    },
-  ];
-
-  const answers = await prompt(questions);
-  if (answers[FORCE_DELETE_KEY]) {
+  const answers = await confirm({
+    message: `Are you sure want to delete ${
+      args["file-path"] ? "" : "all "
+    }records?`,
+    default: false,
+  });
+  if (answers) {
     return execute(args);
   }
 

@@ -73,7 +73,7 @@
     "@cybozu/license-manager": "^1.2.1",
     "@octokit/rest": "^20.1.1",
     "@types/jest": "^29.5.12",
-    "@types/node": "^18.19.44",
+    "@types/node": "^18.19.45",
     "@types/rollup-plugin-auto-external": "^2.0.5",
     "@types/yargs": "^17.0.33",
     "@vercel/ncc": "^0.38.1",
@@ -102,13 +102,14 @@
     "csv-stringify": "5.6.5",
     "https-proxy-agent": "^7.0.5",
     "iconv-lite": "^0.6.3",
+    "inquirer": "^10.1.8",
     "yargs": "^17.7.2"
   },
   "packageManager": "pnpm@8.15.9",
   "pnpm": {
     "overrides": {
       "braces": ">=3.0.3",
-      "undici": ">=6.19.7",
+      "undici": ">=6.19.8",
       "ws": ">=8.18.0"
     }
   }

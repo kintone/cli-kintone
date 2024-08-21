@@ -135,7 +135,7 @@ importers:
         specifier: 3.4.0
         version: 3.4.0(@algolia/client-search@5.0.2)(@types/react@18.3.3)(eslint@8.57.0)(react-dom@18.3.1)(react@18.3.1)(search-insights@2.16.3)(typescript@5.4.5)
       '@docusaurus/theme-common':
-        specifier: ^3.4.0
+        specifier: ^3.5.2
         version: 3.5.2(@docusaurus/plugin-content-docs@3.5.2)(@docusaurus/types@3.4.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.4.5)
       '@mdx-js/react':
         specifier: ^3.0.1
@@ -160,13 +160,13 @@ importers:
         version: 1.77.8
     devDependencies:
       '@docusaurus/eslint-plugin':
-        specifier: ^3.4.0
+        specifier: ^3.5.2
         version: 3.5.2(eslint@8.57.0)(typescript@5.4.5)
       '@docusaurus/module-type-aliases':
         specifier: 3.4.0
         version: 3.4.0(react-dom@18.3.1)(react@18.3.1)
       '@docusaurus/plugin-content-docs':
-        specifier: ^3.4.0
+        specifier: ^3.5.2
         version: 3.5.2(@mdx-js/react@3.0.1)(eslint@8.57.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.4.5)
       '@docusaurus/tsconfig':
         specifier: 3.4.0

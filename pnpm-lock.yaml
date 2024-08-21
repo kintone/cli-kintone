@@ -51,7 +51,7 @@ importers:
         specifier: ^7.24.7
         version: 7.24.7(@babel/core@7.25.2)
       '@cucumber/cucumber':
-        specifier: ^10.8.0
+        specifier: ^10.9.0
         version: 10.9.0
       '@cybozu/eslint-config':
         specifier: ^23.0.0

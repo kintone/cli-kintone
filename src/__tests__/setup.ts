@@ -1,9 +1,5 @@
-import type { AllureJestApi } from "allure-jest/dist/AllureJestApi";
-
-declare global {
-  const allure: AllureJestApi;
-}
+import { epic } from "allure-js-commons";
 
 beforeEach(() => {
-  allure.epic("Unit tests");
+  epic("Unit tests");
 });

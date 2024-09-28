@@ -145,7 +145,7 @@ importers:
         version: 2.1.1
       docusaurus-plugin-sass:
         specifier: ^0.2.5
-        version: 0.2.5(@docusaurus/core@3.4.0)(sass@1.77.8)(webpack@5.93.0)
+        version: 0.2.5(@docusaurus/core@3.4.0)(sass@1.79.4)(webpack@5.93.0)
       prism-react-renderer:
         specifier: ^2.3.1
         version: 2.3.1(react@18.3.1)
@@ -156,8 +156,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       sass:
-        specifier: ^1.77.8
-        version: 1.77.8
+        specifier: ^1.79.4
+        version: 1.79.4
     devDependencies:
       '@docusaurus/eslint-plugin':
         specifier: ^3.5.2
@@ -6122,6 +6122,13 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
 
+  /chokidar@4.0.1:
+    resolution: {integrity: sha512-n8enUVCED/KVRQlab1hr3MVpcVMvxtZjmEa956u+4YijlmQED223XMSYj2tLuKvr4jcCTzNNMpQDUer72MMmzA==}
+    engines: {node: '>= 14.16.0'}
+    dependencies:
+      readdirp: 4.0.1
+    dev: false
+
   /chownr@1.1.4:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
     dev: true
@@ -6983,15 +6990,15 @@ packages:
     dependencies:
       esutils: 2.0.3
 
-  /docusaurus-plugin-sass@0.2.5(@docusaurus/core@3.4.0)(sass@1.77.8)(webpack@5.93.0):
+  /docusaurus-plugin-sass@0.2.5(@docusaurus/core@3.4.0)(sass@1.79.4)(webpack@5.93.0):
     resolution: {integrity: sha512-Z+D0fLFUKcFpM+bqSUmqKIU+vO+YF1xoEQh5hoFreg2eMf722+siwXDD+sqtwU8E4MvVpuvsQfaHwODNlxJAEg==}
     peerDependencies:
       '@docusaurus/core': ^2.0.0-beta || ^3.0.0-alpha
       sass: ^1.30.0
     dependencies:
       '@docusaurus/core': 3.4.0(@docusaurus/types@3.4.0)(eslint@8.57.1)(react-dom@18.3.1)(react@18.3.1)(typescript@5.4.5)
-      sass: 1.77.8
-      sass-loader: 10.5.2(sass@1.77.8)(webpack@5.93.0)
+      sass: 1.79.4
+      sass-loader: 10.5.2(sass@1.79.4)(webpack@5.93.0)
     transitivePeerDependencies:
       - fibers
       - node-sass
@@ -12007,6 +12014,11 @@ packages:
     dependencies:
       picomatch: 2.3.1
 
+  /readdirp@4.0.1:
+    resolution: {integrity: sha512-GkMg9uOTpIWWKbSsgwb5fA4EavTR+SG/PMPoAY8hkhHfEEY0/vqljY+XHqtDf2cr2IJtoNRDbrrEpZUiZCkYRw==}
+    engines: {node: '>= 14.16.0'}
+    dev: false
+
   /reading-time@1.5.0:
     resolution: {integrity: sha512-onYyVhBNr4CmAxFsKS7bz+uTLRakypIe4R+5A824vBSkQy/hB3fZepoVEf8OVAxzLvK+H/jm9TzpI3ETSm64Kg==}
     dev: false
@@ -12384,7 +12396,7 @@ packages:
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  /sass-loader@10.5.2(sass@1.77.8)(webpack@5.93.0):
+  /sass-loader@10.5.2(sass@1.79.4)(webpack@5.93.0):
     resolution: {integrity: sha512-vMUoSNOUKJILHpcNCCyD23X34gve1TS7Rjd9uXHeKqhvBG39x6XbswFDtpbTElj6XdMFezoWhkh5vtKudf2cgQ==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
@@ -12403,18 +12415,18 @@ packages:
       klona: 2.0.6
       loader-utils: 2.0.4
       neo-async: 2.6.2
-      sass: 1.77.8
+      sass: 1.79.4
       schema-utils: 3.3.0
       semver: 7.6.3
       webpack: 5.93.0
     dev: false
 
-  /sass@1.77.8:
-    resolution: {integrity: sha512-4UHg6prsrycW20fqLGPShtEvo/WyHRVRHwOP4DzkUrObWoWI05QBSfzU71TVB7PFaL104TwNaHpjlWXAZbQiNQ==}
+  /sass@1.79.4:
+    resolution: {integrity: sha512-K0QDSNPXgyqO4GZq2HO5Q70TLxTH6cIT59RdoCHMivrC8rqzaTw5ab9prjz9KUN1El4FLXrBXJhik61JR4HcGg==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
-      chokidar: 3.6.0
+      chokidar: 4.0.1
       immutable: 4.3.7
       source-map-js: 1.2.0
     dev: false

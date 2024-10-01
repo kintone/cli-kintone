@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.1](https://github.com/kintone/cli-kintone/compare/v1.11.0...v1.11.1) (2024-09-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency https-proxy-agent to ^7.0.5 ([#805](https://github.com/kintone/cli-kintone/issues/805)) ([ce0a464](https://github.com/kintone/cli-kintone/commit/ce0a464c8f701f33dac2ea46e3b8d8f67698c20c))
+* **deps:** update dependency sass to ^1.77.6 ([#800](https://github.com/kintone/cli-kintone/issues/800)) ([c4bee55](https://github.com/kintone/cli-kintone/commit/c4bee5554bc9589ddf3c87a3dd44c3459e3efb97))
+* **deps:** update dependency sass to ^1.77.7 ([#814](https://github.com/kintone/cli-kintone/issues/814)) ([04a720f](https://github.com/kintone/cli-kintone/commit/04a720f5f4b7f38239f1be0f4e2062823c1cf96a))
+* **deps:** update dependency sass to ^1.77.8 ([#816](https://github.com/kintone/cli-kintone/issues/816)) ([f189abd](https://github.com/kintone/cli-kintone/commit/f189abd4dd6450fd978d7181d2e6ebafc196f16a))
+
 ## [1.11.0](https://github.com/kintone/cli-kintone/compare/v1.10.14...v1.11.0) (2024-06-18)
 
 

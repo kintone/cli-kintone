@@ -1,4 +1,5 @@
 {
+  // tsconfig for compilation
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "composite": true,

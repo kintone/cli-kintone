@@ -1,4 +1,5 @@
 {
+  // tsconfig for type checking and syntax highlight
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "composite": true

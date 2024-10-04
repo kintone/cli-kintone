@@ -78,6 +78,9 @@ jobs:
 
   publish-npm:
     name: Publish to npm
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     needs: [publish-release]
     steps:
@@ -93,7 +96,10 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: pnpm build:ts
-      - run: pnpm publish
+      - run: pnpm publish --access public
+        env:
+          # https://docs.npmjs.com/generating-provenance-statements#using-third-party-package-publishing-tools
+          NPM_CONFIG_PROVENANCE: true
 
   actions-timeline:
     needs: [publish-npm]

@@ -1,5 +1,5 @@
 {
-  "name": "@kintone/cli-kintone",
+  "name": "@kintone/cli",
   "version": "1.11.1",
   "publishConfig": {
     "access": "public"
@@ -8,7 +8,7 @@
     "name": "Cybozu, Inc.",
     "url": "https://cybozu.co.jp"
   },
-  "description": "A cli-kintone",
+  "description": "cli-kintone; The CLI tool for importing and exporting Kintone records.",
   "bin": {
     "cli-kintone": "cli.js"
   },

@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "include": [
+    "src/**/*",
+    "features/**/*",
+    "package.json",
+    "e2e-credentials-schema.json"
+  ]
+}

@@ -12,7 +12,6 @@
   "bin": {
     "cli-kintone": "cli.js"
   },
-  "types": "lib/index.d.ts",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "start": "run-s clean 'build:ts --watch'",
@@ -23,7 +22,7 @@
     "license:analyze": "license-manager analyze -c license-manager.config.js",
     "license:extract": "license-manager extract -c license-manager.config.js -w .",
     "compress": "zx ./scripts/compress-to-zip-file.mjs",
-    "typecheck": "tsc --pretty --noEmit",
+    "typecheck": "tsc --project tsconfig.typecheck.json --pretty --noEmit",
     "test": "jest",
     "test:ci": "pnpm clean:test && jest --runInBand -c jest.config.ci.js",
     "test:e2e": "cucumber-js",
@@ -48,9 +47,9 @@
     "url": "git+https://github.com/kintone/cli-kintone.git"
   },
   "files": [
-    "lib",
-    "dist",
-    "cli.js"
+    "CHANGELOG.md",
+    "cli.js",
+    "dist"
   ],
   "keywords": [
     "kintone"

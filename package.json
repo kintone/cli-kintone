@@ -64,7 +64,7 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "@actions/core": "^1.11.0",
+    "@actions/core": "^1.11.1",
     "@babel/core": "^7.25.7",
     "@babel/preset-env": "^7.25.7",
     "@babel/preset-typescript": "^7.25.7",

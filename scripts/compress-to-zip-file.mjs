@@ -18,28 +18,28 @@ const thirdPartyNoticeFile = path.join(projectRoot, "NOTICE");
 
 try {
   await $`test -e ${executableDir}`;
-} catch (e) {
+} catch (_e) {
   console.error(
     "Error: The executables of cli-kintone are not found at",
     executableDir,
   );
-  // eslint-disable-next-line no-process-exit
+  // eslint-disable-next-line n/no-process-exit
   process.exit(1);
 }
 
 try {
   await $`test -e ${thirdPartyNoticeFile}`;
-} catch (e) {
+} catch (_e) {
   console.error("The NOTICE file should exist at", thirdPartyNoticeFile);
-  // eslint-disable-next-line no-process-exit
+  // eslint-disable-next-line n/no-process-exit
   process.exit(1);
 }
 
 try {
   await $`test -e ${licenseFile}`;
-} catch (e) {
+} catch (_e) {
   console.error("Error: The LICENSE file should exist at", licenseFile);
-  // eslint-disable-next-line no-process-exit
+  // eslint-disable-next-line n/no-process-exit
   process.exit(1);
 }
 

@@ -1,4 +1,3 @@
-// eslint-disable-next-line node/no-unpublished-import
 import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 /**

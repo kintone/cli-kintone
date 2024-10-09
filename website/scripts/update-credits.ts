@@ -1,4 +1,3 @@
-// eslint-disable-next-line node/no-unpublished-import
 import { Octokit } from "@octokit/rest";
 import * as fs from "fs/promises";
 

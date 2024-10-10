@@ -83,7 +83,7 @@ jobs:
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - run: pnpm build:executables
       - name: Run e2e tests
         env:
           TEST_KINTONE_BASE_URL: ${{ secrets.TEST_KINTONE_BASE_URL }}

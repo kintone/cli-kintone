@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - run: pnpm build:artifacts
+      - run: pnpm build:all
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:

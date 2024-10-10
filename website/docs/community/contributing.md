@@ -55,10 +55,40 @@ pnpm build
 
 ### Build
 
+Currently, we have different build processes for the npm package and executables.
+
+To build both of them, run `build:all` command:
+
+```shell
+pnpm build:all
+```
+
+#### Build npm package
+
 Run `build` command:
 
 ```shell
 pnpm build
+```
+
+To build in watch mode, run `start` command:
+
+```shell
+pnpm start
+```
+
+To check behavior, run the entrypoint file directly:
+
+```shell
+./cli.js
+```
+
+#### Build executables
+
+Run `build:artifacts` command:
+
+```shell
+pnpm build:artifacts
 ```
 
 Executables will be generated in `bin` directory.
@@ -68,18 +98,6 @@ bin
 ├── cli-kintone-linux
 ├── cli-kintone-macos
 └── cli-kintone-win.exe
-```
-
-To build in watch mode, run `start` command:
-
-```shell
-pnpm start
-```
-
-In watch mode, only JavaScript output in `dist` directory are updated. So run the entrypoint file directly.
-
-```shell
-node ./cli.js
 ```
 
 ### Testing

@@ -95,7 +95,7 @@ jobs:
         run: npm config set "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: pnpm build:ts
+      - run: pnpm build
       - run: pnpm publish --access public
         env:
           # https://docs.npmjs.com/generating-provenance-statements#using-third-party-package-publishing-tools

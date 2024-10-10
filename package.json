@@ -14,10 +14,13 @@
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "start": "run-s clean 'build:ts --watch'",
-    "build": "run-s clean build:ts package",
-    "build:ts": "ncc build ./src/cli/main.ts -m",
-    "build:artifacts": "run-s build license:analyze license:extract compress",
+    "start": "run-s clean:lib 'build:tsc --watch'",
+    "build": "run-s clean:lib build:tsc",
+    "build:all": "run-s build build:artifacts",
+    "build:artifacts": "run-s clean:artifacts build:executables license:analyze license:extract compress",
+    "build:executables": "run-s build:ncc package",
+    "build:tsc": "tsc --build ./tsconfig.build.json",
+    "build:ncc": "ncc build ./src/cli/main.ts -m",
     "package": "pkg ./dist/index.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
     "license:analyze": "license-manager analyze -c license-manager.config.js",
     "license:extract": "license-manager extract -c license-manager.config.js -w .",
@@ -34,7 +37,9 @@
     "fix": "run-p fix:*",
     "fix:lint": "run-s 'lint:eslint --fix'",
     "fix:prettier": "run-s 'lint:prettier --write'",
-    "clean": "rimraf lib bin artifacts dist",
+    "clean": "run-s clean:lib clean:artifacts clean:test",
+    "clean:lib": "rimraf lib",
+    "clean:artifacts": "rimraf bin artifacts dist",
     "clean:test": "rimraf allure-results allure-report",
     "doc:start": "pnpm --filter ./website start",
     "doc:build": "pnpm --filter ./website build",
@@ -49,7 +54,8 @@
   "files": [
     "CHANGELOG.md",
     "cli.js",
-    "dist"
+    "lib",
+    "!**/*.tsbuildinfo"
   ],
   "keywords": [
     "kintone"

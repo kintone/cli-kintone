@@ -1,6 +1,6 @@
 {
   "name": "@kintone/cli-kintone",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "publishConfig": {
     "access": "public"
   },
@@ -64,19 +64,19 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "@actions/core": "^1.10.1",
-    "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.4",
-    "@babel/preset-typescript": "^7.24.7",
+    "@actions/core": "^1.11.1",
+    "@babel/core": "^7.25.8",
+    "@babel/preset-env": "^7.25.8",
+    "@babel/preset-typescript": "^7.25.7",
     "@cucumber/cucumber": "^10.9.0",
     "@cybozu/eslint-config": "^23.0.0",
     "@cybozu/license-manager": "^1.2.1",
     "@octokit/rest": "^20.1.1",
     "@types/jest": "^29.5.13",
-    "@types/node": "^18.19.50",
+    "@types/node": "^18.19.55",
     "@types/rollup-plugin-auto-external": "^2.0.5",
     "@types/yargs": "^17.0.33",
-    "@vercel/ncc": "^0.38.1",
+    "@vercel/ncc": "^0.38.2",
     "ajv": "^8.17.1",
     "allure-commandline": "^2.30.0",
     "allure-cucumberjs": "^2.15.1",
@@ -93,7 +93,7 @@
     "rimraf": "^5.0.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
-    "zx": "^8.1.8"
+    "zx": "^8.1.9"
   },
   "dependencies": {
     "@inquirer/prompts": "^5.3.8",

@@ -46,14 +46,11 @@ jobs:
     if: ${{ needs.release.outputs.release_created }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: pnpm/action-setup@v3
-
       - uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: "pnpm"
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - run: pnpm build:artifacts
@@ -67,7 +64,7 @@ jobs:
             ${GITHUB_WORKSPACE}/artifacts/cli-kintone_v${VERSION}_macos.zip \
             ${GITHUB_WORKSPACE}/artifacts/cli-kintone_v${VERSION}_win.zip
 
-  publish:
+  publish-release:
     name: Publish release
     permissions:
       contents: write
@@ -79,8 +76,33 @@ jobs:
     steps:
       - run: gh release edit ${{ needs.release.outputs.tag_name }} --draft=false
 
+  publish-npm:
+    name: Publish to npm
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    needs: [publish-release]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - name: Configure npm user
+        run: npm config set "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: pnpm build
+      - run: pnpm publish --access public
+        env:
+          # https://docs.npmjs.com/generating-provenance-statements#using-third-party-package-publishing-tools
+          NPM_CONFIG_PROVENANCE: true
+
   actions-timeline:
-    needs: [publish]
+    needs: [publish-npm]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:

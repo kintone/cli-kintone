@@ -1,0 +1,13 @@
+{
+  // tsconfig for type checking and syntax highlight
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "include": [
+    "src/**/*",
+    "features/**/*",
+    "package.json",
+    "e2e-credentials-schema.json"
+  ]
+}

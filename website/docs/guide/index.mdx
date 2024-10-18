@@ -2,6 +2,9 @@
 sidebar_position: 100
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Getting Started
 
 :::info
@@ -56,17 +59,25 @@ To run cli-kintone, a Kintone subscription with API access is required.
 
 ### Installing
 
-1. Jump to the [Releases](https://github.com/kintone/cli-kintone/releases) page.
-2. Download latest cli-kintone ZIP file and extract it.
+<Tabs>
+    <TabItem value="binary" label="Binary" default>
+        1. Jump to the [Releases](https://github.com/kintone/cli-kintone/releases) page.
+        2. Download latest cli-kintone ZIP file and extract it.
+    </TabItem>
+    <TabItem value="npm" label="npm">
+        Run `npm install` command:
+
+        ```shell
+        npm install @kintone/cli --global
+        ```
+    </TabItem>
+</Tabs>
 
 For more details, see [Installation](./installation) page.
 
 ### Operation check
 
 Run cli-kintone with `--version` option.
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 <Tabs>
   <TabItem value="linux-macos" label="Linux/macOS" default>

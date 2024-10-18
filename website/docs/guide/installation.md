@@ -6,6 +6,25 @@ sidebar_position: 200
 
 This page will help you install cli-kintone.
 
+## From npmjs.com
+
+If you have configured [Node.js](https://nodejs.org/) on your environment, you can use [npm](https://docs.npmjs.com/about-npm) to install cli-kintone.
+It is suitable for use in plugin/customization development or for CI.
+
+Run the following command:
+
+```shell
+npm install @kintone/cli --global
+```
+
+Or to install locally:
+
+```shell
+npm install @kintone/cli
+```
+
+See [@kintone/cli](https://www.npmjs.com/package/@kintone/cli) for more details about our npm package.
+
 ## From binary file
 
 1. Jump to the [Releases](https://github.com/kintone/cli-kintone/releases) page.

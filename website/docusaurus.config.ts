@@ -41,6 +41,10 @@ const config: Config = {
           editUrl: "https://github.com/kintone/cli-kintone/tree/main/website",
           // showLastUpdateTime: true,
           // showLastUpdateAuthor: true,
+          admonitions: {
+            keywords: ["experimental", "deprecated"],
+            extendDefaults: true,
+          },
         },
         blog: {
           showReadingTime: true,

@@ -1,10 +1,16 @@
 ---
-sidebar_position: 300
+sidebar_position: 400
 ---
 
 # Versioning Policy
 
-This page describe how we increment the cli-kintone version.
+This page describes how we increment the cli-kintone version.
+
+:::info
+
+To learn about how we manage the stability of cli-kintone, see the [Stability Index](./stability-index) first.
+
+:::
 
 ## Basics
 

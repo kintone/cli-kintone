@@ -7,6 +7,7 @@ const docusaurusModuleAliases = [
   "@theme/ThemedImage",
   "@site/static",
   "@site/src",
+  "@theme-original/Admonition",
 ];
 
 /** @type {import('eslint/lib/shared/types').ConfigData} */

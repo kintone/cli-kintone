@@ -70,7 +70,7 @@ Feature: cli-kintone import command
     And Load app token of the app "app_for_draft_token" with exact permissions "add" as env var: "API_TOKEN"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --file-path CliKintoneTest-24.csv"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
+    And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
   Scenario: CliKintoneTest-25 Should return the error message when importing records with two valid API Token.
     Given The CSV file "CliKintoneTest-25.csv" with content as below:
@@ -109,7 +109,7 @@ Feature: cli-kintone import command
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN_IMPORT"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT,invalid_token --file-path CliKintoneTest-27.csv"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
+    And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
   Scenario: CliKintoneTest-28 Should return the error message when importing records with an API Token without Add permission.
     Given The CSV file "CliKintoneTest-28.csv" with content as below:

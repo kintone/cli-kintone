@@ -57,7 +57,7 @@ Feature: cli-kintone delete command
     And Load app token of the app "app_for_draft_token" with exact permissions "view,delete" as env var: "API_TOKEN"
     When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN --yes"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
+    And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
   Scenario: CliKintoneTest-131 Should return the error message when deleting records with two valid API Token.
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
@@ -86,7 +86,7 @@ Feature: cli-kintone delete command
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
     When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN,INVALID_API_TOKEN_2 --yes"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
+    And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
   Scenario: CliKintoneTest-134 Should return the error message when authorizing with username/password.
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"

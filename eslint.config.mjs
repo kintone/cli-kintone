@@ -2,6 +2,7 @@ import presetsNodeTypescriptPrettier from "@cybozu/eslint-config/flat/presets/no
 import websiteConfig from "./website/eslint.config.mjs";
 import featuresConfig from "./features/eslint.config.mjs";
 
+/** @type {import("eslint").Linter.Config[]} */
 export default [
   {
     ignores: [

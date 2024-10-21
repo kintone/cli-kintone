@@ -8,6 +8,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
+/** @type {import("eslint").Linter.Config[]} */
 export default [
   ...compat.extends("plugin:@docusaurus/recommended"),
   {

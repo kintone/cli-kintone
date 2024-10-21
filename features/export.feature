@@ -64,7 +64,7 @@ Feature: cli-kintone export command
     And Load app token of the app "app_for_draft_token" with exact permissions "view" as env var: "DRAFT_API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $DRAFT_API_TOKEN"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
+    And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
   Scenario: CliKintoneTest-83 Should return the error message when exporting the record with a non-relevant API Token.
     Given Load app ID of the app "app_for_export" as env var: "APP_ID"
@@ -104,7 +104,7 @@ Feature: cli-kintone export command
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN_1"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_1,INVALID_API_TOKEN"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[520] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
+    And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
   Scenario: CliKintoneTest-87 Should return the record contents in CSV format with --username and --password options.
     Given The app "app_for_export" has no records
@@ -280,7 +280,7 @@ Feature: cli-kintone export command
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --condition Unknown_Field>=20"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[520] \[GAIA_IQ11] Specified field \(Unknown_Field\) not found."
+    And The output error message should match with the pattern: "\[400] \[GAIA_IQ11] Specified field \(Unknown_Field\) not found."
 
   Scenario: CliKintoneTest-97 Should return the record contents with valid condition query (-c option).
     Given The app "app_for_export" has no records
@@ -324,7 +324,7 @@ Feature: cli-kintone export command
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --order-by 'Unknown_Field desc'"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[520] \[GAIA_IQ11] Specified field \(Unknown_Field\) not found."
+    And The output error message should match with the pattern: "\[400] \[GAIA_IQ11] Specified field \(Unknown_Field\) not found."
 
   Scenario: CliKintoneTest-100 Should return the record contents when exporting the record with --fields specified.
     Given The app "app_for_export" has no records

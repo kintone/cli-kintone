@@ -38,7 +38,7 @@ export type Subtable = FieldWith<
 
 export type InSubtable =
   | SingleLineText
-  | Number // Although ESLint recognizes it as primitive type, this type is defined above in this file.
+  | Number
   | Calc
   | MultiLineText
   | RichText

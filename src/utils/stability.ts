@@ -1,4 +1,4 @@
-// NOTE: We can consider using process.emitWarning()
+// NOTE: We don't use process.emitWarning() for display consistency with our own logger,
 
 import { logger as defaultLogger } from "./log";
 

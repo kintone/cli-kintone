@@ -1,5 +1,5 @@
 {
-  "name": "@kintone/cli-kintone",
+  "name": "@kintone/cli",
   "version": "1.11.1",
   "publishConfig": {
     "access": "public"
@@ -8,22 +8,24 @@
     "name": "Cybozu, Inc.",
     "url": "https://cybozu.co.jp"
   },
-  "description": "A cli-kintone",
+  "description": "cli-kintone; The CLI tool for importing and exporting Kintone records.",
   "bin": {
     "cli-kintone": "cli.js"
   },
-  "types": "lib/index.d.ts",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "start": "run-s clean 'build:ts --watch'",
-    "build": "run-s clean build:ts package",
-    "build:ts": "ncc build ./src/cli/main.ts -m",
-    "build:artifacts": "run-s build license:analyze license:extract compress",
+    "start": "run-s clean:lib 'build:tsc --watch'",
+    "build": "run-s clean:lib build:tsc",
+    "build:all": "run-s build build:artifacts",
+    "build:artifacts": "run-s clean:artifacts build:executables license:analyze license:extract compress",
+    "build:executables": "run-s build:ncc package",
+    "build:tsc": "tsc --build ./tsconfig.build.json",
+    "build:ncc": "ncc build ./src/cli/main.ts -m",
     "package": "pkg ./dist/index.js --compress Brotli -o bin/cli-kintone -t linux,macos,win",
     "license:analyze": "license-manager analyze -c license-manager.config.js",
     "license:extract": "license-manager extract -c license-manager.config.js -w .",
     "compress": "zx ./scripts/compress-to-zip-file.mjs",
-    "typecheck": "tsc --pretty --noEmit",
+    "typecheck": "tsc --project tsconfig.typecheck.json --pretty --noEmit",
     "test": "jest",
     "test:ci": "pnpm clean:test && jest --runInBand -c jest.config.ci.js",
     "test:e2e": "cucumber-js",
@@ -35,7 +37,9 @@
     "fix": "run-p fix:*",
     "fix:lint": "run-s 'lint:eslint --fix'",
     "fix:prettier": "run-s 'lint:prettier --write'",
-    "clean": "rimraf lib bin artifacts dist",
+    "clean": "run-s clean:lib clean:artifacts clean:test",
+    "clean:lib": "rimraf lib",
+    "clean:artifacts": "rimraf bin artifacts dist",
     "clean:test": "rimraf allure-results allure-report",
     "doc:start": "pnpm --filter ./website start",
     "doc:build": "pnpm --filter ./website build",
@@ -48,9 +52,10 @@
     "url": "git+https://github.com/kintone/cli-kintone.git"
   },
   "files": [
+    "CHANGELOG.md",
+    "cli.js",
     "lib",
-    "dist",
-    "cli.js"
+    "!**/*.tsbuildinfo"
   ],
   "keywords": [
     "kintone"
@@ -64,23 +69,24 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "@actions/core": "^1.11.0",
-    "@babel/core": "^7.25.7",
-    "@babel/preset-env": "^7.25.7",
+    "@actions/core": "^1.11.1",
+    "@babel/core": "^7.25.8",
+    "@babel/preset-env": "^7.25.8",
     "@babel/preset-typescript": "^7.25.7",
     "@cucumber/cucumber": "^10.9.0",
     "@cybozu/eslint-config": "^24.0.0-beta.0",
     "@cybozu/license-manager": "^1.2.1",
     "@octokit/rest": "^20.1.1",
     "@types/jest": "^29.5.13",
-    "@types/node": "^18.19.54",
+    "@types/node": "^18.19.57",
     "@types/rollup-plugin-auto-external": "^2.0.5",
     "@types/yargs": "^17.0.33",
     "@vercel/ncc": "^0.38.2",
     "ajv": "^8.17.1",
     "allure-commandline": "^2.30.0",
     "allure-cucumberjs": "^2.15.1",
-    "allure-jest": "^2.15.1",
+    "allure-jest": "^3.0.5",
+    "allure-js-commons": "^3.0.5",
     "babel-jest": "^29.7.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.12.0",
@@ -92,7 +98,7 @@
     "rimraf": "^5.0.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
-    "zx": "^8.1.8"
+    "zx": "^8.1.9"
   },
   "dependencies": {
     "@inquirer/prompts": "^5.3.8",
@@ -108,7 +114,7 @@
   "pnpm": {
     "overrides": {
       "braces": ">=3.0.3",
-      "undici": ">=6.19.8",
+      "undici": ">=6.20.1",
       "ws": ">=8.18.0"
     }
   }

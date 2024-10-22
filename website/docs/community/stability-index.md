@@ -21,7 +21,7 @@ Changes are reflected in the version according to the [Versioning Policy](./vers
 
 ## Experimental
 
-This is an index for underdevelopment and unstable features.
+This is an index for unstable features.
 
 Changes are not subject to the [Versioning Policy](./versioning). Breaking changes or removal may occur.
 Production use is not recommended.

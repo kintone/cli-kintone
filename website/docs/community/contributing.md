@@ -206,7 +206,13 @@ Body
 To show warnings on CLI, use helper functions.
 
 ```typescript
-TBD;
+emitExperimentalWarning("This feature is under early development.");
+```
+
+```typescript
+emitDeprecationWarning(
+  "This feature has been deprecated.\nUse new option instead.",
+);
 ```
 
 ### Commit

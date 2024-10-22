@@ -44,7 +44,7 @@ To enable this feature, use the `--experimental-feature-name` flag.
 Features in this index emit a WARN level log on execution.
 
 ```shell
-TBD
+[2024-10-22T05:39:44.494Z] WARN: [Experimental] This feature is under early development.
 ```
 
 CLI flag may be needed to avoid breaking existing behavior.
@@ -65,12 +65,13 @@ In the documentation, features are described with **Deprecated** [admonitions](h
 
 :::deprecated[Title (since X.Y.Z)]
 
-Use \<alternatives> instead.
+Use \<alternative feature> instead.
 
 :::
 
 Features in this index emit a WARN level log on execution.
 
 ```shell
-TBD
+[2024-10-22T05:39:44.495Z] WARN: [Deprecated] This feature has been deprecated.
+[2024-10-22T05:39:44.495Z] WARN: Use <alternative feature> instead.
 ```

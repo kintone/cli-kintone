@@ -1,5 +1,5 @@
 import { themes as prismThemes } from "prism-react-renderer";
-// eslint-disable-next-line node/no-missing-import,node/no-unpublished-import
+// eslint-disable-next-line n/no-missing-import
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 

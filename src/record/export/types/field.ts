@@ -48,8 +48,7 @@ export type OneOf =
   | KintoneRecordField.Modifier
   | KintoneRecordField.UpdatedTime
   | KintoneRecordField.SingleLineText
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  | KintoneRecordField.Number // Although ESLint recognizes it as primitive type, this type is defined above in this file.
+  | KintoneRecordField.Number
   | KintoneRecordField.Calc
   | KintoneRecordField.MultiLineText
   | KintoneRecordField.RichText

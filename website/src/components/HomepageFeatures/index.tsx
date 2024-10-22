@@ -12,7 +12,6 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: "Easy to Use",
-    // eslint-disable-next-line node/no-missing-require
     Svg: require("@site/static/img/undraw_well_done_re_3hpo.svg").default,
     description: (
       <>

@@ -129,7 +129,7 @@ const execute = (args: Args) => {
 const handler = async (args: Args) => {
   if (!hasApiToken(args["api-token"]) && (args.username || args.password)) {
     logger.error("The delete command only supports API token authentication.");
-    // eslint-disable-next-line no-process-exit
+    // eslint-disable-next-line n/no-process-exit
     process.exit(1);
   }
 

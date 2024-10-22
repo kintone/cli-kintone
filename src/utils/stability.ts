@@ -1,11 +1,17 @@
 // NOTE: We can consider using process.emitWarning()
 
-import { logger } from "./log";
+import { logger as defaultLogger } from "./log";
 
-export const emitExperimentalWarning = (message: string) => {
+export const emitExperimentalWarning = (
+  message: string,
+  logger = defaultLogger,
+) => {
   logger.warn(`[Experimental] ${message}`);
 };
 
-export const emitDeprecationWarning = (message: string) => {
+export const emitDeprecationWarning = (
+  message: string,
+  logger = defaultLogger,
+) => {
   logger.warn(`[Deprecated] ${message}`);
 };

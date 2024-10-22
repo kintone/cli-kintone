@@ -10,7 +10,7 @@ This page describes how we indicate the stability of cli-kintone features.
 
 Basically, cli-kintone maintains backward compatibility and follows the [Versioning Policy](./versioning) but also includes features that are under development or will be removed.
 
-We use the Stability Index to indicate the stability of cli-kintone features.
+We use the **Stability Index** to indicate the stability of cli-kintone features.
 There are three indexes: stable, experimental, and deprecated.
 
 ## Stable
@@ -26,7 +26,7 @@ This is an index for underdevelopment and unstable features.
 Changes are not subject to the [Versioning Policy](./versioning). Breaking changes or removal may occur.
 Production use is not recommended.
 
-In the documentation, features are described with **Experimental** [admonitions](https://docusaurus.io/docs/markdown-features/admonitions).
+In the documentation, features are described with **Experimental** admonitions.
 
 :::experimental[Title]
 
@@ -58,7 +58,7 @@ cli-kintone --experimental-feature-name
 This is an index for deprecated features that can be removed in future updates.
 We don't maintain features in this index, including bug fixes and security updates.
 
-In the documentation, features are described with **Deprecated** [admonitions](https://docusaurus.io/docs/markdown-features/admonitions).
+In the documentation, features are described with **Deprecated** admonitions.
 
 :::deprecated[Title (since X.Y.Z)]
 :::

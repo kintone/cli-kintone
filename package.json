@@ -83,7 +83,7 @@
     "@types/yargs": "^17.0.33",
     "@vercel/ncc": "^0.38.2",
     "ajv": "^8.17.1",
-    "allure-commandline": "^2.30.0",
+    "allure-commandline": "^2.31.0",
     "allure-cucumberjs": "^2.15.1",
     "allure-jest": "^3.0.5",
     "allure-js-commons": "^3.0.5",

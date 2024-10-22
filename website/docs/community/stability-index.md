@@ -8,7 +8,7 @@ This page describes how we indicate the stability of cli-kintone features.
 
 ## Basics
 
-Basically, cli-kintone maintains backward compatibility and follows the [Versioning Policy](./versioning) but also includes features that are under development or will be removed.
+Basically, cli-kintone maintains backward compatibility and follows the [Versioning Policy](./versioning) but also includes features that are under development or can be removed.
 
 We use the **Stability Index** to indicate the stability of cli-kintone features.
 There are three indexes: stable, experimental, and deprecated.

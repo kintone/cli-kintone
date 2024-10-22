@@ -5,25 +5,21 @@ extensions-platform-team:
 
 tasshi:
   name: tasshi (Masaharu Tashiro)
-  title: Product Owner of kintone Extension Platform Team
   url: https://github.com/tasshi-me
   image_url: https://github.com/tasshi-me.png
 
 chihiro-adachi:
   name: Chihiro Adachi
-  title: Software engineer of kintone Extension Platform Team
   url: https://github.com/chihiro-adachi
   image_url: https://github.com/chihiro-adachi.png
 
 shabaraba:
   name: Takahiro Kawakami
-  title: Software engineer of kintone Extension Platform Team
   url: https://github.com/shabaraba
   image_url: https://github.com/shabaraba.png
 
 hisasami:
   name: Mariko Hisamatsu
-  title: Quality assurance of kintone DX team
   url: https://github.com/hisasami
   image_url: https://github.com/hisasami.png
 

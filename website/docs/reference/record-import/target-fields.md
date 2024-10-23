@@ -11,7 +11,7 @@ cli-kintone record import --app 8 --file-path records.csv --fields 'Number,Text'
 | `--fields`     |            | Comma-separated field codes to be imported |
 
 :::info
-When specifying `--fields` option, It will change the field's behavior described at: [Fields](./fields).
+When specifying `--fields` option, It will change the field's behavior described at: [Fields](./fields/index.md).
 
 Please check the below section for more details.
 :::

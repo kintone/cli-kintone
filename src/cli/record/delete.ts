@@ -4,6 +4,7 @@ import { run } from "../../record/delete";
 import type { SupportedImportEncoding } from "../../utils/file";
 import { logger } from "../../utils/log";
 import { confirm } from "@inquirer/prompts";
+import { commonOptions } from "../commonOptions";
 
 const command = "delete";
 
@@ -16,78 +17,15 @@ const FORCE_DELETE_ALIAS = "y";
 
 const builder = (args: yargs.Argv) =>
   args
-    .option("base-url", {
-      describe: "Kintone Base Url",
-      default: process.env.KINTONE_BASE_URL,
-      defaultDescription: "KINTONE_BASE_URL",
-      type: "string",
-      demandOption: true,
-      requiresArg: true,
-    })
-    .option("username", {
-      alias: "u",
-      describe: "*Invalid* Kintone Username",
-      default: process.env.KINTONE_USERNAME,
-      defaultDescription: "KINTONE_USERNAME",
-      hidden: true,
-    })
-    .option("password", {
-      alias: "p",
-      describe: "*Invalid* Kintone Password",
-      default: process.env.KINTONE_PASSWORD,
-      defaultDescription: "KINTONE_PASSWORD",
-      hidden: true,
-    })
-    .option("api-token", {
-      describe: "App's API token",
-      default: process.env.KINTONE_API_TOKEN,
-      defaultDescription: "KINTONE_API_TOKEN",
-      type: "array",
-      string: true,
-      requiresArg: true,
-    })
-    .option("basic-auth-username", {
-      describe: "Kintone Basic Auth Username",
-      default: process.env.KINTONE_BASIC_AUTH_USERNAME,
-      defaultDescription: "KINTONE_BASIC_AUTH_USERNAME",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("basic-auth-password", {
-      describe: "Kintone Basic Auth Password",
-      default: process.env.KINTONE_BASIC_AUTH_PASSWORD,
-      defaultDescription: "KINTONE_BASIC_AUTH_PASSWORD",
-      type: "string",
-      requiresArg: true,
-    })
+    .options(commonOptions)
+    // NOTE: record delete command only accepts API token authn.
+    .hide("username")
+    .hide("password")
     .option("app", {
       describe: "The ID of the app",
       type: "string",
       demandOption: true,
       requiresArg: true,
-    })
-    .option("guest-space-id", {
-      describe: "The ID of guest space",
-      default: process.env.KINTONE_GUEST_SPACE_ID,
-      defaultDescription: "KINTONE_GUEST_SPACE_ID",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("pfx-file-path", {
-      describe: "The path to client certificate file",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("pfx-file-password", {
-      describe: "The password of client certificate file",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("proxy", {
-      describe: "The URL of a proxy server",
-      default: process.env.HTTPS_PROXY ?? process.env.https_proxy,
-      defaultDescription: "HTTPS_PROXY",
-      type: "string",
     })
     .option(FORCE_DELETE_KEY, {
       alias: FORCE_DELETE_ALIAS,

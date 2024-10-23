@@ -1,0 +1,64 @@
+name: test-npm
+
+on:
+  push:
+    branches:
+      - main
+      - "renovate/**"
+  pull_request:
+
+jobs:
+  prepare:
+    name: Prepare npm package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm pack
+      - run: mv kintone-cli-*.tgz kintone-cli.tgz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kintone-cli.tgz
+          path: kintone-cli.tgz
+
+  test-install:
+    name: Test npm install - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
+    needs: prepare
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [22.x, 20.x, 18.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: kintone-cli.tgz
+      - run: npm install -g kintone-cli.tgz
+      - run: cli-kintone --version
+
+  test-npx:
+    name: Test npx - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
+    needs: prepare
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [22.x, 20.x, 18.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: kintone-cli.tgz
+      - run: npx kintone-cli.tgz --version

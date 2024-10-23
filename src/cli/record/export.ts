@@ -19,13 +19,6 @@ const builder = (args: yargs.Argv) =>
       demandOption: true,
       requiresArg: true,
     })
-    .option("guest-space-id", {
-      describe: "The ID of guest space",
-      default: process.env.KINTONE_GUEST_SPACE_ID,
-      defaultDescription: "KINTONE_GUEST_SPACE_ID",
-      type: "string",
-      requiresArg: true,
-    })
     .option("attachments-dir", {
       describe: "Attachment file directory",
       type: "string",

@@ -27,13 +27,6 @@ const builder = (args: yargs.Argv) =>
       demandOption: true,
       requiresArg: true,
     })
-    .option("guest-space-id", {
-      describe: "The ID of guest space",
-      default: process.env.KINTONE_GUEST_SPACE_ID,
-      defaultDescription: "KINTONE_GUEST_SPACE_ID",
-      type: "string",
-      requiresArg: true,
-    })
     .option(FORCE_DELETE_KEY, {
       alias: FORCE_DELETE_ALIAS,
       describe: "Force to delete records",

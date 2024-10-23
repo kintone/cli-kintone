@@ -2,6 +2,7 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import type { ExportFileEncoding } from "../../record/export";
 import { run } from "../../record/export";
+import { commonOptions } from "../commonOptions";
 
 const encodings: ExportFileEncoding[] = ["utf8", "sjis"];
 
@@ -11,63 +12,11 @@ const describe = "export the records of the specified app";
 
 const builder = (args: yargs.Argv) =>
   args
-    .option("base-url", {
-      describe: "Kintone Base Url",
-      default: process.env.KINTONE_BASE_URL,
-      defaultDescription: "KINTONE_BASE_URL",
-      type: "string",
-      demandOption: true,
-      requiresArg: true,
-    })
-    .option("username", {
-      alias: "u",
-      describe: "Kintone Username",
-      default: process.env.KINTONE_USERNAME,
-      defaultDescription: "KINTONE_USERNAME",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("password", {
-      alias: "p",
-      describe: "Kintone Password",
-      default: process.env.KINTONE_PASSWORD,
-      defaultDescription: "KINTONE_PASSWORD",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("api-token", {
-      describe: "App's API token",
-      default: process.env.KINTONE_API_TOKEN,
-      defaultDescription: "KINTONE_API_TOKEN",
-      type: "array",
-      string: true,
-      requiresArg: true,
-    })
-    .option("basic-auth-username", {
-      describe: "Kintone Basic Auth Username",
-      default: process.env.KINTONE_BASIC_AUTH_USERNAME,
-      defaultDescription: "KINTONE_BASIC_AUTH_USERNAME",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("basic-auth-password", {
-      describe: "Kintone Basic Auth Password",
-      default: process.env.KINTONE_BASIC_AUTH_PASSWORD,
-      defaultDescription: "KINTONE_BASIC_AUTH_PASSWORD",
-      type: "string",
-      requiresArg: true,
-    })
+    .options(commonOptions)
     .option("app", {
       describe: "The ID of the app",
       type: "string",
       demandOption: true,
-      requiresArg: true,
-    })
-    .option("guest-space-id", {
-      describe: "The ID of guest space",
-      default: process.env.KINTONE_GUEST_SPACE_ID,
-      defaultDescription: "KINTONE_GUEST_SPACE_ID",
-      type: "string",
       requiresArg: true,
     })
     .option("attachments-dir", {
@@ -96,22 +45,6 @@ const builder = (args: yargs.Argv) =>
       describe: "The fields to be exported in comma-separated",
       type: "string",
       requiresArg: true,
-    })
-    .option("pfx-file-path", {
-      describe: "The path to client certificate file",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("pfx-file-password", {
-      describe: "The password of client certificate file",
-      type: "string",
-      requiresArg: true,
-    })
-    .option("proxy", {
-      describe: "The URL of a proxy server",
-      default: process.env.HTTPS_PROXY ?? process.env.https_proxy,
-      defaultDescription: "HTTPS_PROXY",
-      type: "string",
     });
 
 type Args = yargs.Arguments<

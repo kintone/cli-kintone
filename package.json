@@ -77,7 +77,7 @@
     "@cybozu/eslint-config": "^24.0.0-beta.0",
     "@cybozu/license-manager": "^1.2.1",
     "@octokit/rest": "^20.1.1",
-    "@types/jest": "^29.5.13",
+    "@types/jest": "^29.5.14",
     "@types/node": "^18.19.58",
     "@types/rollup-plugin-auto-external": "^2.0.5",
     "@types/yargs": "^17.0.33",

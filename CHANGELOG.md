@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.0](https://github.com/kintone/cli-kintone/compare/v1.11.1...v1.12.0) (2024-10-23)
+
+
+### Features
+
+* publish cli-kintone to npm registry ([#877](https://github.com/kintone/cli-kintone/issues/877)) ([3c5e365](https://github.com/kintone/cli-kintone/commit/3c5e3654497333130691855b846afd845b051ccc))
+
+
+### Documentation
+
+* define the Stability Index ([#890](https://github.com/kintone/cli-kintone/issues/890)) ([a13b97e](https://github.com/kintone/cli-kintone/commit/a13b97e3263bf8d6cb183408cb9781d8e476bdb7))
+
 ## [1.11.1](https://github.com/kintone/cli-kintone/compare/v1.11.0...v1.11.1) (2024-09-27)
 
 

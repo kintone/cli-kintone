@@ -11,6 +11,7 @@ const docusaurusModuleAliases = [
   "@theme/ThemedImage",
   "@site/static",
   "@site/src",
+  "@theme-original/Admonition",
 ];
 
 const __filename = fileURLToPath(import.meta.url);

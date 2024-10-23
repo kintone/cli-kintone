@@ -163,6 +163,58 @@ You can run auto-fix with `fix` command:
 pnpm fix
 ```
 
+### Stability
+
+We define the [Stability Index](./stability-index) to indicate stability of features.
+
+For experimental/deprecated features, please add [admonitions](https://docusaurus.io/docs/markdown-features/admonitions) on docs and show warnings on CLI.
+
+#### Admonitions
+
+To add admonitions, use `experimental` or `deprecated` admonition type.
+
+```markdown
+:::experimental[Title]
+
+Body
+
+:::
+```
+
+:::experimental[Title]
+
+Body
+
+:::
+
+```markdown
+:::deprecated[Title]
+
+Body
+
+:::
+```
+
+:::deprecated[Title]
+
+Body
+
+:::
+
+#### CLI Warnings
+
+To show warnings on CLI, use helper functions.
+
+```typescript
+emitExperimentalWarning("This feature is under early development.");
+```
+
+```typescript
+emitDeprecationWarning(
+  "This feature has been deprecated.\nUse new option instead.",
+);
+```
+
 ### Commit
 
 The commit message must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).

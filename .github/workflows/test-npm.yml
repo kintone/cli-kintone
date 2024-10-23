@@ -1,0 +1,33 @@
+name: test-npm
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-install:
+    name: Test npm install - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [22.x, 20.x, 18.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g @kintone/cli
+      - run: cli-kintone --version
+
+  test-npx:
+    name: Test npx - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [22.x, 20.x, 18.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npx @kintone/cli --version

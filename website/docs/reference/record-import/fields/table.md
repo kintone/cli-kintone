@@ -79,7 +79,7 @@ When running the import command without the `--fields` option:
 - If the field inside the Table is missing on the CSV header => cli-kintone will ignore that field.
 - If the field inside the Table value in the row is an empty string => cli-kintone will add/update that field with an empty string.
 
-With the [--fields](../target-fields) option and the specified field is a Table field
+With the [--fields](../target-fields.md) option and the specified field is a Table field
 
 - If the `<row_id>` in the row is an empty string => cli-kintone will throw an error.
 - If the field inside the Table is missing on the CSV header => cli-kintone will throw an error.

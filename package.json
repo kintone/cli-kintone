@@ -13,7 +13,6 @@
     "cli-kintone": "cli.js"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "start": "run-s clean:lib 'build:tsc --watch'",
     "build": "run-s clean:lib build:tsc",
     "build:all": "run-s build build:artifacts",

@@ -9,7 +9,7 @@ const debug = _debug("create-contents-zip");
 /**
  * Create a zipped contents
  */
-export const createContentsZip = (
+export const createContentsZip = async (
   pluginDir: string,
   manifest: any,
 ): Promise<Buffer> => {

@@ -3,19 +3,14 @@ import path from "path";
 import packer from "./index";
 import { createContentsZip } from "./create-contents-zip";
 
-export const packPluginFromManifest = (
+export const packPluginFromManifest = async (
   manifestJSONPath: string,
   privateKey: string,
 ): Promise<{ plugin: Buffer; privateKey: string; id: string }> => {
-  return new Promise((resolve, reject) => {
-    try {
-      resolve(JSON.parse(fs.readFileSync(manifestJSONPath, "utf-8")));
-    } catch (e) {
-      reject(e);
-    }
-  })
-    .then((manifest) =>
-      createContentsZip(path.dirname(manifestJSONPath), manifest),
-    )
-    .then((buffer) => packer(buffer as any, privateKey));
+  const manifest = JSON.parse(fs.readFileSync(manifestJSONPath, "utf-8"));
+  const buffer = await createContentsZip(
+    path.dirname(manifestJSONPath),
+    manifest,
+  );
+  return packer(buffer as any, privateKey);
 };

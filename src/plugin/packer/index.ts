@@ -6,7 +6,7 @@ import { PrivateKey } from "./crypto";
 
 const debug = _debug("packer");
 
-const packer = (
+const packer = async (
   contentsZip: Buffer,
   privateKey_?: string,
 ): Promise<{
@@ -27,13 +27,15 @@ const packer = (
   const signature = key.sign(contentsZip);
   const id = key.uuid();
   debug(`id : ${id}`);
-  return validateContentsZip(contentsZip)
-    .then(() => zip(contentsZip, key.exportPublicKey(), signature))
-    .then((plugin) => ({
-      plugin,
-      privateKey,
-      id,
-    })) as any;
+
+  await validateContentsZip(contentsZip);
+
+  const plugin = await zip(contentsZip, key.exportPublicKey(), signature);
+  return {
+    plugin,
+    privateKey,
+    id,
+  };
 };
 
 export = packer;
@@ -41,7 +43,7 @@ export = packer;
 /**
  * Create plugin.zip
  */
-const zip = (
+const zip = async (
   contentsZip: Buffer,
   publicKey: Buffer,
   signature: Buffer,

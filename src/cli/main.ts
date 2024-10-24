@@ -7,7 +7,8 @@ import { logHandler, logOptions } from "./logOption";
 // eslint-disable-next-line no-unused-expressions
 yargs
   .command(recordCommand)
-  .command(pluginCommand)
+  // NOTE: Hide the plugin command because it's in very early development.
+  .command({ ...pluginCommand, describe: false })
   .options(logOptions)
   .middleware(logHandler)
   .demandCommand()

@@ -165,7 +165,7 @@ pnpm fix
 
 ### Stability
 
-We define the [Stability Index](./stability-index) to indicate stability of features.
+We define the [Stability Index](./stability-index.md) to indicate stability of features.
 
 For experimental/deprecated features, please add [admonitions](https://docusaurus.io/docs/markdown-features/admonitions) on docs and show warnings on CLI.
 
@@ -276,4 +276,4 @@ Normally, maintainer will trigger a release weekly.
 
 We follow the [Semantic Versioning](https://semver.org/).
 
-For more details, see [Versioning Policy](./versioning) page.
+For more details, see [Versioning Policy](./versioning.md) page.

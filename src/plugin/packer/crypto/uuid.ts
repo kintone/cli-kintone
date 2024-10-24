@@ -1,3 +1,12 @@
+import crypto from "crypto";
+
+export const uuid = (publicKey: Buffer): string => {
+  const hash = crypto.createHash("sha256");
+  hash.update(publicKey);
+  const hexId = hash.digest().toString("hex").slice(0, 32);
+  return hex2a(hexId);
+};
+
 const N_TO_A = "a".charCodeAt(0) - "0".charCodeAt(0);
 const A_TO_K = "k".charCodeAt(0) - "a".charCodeAt(0);
 

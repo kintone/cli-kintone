@@ -5,8 +5,8 @@ import { promisify } from "util";
 import validate from "@kintone/plugin-manifest-validator";
 import * as streamBuffers from "stream-buffers";
 
-import { generateErrorMessages } from "./gen-error-msg";
-import { sourceList } from "./sourcelist";
+import { generateErrorMessages } from "./manifest/gen-error-msg";
+import { sourceList } from "./manifest/sourcelist";
 import type internal from "stream";
 
 type ManifestJson = any;

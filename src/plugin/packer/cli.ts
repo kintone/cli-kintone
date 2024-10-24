@@ -5,11 +5,10 @@ import os from "os";
 import * as chokidar from "chokidar";
 import { mkdirp } from "mkdirp";
 import _debug from "debug";
-import validate from "@kintone/plugin-manifest-validator";
 import packer from "./index";
-import { generateErrorMessages } from "./gen-error-msg";
 import { createContentsZip } from "./create-contents-zip";
 import { logger } from "../../utils/log";
+import { validateManifestJson } from "./manifest/validate";
 
 const debug = _debug("cli");
 const writeFile = promisify(fs.writeFile);
@@ -40,7 +39,8 @@ const cli = (pluginDir: string, options_?: Options) => {
 
       // 3. validate manifest.json
       const manifest = loadJson(manifestJsonPath);
-      throwIfInvalidManifest(manifest, pluginDir);
+      // throwIfInvalidManifest(manifest, pluginDir);
+      validateManifestJson(JSON.stringify(manifest), pluginDir);
 
       let outputDir = path.dirname(path.resolve(pluginDir));
       let outputFile = path.join(outputDir, "plugin.zip");
@@ -111,28 +111,28 @@ const cli = (pluginDir: string, options_?: Options) => {
 
 export = cli;
 
-const throwIfInvalidManifest = (manifest: any, pluginDir: string) => {
-  const result = validate(manifest, {
-    maxFileSize: validateMaxFileSize(pluginDir),
-    fileExists: validateFileExists(pluginDir),
-  });
-  debug(result);
-
-  if (result.warnings && result.warnings.length > 0) {
-    result.warnings.forEach((warning) => {
-      logger.warn(warning.message);
-    });
-  }
-
-  if (!result.valid) {
-    const msgs = generateErrorMessages(result.errors ?? []);
-    logger.error("Invalid manifest.json:");
-    msgs.forEach((msg) => {
-      logger.error(`- ${msg}`);
-    });
-    throw new Error("Invalid manifest.json");
-  }
-};
+// const throwIfInvalidManifest = (manifest: any, pluginDir: string) => {
+//   const result = validate(manifest, {
+//     maxFileSize: validateMaxFileSize(pluginDir),
+//     fileExists: validateFileExists(pluginDir),
+//   });
+//   debug(result);
+//
+//   if (result.warnings && result.warnings.length > 0) {
+//     result.warnings.forEach((warning) => {
+//       logger.warn(warning.message);
+//     });
+//   }
+//
+//   if (!result.valid) {
+//     const msgs = generateErrorMessages(result.errors ?? []);
+//     logger.error("Invalid manifest.json:");
+//     msgs.forEach((msg) => {
+//       logger.error(`- ${msg}`);
+//     });
+//     throw new Error("Invalid manifest.json");
+//   }
+// };
 
 /**
  * Create and save plugin.zip
@@ -149,27 +149,27 @@ const loadJson = (jsonPath: string) => {
   return JSON.parse(content);
 };
 
-/**
- * Return validator for `maxFileSize` keyword
- */
-const validateMaxFileSize = (pluginDir: string) => {
-  return (maxBytes: number, filePath: string) => {
-    try {
-      const stat = fs.statSync(path.join(pluginDir, filePath));
-      return stat.size <= maxBytes;
-    } catch (_) {
-      return false;
-    }
-  };
-};
-
-const validateFileExists = (pluginDir: string) => {
-  return (filePath: string) => {
-    try {
-      const stat = fs.statSync(path.join(pluginDir, filePath));
-      return stat.isFile();
-    } catch (_) {
-      return false;
-    }
-  };
-};
+// /**
+//  * Return validator for `maxFileSize` keyword
+//  */
+// const validateMaxFileSize = (pluginDir: string) => {
+//   return (maxBytes: number, filePath: string) => {
+//     try {
+//       const stat = fs.statSync(path.join(pluginDir, filePath));
+//       return stat.size <= maxBytes;
+//     } catch (_) {
+//       return false;
+//     }
+//   };
+// };
+//
+// const validateFileExists = (pluginDir: string) => {
+//   return (filePath: string) => {
+//     try {
+//       const stat = fs.statSync(path.join(pluginDir, filePath));
+//       return stat.isFile();
+//     } catch (_) {
+//       return false;
+//     }
+//   };
+// };

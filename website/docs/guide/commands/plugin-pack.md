@@ -31,3 +31,4 @@ See [Options](/guide/options) page for common options.
 | `--input`         | Yes      | The input plugin project directory.                                                            |
 | `--output`        |          | The destination path of generated plugin file.<br/>Default to plugin.zip on current directory. |
 | `--private-key  ` |          | The path of private key file<br/>If omitted, new private key will be generated.                |
+| `--watch  `       |          | Run in watch mode.                                                                             |

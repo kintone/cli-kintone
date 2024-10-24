@@ -1,5 +1,6 @@
 # cli-kintone
 
+[![npm version](https://badge.fury.io/js/@kintone%2Fcli.svg)](https://badge.fury.io/js/@kintone%2Fcli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A CLI tool to import/export records to/from [Kintone](https://www.kintone.com/).

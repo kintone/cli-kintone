@@ -1,6 +1,6 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import cli from "../../plugin/packer/src/cli";
+import cli from "../../plugin/packer/cli";
 
 const command = "pack";
 

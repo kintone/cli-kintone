@@ -1,9 +1,9 @@
 import path from "path";
 import fs from "fs";
 import { readZipContentsNames } from "./helper/zip";
-import packer from "../src";
-import { packPluginFromManifest } from "../src/pack-plugin-from-manifest";
-import { createContentsZip } from "../src/create-contents-zip";
+import packer from "../index";
+import { packPluginFromManifest } from "../pack-plugin-from-manifest";
+import { createContentsZip } from "../create-contents-zip";
 
 const fixturesDir = path.join(__dirname, "fixtures");
 const ppkFilePath = path.join(fixturesDir, "private.ppk");

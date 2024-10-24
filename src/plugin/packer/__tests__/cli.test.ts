@@ -3,8 +3,8 @@ import path from "path";
 import { rimraf } from "rimraf";
 import { globSync } from "glob";
 import { readZipContentsNames } from "./helper/zip";
-import cli from "../src/cli";
-import console from "../src/console";
+import cli from "../cli";
+import console from "../console";
 
 const fixturesDir = path.posix.join(__dirname, "fixtures");
 const sampleDir = path.posix.join(fixturesDir, "sample-plugin");

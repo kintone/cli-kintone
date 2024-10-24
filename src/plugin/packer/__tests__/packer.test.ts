@@ -6,7 +6,7 @@ import yauzl from "yauzl";
 
 import { readZipContentsNames } from "./helper/zip";
 
-import packer from "../src";
+import packer from "../index";
 
 const privateKeyPath = path.join(__dirname, "fixtures", "private.ppk");
 const contentsZipPath = path.join(__dirname, "fixtures", "contents.zip");

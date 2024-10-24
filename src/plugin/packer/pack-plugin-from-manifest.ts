@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import packer from ".";
+import packer from "./index";
 import { createContentsZip } from "./create-contents-zip";
 
 export const packPluginFromManifest = (

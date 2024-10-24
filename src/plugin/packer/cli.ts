@@ -6,7 +6,7 @@ import * as chokidar from "chokidar";
 import { mkdirp } from "mkdirp";
 import _debug from "debug";
 import validate from "@kintone/plugin-manifest-validator";
-import packer from ".";
+import packer from "./index";
 import console from "./console";
 import { generateErrorMessages } from "./gen-error-msg";
 import { createContentsZip } from "./create-contents-zip";

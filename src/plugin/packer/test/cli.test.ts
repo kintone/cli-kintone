@@ -14,6 +14,13 @@ const ID = "aaa";
 const PRIVATE_KEY = "PRIVATE_KEY";
 const PLUGIN_BUFFER = Buffer.from("foo");
 
+type MockedPacker = jest.MockedFunction<
+  (
+    contentsZip: Buffer,
+    privateKey_?: string,
+  ) => Promise<{ plugin: Buffer; privateKey: string; id: string }>
+>;
+
 describe("cli", () => {
   const consoleLog = console.log;
   const consoleError = console.error;
@@ -36,7 +43,7 @@ describe("cli", () => {
   });
 
   describe("validation", () => {
-    let packer;
+    let packer: MockedPacker;
     beforeEach(() => {
       packer = jest.fn().mockReturnValue({
         id: ID,
@@ -93,8 +100,8 @@ describe("cli", () => {
 
   describe("without ppk", () => {
     const pluginDir = path.join(sampleDir, "plugin-dir");
-    let packer;
-    let resultPluginPath;
+    let packer: MockedPacker;
+    let resultPluginPath: string;
     beforeEach(() => {
       packer = jest.fn().mockReturnValue({
         id: ID,
@@ -141,7 +148,7 @@ describe("cli", () => {
 
   describe("with ppk", () => {
     const pluginDir = path.join(sampleDir, "plugin-dir");
-    let packer;
+    let packer: MockedPacker;
     beforeEach(() => {
       packer = jest.fn().mockReturnValue({
         id: ID,

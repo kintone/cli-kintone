@@ -8,7 +8,7 @@ export const readZipContentsNames = (
       if (err) {
         reject(err);
       }
-      const files = [];
+      const files: string[] = [];
       zipFile.on("entry", (entry) => {
         files.push(entry.fileName);
       });

@@ -1,6 +1,6 @@
 import path from "path";
-import execa from "execa";
-import pkg from "../package.json";
+import { execa } from "execa";
+import pkg from "../../../../package.json";
 
 describe("bin", () => {
   it("should output version with --version", () =>

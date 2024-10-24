@@ -1,4 +1,4 @@
-import { sourceList } from "../dist/sourcelist";
+import { sourceList } from "../src/sourcelist";
 
 describe("sourcelist", () => {
   let manifest: any;

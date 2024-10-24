@@ -8,7 +8,7 @@ This page describes how we increment the cli-kintone version.
 
 :::info
 
-To learn how we manage the stability of cli-kintone, see the [Stability Index](./stability-index) first.
+To learn how we manage the stability of cli-kintone, see the [Stability Index](./stability-index.md) first.
 
 :::
 

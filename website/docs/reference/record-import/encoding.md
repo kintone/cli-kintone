@@ -25,4 +25,4 @@ The default is `utf8`
 ## Errors
 
 - Specified unsupported encoding
-- [Mismatch encoding](../errors/mismatch-encoding)
+- [Mismatch encoding](../errors/mismatch-encoding.md)

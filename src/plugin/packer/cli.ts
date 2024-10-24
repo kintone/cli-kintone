@@ -7,9 +7,9 @@ import { mkdirp } from "mkdirp";
 import _debug from "debug";
 import validate from "@kintone/plugin-manifest-validator";
 import packer from "./index";
-import console from "./console";
 import { generateErrorMessages } from "./gen-error-msg";
 import { createContentsZip } from "./create-contents-zip";
+import { logger } from "../../utils/log";
 
 const debug = _debug("cli");
 const writeFile = promisify(fs.writeFile);
@@ -100,11 +100,11 @@ const cli = (pluginDir: string, options_?: Options) => {
       });
     })
     .then((outputFile) => {
-      console.log("Succeeded:", outputFile);
+      logger.info(`Succeeded: ${outputFile}`);
       return outputFile;
     })
     .catch((error) => {
-      console.error("Failed:", error.message);
+      logger.error(`Failed: ${error.message}`);
       return Promise.reject(error);
     });
 };
@@ -120,15 +120,15 @@ const throwIfInvalidManifest = (manifest: any, pluginDir: string) => {
 
   if (result.warnings && result.warnings.length > 0) {
     result.warnings.forEach((warning) => {
-      console.warn(`WARN: ${warning.message}`);
+      logger.warn(warning.message);
     });
   }
 
   if (!result.valid) {
     const msgs = generateErrorMessages(result.errors ?? []);
-    console.error("Invalid manifest.json:");
+    logger.error("Invalid manifest.json:");
     msgs.forEach((msg) => {
-      console.error(`- ${msg}`);
+      logger.error(`- ${msg}`);
     });
     throw new Error("Invalid manifest.json");
   }

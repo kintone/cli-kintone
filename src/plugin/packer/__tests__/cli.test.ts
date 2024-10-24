@@ -4,7 +4,7 @@ import { rimraf } from "rimraf";
 import { globSync } from "glob";
 import { readZipContentsNames } from "./helpers/zip";
 import cli from "../cli";
-import console from "../console";
+import { logger } from "../../../utils/log";
 
 const fixturesDir = path.posix.join(__dirname, "fixtures");
 const sampleDir = path.posix.join(fixturesDir, "sample-plugin");
@@ -22,20 +22,11 @@ type MockedPacker = jest.MockedFunction<
 >;
 
 describe("cli", () => {
-  const consoleLog = console.log;
-  const consoleError = console.error;
-  const consoleWarn = console.warn;
   beforeEach(() => {
-    /* eslint-disable @typescript-eslint/no-empty-function -- This is mock functions */
-    console.log = () => {};
-    console.error = () => {};
-    console.warn = () => {};
-    /* eslint-enable @typescript-eslint/no-empty-function */
+    logger.setLogConfigLevel("none");
   });
   afterEach(() => {
-    console.log = consoleLog;
-    console.error = consoleError;
-    console.warn = consoleWarn;
+    logger.setLogConfigLevel("info");
   });
 
   it("is a function", () => {

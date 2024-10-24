@@ -15,7 +15,7 @@ const builder = (args: yargs.Argv) =>
       demandOption: true,
       requiresArg: true,
     })
-    .option("out", {
+    .option("output", {
       describe:
         "The destination path of generated plugin file\nDefault to plugin.zip on current directory",
       type: "string",
@@ -41,7 +41,7 @@ const handler = async (args: Args) => {
   emitExperimentalWarning("This feature is under early development");
   const flags = {
     ppk: args["private-key"],
-    out: args.out,
+    out: args.output,
     watch: args.watch,
   };
   if (process.env.NODE_ENV === "test") {

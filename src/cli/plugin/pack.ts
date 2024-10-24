@@ -1,10 +1,11 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import cli from "../../plugin/packer/cli";
+import { emitExperimentalWarning } from "../../utils/stability";
 
 const command = "pack";
 
-const describe = "export the records of the specified app";
+const describe = "[Experimental] Packaging plugin project to a zip file";
 
 const builder = (args: yargs.Argv) =>
   args
@@ -38,6 +39,7 @@ type Args = yargs.Arguments<
 >;
 
 const handler = async (args: Args) => {
+  emitExperimentalWarning("This feature is under early development");
   const flags = {
     ppk: args["private-key"],
     out: args.out,

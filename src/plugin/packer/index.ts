@@ -50,7 +50,7 @@ const zip = (
   signature: Buffer,
 ): Promise<Buffer> => {
   debug(`zip(): start`);
-  return new Promise((res, rej) => {
+  return new Promise((res) => {
     const output = new streamBuffers.WritableStreamBuffer();
     const zipFile = new ZipFile();
     output.on("finish", () => {

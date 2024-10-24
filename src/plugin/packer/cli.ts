@@ -138,7 +138,7 @@ const throwIfInvalidManifest = (manifest: any, pluginDir: string) => {
  * Create and save plugin.zip
  */
 const outputPlugin = (outputPath: string, plugin: Buffer): Promise<string> => {
-  return writeFile(outputPath, plugin).then((arg) => outputPath);
+  return writeFile(outputPath, plugin).then(() => outputPath);
 };
 
 /**
@@ -157,7 +157,7 @@ const validateMaxFileSize = (pluginDir: string) => {
     try {
       const stat = fs.statSync(path.join(pluginDir, filePath));
       return stat.size <= maxBytes;
-    } catch (e) {
+    } catch (_) {
       return false;
     }
   };
@@ -168,7 +168,7 @@ const validateFileExists = (pluginDir: string) => {
     try {
       const stat = fs.statSync(path.join(pluginDir, filePath));
       return stat.isFile();
-    } catch (e) {
+    } catch (_) {
       return false;
     }
   };

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.1](https://github.com/kintone/cli-kintone/compare/v1.12.0...v1.12.1) (2024-10-24)
+
+
+### Bug Fixes
+
+* remove `preinstall` ([#910](https://github.com/kintone/cli-kintone/issues/910)) ([28318f2](https://github.com/kintone/cli-kintone/commit/28318f2af5f33a757826680fc5b51057afbbd592))
+
+
+### Documentation
+
+* fix broken links ([#907](https://github.com/kintone/cli-kintone/issues/907)) ([4d889aa](https://github.com/kintone/cli-kintone/commit/4d889aa0a71cd976ec618348942b86d60d4d887a))
+
 ## [1.12.0](https://github.com/kintone/cli-kintone/compare/v1.11.1...v1.12.0) (2024-10-23)
 
 

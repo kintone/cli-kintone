@@ -1,7 +1,7 @@
 import path from "path";
 import { ZipFile } from "yazl";
 import streamBuffers from "stream-buffers";
-import { sourceList } from "./sourcelist";
+import { sourceList } from "./manifest/sourcelist";
 import _debug from "debug";
 
 const debug = _debug("create-contents-zip");
@@ -9,7 +9,7 @@ const debug = _debug("create-contents-zip");
 /**
  * Create a zipped contents
  */
-export const createContentsZip = (
+export const createContentsZip = async (
   pluginDir: string,
   manifest: any,
 ): Promise<Buffer> => {

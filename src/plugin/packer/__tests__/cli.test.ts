@@ -4,7 +4,7 @@ import { rimraf } from "rimraf";
 import { globSync } from "glob";
 import { readZipContentsNames } from "./helpers/zip";
 import cli from "../cli";
-import console from "../console";
+import { logger } from "../../../utils/log";
 
 const fixturesDir = path.posix.join(__dirname, "fixtures");
 const sampleDir = path.posix.join(fixturesDir, "sample-plugin");
@@ -22,20 +22,11 @@ type MockedPacker = jest.MockedFunction<
 >;
 
 describe("cli", () => {
-  const consoleLog = console.log;
-  const consoleError = console.error;
-  const consoleWarn = console.warn;
   beforeEach(() => {
-    /* eslint-disable @typescript-eslint/no-empty-function -- This is mock functions */
-    console.log = () => {};
-    console.error = () => {};
-    console.warn = () => {};
-    /* eslint-enable @typescript-eslint/no-empty-function */
+    logger.setLogConfigLevel("none");
   });
   afterEach(() => {
-    console.log = consoleLog;
-    console.error = consoleError;
-    console.warn = consoleWarn;
+    logger.setLogConfigLevel("info");
   });
 
   it("is a function", () => {
@@ -102,7 +93,8 @@ describe("cli", () => {
     const pluginDir = path.join(sampleDir, "plugin-dir");
     let packer: MockedPacker;
     let resultPluginPath: string;
-    beforeEach(() => {
+
+    beforeEach(async () => {
       packer = jest.fn().mockReturnValue({
         id: ID,
         privateKey: PRIVATE_KEY,
@@ -110,22 +102,17 @@ describe("cli", () => {
       });
 
       // TODO: use os tempdir
-      return rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true })
-        .then(() => cli(pluginDir, { packerMock_: packer }))
-        .then((filePath) => {
-          resultPluginPath = filePath;
-        });
+      await rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true });
+      resultPluginPath = await cli(pluginDir, { packerMock_: packer });
     });
 
-    it("calles `packer` with contents.zip as the 1st argument", (done) => {
+    it("calles `packer` with contents.zip as the 1st argument", async () => {
       expect(packer.mock.calls.length).toBe(1);
       expect(packer.mock.calls[0][0]).toBeTruthy();
-      readZipContentsNames(packer.mock.calls[0][0]).then((files) => {
-        expect(files.sort()).toStrictEqual(
-          ["image/icon.png", "manifest.json"].sort(),
-        );
-        done();
-      });
+      const files = await readZipContentsNames(packer.mock.calls[0][0]);
+      expect(files.sort()).toStrictEqual(
+        ["image/icon.png", "manifest.json"].sort(),
+      );
     });
 
     it("calles `packer` with privateKey as the 2nd argument", () => {
@@ -150,16 +137,15 @@ describe("cli", () => {
   describe("with ppk", () => {
     const pluginDir = path.join(sampleDir, "plugin-dir");
     let packer: MockedPacker;
-    beforeEach(() => {
+    beforeEach(async () => {
       packer = jest.fn().mockReturnValue({
         id: ID,
         privateKey: PRIVATE_KEY,
         plugin: PLUGIN_BUFFER,
       });
 
-      return rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true }).then(() =>
-        cli(pluginDir, { ppk: ppkPath, packerMock_: packer }),
-      );
+      await rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true });
+      return cli(pluginDir, { ppk: ppkPath, packerMock_: packer });
     });
 
     it("calles `packer` with privateKey as the 2nd argument", () => {
@@ -174,7 +160,7 @@ describe("cli", () => {
     });
   });
 
-  it("includes files listed in manifest.json only", () => {
+  it("includes files listed in manifest.json only", async () => {
     const pluginDir = path.join(fixturesDir, "plugin-full-manifest");
     const packer = jest.fn().mockReturnValue({
       id: ID,
@@ -182,28 +168,25 @@ describe("cli", () => {
       plugin: PLUGIN_BUFFER,
     });
 
-    return rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true })
-      .then(() => cli(pluginDir, { packerMock_: packer }))
-      .then(() => {
-        return readZipContentsNames(packer.mock.calls[0][0]).then((files) => {
-          expect(files.sort()).toStrictEqual(
-            [
-              "css/config.css",
-              "css/desktop.css",
-              "css/mobile.css",
-              "html/config.html",
-              "image/icon.png",
-              "js/config.js",
-              "js/desktop.js",
-              "js/mobile.js",
-              "manifest.json",
-            ].sort(),
-          );
-        });
-      });
+    await rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true });
+    await cli(pluginDir, { packerMock_: packer });
+    const files = await readZipContentsNames(packer.mock.calls[0][0]);
+    expect(files.sort()).toStrictEqual(
+      [
+        "css/config.css",
+        "css/desktop.css",
+        "css/mobile.css",
+        "html/config.html",
+        "image/icon.png",
+        "js/config.js",
+        "js/desktop.js",
+        "js/mobile.js",
+        "manifest.json",
+      ].sort(),
+    );
   });
 
-  it("includes files listed in manifest.json only", () => {
+  it("includes files listed in manifest.json only", async () => {
     const pluginDir = path.join(sampleDir, "plugin-dir");
     const outputDir = path.join("test", ".output");
     const outputPluginPath = path.join(outputDir, "foo.zip");
@@ -213,20 +196,19 @@ describe("cli", () => {
       plugin: PLUGIN_BUFFER,
     });
 
-    return rimraf(outputDir)
-      .then(() =>
-        cli(pluginDir, { packerMock_: packer, out: outputPluginPath }),
-      )
-      .then((resultPluginPath) => {
-        expect(resultPluginPath).toBe(outputPluginPath);
-        const pluginBuffer = fs.readFileSync(outputPluginPath);
-        expect(PLUGIN_BUFFER.equals(pluginBuffer)).toBe(true);
-        const ppk = fs.readFileSync(path.join(outputDir, `${ID}.ppk`));
-        expect(PRIVATE_KEY).toBe(ppk.toString());
-      })
-      .then(() => {
-        // TODO: use os tempdir for more safe testing
-        rimraf(outputDir);
-      });
+    await rimraf(outputDir);
+    const resultPluginPath = await cli(pluginDir, {
+      packerMock_: packer,
+      out: outputPluginPath,
+    });
+
+    expect(resultPluginPath).toBe(outputPluginPath);
+    const pluginBuffer = fs.readFileSync(outputPluginPath);
+    expect(PLUGIN_BUFFER.equals(pluginBuffer)).toBe(true);
+    const ppk = fs.readFileSync(path.join(outputDir, `${ID}.ppk`));
+    expect(PRIVATE_KEY).toBe(ppk.toString());
+
+    // TODO: use os tempdir for more safe testing
+    await rimraf(outputDir);
   });
 });

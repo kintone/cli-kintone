@@ -1,14 +1,12 @@
 import { ZipFile } from "yazl";
-import RSA from "node-rsa";
 import streamBuffers from "stream-buffers";
 import _debug from "debug";
-import { sign } from "./sign";
-import { uuid } from "./uuid";
 import { validateContentsZip } from "./zip";
+import { PrivateKey } from "./crypto";
 
 const debug = _debug("packer");
 
-const packer = (
+const packer = async (
   contentsZip: Buffer,
   privateKey_?: string,
 ): Promise<{
@@ -19,24 +17,25 @@ const packer = (
   let privateKey = privateKey_;
   let key;
   if (privateKey) {
-    key = new RSA(privateKey);
+    key = PrivateKey.importKey(privateKey);
   } else {
     debug("generating a new key");
-    key = new RSA({ b: 1024 });
-    privateKey = key.exportKey("pkcs1-private");
+    key = PrivateKey.generateKey();
+    privateKey = key.exportPrivateKey();
   }
 
-  const signature = sign(contentsZip, privateKey);
-  const publicKey = key.exportKey("pkcs8-public-der");
-  const id = uuid(publicKey);
+  const signature = key.sign(contentsZip);
+  const id = key.uuid();
   debug(`id : ${id}`);
-  return validateContentsZip(contentsZip)
-    .then(() => zip(contentsZip, publicKey, signature))
-    .then((plugin) => ({
-      plugin,
-      privateKey,
-      id,
-    })) as any;
+
+  await validateContentsZip(contentsZip);
+
+  const plugin = await zip(contentsZip, key.exportPublicKey(), signature);
+  return {
+    plugin,
+    privateKey,
+    id,
+  };
 };
 
 export = packer;
@@ -44,7 +43,7 @@ export = packer;
 /**
  * Create plugin.zip
  */
-const zip = (
+const zip = async (
   contentsZip: Buffer,
   publicKey: Buffer,
   signature: Buffer,

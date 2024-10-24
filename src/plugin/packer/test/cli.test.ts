@@ -109,6 +109,7 @@ describe("cli", () => {
         plugin: PLUGIN_BUFFER,
       });
 
+      // TODO: use os tempdir
       return rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true })
         .then(() => cli(pluginDir, { packerMock_: packer }))
         .then((filePath) => {
@@ -222,6 +223,10 @@ describe("cli", () => {
         expect(PLUGIN_BUFFER.equals(pluginBuffer)).toBe(true);
         const ppk = fs.readFileSync(path.join(outputDir, `${ID}.ppk`));
         expect(PRIVATE_KEY).toBe(ppk.toString());
+      })
+      .then(() => {
+        // TODO: use os tempdir for more safe testing
+        rimraf(outputDir);
       });
   });
 });

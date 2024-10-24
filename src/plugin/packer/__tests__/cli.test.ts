@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { rimraf } from "rimraf";
 import { globSync } from "glob";
-import { readZipContentsNames } from "./helper/zip";
+import { readZipContentsNames } from "./helpers/zip";
 import cli from "../cli";
 import console from "../console";
 

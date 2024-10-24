@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { readZipContentsNames } from "./helper/zip";
+import { readZipContentsNames } from "./helpers/zip";
 import packer from "../index";
 import { packPluginFromManifest } from "../pack-plugin-from-manifest";
 import { createContentsZip } from "../create-contents-zip";

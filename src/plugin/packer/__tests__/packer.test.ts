@@ -4,7 +4,7 @@ import fs from "fs";
 import RSA from "node-rsa";
 import yauzl from "yauzl";
 
-import { readZipContentsNames } from "./helper/zip";
+import { readZipContentsNames } from "./helpers/zip";
 
 import packer from "../index";
 

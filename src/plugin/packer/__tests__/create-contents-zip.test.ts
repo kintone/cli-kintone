@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { readZipContentsNames } from "./helper/zip";
+import { readZipContentsNames } from "./helpers/zip";
 import { createContentsZip } from "../create-contents-zip";
 
 const fixturesDir = path.join(__dirname, "fixtures");

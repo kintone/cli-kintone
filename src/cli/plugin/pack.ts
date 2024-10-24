@@ -9,9 +9,8 @@ const describe = "[Experimental] Packaging plugin project to a zip file";
 
 const builder = (args: yargs.Argv) =>
   args
-    .option("private-key", {
-      describe:
-        "The path of private key file\nIf omitted, new private key will be generated.",
+    .option("input", {
+      describe: "The input plugin project directory",
       type: "string",
       demandOption: true,
       requiresArg: true,
@@ -23,10 +22,10 @@ const builder = (args: yargs.Argv) =>
       default: "plugin.zip",
       requiresArg: true,
     })
-    .option("input", {
-      describe: "The input plugin project directory",
+    .option("private-key", {
+      describe:
+        "The path of private key file\nIf omitted, new private key will be generated.",
       type: "string",
-      demandOption: true,
       requiresArg: true,
     })
     .option("watch", {

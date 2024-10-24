@@ -20,93 +20,86 @@ type Options = Partial<{
   packerMock_: typeof packer;
 }>;
 
-const cli = (pluginDir: string, options_?: Options) => {
+const cli = async (pluginDir: string, options_?: Options) => {
   const options = options_ || {};
   const packerLocal = options.packerMock_ ? options.packerMock_ : packer;
 
-  return Promise.resolve()
-    .then(() => {
-      // 1. check if pluginDir is a directory
-      if (!fs.statSync(pluginDir).isDirectory()) {
-        throw new Error(`${pluginDir} should be a directory.`);
-      }
+  try {
+    // 1. check if pluginDir is a directory
+    if (!fs.statSync(pluginDir).isDirectory()) {
+      throw new Error(`${pluginDir} should be a directory.`);
+    }
 
-      // 2. check pluginDir/manifest.json
-      const manifestJsonPath = path.join(pluginDir, "manifest.json");
-      if (!fs.statSync(manifestJsonPath).isFile()) {
-        throw new Error("Manifest file $PLUGIN_DIR/manifest.json not found.");
-      }
+    // 2. check pluginDir/manifest.json
+    const manifestJsonPath = path.join(pluginDir, "manifest.json");
+    if (!fs.statSync(manifestJsonPath).isFile()) {
+      throw new Error("Manifest file $PLUGIN_DIR/manifest.json not found.");
+    }
 
-      // 3. validate manifest.json
-      const manifest = loadJson(manifestJsonPath);
-      // throwIfInvalidManifest(manifest, pluginDir);
-      validateManifestJson(JSON.stringify(manifest), pluginDir);
+    // 3. validate manifest.json
+    const manifest = loadJson(manifestJsonPath);
+    // throwIfInvalidManifest(manifest, pluginDir);
+    validateManifestJson(JSON.stringify(manifest), pluginDir);
 
-      let outputDir = path.dirname(path.resolve(pluginDir));
-      let outputFile = path.join(outputDir, "plugin.zip");
-      if (options.out) {
-        outputFile = options.out;
-        outputDir = path.dirname(path.resolve(outputFile));
-      }
-      debug(`outputDir : ${outputDir}`);
-      debug(`outputFile : ${outputFile}`);
+    let outputDir = path.dirname(path.resolve(pluginDir));
+    let outputFile = path.join(outputDir, "plugin.zip");
+    if (options.out) {
+      outputFile = options.out;
+      outputDir = path.dirname(path.resolve(outputFile));
+    }
+    debug(`outputDir : ${outputDir}`);
+    debug(`outputFile : ${outputFile}`);
 
-      // 4. generate new ppk if not specified
-      const ppkFile = options.ppk;
-      let privateKey: string;
-      if (ppkFile) {
-        debug(`loading an existing key: ${ppkFile}`);
-        privateKey = fs.readFileSync(ppkFile, "utf8");
-      }
+    // 4. generate new ppk if not specified
+    const ppkFile = options.ppk;
+    let privateKey: string | undefined;
+    if (ppkFile) {
+      debug(`loading an existing key: ${ppkFile}`);
+      privateKey = fs.readFileSync(ppkFile, "utf8");
+    }
 
-      // 5. package plugin.zip
-      return Promise.all([
-        mkdirp(outputDir),
-        createContentsZip(pluginDir, manifest).then((contentsZip) =>
-          packerLocal(contentsZip, privateKey),
-        ),
-      ]).then((result) => {
-        const output = result[1];
-        const ppkFilePath = path.join(outputDir, `${output.id}.ppk`);
-        if (!ppkFile) {
-          fs.writeFileSync(ppkFilePath, output.privateKey, "utf8");
-        }
+    // 5. package plugin.zip
+    await mkdirp(outputDir);
+    const contentsZip = await createContentsZip(pluginDir, manifest);
 
-        if (options.watch) {
-          // change events are fired before chagned files are flushed on Windows,
-          // which generate an invalid plugin zip.
-          // in order to fix this, we use awaitWriteFinish option only on Windows.
-          const watchOptions =
-            os.platform() === "win32"
-              ? {
-                  awaitWriteFinish: {
-                    stabilityThreshold: 1000,
-                    pollInterval: 250,
-                  },
-                }
-              : {};
-          const watcher = chokidar.watch(pluginDir, watchOptions);
-          watcher.on("change", () => {
-            cli(
-              pluginDir,
-              Object.assign({}, options, {
-                watch: false,
-                ppk: options.ppk || ppkFilePath,
-              }),
-            );
-          });
-        }
-        return outputPlugin(outputFile, output.plugin);
+    const output = await packerLocal(contentsZip, privateKey);
+    const ppkFilePath = path.join(outputDir, `${output.id}.ppk`);
+    if (!ppkFile) {
+      fs.writeFileSync(ppkFilePath, output.privateKey, "utf8");
+    }
+
+    if (options.watch) {
+      // change events are fired before chagned files are flushed on Windows,
+      // which generate an invalid plugin zip.
+      // in order to fix this, we use awaitWriteFinish option only on Windows.
+      const watchOptions =
+        os.platform() === "win32"
+          ? {
+              awaitWriteFinish: {
+                stabilityThreshold: 1000,
+                pollInterval: 250,
+              },
+            }
+          : {};
+      const watcher = chokidar.watch(pluginDir, watchOptions);
+      watcher.on("change", () => {
+        cli(
+          pluginDir,
+          Object.assign({}, options, {
+            watch: false,
+            ppk: options.ppk || ppkFilePath,
+          }),
+        );
       });
-    })
-    .then((outputFile) => {
-      logger.info(`Succeeded: ${outputFile}`);
-      return outputFile;
-    })
-    .catch((error) => {
-      logger.error(`Failed: ${error.message}`);
-      return Promise.reject(error);
-    });
+    }
+    await outputPlugin(outputFile, output.plugin);
+
+    logger.info(`Succeeded: ${outputFile}`);
+    return outputFile;
+  } catch (error) {
+    logger.error(`Failed: ${error}`);
+    return Promise.reject(error);
+  }
 };
 
 export = cli;
@@ -137,8 +130,12 @@ export = cli;
 /**
  * Create and save plugin.zip
  */
-const outputPlugin = (outputPath: string, plugin: Buffer): Promise<string> => {
-  return writeFile(outputPath, plugin).then(() => outputPath);
+const outputPlugin = async (
+  outputPath: string,
+  plugin: Buffer,
+): Promise<string> => {
+  await writeFile(outputPath, plugin);
+  return outputPath;
 };
 
 /**

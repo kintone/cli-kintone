@@ -6,10 +6,10 @@ import pkg from "../../../../package.json";
 const execa = {} as ExecaMethod<{}>;
 
 describe.skip("bin", () => {
-  it("should output version with --version", () =>
-    exec("--version").then((result) => {
-      expect(result.stdout).toBe(pkg.version);
-    }));
+  it("should output version with --version", async () => {
+    const result = await exec("--version");
+    expect(result.stdout).toBe(pkg.version);
+  });
 
   it("should fail without args", () =>
     exec().then(
@@ -23,56 +23,56 @@ describe.skip("bin", () => {
       },
     ));
 
-  it("should recieve 1st arg as PLUGIN_DIR", () =>
-    exec("foo").then((result) => {
-      expect(JSON.parse(result.stdout)).toStrictEqual({
-        pluginDir: "foo",
-        flags: { watch: false },
-      });
-    }));
+  it("should recieve 1st arg as PLUGIN_DIR", async () => {
+    const result = await exec("foo");
+    expect(JSON.parse(result.stdout)).toStrictEqual({
+      pluginDir: "foo",
+      flags: { watch: false },
+    });
+  });
 
-  it("should recieve --ppk", () =>
-    exec("foo", "--ppk", "bar").then((result) => {
-      expect(JSON.parse(result.stdout)).toStrictEqual({
-        pluginDir: "foo",
-        flags: { watch: false, ppk: "bar" },
-      });
-    }));
+  it("should recieve --ppk", async () => {
+    const result = await exec("foo", "--ppk", "bar");
+    expect(JSON.parse(result.stdout)).toStrictEqual({
+      pluginDir: "foo",
+      flags: { watch: false, ppk: "bar" },
+    });
+  });
 
-  it("should recieve --out", () =>
-    exec("foo", "--out", "bar").then((result) => {
-      expect(JSON.parse(result.stdout)).toStrictEqual({
-        pluginDir: "foo",
-        flags: { watch: false, out: "bar" },
-      });
-    }));
+  it("should recieve --out", async () => {
+    const result = await exec("foo", "--out", "bar");
+    expect(JSON.parse(result.stdout)).toStrictEqual({
+      pluginDir: "foo",
+      flags: { watch: false, out: "bar" },
+    });
+  });
 
-  it("should recieve --watch", () =>
-    exec("foo", "--watch").then((result) => {
-      expect(JSON.parse(result.stdout)).toStrictEqual({
-        pluginDir: "foo",
-        flags: { watch: true },
-      });
-    }));
+  it("should recieve --watch", async () => {
+    const result = await exec("foo", "--watch");
+    expect(JSON.parse(result.stdout)).toStrictEqual({
+      pluginDir: "foo",
+      flags: { watch: true },
+    });
+  });
 
-  it("should recieve -w as an alias of --watch", () =>
-    exec("foo", "-w").then((result) => {
-      expect(JSON.parse(result.stdout)).toStrictEqual({
-        pluginDir: "foo",
-        flags: { watch: true },
-      });
-    }));
+  it("should recieve -w as an alias of --watch", async () => {
+    const result = await exec("foo", "-w");
+    expect(JSON.parse(result.stdout)).toStrictEqual({
+      pluginDir: "foo",
+      flags: { watch: true },
+    });
+  });
 
-  it("should filter unexpected option", () =>
-    exec("foo", "--bar").then((result) => {
-      expect(JSON.parse(result.stdout)).toStrictEqual({
-        pluginDir: "foo",
-        flags: { watch: false },
-      });
-    }));
+  it("should filter unexpected option", async () => {
+    const result = await exec("foo", "--bar");
+    expect(JSON.parse(result.stdout)).toStrictEqual({
+      pluginDir: "foo",
+      flags: { watch: false },
+    });
+  });
 });
 
-const exec = (...args: string[]) => {
+const exec = async (...args: string[]) => {
   const binPath = path.resolve(__dirname, "../bin/cli.js");
   const env = Object.assign({}, process.env, { NODE_ENV: "test" });
   return execa(binPath, args, { env });

@@ -1,6 +1,6 @@
 import yauzl from "yauzl";
 
-export const readZipContentsNames = (
+export const readZipContentsNames = async (
   zipFilePath: Buffer,
 ): Promise<string[]> => {
   return new Promise((resolve, reject) => {

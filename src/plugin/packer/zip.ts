@@ -22,56 +22,54 @@ interface PreprocessedContentsZip {
 /**
  * Extract, validate and rezip contents.zip
  */
-export const rezip = (contentsZip: Buffer): Promise<Buffer> => {
-  return preprocessToRezip(contentsZip).then(
-    ({ zipFile, entries, manifestJson, manifestPath }) => {
-      validateManifest(entries, manifestJson, manifestPath);
-      return rezipContents(zipFile, entries, manifestJson, manifestPath);
-    },
-  );
+export const rezip = async (contentsZip: Buffer): Promise<Buffer> => {
+  const { zipFile, entries, manifestJson, manifestPath } =
+    await preprocessToRezip(contentsZip);
+  validateManifest(entries, manifestJson, manifestPath);
+  return rezipContents(zipFile, entries, manifestJson, manifestPath);
 };
 
 /**
  * Validate a buffer of contents.zip
  */
-export const validateContentsZip = (contentsZip: Buffer): Promise<any> => {
-  return preprocessToRezip(contentsZip).then(
-    ({ entries, manifestJson, manifestPath }) =>
-      validateManifest(entries, manifestJson, manifestPath),
-  );
+export const validateContentsZip = async (
+  contentsZip: Buffer,
+): Promise<void> => {
+  const { entries, manifestJson, manifestPath } =
+    await preprocessToRezip(contentsZip);
+  return validateManifest(entries, manifestJson, manifestPath);
 };
 
 /**
  * Create an intermediate representation for contents.zip
  */
-const preprocessToRezip = (
+const preprocessToRezip = async (
   contentsZip: Buffer,
 ): Promise<PreprocessedContentsZip> => {
-  return zipEntriesFromBuffer(contentsZip).then((result) => {
-    const manifestList = Array.from(result.entries.keys()).filter(
-      (file) => path.basename(file) === "manifest.json",
-    );
-    if (manifestList.length === 0) {
-      throw new Error("The zip file has no manifest.json");
-    } else if (manifestList.length > 1) {
-      throw new Error("The zip file has many manifest.json files");
-    }
-    (result as any).manifestPath = manifestList[0];
-    const manifestEntry = result.entries.get((result as any).manifestPath);
-    return getManifestJsonFromEntry(result.zipFile, manifestEntry).then(
-      (json: any) => Object.assign(result, { manifestJson: json }),
-    ) as any;
-  });
+  const result = await zipEntriesFromBuffer(contentsZip);
+  const manifestList = Array.from(result.entries.keys()).filter(
+    (file) => path.basename(file) === "manifest.json",
+  );
+  if (manifestList.length === 0) {
+    throw new Error("The zip file has no manifest.json");
+  } else if (manifestList.length > 1) {
+    throw new Error("The zip file has many manifest.json files");
+  }
+  const manifestPath = manifestList[0];
+  const manifestEntry = result.entries.get(manifestPath);
+  const json = await getManifestJsonFromEntry(result.zipFile, manifestEntry);
+  return Object.assign(result, { manifestJson: json, manifestPath });
 };
 
-const getManifestJsonFromEntry = (
+const getManifestJsonFromEntry = async (
   zipFile: yauzl.ZipFile,
   zipEntry: yauzl.ZipFile,
 ): Promise<string> => {
-  return zipEntryToString(zipFile, zipEntry).then((str) => JSON.parse(str));
+  const str = await zipEntryToString(zipFile, zipEntry);
+  return JSON.parse(str);
 };
 
-const zipEntriesFromBuffer = (
+const zipEntriesFromBuffer = async (
   contentsZip: Buffer,
 ): Promise<{
   zipFile: yauzl.ZipFile;
@@ -96,7 +94,7 @@ const zipEntriesFromBuffer = (
   ) as any;
 };
 
-const zipEntryToString = (
+const zipEntryToString = async (
   zipFile: yauzl.ZipFile,
   zipEntry: any,
 ): Promise<string> => {
@@ -143,7 +141,7 @@ const validateManifest = (
   }
 };
 
-const rezipContents = (
+const rezipContents = async (
   zipFile: yauzl.ZipFile,
   entries: Entries,
   manifestJson: ManifestJson,

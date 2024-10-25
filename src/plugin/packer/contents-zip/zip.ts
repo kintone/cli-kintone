@@ -1,151 +1,25 @@
 import path from "path";
 import * as yazl from "yazl";
-import * as yauzl from "yauzl";
+import type * as yauzl from "yauzl";
 import { promisify } from "util";
 import * as streamBuffers from "stream-buffers";
 
 import type internal from "stream";
-import { generateErrorMessages } from "../manifest/validate";
 import type { ManifestInterface } from "../manifest";
-import { ManifestV1 } from "../manifest";
-
-type Entries = Map<string, any>;
-
-interface PreprocessedContentsZip {
-  zipFile: yauzl.ZipFile;
-  entries: Entries;
-  manifest: ManifestInterface;
-  manifestPath: string;
-}
+import { finished } from "node:stream/promises";
+import type { ContentsZipInterface } from "./index";
+import type { Entries } from "../zip";
 
 /**
- * Extract, validate and rezip contents.zip
+ * Extract and rezip contents.zip
  */
-export const rezip = async (contentsZip: Buffer): Promise<Buffer> => {
-  const { zipFile, entries, manifest, manifestPath } =
-    await preprocessToRezip(contentsZip);
-  validateManifest(entries, manifest, manifestPath);
+export const rezip = async (
+  contentsZip: ContentsZipInterface,
+): Promise<Buffer> => {
+  const entries = await contentsZip.entries();
+  const zipFile = await contentsZip.unzip();
+  const { path: manifestPath, manifest } = await contentsZip.manifest();
   return rezipContents(zipFile, entries, manifest, manifestPath);
-};
-
-/**
- * Validate a buffer of contents.zip
- */
-export const validateContentsZip = async (
-  contentsZip: Buffer,
-): Promise<void> => {
-  const { entries, manifest, manifestPath } =
-    await preprocessToRezip(contentsZip);
-  return validateManifest(entries, manifest, manifestPath);
-};
-
-/**
- * Create an intermediate representation for contents.zip
- */
-const preprocessToRezip = async (
-  contentsZip: Buffer,
-): Promise<PreprocessedContentsZip> => {
-  const result = await zipEntriesFromBuffer(contentsZip);
-  const manifestList = Array.from(result.entries.keys()).filter(
-    (file) => path.basename(file) === "manifest.json",
-  );
-  if (manifestList.length === 0) {
-    throw new Error("The zip file has no manifest.json");
-  } else if (manifestList.length > 1) {
-    throw new Error("The zip file has many manifest.json files");
-  }
-  const manifestPath = manifestList[0];
-  const manifestEntry = result.entries.get(manifestPath);
-  const manifestJson = await getManifestJsonFromEntry(
-    result.zipFile,
-    manifestEntry,
-  );
-  const manifest = ManifestV1.parseJson(manifestJson);
-  return Object.assign(result, {
-    manifestJson: manifestJson,
-    manifest: manifest,
-    manifestPath,
-  });
-};
-
-const getManifestJsonFromEntry = async (
-  zipFile: yauzl.ZipFile,
-  zipEntry: yauzl.ZipFile,
-): Promise<string> => {
-  return zipEntryToString(zipFile, zipEntry);
-};
-
-const zipEntriesFromBuffer = async (
-  contentsZip: Buffer,
-): Promise<{
-  zipFile: yauzl.ZipFile;
-  entries: Entries;
-}> => {
-  return promisify(yauzl.fromBuffer)(contentsZip).then(
-    (zipFile) =>
-      new Promise((res, rej) => {
-        const entries = new Map();
-        const result = {
-          zipFile,
-          entries,
-        };
-        zipFile?.on("entry", (entry) => {
-          entries.set(entry.fileName, entry);
-        });
-        zipFile?.on("end", () => {
-          res(result);
-        });
-        zipFile?.on("error", rej);
-      }),
-  ) as any;
-};
-
-const zipEntryToString = async (
-  zipFile: yauzl.ZipFile,
-  zipEntry: any,
-): Promise<string> => {
-  return new Promise((res, rej) => {
-    zipFile.openReadStream(zipEntry, (e, stream) => {
-      if (e) {
-        rej(e);
-      } else {
-        const output = new streamBuffers.WritableStreamBuffer();
-        output.on("finish", () => {
-          res(output.getContents().toString("utf8"));
-        });
-        stream?.pipe(output);
-      }
-    });
-  });
-};
-
-const validateManifest = (
-  entries: Entries,
-  manifest: ManifestInterface,
-  manifestPath: string,
-) => {
-  // entry.fileName is a relative path separated by posix style(/) so this makes separators always posix style.
-  const getEntryKey = (filePath: string) =>
-    path
-      .join(path.dirname(manifestPath), filePath)
-      .replace(new RegExp(`\\${path.sep}`, "g"), "/");
-  const result = manifest.validate({
-    relativePath: (filePath) => entries.has(getEntryKey(filePath)),
-    maxFileSize: (maxBytes, filePath) => {
-      const entry = entries.get(getEntryKey(filePath));
-      if (entry) {
-        return entry.uncompressedSize <= maxBytes;
-      }
-      return false;
-    },
-  });
-  // For lib
-  if (!result.valid) {
-    const errors = generateErrorMessages(result.errors ?? []);
-    const e: any = new Error(errors.join(", "));
-    e.validationErrors = errors;
-    throw e;
-  }
 };
 
 const rezipContents = async (
@@ -156,26 +30,26 @@ const rezipContents = async (
 ): Promise<Buffer> => {
   const manifestPrefix = path.dirname(manifestPath);
 
-  return new Promise((res, rej) => {
-    const newZipFile = new yazl.ZipFile();
-    (newZipFile as any).on("error", rej);
-    const output = new streamBuffers.WritableStreamBuffer();
-    output.on("finish", () => {
-      res(output.getContents() as Buffer);
-    });
-    newZipFile.outputStream.pipe(output);
-    const openReadStream = promisify(zipFile.openReadStream.bind(zipFile));
-    Promise.all(
-      manifest.sourceList().map((src) => {
-        const entry = entries.get(path.join(manifestPrefix, src));
-        return openReadStream(entry).then((stream) => {
-          newZipFile.addReadStream(stream as internal.Readable, src, {
-            size: entry.uncompressedSize,
-          });
-        });
-      }),
-    ).then(() => {
-      newZipFile.end();
+  const newZipFile = new yazl.ZipFile();
+
+  const output = new streamBuffers.WritableStreamBuffer();
+  newZipFile.outputStream.pipe(output);
+  const openReadStream = promisify(zipFile.openReadStream.bind(zipFile));
+  const promises = manifest.sourceList().map((src) => {
+    const entryName = path.join(manifestPrefix, src);
+    const entry = entries.get(entryName);
+    if (entry === undefined) {
+      throw new Error(`Failed to find entry: ${entryName}`);
+    }
+    return openReadStream(entry).then((stream) => {
+      newZipFile.addReadStream(stream as internal.Readable, src, {
+        size: entry.uncompressedSize,
+      });
     });
   });
+  await Promise.all(promises);
+  newZipFile.end();
+
+  await finished(output);
+  return output.getContents() as Buffer;
 };

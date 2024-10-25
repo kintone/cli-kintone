@@ -1,5 +1,5 @@
 import type { ManifestInterface } from "../manifest";
-import { validateContentsZip } from "./zip";
+import { ManifestV1 } from "../manifest";
 import { ZipFile } from "../zip";
 import streamBuffers from "stream-buffers";
 import path from "path";
@@ -7,12 +7,12 @@ import yazl from "yazl";
 
 import _debug from "debug";
 import { finished } from "node:stream/promises";
+import { validateContentsZip } from "./validate";
 
 const debug = _debug("contents-zip");
 
-export interface ContentsZipInterface {
-  fileList(): Promise<string[]>;
-  get buffer(): Buffer;
+export interface ContentsZipInterface extends ZipFile {
+  manifest(): Promise<{ path: string; manifest: ManifestInterface }>;
 }
 
 export class ContentsZip extends ZipFile implements ContentsZipInterface {
@@ -25,20 +25,46 @@ export class ContentsZip extends ZipFile implements ContentsZipInterface {
     manifest: ManifestInterface,
   ): Promise<ContentsZip> {
     const buffer = await createContentsZip(pluginDir, manifest);
-    await validateContentsZip(buffer);
-    return new ContentsZip(buffer);
+    const contentsZip = new ContentsZip(buffer);
+    await validateContentsZip(contentsZip);
+    return contentsZip;
   }
 
   public static async fromBuffer(buffer: Buffer) {
-    await validateContentsZip(buffer);
-    return new ContentsZip(buffer);
+    const contentsZip = new ContentsZip(buffer);
+    await validateContentsZip(contentsZip);
+    return contentsZip;
+  }
+
+  public async manifest(): Promise<{
+    path: string;
+    manifest: ManifestV1;
+  }> {
+    const fileLists = await this.fileList();
+    const entries = await this.entries();
+    const manifestList = fileLists.filter(
+      (file) => path.basename(file) === "manifest.json",
+    );
+    if (manifestList.length === 0) {
+      throw new Error("The zip file has no manifest.json");
+    } else if (manifestList.length > 1) {
+      throw new Error("The zip file has many manifest.json files");
+    }
+    const manifestPath = manifestList[0];
+    const manifestEntry = entries.get(manifestPath);
+    if (manifestEntry === undefined) {
+      throw new Error("Failed to find manifest.json from the zip file");
+    }
+    const manifestJson = await this.getFileAsString(manifestPath);
+    const manifest = ManifestV1.parseJson(manifestJson);
+    return { path: manifestPath, manifest };
   }
 }
 
 /**
  * Create a zipped contents
  */
-export const createContentsZip = async (
+const createContentsZip = async (
   pluginDir: string,
   manifest: ManifestInterface,
 ): Promise<Buffer> => {

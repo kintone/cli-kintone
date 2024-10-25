@@ -1,8 +1,8 @@
 import path from "path";
 import { ZipFile } from "yazl";
 import streamBuffers from "stream-buffers";
-import { sourceList } from "./manifest/sourcelist";
 import _debug from "debug";
+import type { ManifestInterface } from "../manifest";
 
 const debug = _debug("create-contents-zip");
 
@@ -11,7 +11,7 @@ const debug = _debug("create-contents-zip");
  */
 export const createContentsZip = async (
   pluginDir: string,
-  manifest: any,
+  manifest: ManifestInterface,
 ): Promise<Buffer> => {
   return new Promise((res) => {
     const output = new streamBuffers.WritableStreamBuffer();
@@ -22,7 +22,7 @@ export const createContentsZip = async (
       res(output.getContents() as any);
     });
     zipFile.outputStream.pipe(output);
-    sourceList(manifest).forEach((src) => {
+    manifest.sourceList().forEach((src) => {
       zipFile.addFile(path.join(pluginDir, src), src);
     });
     zipFile.end(undefined, ((finalSize: number) => {

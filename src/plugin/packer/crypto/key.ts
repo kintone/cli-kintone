@@ -2,7 +2,7 @@ import RSA from "node-rsa";
 import { uuid } from "./uuid";
 import { sign } from "./sign";
 
-interface PrivateKeyInterface {
+export interface PrivateKeyInterface {
   // static generateKey(): PrivateKeyInterface;
   // static importKey(privateKey: string): PrivateKeyInterface;
   exportPrivateKey(): string;
@@ -12,23 +12,21 @@ interface PrivateKeyInterface {
 }
 
 export class PrivateKey implements PrivateKeyInterface {
-  private key: RSA;
+  private readonly key: RSA;
 
   /**
    * Use static method generateKey() or importKey() instead.
    * @private
    */
-  private constructor() {
-    this.key = "" as any;
+  private constructor(key: RSA) {
+    this.key = key;
   }
 
   /**
    * Generate new private key
    */
   public static generateKey(): PrivateKey {
-    const privateKey = new PrivateKey();
-    privateKey.key = new RSA({ b: 1024 });
-    return privateKey;
+    return new PrivateKey(new RSA({ b: 1024 }));
   }
 
   /**
@@ -36,9 +34,7 @@ export class PrivateKey implements PrivateKeyInterface {
    * @param key {string} utf8 encoded ppk file
    */
   public static importKey(key: string): PrivateKey {
-    const privateKey = new PrivateKey();
-    privateKey.key = new RSA(key);
-    return privateKey;
+    return new PrivateKey(new RSA(key));
   }
 
   /**

@@ -3,7 +3,6 @@ import _debug from "debug";
 import fs from "fs";
 import path from "path";
 import { logger } from "../../../utils/log";
-import { generateErrorMessages } from "./gen-error-msg";
 
 const debug = _debug("validate");
 
@@ -13,8 +12,8 @@ export const validateManifestJson = (
 ) => {
   const manifest = JSON.parse(manifestJson);
   const result = validate(manifest, {
-    maxFileSize: validateMaxFileSize(pluginDir),
-    fileExists: validateFileExists(pluginDir),
+    // maxFileSize: validateMaxFileSize(pluginDir),
+    // fileExists: validateFileExists(pluginDir),
   });
   debug(result);
 
@@ -34,31 +33,17 @@ export const validateManifestJson = (
   }
 };
 
-/**
- * Return validator for `maxFileSize` keyword
- */
-const validateMaxFileSize = (pluginDir: string) => {
-  return (maxBytes: number, filePath: string) => {
-    try {
-      const stat = fs.statSync(path.join(pluginDir, filePath));
-      return stat.size <= maxBytes;
-    } catch (_) {
-      return false;
-    }
-  };
-};
+import type * as Ajv from "ajv";
 
-/**
- *
- * @param pluginDir
- */
-const validateFileExists = (pluginDir: string) => {
-  return (filePath: string) => {
-    try {
-      const stat = fs.statSync(path.join(pluginDir, filePath));
-      return stat.isFile();
-    } catch (_) {
-      return false;
+export const generateErrorMessages = (errors: Ajv.ErrorObject[]): string[] => {
+  return errors.map((e) => {
+    if (e.keyword === "enum") {
+      return `"${e.instancePath}" ${e.message} (${(
+        e.params.allowedValues as any[]
+      )
+        .map((v) => `"${v}"`)
+        .join(", ")})`;
     }
-  };
+    return `"${e.instancePath}" ${e.message}`;
+  });
 };

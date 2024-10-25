@@ -2,20 +2,19 @@ import path from "path";
 import * as yazl from "yazl";
 import * as yauzl from "yauzl";
 import { promisify } from "util";
-import validate from "@kintone/plugin-manifest-validator";
 import * as streamBuffers from "stream-buffers";
 
-import { generateErrorMessages } from "./manifest/gen-error-msg";
-import { sourceList } from "./manifest/sourcelist";
 import type internal from "stream";
+import { generateErrorMessages } from "../manifest/validate";
+import type { ManifestInterface } from "../manifest";
+import { ManifestV1 } from "../manifest";
 
-type ManifestJson = any;
 type Entries = Map<string, any>;
 
 interface PreprocessedContentsZip {
   zipFile: yauzl.ZipFile;
   entries: Entries;
-  manifestJson: ManifestJson;
+  manifest: ManifestInterface;
   manifestPath: string;
 }
 
@@ -23,10 +22,10 @@ interface PreprocessedContentsZip {
  * Extract, validate and rezip contents.zip
  */
 export const rezip = async (contentsZip: Buffer): Promise<Buffer> => {
-  const { zipFile, entries, manifestJson, manifestPath } =
+  const { zipFile, entries, manifest, manifestPath } =
     await preprocessToRezip(contentsZip);
-  validateManifest(entries, manifestJson, manifestPath);
-  return rezipContents(zipFile, entries, manifestJson, manifestPath);
+  validateManifest(entries, manifest, manifestPath);
+  return rezipContents(zipFile, entries, manifest, manifestPath);
 };
 
 /**
@@ -35,9 +34,9 @@ export const rezip = async (contentsZip: Buffer): Promise<Buffer> => {
 export const validateContentsZip = async (
   contentsZip: Buffer,
 ): Promise<void> => {
-  const { entries, manifestJson, manifestPath } =
+  const { entries, manifest, manifestPath } =
     await preprocessToRezip(contentsZip);
-  return validateManifest(entries, manifestJson, manifestPath);
+  return validateManifest(entries, manifest, manifestPath);
 };
 
 /**
@@ -57,16 +56,23 @@ const preprocessToRezip = async (
   }
   const manifestPath = manifestList[0];
   const manifestEntry = result.entries.get(manifestPath);
-  const json = await getManifestJsonFromEntry(result.zipFile, manifestEntry);
-  return Object.assign(result, { manifestJson: json, manifestPath });
+  const manifestJson = await getManifestJsonFromEntry(
+    result.zipFile,
+    manifestEntry,
+  );
+  const manifest = ManifestV1.parseJson(manifestJson);
+  return Object.assign(result, {
+    manifestJson: manifestJson,
+    manifest: manifest,
+    manifestPath,
+  });
 };
 
 const getManifestJsonFromEntry = async (
   zipFile: yauzl.ZipFile,
   zipEntry: yauzl.ZipFile,
 ): Promise<string> => {
-  const str = await zipEntryToString(zipFile, zipEntry);
-  return JSON.parse(str);
+  return zipEntryToString(zipFile, zipEntry);
 };
 
 const zipEntriesFromBuffer = async (
@@ -115,7 +121,7 @@ const zipEntryToString = async (
 
 const validateManifest = (
   entries: Entries,
-  manifestJson: ManifestJson,
+  manifest: ManifestInterface,
   manifestPath: string,
 ) => {
   // entry.fileName is a relative path separated by posix style(/) so this makes separators always posix style.
@@ -123,7 +129,7 @@ const validateManifest = (
     path
       .join(path.dirname(manifestPath), filePath)
       .replace(new RegExp(`\\${path.sep}`, "g"), "/");
-  const result = validate(manifestJson, {
+  const result = manifest.validate({
     relativePath: (filePath) => entries.has(getEntryKey(filePath)),
     maxFileSize: (maxBytes, filePath) => {
       const entry = entries.get(getEntryKey(filePath));
@@ -133,6 +139,7 @@ const validateManifest = (
       return false;
     },
   });
+  // For lib
   if (!result.valid) {
     const errors = generateErrorMessages(result.errors ?? []);
     const e: any = new Error(errors.join(", "));
@@ -144,7 +151,7 @@ const validateManifest = (
 const rezipContents = async (
   zipFile: yauzl.ZipFile,
   entries: Entries,
-  manifestJson: ManifestJson,
+  manifest: ManifestInterface,
   manifestPath: string,
 ): Promise<Buffer> => {
   const manifestPrefix = path.dirname(manifestPath);
@@ -159,7 +166,7 @@ const rezipContents = async (
     newZipFile.outputStream.pipe(output);
     const openReadStream = promisify(zipFile.openReadStream.bind(zipFile));
     Promise.all(
-      sourceList(manifestJson).map((src) => {
+      manifest.sourceList().map((src) => {
         const entry = entries.get(path.join(manifestPrefix, src));
         return openReadStream(entry).then((stream) => {
           newZipFile.addReadStream(stream as internal.Readable, src, {

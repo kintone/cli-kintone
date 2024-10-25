@@ -1,16 +1,16 @@
-import fs from "fs";
 import path from "path";
 import packer from "./index";
-import { createContentsZip } from "./create-contents-zip";
+import { ManifestV1 } from "./manifest";
+import { ContentsZip } from "./contents-zip";
 
 export const packPluginFromManifest = async (
   manifestJSONPath: string,
   privateKey: string,
 ): Promise<{ plugin: Buffer; privateKey: string; id: string }> => {
-  const manifest = JSON.parse(fs.readFileSync(manifestJSONPath, "utf-8"));
-  const buffer = await createContentsZip(
+  const manifest = await ManifestV1.loadJsonFile(manifestJSONPath);
+  const contentsZip = await ContentsZip.createFromManifest(
     path.dirname(manifestJSONPath),
     manifest,
   );
-  return packer(buffer as any, privateKey);
+  return packer(contentsZip.buffer, privateKey);
 };

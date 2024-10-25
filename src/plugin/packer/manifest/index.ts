@@ -1,17 +1,54 @@
 import { sourceList } from "./sourcelist";
+import validate from "@kintone/plugin-manifest-validator";
+import _debug from "debug";
+import fs from "fs";
 
-interface ManifestInterface {
+const debug = _debug("manifest");
+
+export interface ManifestInterface {
+  validate(options?: ValidatorOptions): ReturnType<typeof validate>;
   sourceList(): string[];
 }
 
-class ManifestV1 implements ManifestInterface {
-  manifest: any;
+export class ManifestV1 implements ManifestInterface {
+  manifest: unknown;
 
-  constructor(json: string) {
-    /* noop */
+  constructor(manifest: unknown) {
+    this.manifest = manifest;
+  }
+
+  static parseJson(manifestJson: string): ManifestV1 {
+    return new ManifestV1(JSON.parse(manifestJson));
+  }
+
+  public static async loadJsonFile(jsonFilePath: string): Promise<ManifestV1> {
+    const manifestJson = fs.readFileSync(jsonFilePath, "utf-8");
+    return ManifestV1.parseJson(manifestJson);
+  }
+
+  validate(options?: ValidatorOptions) {
+    const result = validate(this.manifest as any, options);
+    debug(result);
+    return result;
   }
 
   sourceList(): string[] {
-    return sourceList(sourceList(this.manifest));
+    return sourceList(this.manifest);
   }
 }
+
+// TODO: These types must be exported from kintone/plugin-manifest-validator
+type ValidatorOptions = {
+  relativePath?: (filePath: string) => boolean;
+  maxFileSize?: (maxBytes: number, filePath: string) => ValidatorResult;
+  fileExists?: (filePath: string) => ValidatorResult;
+};
+type ValidatorResult =
+  | boolean
+  | {
+      valid: true;
+    }
+  | {
+      valid: false;
+      message?: string;
+    };

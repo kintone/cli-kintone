@@ -3,20 +3,50 @@ import { ManifestFactory } from "../../manifest";
 import { ContentsZip } from "../index";
 
 const fixturesDir = path.join(__dirname, "fixtures");
-const pluginDir = path.join(fixturesDir, "sample-plugin", "plugin-dir");
 
 describe("ContentsZip", () => {
-  it("should be able to create ContentsZip from a plugin directory", async () => {
-    const manifestJSONPath = path.join(pluginDir, "manifest.json");
-    const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
+  describe("should be able to create ContentsZip from a plugin directory", () => {
+    it("manifest v1", async () => {
+      const pluginDir = path.join(fixturesDir, "plugin-manifest-v1");
 
-    const contentsZip = await ContentsZip.createFromManifest(
-      pluginDir,
-      manifest,
-    );
-    const files = await contentsZip.fileList();
-    expect(files).toStrictEqual(["manifest.json", "image/icon.png"]);
-    expect(contentsZip).toBeInstanceOf(ContentsZip);
-    expect(contentsZip.buffer).toBeInstanceOf(Buffer);
+      const manifestJSONPath = path.join(pluginDir, "manifest.json");
+      const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
+
+      const contentsZip = await ContentsZip.createFromManifest(
+        pluginDir,
+        manifest,
+      );
+      const files = await contentsZip.fileList();
+      expect(files).toStrictEqual(["manifest.json", "image/icon.png"]);
+      expect(contentsZip).toBeInstanceOf(ContentsZip);
+      expect(contentsZip.buffer).toBeInstanceOf(Buffer);
+    });
+
+    it("manifest v2", async () => {
+      const pluginDir = path.join(fixturesDir, "plugin-manifest-v2");
+
+      const manifestJSONPath = path.join(pluginDir, "manifest.json");
+      const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
+
+      const contentsZip = await ContentsZip.createFromManifest(
+        pluginDir,
+        manifest,
+      );
+
+      const expectedFiles = [
+        "manifest.json",
+        "image/icon.png",
+        "js/customize.js",
+        "css/customize.css",
+        "html/customize.html",
+        "html/config.html",
+        "js/config.js",
+        "css/config.css",
+      ];
+      const files = await contentsZip.fileList();
+      expect(files).toStrictEqual(expectedFiles);
+      expect(contentsZip).toBeInstanceOf(ContentsZip);
+      expect(contentsZip.buffer).toBeInstanceOf(Buffer);
+    });
   });
 });

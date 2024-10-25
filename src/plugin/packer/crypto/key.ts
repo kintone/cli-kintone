@@ -40,7 +40,7 @@ export class PrivateKey implements PrivateKeyInterface {
    * @return {string} ppk format string
    */
   public exportPrivateKey(): string {
-    return this.key.exportKey("pkcs1-private");
+    return this.key.exportKey("pkcs1-private") + "\n";
   }
 
   /**

@@ -8,20 +8,18 @@ const debug = _debug("packer");
 
 const packer = async (
   contentsZip: ContentsZipInterface,
-  privateKey_?: string,
+  privateKey?: string,
 ): Promise<{
   plugin: PluginZipInterface;
   privateKey: string;
   id: string;
 }> => {
-  let privateKey = privateKey_;
-  let key;
+  let key: PrivateKey;
   if (privateKey) {
     key = PrivateKey.importKey(privateKey);
   } else {
     debug("generating a new key");
     key = PrivateKey.generateKey();
-    privateKey = key.exportPrivateKey();
   }
 
   const id = key.uuid();
@@ -30,7 +28,7 @@ const packer = async (
   const plugin = await PluginZip.build(contentsZip, key);
   return {
     plugin,
-    privateKey,
+    privateKey: key.exportPrivateKey(),
     id,
   };
 };

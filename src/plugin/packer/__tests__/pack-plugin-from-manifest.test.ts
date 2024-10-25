@@ -1,6 +1,5 @@
 import path from "path";
 import fs from "fs";
-import { readZipContentsNames } from "./helpers/zip";
 import packer from "../index";
 import { packPluginFromManifest } from "../pack-plugin-from-manifest";
 import { ManifestV1 } from "../manifest";
@@ -24,10 +23,10 @@ describe("pack-plugin-from-manifest", () => {
     const result2 = await packer(contentsZip, privateKey);
 
     expect(result1.id).toBe(result2.id);
-    expect(result1.plugin.length).toBe(result2.plugin.length);
+    expect(result1.plugin.buffer.length).toBe(result2.plugin.buffer.length);
     expect(result1.privateKey).toBe(result2.privateKey);
 
-    const files = await readZipContentsNames(result1.plugin);
+    const files = await result1.plugin.fileList();
     expect(files).toStrictEqual(["contents.zip", "PUBKEY", "SIGNATURE"]);
   });
 });

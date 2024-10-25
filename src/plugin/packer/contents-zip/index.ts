@@ -1,18 +1,22 @@
-import { readZipContentsNames } from "../__tests__/helpers/zip";
-import { createContentsZip } from "./create-contents-zip";
 import type { ManifestInterface } from "../manifest";
 import { validateContentsZip } from "./zip";
+import { ZipFile } from "../zip";
+import streamBuffers from "stream-buffers";
+import path from "path";
+import yazl from "yazl";
+
+import _debug from "debug";
+
+const debug = _debug("contents-zip");
 
 export interface ContentsZipInterface {
   fileList(): Promise<string[]>;
   get buffer(): Buffer;
 }
 
-export class ContentsZip implements ContentsZipInterface {
-  private readonly zip: Buffer;
-
-  private constructor(zipFile: Buffer) {
-    this.zip = zipFile;
+export class ContentsZip extends ZipFile implements ContentsZipInterface {
+  private constructor(buffer: Buffer) {
+    super(buffer);
   }
 
   public static async createFromManifest(
@@ -28,12 +32,29 @@ export class ContentsZip implements ContentsZipInterface {
     await validateContentsZip(buffer);
     return new ContentsZip(buffer);
   }
-
-  async fileList(): Promise<string[]> {
-    return readZipContentsNames(this.zip);
-  }
-
-  public get buffer() {
-    return this.zip;
-  }
 }
+
+/**
+ * Create a zipped contents
+ */
+export const createContentsZip = async (
+  pluginDir: string,
+  manifest: ManifestInterface,
+): Promise<Buffer> => {
+  return new Promise((res) => {
+    const output = new streamBuffers.WritableStreamBuffer();
+    const zipFile = new yazl.ZipFile();
+    let size: any = null;
+    output.on("finish", () => {
+      debug(`plugin.zip: ${size} bytes`);
+      res(output.getContents() as any);
+    });
+    zipFile.outputStream.pipe(output);
+    manifest.sourceList().forEach((src) => {
+      zipFile.addFile(path.join(pluginDir, src), src);
+    });
+    zipFile.end(undefined, ((finalSize: number) => {
+      size = finalSize;
+    }) as any);
+  });
+};

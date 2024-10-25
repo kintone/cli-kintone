@@ -4,10 +4,9 @@ import fs from "fs";
 import RSA from "node-rsa";
 import yauzl from "yauzl";
 
-import { readZipContentsNames } from "./helpers/zip";
-
 import packer from "../index";
 import { ContentsZip } from "../contents-zip";
+import type { PluginZipInterface } from "../plugin-zip";
 
 const privateKeyPath = path.join(__dirname, "fixtures", "private.ppk");
 const contentsZipPath = path.join(__dirname, "fixtures", "contents.zip");
@@ -44,7 +43,7 @@ describe("packer", () => {
     });
 
     it("the zip contains 3 files", async () => {
-      const files = await readZipContentsNames(output.plugin);
+      const files = await output.plugin.fileList();
       expect(files.sort()).toStrictEqual(
         ["contents.zip", "PUBKEY", "SIGNATURE"].sort(),
       );
@@ -123,7 +122,7 @@ const readZipContents = (
   });
 };
 
-const verifyPlugin = async (plugin: Buffer): Promise<void> => {
+const verifyPlugin = async (plugin: PluginZipInterface): Promise<void> => {
   const fromBuffer = (buffer: Buffer) =>
     new Promise<yauzl.ZipFile>((resolve, reject) => {
       yauzl.fromBuffer(buffer, (err, zipfile) => {
@@ -133,7 +132,7 @@ const verifyPlugin = async (plugin: Buffer): Promise<void> => {
         resolve(zipfile);
       });
     });
-  const zipEntry = await fromBuffer(plugin);
+  const zipEntry = await fromBuffer(plugin.buffer);
   const zipContentsMap = await readZipContents(zipEntry);
   const contentZip = zipContentsMap.get("contents.zip");
   expect(contentZip).toBeDefined();

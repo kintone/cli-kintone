@@ -5,6 +5,17 @@ import { globSync } from "glob";
 import cli from "../cli";
 import { logger } from "../../../utils/log";
 import type { ContentsZipInterface } from "../contents-zip";
+import type { PluginZipInterface } from "../plugin-zip";
+import { ZipFile } from "../zip";
+
+type MockedPacker = jest.MockedFunction<
+  (
+    contentsZip: ContentsZipInterface,
+    privateKey_?: string,
+  ) => Promise<{ plugin: PluginZipInterface; privateKey: string; id: string }>
+>;
+
+class MockPluginZip extends ZipFile implements PluginZipInterface {}
 
 const fixturesDir = path.posix.join(__dirname, "fixtures");
 const sampleDir = path.posix.join(fixturesDir, "sample-plugin");
@@ -12,14 +23,7 @@ const ppkPath = path.posix.join(fixturesDir, "private.ppk");
 
 const ID = "aaa";
 const PRIVATE_KEY = "PRIVATE_KEY";
-const PLUGIN_BUFFER = Buffer.from("foo");
-
-type MockedPacker = jest.MockedFunction<
-  (
-    contentsZip: ContentsZipInterface,
-    privateKey_?: string,
-  ) => Promise<{ plugin: Buffer; privateKey: string; id: string }>
->;
+const PLUGIN_ZIP = new MockPluginZip(Buffer.from("foo"));
 
 describe("cli", () => {
   beforeEach(() => {
@@ -36,10 +40,11 @@ describe("cli", () => {
   describe("validation", () => {
     let packer: MockedPacker;
     beforeEach(() => {
-      packer = jest.fn().mockReturnValue({
+      packer = jest.fn();
+      packer.mockResolvedValue({
         id: ID,
         privateKey: PRIVATE_KEY,
-        plugin: PLUGIN_BUFFER,
+        plugin: PLUGIN_ZIP,
       });
     });
 
@@ -95,10 +100,11 @@ describe("cli", () => {
     let resultPluginPath: string;
 
     beforeEach(async () => {
-      packer = jest.fn().mockReturnValue({
+      packer = jest.fn();
+      packer.mockResolvedValue({
         id: ID,
         privateKey: PRIVATE_KEY,
-        plugin: PLUGIN_BUFFER,
+        plugin: PLUGIN_ZIP,
       });
 
       // TODO: use os tempdir
@@ -131,7 +137,7 @@ describe("cli", () => {
 
     it("generates a plugin file", () => {
       const pluginBuffer = fs.readFileSync(resultPluginPath);
-      expect(PLUGIN_BUFFER.equals(pluginBuffer)).toBe(true);
+      expect(PLUGIN_ZIP.buffer.equals(pluginBuffer)).toBe(true);
     });
   });
 
@@ -139,10 +145,11 @@ describe("cli", () => {
     const pluginDir = path.join(sampleDir, "plugin-dir");
     let packer: MockedPacker;
     beforeEach(async () => {
-      packer = jest.fn().mockReturnValue({
+      packer = jest.fn();
+      packer.mockResolvedValue({
         id: ID,
         privateKey: PRIVATE_KEY,
-        plugin: PLUGIN_BUFFER,
+        plugin: PLUGIN_ZIP,
       });
 
       await rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true });
@@ -163,10 +170,11 @@ describe("cli", () => {
 
   it("includes files listed in manifest.json only", async () => {
     const pluginDir = path.join(fixturesDir, "plugin-full-manifest");
-    const packer: MockedPacker = jest.fn().mockReturnValue({
+    const packer: MockedPacker = jest.fn();
+    packer.mockResolvedValue({
       id: ID,
       privateKey: PRIVATE_KEY,
-      plugin: PLUGIN_BUFFER,
+      plugin: PLUGIN_ZIP,
     });
 
     await rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true });
@@ -191,10 +199,11 @@ describe("cli", () => {
     const pluginDir = path.join(sampleDir, "plugin-dir");
     const outputDir = path.join("test", ".output");
     const outputPluginPath = path.join(outputDir, "foo.zip");
-    const packer = jest.fn().mockReturnValue({
+    const packer: MockedPacker = jest.fn();
+    packer.mockResolvedValue({
       id: ID,
       privateKey: PRIVATE_KEY,
-      plugin: PLUGIN_BUFFER,
+      plugin: PLUGIN_ZIP,
     });
 
     await rimraf(outputDir);
@@ -205,7 +214,7 @@ describe("cli", () => {
 
     expect(resultPluginPath).toBe(outputPluginPath);
     const pluginBuffer = fs.readFileSync(outputPluginPath);
-    expect(PLUGIN_BUFFER.equals(pluginBuffer)).toBe(true);
+    expect(PLUGIN_ZIP.buffer.equals(pluginBuffer)).toBe(true);
     const ppk = fs.readFileSync(path.join(outputDir, `${ID}.ppk`));
     expect(PRIVATE_KEY).toBe(ppk.toString());
 

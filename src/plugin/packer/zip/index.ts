@@ -1,5 +1,21 @@
 import yauzl from "yauzl";
 
+export class ZipFile {
+  private readonly _buffer: Buffer;
+
+  constructor(buffer: Buffer) {
+    this._buffer = buffer;
+  }
+
+  public async fileList(): Promise<string[]> {
+    return readZipContentsNames(this.buffer);
+  }
+
+  public get buffer() {
+    return this._buffer;
+  }
+}
+
 export const readZipContentsNames = async (
   zipFilePath: Buffer,
 ): Promise<string[]> => {

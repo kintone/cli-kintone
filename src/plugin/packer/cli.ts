@@ -10,6 +10,7 @@ import { logger } from "../../utils/log";
 import { ManifestV1 } from "./manifest";
 import { generateErrorMessages } from "./manifest/validate";
 import { ContentsZip } from "./contents-zip";
+import type { PluginZipInterface } from "./plugin-zip";
 
 const debug = _debug("cli");
 const writeFile = promisify(fs.writeFile);
@@ -21,6 +22,8 @@ type Options = Partial<{
   packerMock_: typeof packer;
 }>;
 
+// TODO: Reduce statements in this func
+// eslint-disable-next-line max-statements
 const cli = async (pluginDir: string, options_?: Options) => {
   const options = options_ || {};
   const packerLocal = options.packerMock_ ? options.packerMock_ : packer;
@@ -130,9 +133,9 @@ export = cli;
  */
 const outputPlugin = async (
   outputPath: string,
-  plugin: Buffer,
+  plugin: PluginZipInterface,
 ): Promise<string> => {
-  await writeFile(outputPath, plugin);
+  await writeFile(outputPath, plugin.buffer);
   return outputPath;
 };
 

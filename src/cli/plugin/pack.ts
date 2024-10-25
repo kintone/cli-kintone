@@ -1,6 +1,6 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import cli from "../../plugin/packer/cli";
+import run from "../../plugin/packer/cli";
 import { emitExperimentalWarning } from "../../utils/stability";
 
 const command = "pack";
@@ -47,7 +47,7 @@ const handler = async (args: Args) => {
   if (process.env.NODE_ENV === "test") {
     console.log(JSON.stringify({ pluginDir: args.input, flags: flags }));
   } else {
-    await cli(args.input, flags);
+    await run(args.input, flags);
   }
 };
 

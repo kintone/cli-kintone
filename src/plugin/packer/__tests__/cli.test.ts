@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { rimraf } from "rimraf";
 import { globSync } from "glob";
-import cli from "../cli";
+import run from "../cli";
 import { logger } from "../../../utils/log";
 import type { ContentsZipInterface } from "../contents-zip";
 import type { PluginZipInterface } from "../plugin-zip";
@@ -34,7 +34,7 @@ describe("cli", () => {
   });
 
   it("is a function", () => {
-    expect(typeof cli).toBe("function");
+    expect(typeof run).toBe("function");
   });
 
   describe("validation", () => {
@@ -49,7 +49,7 @@ describe("cli", () => {
     });
 
     it("invalid `url`", (done) => {
-      cli(path.join(fixturesDir, "plugin-invalid-url"), {
+      run(path.join(fixturesDir, "plugin-invalid-url"), {
         packerMock_: packer,
       }).catch((error) => {
         expect(/Invalid manifest.json/.test(error.message)).toBe(true);
@@ -58,7 +58,7 @@ describe("cli", () => {
     });
 
     it("invalid `https-url`", (done) => {
-      cli(path.join(fixturesDir, "plugin-invalid-https-url"), {
+      run(path.join(fixturesDir, "plugin-invalid-https-url"), {
         packerMock_: packer,
       }).catch((error) => {
         expect(/Invalid manifest.json/.test(error.message)).toBe(true);
@@ -67,7 +67,7 @@ describe("cli", () => {
     });
 
     it("invalid `relative-path`", (done) => {
-      cli(path.join(fixturesDir, "plugin-invalid-relative-path"), {
+      run(path.join(fixturesDir, "plugin-invalid-relative-path"), {
         packerMock_: packer,
       }).catch((error) => {
         expect(/Invalid manifest.json/.test(error.message)).toBe(true);
@@ -76,7 +76,7 @@ describe("cli", () => {
     });
 
     it("invalid `maxFileSize`", (done) => {
-      cli(path.join(fixturesDir, "plugin-invalid-maxFileSize"), {
+      run(path.join(fixturesDir, "plugin-invalid-maxFileSize"), {
         packerMock_: packer,
       }).catch((error) => {
         expect(/Invalid manifest.json/.test(error.message)).toBe(true);
@@ -85,7 +85,7 @@ describe("cli", () => {
     });
 
     it("invalid `fileExists`", (done) => {
-      cli(path.join(fixturesDir, "plugin-non-file-exists"), {
+      run(path.join(fixturesDir, "plugin-non-file-exists"), {
         packerMock_: packer,
       }).catch((error) => {
         expect(/Invalid manifest.json/.test(error.message)).toBe(true);
@@ -109,7 +109,7 @@ describe("cli", () => {
 
       // TODO: use os tempdir
       await rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true });
-      resultPluginPath = await cli(pluginDir, { packerMock_: packer });
+      resultPluginPath = await run(pluginDir, { packerMock_: packer });
     });
 
     it("calles `packer` with contents.zip as the 1st argument", async () => {
@@ -153,7 +153,7 @@ describe("cli", () => {
       });
 
       await rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true });
-      return cli(pluginDir, { ppk: ppkPath, packerMock_: packer });
+      return run(pluginDir, { ppk: ppkPath, packerMock_: packer });
     });
 
     it("calles `packer` with privateKey as the 2nd argument", () => {
@@ -178,7 +178,7 @@ describe("cli", () => {
     });
 
     await rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true });
-    await cli(pluginDir, { packerMock_: packer });
+    await run(pluginDir, { packerMock_: packer });
     const files = await packer.mock.calls[0][0].fileList();
     expect(files.sort()).toStrictEqual(
       [
@@ -207,7 +207,7 @@ describe("cli", () => {
     });
 
     await rimraf(outputDir);
-    const resultPluginPath = await cli(pluginDir, {
+    const resultPluginPath = await run(pluginDir, {
       packerMock_: packer,
       out: outputPluginPath,
     });

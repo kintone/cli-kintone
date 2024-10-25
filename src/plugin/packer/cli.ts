@@ -24,7 +24,7 @@ type Options = Partial<{
 
 // TODO: Reduce statements in this func
 // eslint-disable-next-line max-statements
-const cli = async (pluginDir: string, options_?: Options) => {
+const run = async (pluginDir: string, options_?: Options) => {
   const options = options_ || {};
   const packerLocal = options.packerMock_ ? options.packerMock_ : packer;
 
@@ -107,7 +107,7 @@ const cli = async (pluginDir: string, options_?: Options) => {
           : {};
       const watcher = chokidar.watch(pluginDir, watchOptions);
       watcher.on("change", () => {
-        cli(
+        run(
           pluginDir,
           Object.assign({}, options, {
             watch: false,
@@ -126,7 +126,7 @@ const cli = async (pluginDir: string, options_?: Options) => {
   }
 };
 
-export = cli;
+export = run;
 
 /**
  * Create and save plugin.zip

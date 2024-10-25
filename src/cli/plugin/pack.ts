@@ -1,7 +1,7 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import run from "../../plugin/packer/cli/cli";
 import { emitExperimentalWarning } from "../../utils/stability";
+import run from "../../plugin/packer/cli";
 
 const command = "pack";
 

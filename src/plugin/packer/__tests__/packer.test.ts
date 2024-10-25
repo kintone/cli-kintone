@@ -89,13 +89,14 @@ describe("packer", () => {
   });
 });
 
-const streamToBuffer = (stream: NodeJS.ReadableStream) => {
-  return new Promise<Buffer>((resolve, reject) => {
-    const buffers: Buffer[] = [];
-    stream.on("data", (data) => buffers.push(data));
-    stream.on("end", () => resolve(Buffer.concat(buffers)));
-    stream.on("error", reject);
-  });
+const streamToBuffer = async (
+  stream: NodeJS.ReadableStream,
+): Promise<Buffer> => {
+  const buffers: Buffer[] = [];
+  for await (const data of stream) {
+    buffers.push(Buffer.from(data));
+  }
+  return Buffer.concat(buffers);
 };
 
 const readZipContents = (

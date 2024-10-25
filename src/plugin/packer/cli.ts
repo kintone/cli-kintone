@@ -42,6 +42,10 @@ const run = async (pluginDir: string, options_?: Options) => {
 
     // 3. validate manifest.json
     const manifest = await ManifestFactory.loadJsonFile(manifestJsonPath);
+    if (manifest.manifestVersion === 2) {
+      logger.warn("Welcome to manifest v2 mode :)");
+    }
+
     const result = manifest.validate({
       maxFileSize: validateMaxFileSize(pluginDir),
       fileExists: validateFileExists(pluginDir),

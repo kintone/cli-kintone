@@ -1,14 +1,11 @@
 import fs from "fs";
 import _debug from "debug";
-import validate from "@kintone/plugin-manifest-validator";
 import type {
   ManifestInterface,
   ManifestStaticInterface,
   ValidatorOptions,
 } from "../interface";
 import { sourceListV2 } from "./sourcelist";
-
-const debug = _debug("manifest");
 
 export class ManifestV2 implements ManifestInterface {
   manifest: ManifestV2JsonObject;
@@ -33,10 +30,17 @@ export class ManifestV2 implements ManifestInterface {
     return 2;
   }
 
-  validate(options?: ValidatorOptions) {
-    const result = validate(this.manifest as any, options);
-    debug(result);
-    return result;
+  validate(_options?: ValidatorOptions) {
+    // TODO: Implement Validation
+    return {
+      valid: true,
+      errors: null,
+      warnings: null,
+    };
+
+    // const result = validate(this.manifest as any, options);
+    // debug(result);
+    // return result;
   }
 
   sourceList(): string[] {

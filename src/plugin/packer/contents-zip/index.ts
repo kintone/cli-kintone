@@ -1,5 +1,5 @@
 import type { ManifestInterface, ManifestStaticInterface } from "../manifest";
-import { ManifestV1 } from "../manifest";
+import { ManifestFactory } from "../manifest";
 import { ZipFile } from "../zip";
 import streamBuffers from "stream-buffers";
 import path from "path";
@@ -40,7 +40,7 @@ export class ContentsZip extends ZipFile implements ContentsZipInterface {
     path: string;
     manifest: ManifestInterface;
   }> {
-    return extractManifestFromContentsZip(this, ManifestV1);
+    return extractManifestFromContentsZip(this, ManifestFactory);
   }
 }
 

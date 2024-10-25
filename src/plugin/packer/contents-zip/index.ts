@@ -6,6 +6,7 @@ import path from "path";
 import yazl from "yazl";
 
 import _debug from "debug";
+import { finished } from "node:stream/promises";
 
 const debug = _debug("contents-zip");
 
@@ -41,20 +42,18 @@ export const createContentsZip = async (
   pluginDir: string,
   manifest: ManifestInterface,
 ): Promise<Buffer> => {
-  return new Promise((res) => {
-    const output = new streamBuffers.WritableStreamBuffer();
-    const zipFile = new yazl.ZipFile();
-    let size: any = null;
-    output.on("finish", () => {
-      debug(`plugin.zip: ${size} bytes`);
-      res(output.getContents() as any);
-    });
-    zipFile.outputStream.pipe(output);
-    manifest.sourceList().forEach((src) => {
-      zipFile.addFile(path.join(pluginDir, src), src);
-    });
-    zipFile.end(undefined, ((finalSize: number) => {
-      size = finalSize;
-    }) as any);
+  const output = new streamBuffers.WritableStreamBuffer();
+  const zipFile = new yazl.ZipFile();
+  let size: any = null;
+  zipFile.outputStream.pipe(output);
+  manifest.sourceList().forEach((src) => {
+    zipFile.addFile(path.join(pluginDir, src), src);
   });
+  zipFile.end(undefined, ((finalSize: number) => {
+    size = finalSize;
+  }) as any);
+  await finished(output);
+
+  debug(`plugin.zip: ${size} bytes`);
+  return output.getContents() as any;
 };

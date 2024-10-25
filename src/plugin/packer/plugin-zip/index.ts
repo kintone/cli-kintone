@@ -4,6 +4,7 @@ import _debug from "debug";
 import type { PrivateKeyInterface } from "../crypto";
 import type { ContentsZipInterface } from "../contents-zip";
 import { ZipFile } from "../zip";
+import { finished } from "node:stream/promises";
 
 const debug = _debug("plugin-zip");
 
@@ -37,19 +38,16 @@ export const zip = async (
   const signature = privateKey.sign(contentsZip.buffer);
 
   debug(`zip(): start`);
-  return new Promise((res) => {
-    const output = new streamBuffers.WritableStreamBuffer();
-    const zipFile = new yazl.ZipFile();
-    output.on("finish", () => {
-      debug(`zip(): output finish event`);
-      res(output.getContents() as any);
-    });
-    zipFile.outputStream.pipe(output);
-    zipFile.addBuffer(contentsZip.buffer, "contents.zip");
-    zipFile.addBuffer(publicKey, "PUBKEY");
-    zipFile.addBuffer(signature, "SIGNATURE");
-    zipFile.end(undefined, ((finalSize: number) => {
-      debug(`zip(): ZipFile end event: finalSize ${finalSize} bytes`);
-    }) as any);
-  });
+  const output = new streamBuffers.WritableStreamBuffer();
+  const zipFile = new yazl.ZipFile();
+  zipFile.outputStream.pipe(output);
+  zipFile.addBuffer(contentsZip.buffer, "contents.zip");
+  zipFile.addBuffer(publicKey, "PUBKEY");
+  zipFile.addBuffer(signature, "SIGNATURE");
+  zipFile.end(undefined, ((finalSize: number) => {
+    debug(`zip(): ZipFile end event: finalSize ${finalSize} bytes`);
+  }) as any);
+  await finished(output);
+  debug(`zip(): output finish event`);
+  return output.getContents() as any;
 };

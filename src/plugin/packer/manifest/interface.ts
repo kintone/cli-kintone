@@ -8,6 +8,7 @@ export interface ManifestStaticInterface {
 export interface ManifestInterface {
   validate(options?: ValidatorOptions): ReturnType<typeof validate>;
   sourceList(): string[];
+  get manifestVersion(): 1 | 2;
 }
 
 // TODO: These types must be exported from kintone/plugin-manifest-validator

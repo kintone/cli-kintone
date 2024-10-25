@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import packer from "../index";
 import { packPluginFromManifest } from "../pack-plugin-from-manifest";
-import { ManifestV1 } from "../manifest";
+import { ManifestFactory } from "../manifest";
 import { ContentsZip } from "../contents-zip";
 
 const fixturesDir = path.join(__dirname, "fixtures");
@@ -13,7 +13,7 @@ describe("pack-plugin-from-manifest", () => {
   it("should be able to create a plugin from the manifest json path", async () => {
     const manifestJSONPath = path.join(pluginDir, "manifest.json");
     const privateKey = fs.readFileSync(ppkFilePath, "utf-8");
-    const manifest = await ManifestV1.loadJsonFile(manifestJSONPath);
+    const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
 
     const result1 = await packPluginFromManifest(manifestJSONPath, privateKey);
     const contentsZip = await ContentsZip.createFromManifest(

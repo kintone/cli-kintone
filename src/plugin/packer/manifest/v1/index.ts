@@ -29,6 +29,10 @@ export class ManifestV1 implements ManifestInterface {
     return ManifestV1.parseJson(manifestJson);
   }
 
+  get manifestVersion(): 1 {
+    return 1;
+  }
+
   validate(options?: ValidatorOptions) {
     const result = validate(this.manifest as any, options);
     debug(result);

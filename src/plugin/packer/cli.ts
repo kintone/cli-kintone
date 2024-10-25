@@ -7,7 +7,7 @@ import { mkdirp } from "mkdirp";
 import _debug from "debug";
 import packer from "./index";
 import { logger } from "../../utils/log";
-import { ManifestV1 } from "./manifest";
+import { ManifestFactory } from "./manifest";
 import { generateErrorMessages } from "./manifest/validate";
 import { ContentsZip } from "./contents-zip";
 import type { PluginZipInterface } from "./plugin-zip";
@@ -41,7 +41,7 @@ const cli = async (pluginDir: string, options_?: Options) => {
     }
 
     // 3. validate manifest.json
-    const manifest = await ManifestV1.loadJsonFile(manifestJsonPath);
+    const manifest = await ManifestFactory.loadJsonFile(manifestJsonPath);
     const result = manifest.validate({
       maxFileSize: validateMaxFileSize(pluginDir),
       fileExists: validateFileExists(pluginDir),

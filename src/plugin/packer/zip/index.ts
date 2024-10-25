@@ -16,9 +16,7 @@ export class ZipFile {
   }
 }
 
-export const readZipContentsNames = async (
-  zipFilePath: Buffer,
-): Promise<string[]> => {
+const readZipContentsNames = async (zipFilePath: Buffer): Promise<string[]> => {
   return new Promise((resolve, reject) => {
     yauzl.fromBuffer(zipFilePath, (err, zipFile) => {
       if (err) {

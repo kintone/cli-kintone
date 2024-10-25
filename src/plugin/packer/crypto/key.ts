@@ -3,8 +3,6 @@ import { uuid } from "./uuid";
 import { sign } from "./sign";
 
 export interface PrivateKeyInterface {
-  // static generateKey(): PrivateKeyInterface;
-  // static importKey(privateKey: string): PrivateKeyInterface;
   exportPrivateKey(): string;
   exportPublicKey(): Buffer;
   uuid(): string;

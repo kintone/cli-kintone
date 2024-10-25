@@ -10,6 +10,9 @@ import { finished } from "node:stream/promises";
 import type { ContentsZipInterface } from "./index";
 import type { Entries } from "../zip";
 
+// rezip() has been only used in web version plugin packer.
+// We are keeping this function to support a web version in the future.
+
 /**
  * Extract and rezip contents.zip
  */

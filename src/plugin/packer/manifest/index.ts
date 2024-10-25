@@ -5,6 +5,11 @@ import fs from "fs";
 
 const debug = _debug("manifest");
 
+export interface ManifestStaticInterface {
+  parseJson(manifestJson: string): ManifestInterface;
+  loadJsonFile(jsonFilePath: string): Promise<ManifestInterface>;
+}
+
 export interface ManifestInterface {
   validate(options?: ValidatorOptions): ReturnType<typeof validate>;
   sourceList(): string[];
@@ -39,6 +44,8 @@ export class ManifestV1 implements ManifestInterface {
     return sourceList(this.manifest);
   }
 }
+
+const _ = ManifestV1 satisfies ManifestStaticInterface;
 
 // TODO: These types must be exported from kintone/plugin-manifest-validator
 type ValidatorOptions = {

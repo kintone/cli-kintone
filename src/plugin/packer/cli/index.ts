@@ -5,12 +5,12 @@ import os from "os";
 import * as chokidar from "chokidar";
 import { mkdirp } from "mkdirp";
 import _debug from "debug";
-import packer from "./index";
-import { logger } from "../../utils/log";
-import { ManifestFactory } from "./manifest";
-import { generateErrorMessages } from "./manifest/validate";
-import { ContentsZip } from "./contents-zip";
-import type { PluginZipInterface } from "./plugin-zip";
+import packer from "../index";
+import { logger } from "../../../utils/log";
+import { ManifestFactory } from "../manifest";
+import { generateErrorMessages } from "../manifest/validate";
+import { ContentsZip } from "../contents-zip";
+import type { PluginZipInterface } from "../plugin-zip";
 
 const debug = _debug("cli");
 const writeFile = promisify(fs.writeFile);

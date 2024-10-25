@@ -1,13 +1,13 @@
 import path from "path";
 import fs from "fs";
-import packer from "../index";
+import packer from "../../index";
 import { packPluginFromManifest } from "../pack-plugin-from-manifest";
-import { ManifestFactory } from "../manifest";
-import { ContentsZip } from "../contents-zip";
+import { ManifestFactory } from "../../manifest";
+import { ContentsZip } from "../../contents-zip";
 
 const fixturesDir = path.join(__dirname, "fixtures");
 const ppkFilePath = path.join(fixturesDir, "private.ppk");
-const pluginDir = path.join(fixturesDir, "sample-plugin", "plugin-dir");
+const pluginDir = path.join(fixturesDir, "sample-plugin");
 
 describe("pack-plugin-from-manifest", () => {
   it("should be able to create a plugin from the manifest json path", async () => {

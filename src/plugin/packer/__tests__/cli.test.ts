@@ -2,9 +2,9 @@ import fs from "fs";
 import path from "path";
 import { rimraf } from "rimraf";
 import { globSync } from "glob";
-import { readZipContentsNames } from "./helpers/zip";
 import cli from "../cli";
 import { logger } from "../../../utils/log";
+import type { ContentsZipInterface } from "../contents-zip";
 
 const fixturesDir = path.posix.join(__dirname, "fixtures");
 const sampleDir = path.posix.join(fixturesDir, "sample-plugin");
@@ -16,7 +16,7 @@ const PLUGIN_BUFFER = Buffer.from("foo");
 
 type MockedPacker = jest.MockedFunction<
   (
-    contentsZip: Buffer,
+    contentsZip: ContentsZipInterface,
     privateKey_?: string,
   ) => Promise<{ plugin: Buffer; privateKey: string; id: string }>
 >;
@@ -109,7 +109,8 @@ describe("cli", () => {
     it("calles `packer` with contents.zip as the 1st argument", async () => {
       expect(packer.mock.calls.length).toBe(1);
       expect(packer.mock.calls[0][0]).toBeTruthy();
-      const files = await readZipContentsNames(packer.mock.calls[0][0]);
+
+      const files = await packer.mock.calls[0][0].fileList();
       expect(files.sort()).toStrictEqual(
         ["image/icon.png", "manifest.json"].sort(),
       );
@@ -162,7 +163,7 @@ describe("cli", () => {
 
   it("includes files listed in manifest.json only", async () => {
     const pluginDir = path.join(fixturesDir, "plugin-full-manifest");
-    const packer = jest.fn().mockReturnValue({
+    const packer: MockedPacker = jest.fn().mockReturnValue({
       id: ID,
       privateKey: PRIVATE_KEY,
       plugin: PLUGIN_BUFFER,
@@ -170,7 +171,7 @@ describe("cli", () => {
 
     await rimraf(`${sampleDir}/*.*(ppk|zip)`, { glob: true });
     await cli(pluginDir, { packerMock_: packer });
-    const files = await readZipContentsNames(packer.mock.calls[0][0]);
+    const files = await packer.mock.calls[0][0].fileList();
     expect(files.sort()).toStrictEqual(
       [
         "css/config.css",

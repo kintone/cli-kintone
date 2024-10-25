@@ -12,5 +12,5 @@ export const packPluginFromManifest = async (
     path.dirname(manifestJSONPath),
     manifest,
   );
-  return packer(contentsZip.buffer, privateKey);
+  return packer(contentsZip, privateKey);
 };

@@ -83,7 +83,7 @@ const cli = async (pluginDir: string, options_?: Options) => {
       manifest,
     );
 
-    const output = await packerLocal(contentsZip.buffer, privateKey);
+    const output = await packerLocal(contentsZip, privateKey);
     const ppkFilePath = path.join(outputDir, `${output.id}.ppk`);
     if (!ppkFile) {
       fs.writeFileSync(ppkFilePath, output.privateKey, "utf8");
@@ -134,14 +134,6 @@ const outputPlugin = async (
 ): Promise<string> => {
   await writeFile(outputPath, plugin);
   return outputPath;
-};
-
-/**
- * Load JSON file without caching
- */
-const loadJson = (jsonPath: string) => {
-  const content = fs.readFileSync(jsonPath, "utf8");
-  return JSON.parse(content);
 };
 
 /**

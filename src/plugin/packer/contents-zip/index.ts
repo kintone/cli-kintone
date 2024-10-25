@@ -3,8 +3,9 @@ import { createContentsZip } from "./create-contents-zip";
 import type { ManifestInterface } from "../manifest";
 import { validateContentsZip } from "./zip";
 
-interface ContentsZipInterface {
+export interface ContentsZipInterface {
   fileList(): Promise<string[]>;
+  get buffer(): Buffer;
 }
 
 export class ContentsZip implements ContentsZipInterface {
@@ -19,6 +20,11 @@ export class ContentsZip implements ContentsZipInterface {
     manifest: ManifestInterface,
   ): Promise<ContentsZip> {
     const buffer = await createContentsZip(pluginDir, manifest);
+    await validateContentsZip(buffer);
+    return new ContentsZip(buffer);
+  }
+
+  public static async fromBuffer(buffer: Buffer) {
     await validateContentsZip(buffer);
     return new ContentsZip(buffer);
   }

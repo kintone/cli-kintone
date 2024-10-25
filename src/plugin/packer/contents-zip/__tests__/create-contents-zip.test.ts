@@ -1,5 +1,4 @@
 import path from "path";
-import fs from "fs";
 import { readZipContentsNames } from "../../__tests__/helpers/zip";
 import { createContentsZip } from "../create-contents-zip";
 import { ManifestV1 } from "../../manifest";

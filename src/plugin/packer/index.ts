@@ -1,11 +1,12 @@
 import _debug from "debug";
 import { PrivateKey } from "./crypto";
 import { zip } from "./plugin-zip";
+import type { ContentsZipInterface } from "./contents-zip";
 
 const debug = _debug("packer");
 
 const packer = async (
-  contentsZip: Buffer,
+  contentsZip: ContentsZipInterface,
   privateKey_?: string,
 ): Promise<{
   plugin: Buffer;

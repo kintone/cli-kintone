@@ -3,8 +3,8 @@ import fs from "fs";
 import { readZipContentsNames } from "./helpers/zip";
 import packer from "../index";
 import { packPluginFromManifest } from "../pack-plugin-from-manifest";
-import { createContentsZip } from "../contents-zip/create-contents-zip";
 import { ManifestV1 } from "../manifest";
+import { ContentsZip } from "../contents-zip";
 
 const fixturesDir = path.join(__dirname, "fixtures");
 const ppkFilePath = path.join(fixturesDir, "private.ppk");
@@ -17,8 +17,11 @@ describe("pack-plugin-from-manifest", () => {
     const manifest = await ManifestV1.loadJsonFile(manifestJSONPath);
 
     const result1 = await packPluginFromManifest(manifestJSONPath, privateKey);
-    const buffer = await createContentsZip(pluginDir, manifest);
-    const result2 = await packer(buffer as any, privateKey);
+    const contentsZip = await ContentsZip.createFromManifest(
+      pluginDir,
+      manifest,
+    );
+    const result2 = await packer(contentsZip, privateKey);
 
     expect(result1.id).toBe(result2.id);
     expect(result1.plugin.length).toBe(result2.plugin.length);

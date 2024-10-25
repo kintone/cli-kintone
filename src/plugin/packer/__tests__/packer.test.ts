@@ -7,6 +7,7 @@ import yauzl from "yauzl";
 import { readZipContentsNames } from "./helpers/zip";
 
 import packer from "../index";
+import { ContentsZip } from "../contents-zip";
 
 const privateKeyPath = path.join(__dirname, "fixtures", "private.ppk");
 const contentsZipPath = path.join(__dirname, "fixtures", "contents.zip");
@@ -24,7 +25,9 @@ describe("packer", () => {
   describe("without privateKey", () => {
     let output: Awaited<ReturnType<typeof packer>>;
     beforeEach(async () => {
-      const contentsZip = fs.readFileSync(contentsZipPath);
+      const contentsZip = await ContentsZip.fromBuffer(
+        fs.readFileSync(contentsZipPath),
+      );
       output = await packer(contentsZip);
     });
 
@@ -56,7 +59,9 @@ describe("packer", () => {
     let privateKey: string;
     let output: Awaited<ReturnType<typeof packer>>;
     beforeEach(async () => {
-      const contentsZip = fs.readFileSync(contentsZipPath);
+      const contentsZip = await ContentsZip.fromBuffer(
+        fs.readFileSync(contentsZipPath),
+      );
       privateKey = fs.readFileSync(privateKeyPath, "utf8");
       output = await packer(contentsZip, privateKey);
     });
@@ -75,9 +80,10 @@ describe("packer", () => {
   });
 
   describe("invalid contents.zip", () => {
+    // TODO: This test must be in contents-zip module
     it("throws an error if the contents.zip is invalid", async () => {
-      const contentsZip = fs.readFileSync(invalidMaxFileSizeContentsZipPath);
-      await expect(packer(contentsZip)).rejects.toThrow(
+      const buffer = fs.readFileSync(invalidMaxFileSizeContentsZipPath);
+      await expect(ContentsZip.fromBuffer(buffer)).rejects.toThrow(
         '"/icon" file size should be <= 20MB',
       );
     });

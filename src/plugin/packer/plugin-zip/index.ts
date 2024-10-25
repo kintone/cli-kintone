@@ -2,6 +2,7 @@ import streamBuffers from "stream-buffers";
 import { ZipFile } from "yazl";
 import _debug from "debug";
 import type { PrivateKeyInterface } from "../crypto";
+import type { ContentsZipInterface } from "../contents-zip";
 
 const debug = _debug("plugin-zip");
 
@@ -9,11 +10,11 @@ const debug = _debug("plugin-zip");
  * Create plugin.zip
  */
 export const zip = async (
-  contentsZip: Buffer,
+  contentsZip: ContentsZipInterface,
   privateKey: PrivateKeyInterface,
 ): Promise<Buffer> => {
   const publicKey = privateKey.exportPublicKey();
-  const signature = privateKey.sign(contentsZip);
+  const signature = privateKey.sign(contentsZip.buffer);
 
   debug(`zip(): start`);
   return new Promise((res) => {
@@ -24,7 +25,7 @@ export const zip = async (
       res(output.getContents() as any);
     });
     zipFile.outputStream.pipe(output);
-    zipFile.addBuffer(contentsZip, "contents.zip");
+    zipFile.addBuffer(contentsZip.buffer, "contents.zip");
     zipFile.addBuffer(publicKey, "PUBKEY");
     zipFile.addBuffer(signature, "SIGNATURE");
     zipFile.end(undefined, ((finalSize: number) => {

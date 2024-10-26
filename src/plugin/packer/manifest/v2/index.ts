@@ -4,8 +4,8 @@ import type {
   ValidatorOptions,
 } from "../interface";
 import { sourceListV2 } from "./sourcelist";
-import type { DriverInterface } from "../../driver/interface";
-import { LocalFSDriver } from "../../driver/fs";
+import type { DriverInterface } from "../../driver";
+import { LocalFSDriver } from "../../driver";
 
 export class ManifestV2 implements ManifestInterface {
   manifest: ManifestV2JsonObject;
@@ -34,6 +34,22 @@ export class ManifestV2 implements ManifestInterface {
     return 2;
   }
 
+  get name(): string {
+    return this.manifest.name.en;
+  }
+
+  get version(): number | string {
+    return this.manifest.version;
+  }
+
+  get description(): string | undefined {
+    return this.manifest.description?.en;
+  }
+
+  get homepageUrl(): string | undefined {
+    return this.manifest.homepage_url?.en;
+  }
+
   validate(_options?: ValidatorOptions) {
     // TODO: Implement Validation
     return {
@@ -57,20 +73,20 @@ const _ = ManifestV2 satisfies ManifestStaticInterface;
 export type ManifestV2JsonObject = {
   $schema?: string;
   manifest_version: 2;
-  version: number;
+  version: number | string;
   type?: "APP";
   name: {
     ja?: string;
     en: string;
     zh?: string;
   };
-  description: {
+  description?: {
     ja?: string;
     en: string;
     zh?: string;
   };
   icon: string;
-  homepage_url: {
+  homepage_url?: {
     ja: string;
     en: string;
     zh: string;

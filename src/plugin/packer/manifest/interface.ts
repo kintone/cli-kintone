@@ -13,6 +13,10 @@ export interface ManifestInterface {
   validate(options?: ValidatorOptions): ReturnType<typeof validate>;
   sourceList(): string[];
   get manifestVersion(): 1 | 2;
+  get name(): string;
+  get version(): number | string;
+  get description(): string | undefined;
+  get homepageUrl(): string | undefined;
 }
 
 // TODO: These types must be exported from kintone/plugin-manifest-validator

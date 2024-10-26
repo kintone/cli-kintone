@@ -2,7 +2,9 @@ import streamBuffers from "stream-buffers";
 import yazl from "yazl";
 import _debug from "debug";
 import type { PrivateKeyInterface } from "../crypto";
+import { PublicKey } from "../crypto";
 import type { ContentsZipInterface } from "../contents-zip";
+import { ContentsZip } from "../contents-zip";
 import { finished } from "node:stream/promises";
 import { ZipFileDriver } from "../driver";
 
@@ -15,6 +17,10 @@ export class PluginZip extends ZipFileDriver implements PluginZipInterface {
     super(buffer);
   }
 
+  public static async fromBuffer(buffer: Buffer) {
+    return new PluginZip(buffer);
+  }
+
   /**
    * Create plugin.zip
    */
@@ -24,6 +30,22 @@ export class PluginZip extends ZipFileDriver implements PluginZipInterface {
   ): Promise<PluginZip> {
     const buffer = await zip(contentsZip, privateKey);
     return new PluginZip(buffer);
+  }
+
+  public async manifest() {
+    const contentsZip = await this.contentsZip();
+    return contentsZip.manifest();
+  }
+
+  private async contentsZip(): Promise<ContentsZip> {
+    const buffer = await this.readFile("contents.zip");
+    return ContentsZip.fromBuffer(buffer);
+  }
+
+  async getPluginID(): Promise<string> {
+    const buffer = await this.readFile("PUBKEY");
+    const publicKey = PublicKey.importKey(buffer);
+    return publicKey.uuid();
   }
 }
 

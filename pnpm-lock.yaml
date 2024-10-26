@@ -52,9 +52,6 @@ importers:
       node-rsa:
         specifier: ^1.1.1
         version: 1.1.1
-      stream-buffers:
-        specifier: ^3.0.3
-        version: 3.0.3
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
@@ -104,9 +101,6 @@ importers:
       '@types/rollup-plugin-auto-external':
         specifier: ^2.0.5
         version: 2.0.5
-      '@types/stream-buffers':
-        specifier: ^3.0.7
-        version: 3.0.7
       '@types/yargs':
         specifier: ^17.0.33
         version: 17.0.33
@@ -6265,12 +6259,6 @@ packages:
 
   /@types/stack-utils@2.0.3:
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
-    dev: true
-
-  /@types/stream-buffers@3.0.7:
-    resolution: {integrity: sha512-azOCy05sXVXrO+qklf0c/B07H/oHaIuDDAiHPVwlk3A9Ek+ksHyTeMajLZl3r76FxpPpxem//4Te61G1iW3Giw==}
-    dependencies:
-      '@types/node': 18.19.59
     dev: true
 
   /@types/unist@2.0.11:
@@ -14332,11 +14320,6 @@ packages:
     dependencies:
       internal-slot: 1.0.7
     dev: true
-
-  /stream-buffers@3.0.3:
-    resolution: {integrity: sha512-pqMqwQCso0PBJt2PQmDO0cFj0lyqmiwOMiMSkVtRokl7e+ZTRYgDHKnuZNbqjiJXgsg4nuqtD/zxuo9KqTp0Yw==}
-    engines: {node: '>= 0.10.0'}
-    dev: false
 
   /stream-meter@1.0.4:
     resolution: {integrity: sha512-4sOEtrbgFotXwnEuzzsQBYEV1elAeFSO8rSGeTwabuX1RRn/kEq9JVH7I0MRBhKVRR0sJkr0M0QCH7yOLf9fhQ==}

@@ -1,9 +1,8 @@
 import yauzl from "yauzl";
 import { promisify } from "util";
-import * as streamBuffers from "stream-buffers";
-import { finished } from "node:stream/promises";
 import type { DriverInterface, Encoding, FileStats } from "./interface";
 import type { Readable } from "node:stream";
+import consumers from "node:stream/consumers";
 
 type Entries = Map<string, yauzl.Entry>;
 
@@ -52,15 +51,8 @@ export class ZipFileDriver implements DriverInterface {
 
     const zipFile = await this.unzip();
     const stream = await promisify(zipFile.openReadStream).bind(zipFile)(entry);
+    const contents = await consumers.buffer(stream);
 
-    const output = new streamBuffers.WritableStreamBuffer();
-    stream?.pipe(output);
-    await finished(output);
-
-    const contents = output.getContents();
-    if (contents === false) {
-      throw new Error("Failed to load contents to buffer");
-    }
     switch (encoding) {
       case "utf-8":
         return contents.toString("utf-8");

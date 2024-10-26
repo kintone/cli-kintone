@@ -1,4 +1,3 @@
-import fs from "fs";
 import _debug from "debug";
 import validate from "@kintone/plugin-manifest-validator";
 import { sourceList } from "./sourcelist";
@@ -7,6 +6,8 @@ import type {
   ManifestStaticInterface,
   ValidatorOptions,
 } from "../interface";
+import type { DriverInterface } from "../../driver";
+import { LocalFSDriver } from "../../driver";
 
 const debug = _debug("manifest");
 
@@ -24,9 +25,13 @@ export class ManifestV1 implements ManifestInterface {
   /**
    * Load JSON file without caching
    */
-  public static async loadJsonFile(jsonFilePath: string): Promise<ManifestV1> {
-    const manifestJson = fs.readFileSync(jsonFilePath, "utf-8");
-    return ManifestV1.parseJson(manifestJson);
+  public static async loadJsonFile(
+    jsonFilePath: string,
+    driver?: DriverInterface,
+  ): Promise<ManifestV1> {
+    const _driver = driver ?? new LocalFSDriver();
+    const manifestJson = await _driver.readFile(jsonFilePath, "utf-8");
+    return this.parseJson(manifestJson);
   }
 
   get manifestVersion(): 1 {

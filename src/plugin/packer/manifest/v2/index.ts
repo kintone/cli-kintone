@@ -1,11 +1,11 @@
-import fs from "fs";
-import _debug from "debug";
 import type {
   ManifestInterface,
   ManifestStaticInterface,
   ValidatorOptions,
 } from "../interface";
 import { sourceListV2 } from "./sourcelist";
+import type { DriverInterface } from "../../driver/interface";
+import { LocalFSDriver } from "../../driver/fs";
 
 export class ManifestV2 implements ManifestInterface {
   manifest: ManifestV2JsonObject;
@@ -21,9 +21,13 @@ export class ManifestV2 implements ManifestInterface {
   /**
    * Load JSON file without caching
    */
-  public static async loadJsonFile(jsonFilePath: string): Promise<ManifestV2> {
-    const manifestJson = fs.readFileSync(jsonFilePath, "utf-8");
-    return ManifestV2.parseJson(manifestJson);
+  public static async loadJsonFile(
+    jsonFilePath: string,
+    driver?: DriverInterface,
+  ): Promise<ManifestV2> {
+    const _driver = driver ?? new LocalFSDriver();
+    const manifestJson = await _driver.readFile(jsonFilePath, "utf-8");
+    return this.parseJson(manifestJson);
   }
 
   get manifestVersion(): 2 {

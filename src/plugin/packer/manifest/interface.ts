@@ -1,8 +1,12 @@
 import type validate from "@kintone/plugin-manifest-validator";
+import type { DriverInterface } from "../driver";
 
 export interface ManifestStaticInterface {
   parseJson(manifestJson: string): ManifestInterface;
-  loadJsonFile(jsonFilePath: string): Promise<ManifestInterface>;
+  loadJsonFile(
+    jsonFilePath: string,
+    driver?: DriverInterface,
+  ): Promise<ManifestInterface>;
 }
 
 export interface ManifestInterface {

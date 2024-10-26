@@ -1,4 +1,4 @@
-import type { ManifestInterface, ManifestStaticInterface } from "../manifest";
+import type { ManifestInterface } from "../manifest";
 import { ManifestFactory } from "../manifest";
 import { ZipFile } from "../zip";
 import streamBuffers from "stream-buffers";

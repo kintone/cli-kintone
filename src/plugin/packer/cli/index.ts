@@ -8,9 +8,14 @@ import _debug from "debug";
 import packer from "../index";
 import { logger } from "../../../utils/log";
 import { ManifestFactory } from "../manifest";
-import { generateErrorMessages } from "../manifest/validate";
+import {
+  generateErrorMessages,
+  validateFileExists,
+  validateMaxFileSize,
+} from "../manifest/validate";
 import { ContentsZip } from "../contents-zip";
 import type { PluginZipInterface } from "../plugin-zip";
+import { LocalFSDriver } from "../driver";
 
 const debug = _debug("cli");
 const writeFile = promisify(fs.writeFile);
@@ -47,8 +52,8 @@ const run = async (pluginDir: string, options_?: Options) => {
     }
 
     const result = manifest.validate({
-      maxFileSize: validateMaxFileSize(pluginDir),
-      fileExists: validateFileExists(pluginDir),
+      maxFileSize: validateMaxFileSize(new LocalFSDriver(pluginDir)),
+      fileExists: validateFileExists(new LocalFSDriver(pluginDir)),
     });
     // For cli
     if (result.warnings && result.warnings.length > 0) {
@@ -143,31 +148,32 @@ const outputPlugin = async (
   return outputPath;
 };
 
-/**
- * Return validator for `maxFileSize` keyword
- */
-const validateMaxFileSize = (pluginDir: string) => {
-  return (maxBytes: number, filePath: string) => {
-    try {
-      const stat = fs.statSync(path.join(pluginDir, filePath));
-      return stat.size <= maxBytes;
-    } catch (_) {
-      return false;
-    }
-  };
-};
-
-/**
- *
- * @param pluginDir
- */
-const validateFileExists = (pluginDir: string) => {
-  return (filePath: string) => {
-    try {
-      const stat = fs.statSync(path.join(pluginDir, filePath));
-      return stat.isFile();
-    } catch (_) {
-      return false;
-    }
-  };
-};
+//
+// /**
+//  * Return validator for `maxFileSize` keyword
+//  */
+// const validateMaxFileSize = (pluginDir: string) => {
+//   return (maxBytes: number, filePath: string) => {
+//     try {
+//       const stat = fs.statSync(path.join(pluginDir, filePath));
+//       return stat.size <= maxBytes;
+//     } catch (_) {
+//       return false;
+//     }
+//   };
+// };
+//
+// /**
+//  *
+//  * @param pluginDir
+//  */
+// const validateFileExists = (pluginDir: string) => {
+//   return (filePath: string) => {
+//     try {
+//       const stat = fs.statSync(path.join(pluginDir, filePath));
+//       return stat.isFile();
+//     } catch (_) {
+//       return false;
+//     }
+//   };
+// };

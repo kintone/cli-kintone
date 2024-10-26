@@ -12,10 +12,9 @@ import { LocalFSDriver } from "../../driver";
 const debug = _debug("manifest");
 
 export class ManifestV1 implements ManifestInterface {
-  // TODO: Define manifest v1 type
-  manifest: unknown;
+  manifest: ManifestV1JsonObject;
 
-  constructor(manifest: unknown) {
+  constructor(manifest: ManifestV1JsonObject) {
     this.manifest = manifest;
   }
 
@@ -40,19 +39,19 @@ export class ManifestV1 implements ManifestInterface {
   }
 
   get name(): string {
-    return (this.manifest as any).name.en;
+    return this.manifest.name.en;
   }
 
   get version(): number | string {
-    return (this.manifest as any).version;
+    return this.manifest.version;
   }
 
   get description(): string | undefined {
-    return (this.manifest as any).description?.en;
+    return this.manifest.description?.en;
   }
 
   get homepageUrl(): string | undefined {
-    return (this.manifest as any).homepage_url?.en;
+    return this.manifest.homepage_url?.en;
   }
 
   validate(options?: ValidatorOptions) {
@@ -67,3 +66,40 @@ export class ManifestV1 implements ManifestInterface {
 }
 
 const _ = ManifestV1 satisfies ManifestStaticInterface;
+
+export type ManifestV1JsonObject = {
+  $schema?: string;
+  manifest_version: 1;
+  version: number | string;
+  type?: "APP";
+  name: {
+    ja?: string;
+    en: string;
+    zh?: string;
+  };
+  description?: {
+    ja?: string;
+    en: string;
+    zh?: string;
+  };
+  icon: string;
+  homepage_url?: {
+    ja: string;
+    en: string;
+    zh: string;
+  };
+  desktop?: {
+    js?: string[];
+    css?: string[];
+  };
+  mobile?: {
+    js?: string[];
+    css?: string[];
+  };
+  config?: {
+    html?: string;
+    js?: string[];
+    css?: string[];
+    required_params?: string[];
+  };
+};

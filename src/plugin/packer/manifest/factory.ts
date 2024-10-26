@@ -27,7 +27,7 @@ export class ManifestFactory {
 
     switch (json.manifest_version) {
       case 1:
-        return new ManifestV1(json);
+        return new ManifestV1(json as any);
       case 2:
         return new ManifestV2(json as any);
       default:

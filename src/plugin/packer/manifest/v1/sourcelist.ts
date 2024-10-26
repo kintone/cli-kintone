@@ -1,27 +1,22 @@
+import type { ManifestV1JsonObject } from "./index";
+
 /**
  * Create content file list from manifest.json
  */
-export const sourceList = (
-  // TODO: Define and use menifest type
-  manifest: any,
-): string[] => {
-  const sourceTypes = [
-    ["desktop", "js"],
-    ["desktop", "css"],
-    ["mobile", "js"],
-    ["mobile", "css"],
-    ["config", "js"],
-    ["config", "css"],
-  ];
-  const list = sourceTypes
-    .map((t) => manifest[t[0]] && manifest[t[0]][t[1]])
-    .filter((i) => !!i)
-    .reduce((a, b) => a.concat(b), [])
-    .filter((file: any) => !/^https?:\/\//.test(file));
-  if (manifest.config && manifest.config.html) {
-    list.push(manifest.config.html);
-  }
-  list.push("manifest.json", manifest.icon);
+export const sourceList = (manifest: ManifestV1JsonObject): string[] => {
+  const list = ([] as string[]).concat(
+    manifest.desktop?.js?.filter((s) => !isURL(s)) ?? [],
+    manifest.desktop?.css?.filter((s) => !isURL(s)) ?? [],
+    manifest.mobile?.js?.filter((s) => !isURL(s)) ?? [],
+    manifest.mobile?.css?.filter((s) => !isURL(s)) ?? [],
+    manifest.config?.js?.filter((s) => !isURL(s)) ?? [],
+    manifest.config?.css?.filter((s) => !isURL(s)) ?? [],
+    manifest.config?.html ?? [],
+    ["manifest.json", manifest.icon],
+  );
+
   // Make the file list unique
   return Array.from(new Set(list));
 };
+
+const isURL = (input: string) => /^https?:\/\//.test(input);

@@ -5,17 +5,13 @@ import os from "os";
 import * as chokidar from "chokidar";
 import { mkdirp } from "mkdirp";
 import _debug from "debug";
-import packer from "../index";
 import { logger } from "../../../utils/log";
 import { ManifestFactory } from "../manifest";
-import {
-  generateErrorMessages,
-  validateFileExists,
-  validateMaxFileSize,
-} from "../manifest/validate";
-import { ContentsZip } from "../contents-zip";
+import { validateFileExists, validateMaxFileSize } from "../manifest/validate";
 import type { PluginZipInterface } from "../plugin-zip";
+import { PluginZip } from "../plugin-zip";
 import { LocalFSDriver } from "../driver";
+import { PrivateKey } from "../crypto";
 
 const debug = _debug("cli");
 const writeFile = promisify(fs.writeFile);
@@ -24,14 +20,12 @@ type Options = Partial<{
   ppk: string;
   out: string;
   watch: boolean;
-  packerMock_: typeof packer;
 }>;
 
 // TODO: Reduce statements in this func
 // eslint-disable-next-line max-statements
-const run = async (pluginDir: string, options_?: Options) => {
+export const run = async (pluginDir: string, options_?: Options) => {
   const options = options_ || {};
-  const packerLocal = options.packerMock_ ? options.packerMock_ : packer;
 
   try {
     // 1. check if pluginDir is a directory
@@ -56,16 +50,15 @@ const run = async (pluginDir: string, options_?: Options) => {
       fileExists: validateFileExists(new LocalFSDriver(pluginDir)),
     });
     // For cli
-    if (result.warnings && result.warnings.length > 0) {
+    if (result.warnings.length > 0) {
       result.warnings.forEach((warning) => {
-        logger.warn(warning.message);
+        logger.warn(warning);
       });
     }
 
     if (!result.valid) {
-      const msgs = generateErrorMessages(result.errors ?? []);
       logger.error("Invalid manifest.json:");
-      msgs.forEach((msg) => {
+      result.errors.forEach((msg) => {
         logger.error(`- ${msg}`);
       });
       throw new Error("Invalid manifest.json");
@@ -82,23 +75,30 @@ const run = async (pluginDir: string, options_?: Options) => {
 
     // 4. generate new ppk if not specified
     const ppkFile = options.ppk;
-    let privateKey: string | undefined;
+    let privateKey: PrivateKey;
     if (ppkFile) {
       debug(`loading an existing key: ${ppkFile}`);
-      privateKey = fs.readFileSync(ppkFile, "utf8");
+      const ppk = fs.readFileSync(ppkFile, "utf8");
+      privateKey = PrivateKey.importKey(ppk);
+    } else {
+      debug("generating a new key");
+      privateKey = PrivateKey.generateKey();
     }
+
+    const id = privateKey.uuid();
+    debug(`id : ${id}`);
 
     // 5. package plugin.zip
     await mkdirp(outputDir);
-    const contentsZip = await ContentsZip.createFromManifest(
+    const pluginZip = await PluginZip.build(
       manifest,
+      privateKey,
       new LocalFSDriver(pluginDir),
     );
 
-    const output = await packerLocal(contentsZip, privateKey);
-    const ppkFilePath = path.join(outputDir, `${output.id}.ppk`);
+    const ppkFilePath = path.join(outputDir, `${id}.ppk`);
     if (!ppkFile) {
-      fs.writeFileSync(ppkFilePath, output.privateKey, "utf8");
+      fs.writeFileSync(ppkFilePath, privateKey.exportPrivateKey(), "utf8");
     }
 
     if (options.watch) {
@@ -125,7 +125,7 @@ const run = async (pluginDir: string, options_?: Options) => {
         );
       });
     }
-    await outputPlugin(outputFile, output.plugin);
+    await outputPlugin(outputFile, pluginZip);
 
     logger.info(`Succeeded: ${outputFile}`);
     return outputFile;
@@ -134,8 +134,6 @@ const run = async (pluginDir: string, options_?: Options) => {
     return Promise.reject(error);
   }
 };
-
-export = run;
 
 /**
  * Create and save plugin.zip
@@ -147,33 +145,3 @@ const outputPlugin = async (
   await writeFile(outputPath, plugin.buffer);
   return outputPath;
 };
-
-//
-// /**
-//  * Return validator for `maxFileSize` keyword
-//  */
-// const validateMaxFileSize = (pluginDir: string) => {
-//   return (maxBytes: number, filePath: string) => {
-//     try {
-//       const stat = fs.statSync(path.join(pluginDir, filePath));
-//       return stat.size <= maxBytes;
-//     } catch (_) {
-//       return false;
-//     }
-//   };
-// };
-//
-// /**
-//  *
-//  * @param pluginDir
-//  */
-// const validateFileExists = (pluginDir: string) => {
-//   return (filePath: string) => {
-//     try {
-//       const stat = fs.statSync(path.join(pluginDir, filePath));
-//       return stat.isFile();
-//     } catch (_) {
-//       return false;
-//     }
-//   };
-// };

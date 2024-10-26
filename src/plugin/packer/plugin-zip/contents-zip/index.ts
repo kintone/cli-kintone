@@ -1,13 +1,13 @@
-import type { ManifestInterface } from "../manifest";
-import { ManifestFactory } from "../manifest";
+import type { ManifestInterface } from "../../manifest";
+import { ManifestFactory } from "../../manifest";
 import streamBuffers from "stream-buffers";
 import yazl from "yazl";
 
 import _debug from "debug";
 import { finished } from "node:stream/promises";
 import { validateContentsZip } from "./validate";
-import type { DriverInterface } from "../driver";
-import { ZipFileDriver } from "../driver";
+import type { DriverInterface } from "../../driver";
+import { ZipFileDriver } from "../../driver";
 
 const debug = _debug("contents-zip");
 

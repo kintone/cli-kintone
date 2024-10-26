@@ -1,10 +1,9 @@
 import type { ContentsZipInterface } from "./index";
 import {
-  generateErrorMessages,
   validateMaxFileSize,
   validateRelativePath,
-} from "../manifest/validate";
-import { ZipFileDriver } from "../driver";
+} from "../../manifest/validate";
+import { ZipFileDriver } from "../../driver";
 
 /**
  * Validate a buffer of contents.zip
@@ -27,9 +26,8 @@ export const validateContentsZip = async (
   });
 
   if (!result.valid) {
-    const errors = generateErrorMessages(result.errors ?? []);
-    const e: any = new Error(errors.join(", "));
-    e.validationErrors = errors;
+    const e: any = new Error(result.errors.join(", "));
+    e.validationErrors = result.errors;
     throw e;
   }
 };

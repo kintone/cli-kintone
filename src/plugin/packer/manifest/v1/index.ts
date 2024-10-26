@@ -8,6 +8,8 @@ import type {
 } from "../interface";
 import type { DriverInterface } from "../../driver";
 import { LocalFSDriver } from "../../driver";
+import { generateErrorMessages } from "../validate";
+import { ContentsZip } from "../../plugin-zip/contents-zip";
 
 const debug = _debug("manifest");
 
@@ -57,11 +59,30 @@ export class ManifestV1 implements ManifestInterface {
   validate(options?: ValidatorOptions) {
     const result = validate(this.manifest as any, options);
     debug(result);
-    return result;
+
+    const warnings = result.warnings?.map((warn) => warn.message) ?? [];
+
+    if (result.valid) {
+      return {
+        valid: true as const,
+        warnings,
+      };
+    }
+
+    const errors = generateErrorMessages(result.errors ?? []);
+    return {
+      valid: false as const,
+      warnings,
+      errors,
+    };
   }
 
   sourceList(): string[] {
     return sourceList(this.manifest);
+  }
+
+  async generateContentsZip(driver: DriverInterface): Promise<ContentsZip> {
+    return ContentsZip.createFromManifest(this, driver);
   }
 }
 

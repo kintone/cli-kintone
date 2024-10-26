@@ -6,6 +6,7 @@ import type {
 import { sourceListV2 } from "./sourcelist";
 import type { DriverInterface } from "../../driver";
 import { LocalFSDriver } from "../../driver";
+import { ContentsZip } from "../../plugin-zip/contents-zip";
 
 export class ManifestV2 implements ManifestInterface {
   manifest: ManifestV2JsonObject;
@@ -53,18 +54,17 @@ export class ManifestV2 implements ManifestInterface {
   validate(_options?: ValidatorOptions) {
     // TODO: Implement Validation
     return {
-      valid: true,
-      errors: null,
-      warnings: null,
+      valid: true as const,
+      warnings: [],
     };
-
-    // const result = validate(this.manifest as any, options);
-    // debug(result);
-    // return result;
   }
 
   sourceList(): string[] {
     return sourceListV2(this.manifest);
+  }
+
+  async generateContentsZip(driver: DriverInterface): Promise<ContentsZip> {
+    return ContentsZip.createFromManifest(this, driver);
   }
 }
 

@@ -1,5 +1,5 @@
 import fs from "fs/promises";
-import { PluginZip } from "../packer/plugin-zip";
+import { PluginZip } from "../packer";
 
 export type OutputFormat = "plain" | "json";
 

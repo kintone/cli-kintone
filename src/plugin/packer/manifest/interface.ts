@@ -1,5 +1,5 @@
-import type validate from "@kintone/plugin-manifest-validator";
 import type { DriverInterface } from "../driver";
+import type { ContentsZip } from "../plugin-zip/contents-zip";
 
 export interface ManifestStaticInterface {
   parseJson(manifestJson: string): ManifestInterface;
@@ -10,8 +10,11 @@ export interface ManifestStaticInterface {
 }
 
 export interface ManifestInterface {
-  validate(options?: ValidatorOptions): ReturnType<typeof validate>;
+  validate(options?: ValidatorOptions): ValidationResult;
   sourceList(): string[];
+  generateContentsZip(driver: DriverInterface): Promise<ContentsZip>;
+
+  // Accessor
   get manifestVersion(): 1 | 2;
   get name(): string;
   get version(): number | string;
@@ -33,4 +36,15 @@ export type ValidatorResult =
   | {
       valid: false;
       message?: string;
+    };
+
+export type ValidationResult =
+  | {
+      valid: true;
+      warnings: string[];
+    }
+  | {
+      valid: false;
+      warnings: string[];
+      errors: string[];
     };

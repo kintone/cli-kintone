@@ -1,7 +1,8 @@
 import path from "path";
-import { ManifestFactory } from "../../manifest";
+import { ManifestFactory } from "../../../manifest";
 import { ContentsZip } from "../index";
-import { LocalFSDriver } from "../../driver";
+import { LocalFSDriver } from "../../../driver";
+import fs from "fs";
 
 const fixturesDir = path.join(__dirname, "fixtures");
 
@@ -48,6 +49,23 @@ describe("ContentsZip", () => {
       expect(files).toStrictEqual(expectedFiles);
       expect(contentsZip).toBeInstanceOf(ContentsZip);
       expect(contentsZip.buffer).toBeInstanceOf(Buffer);
+    });
+  });
+
+  describe("invalid contents.zip", () => {
+    const invalidMaxFileSizeContentsZipPath = path.join(
+      __dirname,
+      "fixtures",
+      "invalid-maxFileSize",
+      "invalid-maxFileSize-contents.zip",
+    );
+
+    // TODO: This test must be in contents-zip module
+    it("throws an error if the contents.zip is invalid", async () => {
+      const buffer = fs.readFileSync(invalidMaxFileSizeContentsZipPath);
+      await expect(ContentsZip.fromBuffer(buffer)).rejects.toThrow(
+        '"/icon" file size should be <= 20MB',
+      );
     });
   });
 });

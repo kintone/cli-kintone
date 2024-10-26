@@ -1,6 +1,5 @@
 import type { ManifestInterface } from "../manifest";
 import { ManifestFactory } from "../manifest";
-import { ZipFile } from "../zip";
 import streamBuffers from "stream-buffers";
 import yazl from "yazl";
 
@@ -8,14 +7,15 @@ import _debug from "debug";
 import { finished } from "node:stream/promises";
 import { validateContentsZip } from "./validate";
 import type { DriverInterface } from "../driver";
+import { ZipFileDriver } from "../driver";
 
 const debug = _debug("contents-zip");
 
-export interface ContentsZipInterface extends ZipFile {
+export interface ContentsZipInterface extends ZipFileDriver {
   manifest(): Promise<ManifestInterface>;
 }
 
-export class ContentsZip extends ZipFile implements ContentsZipInterface {
+export class ContentsZip extends ZipFileDriver implements ContentsZipInterface {
   private constructor(buffer: Buffer) {
     super(buffer);
   }
@@ -37,7 +37,7 @@ export class ContentsZip extends ZipFile implements ContentsZipInterface {
   }
 
   public async manifest(): Promise<ManifestInterface> {
-    const manifestJson = await this.getFileAsString("manifest.json");
+    const manifestJson = await this.readFile("manifest.json", "utf-8");
     return ManifestFactory.parseJson(manifestJson);
   }
 }

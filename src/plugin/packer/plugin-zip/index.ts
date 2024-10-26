@@ -3,14 +3,14 @@ import yazl from "yazl";
 import _debug from "debug";
 import type { PrivateKeyInterface } from "../crypto";
 import type { ContentsZipInterface } from "../contents-zip";
-import { ZipFile } from "../zip";
 import { finished } from "node:stream/promises";
+import { ZipFileDriver } from "../driver";
 
 const debug = _debug("plugin-zip");
 
-export interface PluginZipInterface extends ZipFile {}
+export interface PluginZipInterface extends ZipFileDriver {}
 
-export class PluginZip extends ZipFile implements PluginZipInterface {
+export class PluginZip extends ZipFileDriver implements PluginZipInterface {
   private constructor(buffer: Buffer) {
     super(buffer);
   }

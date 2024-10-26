@@ -1,8 +1,9 @@
 import type { DriverInterface, Encoding, FileStats } from "./interface";
 
 import fs from "fs/promises";
-import { statSync } from "fs";
+import { statSync, createReadStream } from "fs";
 import path from "path";
+import type { Readable } from "node:stream";
 
 export class LocalFSDriver implements DriverInterface {
   private currentDir: string;
@@ -36,10 +37,7 @@ export class LocalFSDriver implements DriverInterface {
     };
   }
 
-  public async readFile(
-    fileName: string,
-    encoding?: null | undefined,
-  ): Promise<Buffer>;
+  public async readFile(fileName: string): Promise<Buffer>;
   public async readFile(fileName: string, encoding: Encoding): Promise<string>;
   public async readFile(
     fileName: string,
@@ -49,6 +47,11 @@ export class LocalFSDriver implements DriverInterface {
     return fs.readFile(filePath, {
       encoding: encoding,
     });
+  }
+
+  public async openReadStream(fileName: string): Promise<Readable> {
+    const filePath = path.resolve(this.currentDir, fileName);
+    return createReadStream(filePath);
   }
 
   public async writeFile(

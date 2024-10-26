@@ -3,6 +3,7 @@ import { promisify } from "util";
 import * as streamBuffers from "stream-buffers";
 import { finished } from "node:stream/promises";
 import type { DriverInterface, Encoding, FileStats } from "./interface";
+import type { Readable } from "node:stream";
 
 type Entries = Map<string, yauzl.Entry>;
 
@@ -40,14 +41,11 @@ export class ZipFileDriver implements DriverInterface {
     return { size: entry.uncompressedSize, isFile: true };
   }
 
-  public async readFile(
-    fileName: string,
-    encoding?: null | undefined,
-  ): Promise<Buffer>;
+  public async readFile(fileName: string): Promise<Buffer>;
   public async readFile(fileName: string, encoding: Encoding): Promise<string>;
   public async readFile(
     fileName: string,
-    encoding?: Encoding | null | undefined,
+    encoding?: Encoding,
   ): Promise<Buffer | string> {
     const entry = await this.entry(fileName);
 
@@ -70,6 +68,12 @@ export class ZipFileDriver implements DriverInterface {
       default:
         return contents;
     }
+  }
+
+  public async openReadStream(fileName: string): Promise<Readable> {
+    const entry = await this.entry(fileName);
+    const zipFile = await this.unzip();
+    return promisify(zipFile.openReadStream).bind(zipFile)(entry);
   }
 
   public async writeFile(

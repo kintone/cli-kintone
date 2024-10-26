@@ -6,7 +6,7 @@ import run from "../cli";
 import { logger } from "../../../utils/log";
 import type { ContentsZipInterface } from "../contents-zip";
 import type { PluginZipInterface } from "../plugin-zip";
-import { ZipFile } from "../zip";
+import { ZipFileDriver } from "../driver";
 
 type MockedPacker = jest.MockedFunction<
   (
@@ -15,7 +15,7 @@ type MockedPacker = jest.MockedFunction<
   ) => Promise<{ plugin: PluginZipInterface; privateKey: string; id: string }>
 >;
 
-class MockPluginZip extends ZipFile implements PluginZipInterface {}
+class MockPluginZip extends ZipFileDriver implements PluginZipInterface {}
 
 const fixturesDir = path.posix.join(__dirname, "fixtures");
 const sampleDir = path.posix.join(fixturesDir, "sample-plugin");

@@ -21,16 +21,18 @@ export const rezip = async (
 ): Promise<Buffer> => {
   const entries = await contentsZip.entries();
   const zipFile = await contentsZip.unzip();
-  const { path: manifestPath, manifest } = await contentsZip.manifest();
-  return rezipContents(zipFile, entries, manifest, manifestPath);
+  const manifest = await contentsZip.manifest();
+  return rezipContents(zipFile, entries, manifest);
 };
 
 const rezipContents = async (
   zipFile: yauzl.ZipFile,
   entries: Entries,
   manifest: ManifestInterface,
-  manifestPath: string,
 ): Promise<Buffer> => {
+  // TODO: Support prefix
+  //  The zip file not created plugin-packer can have additional parent directories
+  const manifestPath = "";
   const manifestPrefix = path.dirname(manifestPath);
 
   const newZipFile = new yazl.ZipFile();

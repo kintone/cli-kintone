@@ -11,20 +11,14 @@ export const validateContentsZip = async (
   contentsZip: ContentsZipInterface,
 ): Promise<void> => {
   const entries = await contentsZip.entries();
-  const { path: manifestPath, manifest } = await contentsZip.manifest();
-  return validateManifest(entries, manifest, manifestPath);
+  const manifest = await contentsZip.manifest();
+  return validateManifest(entries, manifest);
 };
 
-const validateManifest = (
-  entries: Entries,
-  manifest: ManifestInterface,
-  manifestPath: string,
-) => {
+const validateManifest = (entries: Entries, manifest: ManifestInterface) => {
   // entry.fileName is a relative path separated by posix style(/) so this makes separators always posix style.
   const getEntryKey = (filePath: string) =>
-    path
-      .join(path.dirname(manifestPath), filePath)
-      .replace(new RegExp(`\\${path.sep}`, "g"), "/");
+    filePath.replace(new RegExp(`\\${path.sep}`, "g"), "/");
 
   const result = manifest.validate({
     relativePath: (filePath) => entries.has(getEntryKey(filePath)),

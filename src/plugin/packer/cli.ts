@@ -4,17 +4,12 @@ import os from "os";
 import * as chokidar from "chokidar";
 import { mkdirp } from "mkdirp";
 import _debug from "debug";
-import { logger } from "../../../utils/log";
-import {
-  ManifestFactory,
-  PluginZip,
-  PrivateKey,
-  LocalFSDriver,
-} from "../../core";
+import { logger } from "../../utils/log";
+import { ManifestFactory, PluginZip, PrivateKey, LocalFSDriver } from "../core";
 import {
   validateFileExists,
   validateMaxFileSize,
-} from "../../core/manifest/validate";
+} from "../core/manifest/validate";
 
 const debug = _debug("cli");
 
@@ -41,17 +36,18 @@ export const run = async (pluginDir: string, options_?: Options) => {
       throw new Error("Manifest file $PLUGIN_DIR/manifest.json not found.");
     }
 
-    // 3. validate manifest.json
+    // 3. load manifest.json
     const manifest = await ManifestFactory.loadJsonFile(manifestJsonPath);
     if (manifest.manifestVersion === 2) {
       logger.warn("Welcome to manifest v2 mode :)");
     }
 
+    // 4. validate manifest.json
     const result = manifest.validate({
       maxFileSize: validateMaxFileSize(new LocalFSDriver(pluginDir)),
       fileExists: validateFileExists(new LocalFSDriver(pluginDir)),
     });
-    // For cli
+
     if (result.warnings.length > 0) {
       result.warnings.forEach((warning) => {
         logger.warn(warning);
@@ -66,16 +62,7 @@ export const run = async (pluginDir: string, options_?: Options) => {
       throw new Error("Invalid manifest.json");
     }
 
-    let outputDir = path.dirname(path.resolve(pluginDir));
-    let outputFile = path.join(outputDir, "plugin.zip");
-    if (options.out) {
-      outputFile = options.out;
-      outputDir = path.dirname(path.resolve(outputFile));
-    }
-    debug(`outputDir : ${outputDir}`);
-    debug(`outputFile : ${outputFile}`);
-
-    // 4. generate new ppk if not specified
+    // 5. generate new ppk if not specified
     const ppkFile = options.ppk;
     let privateKey: PrivateKey;
     if (ppkFile) {
@@ -90,8 +77,18 @@ export const run = async (pluginDir: string, options_?: Options) => {
     const id = privateKey.uuid();
     debug(`id : ${id}`);
 
-    // 5. package plugin.zip
+    // 6. prepare output directory
+    let outputDir = path.dirname(path.resolve(pluginDir));
+    let outputFile = path.join(outputDir, "plugin.zip");
+    if (options.out) {
+      outputFile = options.out;
+      outputDir = path.dirname(path.resolve(outputFile));
+    }
     await mkdirp(outputDir);
+    debug(`outputDir : ${outputDir}`);
+    debug(`outputFile : ${outputFile}`);
+
+    // 7. package plugin.zip
     const pluginZip = await PluginZip.build(
       manifest,
       privateKey,

@@ -26,6 +26,7 @@ export class ZipFileDriver implements DriverInterface {
 
   private _entriesCache?: Entries;
   // TODO: Delete this function after https://github.com/kintone/js-sdk/pull/3037 merged
+  //   This is a workaround to implement synchronous stat operation
   public async cacheEntries(): Promise<void> {
     this._entriesCache = await this.entries();
   }
@@ -81,6 +82,7 @@ export class ZipFileDriver implements DriverInterface {
     _data: string | Buffer,
   ): Promise<void> {
     // TODO: Implement
+    throw new Error("This function is not implemented yet");
   }
 
   public get buffer() {

@@ -8,6 +8,7 @@ import { finished } from "node:stream/promises";
 import { validateContentsZip } from "./validate";
 import type { DriverInterface } from "../../driver";
 import { ZipFileDriver } from "../../driver";
+import path from "path";
 
 const debug = _debug("contents-zip");
 
@@ -25,6 +26,7 @@ export class ContentsZip extends ZipFileDriver implements ContentsZipInterface {
     driver: DriverInterface,
   ): Promise<ContentsZip> {
     const buffer = await createContentsZip(manifest, driver);
+    // const buffer = await _createContentsZipStream(manifest, driver);
     const contentsZip = new ContentsZip(buffer);
     await validateContentsZip(contentsZip);
     return contentsZip;
@@ -49,9 +51,10 @@ const createContentsZip = async (
   manifest: ManifestInterface,
   driver: DriverInterface,
 ): Promise<Buffer> => {
-  const output = new streamBuffers.WritableStreamBuffer();
+  let size = NaN;
   const zipFile = new yazl.ZipFile();
-  let size: any = null;
+  const output = new streamBuffers.WritableStreamBuffer();
+
   zipFile.outputStream.pipe(output);
 
   for (const src of manifest.sourceList()) {
@@ -64,5 +67,44 @@ const createContentsZip = async (
   await finished(output);
 
   debug(`plugin.zip: ${size} bytes`);
-  return output.getContents() as any;
+  return output.getContents() as Buffer;
+};
+
+/**
+ * Create a zipped contents using stream. Can be faster than createContentsZip above.
+ */
+const _createContentsZipStream = async (
+  manifest: ManifestInterface,
+  driver: DriverInterface,
+): Promise<Buffer> => {
+  // TODO: Support prefix
+  //  The zip file not created plugin-packer can have additional parent directories
+  const manifestPath = "";
+  const manifestPrefix = path.dirname(manifestPath);
+
+  let size = NaN;
+  const zipFile = new yazl.ZipFile();
+  const output = new streamBuffers.WritableStreamBuffer();
+  zipFile.outputStream.pipe(output);
+
+  const promises = manifest.sourceList().map(async (src) => {
+    const entryName = path.join(manifestPrefix, src);
+    const entry = await driver.stat(entryName);
+    if (entry === undefined) {
+      throw new Error(`Failed to find entry: ${entryName}`);
+    }
+    const readable = await driver.openReadStream(entryName);
+
+    zipFile.addReadStream(readable, src, {
+      size: entry.size,
+    });
+  });
+  await Promise.all(promises);
+  zipFile.end(undefined, ((finalSize: number) => {
+    size = finalSize;
+  }) as any);
+  await finished(output);
+
+  debug(`plugin.zip: ${size} bytes`);
+  return output.getContents() as Buffer;
 };

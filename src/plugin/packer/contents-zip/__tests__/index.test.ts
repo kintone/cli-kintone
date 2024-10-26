@@ -1,6 +1,7 @@
 import path from "path";
 import { ManifestFactory } from "../../manifest";
 import { ContentsZip } from "../index";
+import { LocalFSDriver } from "../../driver";
 
 const fixturesDir = path.join(__dirname, "fixtures");
 
@@ -13,8 +14,8 @@ describe("ContentsZip", () => {
       const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
 
       const contentsZip = await ContentsZip.createFromManifest(
-        pluginDir,
         manifest,
+        new LocalFSDriver(pluginDir),
       );
       const files = await contentsZip.fileList();
       expect(files).toStrictEqual(["manifest.json", "image/icon.png"]);
@@ -29,8 +30,8 @@ describe("ContentsZip", () => {
       const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
 
       const contentsZip = await ContentsZip.createFromManifest(
-        pluginDir,
         manifest,
+        new LocalFSDriver(pluginDir),
       );
 
       const expectedFiles = [

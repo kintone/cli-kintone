@@ -4,6 +4,7 @@ import packer from "../../index";
 import { packPluginFromManifest } from "../pack-plugin-from-manifest";
 import { ManifestFactory } from "../../manifest";
 import { ContentsZip } from "../../contents-zip";
+import { LocalFSDriver } from "../../driver";
 
 const fixturesDir = path.join(__dirname, "fixtures");
 const ppkFilePath = path.join(fixturesDir, "private.ppk");
@@ -17,8 +18,8 @@ describe("pack-plugin-from-manifest", () => {
 
     const result1 = await packPluginFromManifest(manifestJSONPath, privateKey);
     const contentsZip = await ContentsZip.createFromManifest(
-      pluginDir,
       manifest,
+      new LocalFSDriver(pluginDir),
     );
     const result2 = await packer(contentsZip, privateKey);
 

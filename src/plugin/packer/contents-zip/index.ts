@@ -2,12 +2,12 @@ import type { ManifestInterface } from "../manifest";
 import { ManifestFactory } from "../manifest";
 import { ZipFile } from "../zip";
 import streamBuffers from "stream-buffers";
-import path from "path";
 import yazl from "yazl";
 
 import _debug from "debug";
 import { finished } from "node:stream/promises";
 import { validateContentsZip } from "./validate";
+import type { DriverInterface } from "../driver";
 
 const debug = _debug("contents-zip");
 
@@ -21,10 +21,10 @@ export class ContentsZip extends ZipFile implements ContentsZipInterface {
   }
 
   public static async createFromManifest(
-    pluginDir: string,
     manifest: ManifestInterface,
+    driver: DriverInterface,
   ): Promise<ContentsZip> {
-    const buffer = await createContentsZip(pluginDir, manifest);
+    const buffer = await createContentsZip(manifest, driver);
     const contentsZip = new ContentsZip(buffer);
     await validateContentsZip(contentsZip);
     return contentsZip;
@@ -46,16 +46,18 @@ export class ContentsZip extends ZipFile implements ContentsZipInterface {
  * Create a zipped contents
  */
 const createContentsZip = async (
-  pluginDir: string,
   manifest: ManifestInterface,
+  driver: DriverInterface,
 ): Promise<Buffer> => {
   const output = new streamBuffers.WritableStreamBuffer();
   const zipFile = new yazl.ZipFile();
   let size: any = null;
   zipFile.outputStream.pipe(output);
-  manifest.sourceList().forEach((src) => {
-    zipFile.addFile(path.join(pluginDir, src), src);
-  });
+
+  for (const src of manifest.sourceList()) {
+    const data = await driver.readFile(src);
+    zipFile.addBuffer(data, src);
+  }
   zipFile.end(undefined, ((finalSize: number) => {
     size = finalSize;
   }) as any);

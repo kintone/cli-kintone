@@ -91,8 +91,8 @@ const run = async (pluginDir: string, options_?: Options) => {
     // 5. package plugin.zip
     await mkdirp(outputDir);
     const contentsZip = await ContentsZip.createFromManifest(
-      pluginDir,
       manifest,
+      new LocalFSDriver(pluginDir),
     );
 
     const output = await packerLocal(contentsZip, privateKey);

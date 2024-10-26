@@ -3,6 +3,7 @@ import packer from "../index";
 import { ManifestFactory } from "../manifest";
 import { ContentsZip } from "../contents-zip";
 import type { PluginZip } from "../plugin-zip";
+import { LocalFSDriver } from "../driver";
 
 // TODO: We can consider deleting this function. Originally, it is used by webpack-plugin-kintone-plugin.
 //  In cli-kintone, it is no longer needed.
@@ -17,8 +18,8 @@ export const packPluginFromManifest = async (
 ): Promise<{ plugin: PluginZip; privateKey: string; id: string }> => {
   const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
   const contentsZip = await ContentsZip.createFromManifest(
-    path.dirname(manifestJSONPath),
     manifest,
+    new LocalFSDriver(path.dirname(manifestJSONPath)),
   );
   return packer(contentsZip, privateKey);
 };

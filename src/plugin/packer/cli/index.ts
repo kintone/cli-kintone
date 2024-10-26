@@ -1,20 +1,22 @@
 import path from "path";
-import fs from "fs";
-import { promisify } from "util";
+import fs from "fs/promises";
 import os from "os";
 import * as chokidar from "chokidar";
 import { mkdirp } from "mkdirp";
 import _debug from "debug";
 import { logger } from "../../../utils/log";
-import { ManifestFactory } from "../manifest";
-import { validateFileExists, validateMaxFileSize } from "../manifest/validate";
-import type { PluginZipInterface } from "../plugin-zip";
-import { PluginZip } from "../plugin-zip";
-import { LocalFSDriver } from "../driver";
-import { PrivateKey } from "../crypto";
+import {
+  ManifestFactory,
+  PluginZip,
+  PrivateKey,
+  LocalFSDriver,
+} from "../../core";
+import {
+  validateFileExists,
+  validateMaxFileSize,
+} from "../../core/manifest/validate";
 
 const debug = _debug("cli");
-const writeFile = promisify(fs.writeFile);
 
 type Options = Partial<{
   ppk: string;
@@ -29,13 +31,13 @@ export const run = async (pluginDir: string, options_?: Options) => {
 
   try {
     // 1. check if pluginDir is a directory
-    if (!fs.statSync(pluginDir).isDirectory()) {
+    if (!(await fs.stat(pluginDir)).isDirectory()) {
       throw new Error(`${pluginDir} should be a directory.`);
     }
 
     // 2. check pluginDir/manifest.json
     const manifestJsonPath = path.join(pluginDir, "manifest.json");
-    if (!fs.statSync(manifestJsonPath).isFile()) {
+    if (!(await fs.stat(manifestJsonPath)).isFile()) {
       throw new Error("Manifest file $PLUGIN_DIR/manifest.json not found.");
     }
 
@@ -78,7 +80,7 @@ export const run = async (pluginDir: string, options_?: Options) => {
     let privateKey: PrivateKey;
     if (ppkFile) {
       debug(`loading an existing key: ${ppkFile}`);
-      const ppk = fs.readFileSync(ppkFile, "utf8");
+      const ppk = await fs.readFile(ppkFile, "utf8");
       privateKey = PrivateKey.importKey(ppk);
     } else {
       debug("generating a new key");
@@ -98,7 +100,7 @@ export const run = async (pluginDir: string, options_?: Options) => {
 
     const ppkFilePath = path.join(outputDir, `${id}.ppk`);
     if (!ppkFile) {
-      fs.writeFileSync(ppkFilePath, privateKey.exportPrivateKey(), "utf8");
+      await fs.writeFile(ppkFilePath, privateKey.exportPrivateKey(), "utf8");
     }
 
     if (options.watch) {
@@ -125,7 +127,8 @@ export const run = async (pluginDir: string, options_?: Options) => {
         );
       });
     }
-    await outputPlugin(outputFile, pluginZip);
+
+    await fs.writeFile(outputFile, pluginZip.buffer);
 
     logger.info(`Succeeded: ${outputFile}`);
     return outputFile;
@@ -133,15 +136,4 @@ export const run = async (pluginDir: string, options_?: Options) => {
     logger.error(`Failed: ${error}`);
     return Promise.reject(error);
   }
-};
-
-/**
- * Create and save plugin.zip
- */
-const outputPlugin = async (
-  outputPath: string,
-  plugin: PluginZipInterface,
-): Promise<string> => {
-  await writeFile(outputPath, plugin.buffer);
-  return outputPath;
 };

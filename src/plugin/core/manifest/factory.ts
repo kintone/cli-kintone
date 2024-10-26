@@ -1,5 +1,5 @@
-import type { DriverInterface } from "../driver/";
-import { LocalFSDriver } from "../driver/";
+import type { DriverInterface } from "../driver";
+import { LocalFSDriver } from "../driver";
 import type { ManifestInterface, ManifestStaticInterface } from "./interface";
 import { ManifestV1 } from "./v1";
 import { ManifestV2 } from "./v2";

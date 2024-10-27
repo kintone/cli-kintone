@@ -10,9 +10,9 @@ import consumers from "node:stream/consumers";
 
 const debug = _debug("plugin-zip");
 
-export interface PluginZipInterface extends ZipFileDriver {}
+export interface PluginInterface extends DriverInterface {}
 
-export class PluginZip extends ZipFileDriver implements PluginZipInterface {
+export class PluginZip extends ZipFileDriver implements PluginInterface {
   private constructor(buffer: Buffer) {
     super(buffer);
   }

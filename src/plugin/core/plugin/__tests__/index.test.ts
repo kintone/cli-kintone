@@ -1,11 +1,10 @@
 import path from "path";
 import fs from "fs";
 
-import type { PluginZipInterface } from "../index";
+import type { PluginInterface } from "../index";
 import { PluginZip } from "../index";
 import { PrivateKey, PublicKey } from "../../crypto";
 import { ContentsZip } from "../../contents";
-import { ZipFileDriver } from "../../driver";
 
 const contentsZipPath = path.join(__dirname, "fixtures", "contents.zip");
 
@@ -31,14 +30,12 @@ describe("PluginZip", () => {
   });
 });
 
-const verifyPlugin = async (plugin: PluginZipInterface): Promise<void> => {
-  const zipFile = new ZipFileDriver(plugin.buffer);
-
-  const publicKeyBuffer = await zipFile.readFile("PUBKEY");
+const verifyPlugin = async (plugin: PluginInterface): Promise<void> => {
+  const publicKeyBuffer = await plugin.readFile("PUBKEY");
   const publicKey = PublicKey.importKey(publicKeyBuffer);
 
-  const contentsZip = await zipFile.readFile("contents.zip");
-  const signature = await zipFile.readFile("SIGNATURE");
+  const contentsZip = await plugin.readFile("contents.zip");
+  const signature = await plugin.readFile("SIGNATURE");
 
   expect(publicKey.verify(contentsZip, signature)).toBe(true);
 };

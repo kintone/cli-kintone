@@ -1,9 +1,11 @@
 import RSA from "node-rsa";
 import { uuid } from "./uuid";
+import crypto from "crypto";
 
 export interface PublicKeyInterface {
   exportPublicKey(): Buffer;
   uuid(): string;
+  verify(data: Buffer, signature: Buffer): boolean;
 }
 
 export class PublicKey implements PublicKeyInterface {
@@ -44,5 +46,13 @@ export class PublicKey implements PublicKeyInterface {
    */
   public uuid(): string {
     return uuid(this.exportPublicKey());
+  }
+
+  public verify(data: Buffer, signature: Buffer): boolean {
+    const pem = this.key.exportKey("pkcs1-public-pem");
+    const verifier = crypto.createVerify("RSA-SHA1");
+    verifier.update(data);
+
+    return verifier.verify(pem, signature);
   }
 }

@@ -1,9 +1,8 @@
 import RSA from "node-rsa";
 import { uuid } from "./uuid";
 import { sign } from "./sign";
-import type { PublicKeyInterface } from "./public-key";
 
-export interface PrivateKeyInterface extends PublicKeyInterface {
+export interface PrivateKeyInterface {
   exportPrivateKey(): string;
   exportPublicKey(): Buffer;
   uuid(): string;

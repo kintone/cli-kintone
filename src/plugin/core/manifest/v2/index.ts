@@ -1,8 +1,4 @@
-import type {
-  ManifestInterface,
-  ManifestStaticInterface,
-  ValidatorOptions,
-} from "../interface";
+import type { ManifestInterface, ManifestStaticInterface } from "../interface";
 import { sourceListV2 } from "./sourcelist";
 import type { DriverInterface } from "../../driver";
 import { LocalFSDriver } from "../../driver";
@@ -51,7 +47,11 @@ export class ManifestV2 implements ManifestInterface {
     return this.manifest.homepage_url?.en;
   }
 
-  validate(_options?: ValidatorOptions) {
+  get json(): ManifestV2JsonObject {
+    return this.manifest;
+  }
+
+  async validate(_driver?: DriverInterface) {
     // TODO: Implement Validation
     return {
       valid: true as const,

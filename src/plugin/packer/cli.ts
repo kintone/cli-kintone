@@ -6,10 +6,6 @@ import { mkdirp } from "mkdirp";
 import _debug from "debug";
 import { logger } from "../../utils/log";
 import { ManifestFactory, PluginZip, PrivateKey, LocalFSDriver } from "../core";
-import {
-  validateFileExists,
-  validateMaxFileSize,
-} from "../core/manifest/validate";
 
 const debug = _debug("cli");
 
@@ -43,10 +39,7 @@ export const run = async (pluginDir: string, options_?: Options) => {
     }
 
     // 4. validate manifest.json
-    const result = manifest.validate({
-      maxFileSize: validateMaxFileSize(new LocalFSDriver(pluginDir)),
-      fileExists: validateFileExists(new LocalFSDriver(pluginDir)),
-    });
+    const result = await manifest.validate(new LocalFSDriver(pluginDir));
 
     if (result.warnings.length > 0) {
       result.warnings.forEach((warning) => {

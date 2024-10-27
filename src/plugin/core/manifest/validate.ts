@@ -1,8 +1,55 @@
 import type * as Ajv from "ajv";
 import type { DriverInterface } from "../driver";
-import type { ValidatorResult } from "./interface";
+import type { ManifestInterface } from "./interface";
+import validate from "@kintone/plugin-manifest-validator";
+import _debug from "debug";
 
-export const generateErrorMessages = (errors: Ajv.ErrorObject[]): string[] => {
+const debug = _debug("validate");
+
+export type ValidationResult =
+  | {
+      valid: true;
+      warnings: string[];
+    }
+  | {
+      valid: false;
+      warnings: string[];
+      errors: string[];
+    };
+
+export const validateManifest = async (
+  manifest: ManifestInterface,
+  driver?: DriverInterface,
+): Promise<ValidationResult> => {
+  const options = driver
+    ? {
+        relativePath: validateRelativePath(driver),
+        maxFileSize: validateMaxFileSize(driver),
+        fileExists: validateFileExists(driver),
+      }
+    : {};
+
+  const result = validate(manifest.json, options);
+  debug(result);
+
+  const warnings = result.warnings?.map((warn) => warn.message) ?? [];
+
+  if (result.valid) {
+    return {
+      valid: true as const,
+      warnings,
+    };
+  }
+
+  const errors = generateErrorMessages(result.errors ?? []);
+  return {
+    valid: false as const,
+    warnings,
+    errors,
+  };
+};
+
+const generateErrorMessages = (errors: Ajv.ErrorObject[]): string[] => {
   return errors.map((e) => {
     if (e.keyword === "enum") {
       return `"${e.instancePath}" ${e.message} (${(
@@ -15,9 +62,20 @@ export const generateErrorMessages = (errors: Ajv.ErrorObject[]): string[] => {
   });
 };
 
+// TODO: This types must be exported from kintone/plugin-manifest-validator
+type ValidatorResult =
+  | boolean
+  | {
+      valid: true;
+    }
+  | {
+      valid: false;
+      message?: string;
+    };
+
 // TODO: Make below functions async after https://github.com/kintone/js-sdk/pull/3037 merged
 
-export const validateRelativePath =
+const validateRelativePath =
   (driver: DriverInterface) =>
   (filePath: string): boolean => {
     try {
@@ -31,7 +89,7 @@ export const validateRelativePath =
 /**
  * Return validator for `maxFileSize` keyword
  */
-export const validateMaxFileSize =
+const validateMaxFileSize =
   (driver: DriverInterface) =>
   (maxBytes: number, filePath: string): ValidatorResult => {
     try {
@@ -42,7 +100,7 @@ export const validateMaxFileSize =
     }
   };
 
-export const validateFileExists =
+const validateFileExists =
   (driver: DriverInterface) =>
   (filePath: string): ValidatorResult => {
     try {

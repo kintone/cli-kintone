@@ -1,14 +1,9 @@
 import _debug from "debug";
-import validate from "@kintone/plugin-manifest-validator";
 import { sourceList } from "./sourcelist";
-import type {
-  ManifestInterface,
-  ManifestStaticInterface,
-  ValidatorOptions,
-} from "../interface";
+import type { ManifestInterface, ManifestStaticInterface } from "../interface";
 import type { DriverInterface } from "../../driver";
 import { LocalFSDriver } from "../../driver";
-import { generateErrorMessages } from "../validate";
+import { validateManifest } from "../validate";
 import { ContentsZip } from "../../contents";
 
 const debug = _debug("manifest");
@@ -56,25 +51,14 @@ export class ManifestV1 implements ManifestInterface {
     return this.manifest.homepage_url?.en;
   }
 
-  validate(options?: ValidatorOptions) {
-    const result = validate(this.manifest as any, options);
+  get json(): ManifestV1JsonObject {
+    return this.manifest;
+  }
+
+  async validate(driver?: DriverInterface) {
+    const result = await validateManifest(this, driver);
     debug(result);
-
-    const warnings = result.warnings?.map((warn) => warn.message) ?? [];
-
-    if (result.valid) {
-      return {
-        valid: true as const,
-        warnings,
-      };
-    }
-
-    const errors = generateErrorMessages(result.errors ?? []);
-    return {
-      valid: false as const,
-      warnings,
-      errors,
-    };
+    return result;
   }
 
   sourceList(): string[] {

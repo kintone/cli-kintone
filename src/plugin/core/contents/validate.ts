@@ -1,8 +1,4 @@
 import type { ContentsZipInterface } from "./index";
-import {
-  validateMaxFileSize,
-  validateRelativePath,
-} from "../manifest/validate";
 import { ZipFileDriver } from "../driver";
 
 /**
@@ -20,10 +16,7 @@ export const validateContentsZip = async (
   const zipFileDriver = new ZipFileDriver(contentsZip.buffer);
   await zipFileDriver.cacheEntries();
 
-  const result = manifest.validate({
-    relativePath: validateRelativePath(zipFileDriver),
-    maxFileSize: validateMaxFileSize(zipFileDriver),
-  });
+  const result = await manifest.validate(zipFileDriver);
 
   if (!result.valid) {
     const e: any = new Error(result.errors.join(", "));

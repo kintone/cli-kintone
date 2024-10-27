@@ -1,5 +1,6 @@
 import type { DriverInterface } from "../driver";
 import type { ContentsZip } from "../contents";
+import type { ValidationResult } from "./validate";
 
 export interface ManifestStaticInterface {
   parseJson(manifestJson: string): ManifestInterface;
@@ -10,7 +11,7 @@ export interface ManifestStaticInterface {
 }
 
 export interface ManifestInterface {
-  validate(options?: ValidatorOptions): ValidationResult;
+  validate(driver?: DriverInterface): Promise<ValidationResult>;
   sourceList(): string[];
   generateContentsZip(driver: DriverInterface): Promise<ContentsZip>;
 
@@ -20,31 +21,6 @@ export interface ManifestInterface {
   get version(): number | string;
   get description(): string | undefined;
   get homepageUrl(): string | undefined;
+
+  get json(): object;
 }
-
-// TODO: These types must be exported from kintone/plugin-manifest-validator
-export type ValidatorOptions = {
-  relativePath?: (filePath: string) => boolean;
-  maxFileSize?: (maxBytes: number, filePath: string) => ValidatorResult;
-  fileExists?: (filePath: string) => ValidatorResult;
-};
-export type ValidatorResult =
-  | boolean
-  | {
-      valid: true;
-    }
-  | {
-      valid: false;
-      message?: string;
-    };
-
-export type ValidationResult =
-  | {
-      valid: true;
-      warnings: string[];
-    }
-  | {
-      valid: false;
-      warnings: string[];
-      errors: string[];
-    };

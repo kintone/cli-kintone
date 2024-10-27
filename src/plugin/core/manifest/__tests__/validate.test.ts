@@ -1,14 +1,8 @@
 import path from "path";
 import { ManifestFactory } from "../factory";
-import { validateFileExists, validateMaxFileSize } from "../validate";
 import { LocalFSDriver } from "../../driver";
 
 const fixturesDir = path.posix.join(__dirname, "fixtures");
-
-const buildValidators = (pluginDir: string) => ({
-  maxFileSize: validateMaxFileSize(new LocalFSDriver(pluginDir)),
-  fileExists: validateFileExists(new LocalFSDriver(pluginDir)),
-});
 
 describe("validate", () => {
   const cases = [
@@ -38,8 +32,8 @@ describe("validate", () => {
     const manifestFilePath = path.join(fixturesDir, dir, "manifest.json");
 
     const manifest = await ManifestFactory.loadJsonFile(manifestFilePath);
-    const validators = buildValidators(path.dirname(manifestFilePath));
-    const result = manifest.validate(validators);
+    const driver = new LocalFSDriver(path.dirname(manifestFilePath));
+    const result = await manifest.validate(driver);
 
     expect(result.valid).toBe(false);
   });

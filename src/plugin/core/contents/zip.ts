@@ -2,10 +2,8 @@ import type { ManifestInterface } from "../manifest";
 import type { DriverInterface } from "../driver";
 import yazl from "yazl";
 import path from "path";
-import _debug from "debug";
 import consumers from "node:stream/consumers";
-
-const debug = _debug("contents-zip");
+import { logger } from "../../../utils/log";
 
 /**
  * Create a zipped contents
@@ -25,7 +23,7 @@ export const createContentsZip = async (
     size = finalSize;
   }) as any);
 
-  debug(`plugin.zip: ${size} bytes`);
+  logger.trace(`plugin.zip: ${size} bytes`);
   return consumers.buffer(zipFile.outputStream);
 };
 
@@ -61,6 +59,6 @@ export const _createContentsZipStream = async (
     size = finalSize;
   }) as any);
 
-  debug(`plugin.zip: ${size} bytes`);
+  logger.trace(`plugin.zip: ${size} bytes`);
   return consumers.buffer(zipFile.outputStream);
 };

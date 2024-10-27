@@ -1,5 +1,4 @@
 import yazl from "yazl";
-import _debug from "debug";
 import type { PrivateKeyInterface } from "../crypto";
 import { PublicKey } from "../crypto";
 import { ContentsZip } from "../contents";
@@ -7,8 +6,7 @@ import type { DriverInterface } from "../driver";
 import { ZipFileDriver } from "../driver";
 import type { ManifestInterface } from "../manifest";
 import consumers from "node:stream/consumers";
-
-const debug = _debug("plugin-zip");
+import { logger } from "../../../utils/log";
 
 export interface PluginInterface extends DriverInterface {}
 
@@ -43,18 +41,18 @@ export class PluginZip extends ZipFileDriver implements PluginInterface {
     const publicKey = privateKey.exportPublicKey();
     const signature = privateKey.sign(contentsZip.buffer);
 
-    debug(`zip(): start`);
+    logger.trace(`zip(): start`);
     const zipFile = new yazl.ZipFile();
     zipFile.addBuffer(contentsZip.buffer, "contents.zip");
     zipFile.addBuffer(publicKey, "PUBKEY");
     zipFile.addBuffer(signature, "SIGNATURE");
     zipFile.end(undefined, ((finalSize: number) => {
-      debug(`zip(): ZipFile end event: finalSize ${finalSize} bytes`);
+      logger.trace(`zip(): ZipFile end event: finalSize ${finalSize} bytes`);
     }) as any);
 
     const contents = await consumers.buffer(zipFile.outputStream);
 
-    debug(`zip(): output finish event`);
+    logger.trace(`zip(): output finish event`);
     return new PluginZip(contents);
   }
 

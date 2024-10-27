@@ -1,12 +1,10 @@
-import _debug from "debug";
 import { sourceList } from "./sourcelist";
 import type { ManifestInterface, ManifestStaticInterface } from "../interface";
 import type { DriverInterface } from "../../driver";
 import { LocalFSDriver } from "../../driver";
 import { validateManifest } from "../validate";
 import { ContentsZip } from "../../contents";
-
-const debug = _debug("manifest");
+import { logger } from "../../../../utils/log";
 
 export class ManifestV1 implements ManifestInterface {
   manifest: ManifestV1JsonObject;
@@ -57,7 +55,7 @@ export class ManifestV1 implements ManifestInterface {
 
   async validate(driver?: DriverInterface) {
     const result = await validateManifest(this, driver);
-    debug(result);
+    logger.trace(JSON.stringify(result));
     return result;
   }
 

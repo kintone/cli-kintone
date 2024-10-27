@@ -2,9 +2,6 @@ import type * as Ajv from "ajv";
 import type { DriverInterface } from "../driver";
 import type { ManifestInterface } from "./interface";
 import validate from "@kintone/plugin-manifest-validator";
-import _debug from "debug";
-
-const debug = _debug("validate");
 
 export type ValidationResult =
   | {
@@ -30,7 +27,6 @@ export const validateManifest = async (
     : {};
 
   const result = validate(manifest.json, options);
-  debug(result);
 
   const warnings = result.warnings?.map((warn) => warn.message) ?? [];
 

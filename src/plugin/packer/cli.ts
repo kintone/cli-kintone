@@ -2,11 +2,8 @@ import path from "path";
 import fs from "fs/promises";
 import os from "os";
 import * as chokidar from "chokidar";
-import _debug from "debug";
 import { logger } from "../../utils/log";
 import { ManifestFactory, PluginZip, PrivateKey, LocalFSDriver } from "../core";
-
-const debug = _debug("cli");
 
 type Options = Partial<{
   ppk: string;
@@ -58,16 +55,16 @@ export const run = async (pluginDir: string, options_?: Options) => {
     const ppkFile = options.ppk;
     let privateKey: PrivateKey;
     if (ppkFile) {
-      debug(`loading an existing key: ${ppkFile}`);
+      logger.debug(`loading an existing key: ${ppkFile}`);
       const ppk = await fs.readFile(ppkFile, "utf8");
       privateKey = PrivateKey.importKey(ppk);
     } else {
-      debug("generating a new key");
+      logger.debug("generating a new key");
       privateKey = PrivateKey.generateKey();
     }
 
     const id = privateKey.uuid();
-    debug(`id : ${id}`);
+    logger.debug(`id: ${id}`);
 
     // 6. prepare output directory
     let outputDir = path.dirname(path.resolve(pluginDir));
@@ -77,8 +74,8 @@ export const run = async (pluginDir: string, options_?: Options) => {
       outputDir = path.dirname(path.resolve(outputFile));
     }
     await fs.mkdir(outputDir, { recursive: true });
-    debug(`outputDir : ${outputDir}`);
-    debug(`outputFile : ${outputFile}`);
+    logger.debug(`outputDir: ${outputDir}`);
+    logger.debug(`outputFile: ${outputFile}`);
 
     // 7. package plugin.zip
     const pluginZip = await PluginZip.build(

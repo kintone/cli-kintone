@@ -1,11 +1,11 @@
 ---
-sidebar_position: 500
+sidebar_position: 1400
 draft: true
 ---
 
 # plugin pack
 
-The `plugin` command allows you to packaging kintone plugin project.
+The `plugin pack` command allows you to packaging kintone plugin project.
 
 :::experimental
 

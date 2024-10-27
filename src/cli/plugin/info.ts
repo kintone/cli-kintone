@@ -3,6 +3,8 @@ import type { CommandModule } from "yargs";
 import { emitExperimentalWarning } from "../../utils/stability";
 import type { OutputFormat } from "../../plugin/info/";
 import { run } from "../../plugin/info/";
+import { logger } from "../../utils/log";
+import { RunError } from "../../record/error";
 
 const command = "info";
 
@@ -30,8 +32,14 @@ type Args = yargs.Arguments<
 >;
 
 const handler = async (args: Args) => {
-  emitExperimentalWarning("This feature is under early development");
-  await run(args.input, args.format);
+  try {
+    emitExperimentalWarning("This feature is under early development");
+    await run(args.input, args.format);
+  } catch (error) {
+    logger.error(new RunError(error));
+    // eslint-disable-next-line n/no-process-exit
+    process.exit(1);
+  }
 };
 
 export const infoCommand: CommandModule<{}, Args> = {

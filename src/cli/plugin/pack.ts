@@ -2,6 +2,8 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { emitExperimentalWarning } from "../../utils/stability";
 import { run } from "../../plugin/packer/";
+import { logger } from "../../utils/log";
+import { RunError } from "../../record/error";
 
 const command = "pack";
 
@@ -38,16 +40,22 @@ type Args = yargs.Arguments<
 >;
 
 const handler = async (args: Args) => {
-  emitExperimentalWarning("This feature is under early development");
-  const flags = {
-    ppk: args["private-key"],
-    out: args.output,
-    watch: args.watch,
-  };
-  if (process.env.NODE_ENV === "test") {
-    console.log(JSON.stringify({ pluginDir: args.input, flags: flags }));
-  } else {
-    await run(args.input, flags);
+  try {
+    emitExperimentalWarning("This feature is under early development");
+    const flags = {
+      ppk: args["private-key"],
+      out: args.output,
+      watch: args.watch,
+    };
+    if (process.env.NODE_ENV === "test") {
+      console.log(JSON.stringify({ pluginDir: args.input, flags: flags }));
+    } else {
+      await run(args.input, flags);
+    }
+  } catch (error) {
+    logger.error(new RunError(error));
+    // eslint-disable-next-line n/no-process-exit
+    process.exit(1);
   }
 };
 

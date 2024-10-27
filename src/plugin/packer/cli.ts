@@ -2,7 +2,6 @@ import path from "path";
 import fs from "fs/promises";
 import os from "os";
 import * as chokidar from "chokidar";
-import { mkdirp } from "mkdirp";
 import _debug from "debug";
 import { logger } from "../../utils/log";
 import { ManifestFactory, PluginZip, PrivateKey, LocalFSDriver } from "../core";
@@ -77,7 +76,7 @@ export const run = async (pluginDir: string, options_?: Options) => {
       outputFile = options.out;
       outputDir = path.dirname(path.resolve(outputFile));
     }
-    await mkdirp(outputDir);
+    await fs.mkdir(outputDir, { recursive: true });
     debug(`outputDir : ${outputDir}`);
     debug(`outputFile : ${outputFile}`);
 

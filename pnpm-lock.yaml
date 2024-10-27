@@ -43,9 +43,6 @@ importers:
       iconv-lite:
         specifier: ^0.6.3
         version: 0.6.3
-      mkdirp:
-        specifier: ^3.0.1
-        version: 3.0.1
       node-rsa:
         specifier: ^1.1.1
         version: 1.1.1
@@ -12015,12 +12012,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dev: true
-
-  /mkdirp@3.0.1:
-    resolution: {integrity: sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dev: false
 
   /mrmime@2.0.0:
     resolution: {integrity: sha512-eu38+hdgojoyq63s+yTpN4XMBdt5l8HhMhc4VKLO9KM5caLIBvUm4thi7fFaxyTmCKeNnXZ5pAlBwCUnhA09uw==}

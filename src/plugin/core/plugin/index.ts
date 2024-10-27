@@ -2,7 +2,7 @@ import yazl from "yazl";
 import _debug from "debug";
 import type { PrivateKeyInterface } from "../crypto";
 import { PublicKey } from "../crypto";
-import { ContentsZip } from "./contents-zip";
+import { ContentsZip } from "../contents";
 import type { DriverInterface } from "../driver";
 import { ZipFileDriver } from "../driver";
 import type { ManifestInterface } from "../manifest";

@@ -2,8 +2,8 @@ import type { ContentsZipInterface } from "./index";
 import {
   validateMaxFileSize,
   validateRelativePath,
-} from "../../manifest/validate";
-import { ZipFileDriver } from "../../driver";
+} from "../manifest/validate";
+import { ZipFileDriver } from "../driver";
 
 /**
  * Validate a buffer of contents.zip

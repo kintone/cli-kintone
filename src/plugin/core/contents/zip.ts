@@ -1,5 +1,5 @@
-import type { ManifestInterface } from "../../manifest";
-import type { DriverInterface } from "../../driver";
+import type { ManifestInterface } from "../manifest";
+import type { DriverInterface } from "../driver";
 import yazl from "yazl";
 import path from "path";
 import _debug from "debug";

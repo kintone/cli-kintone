@@ -6,7 +6,7 @@ import type {
 import { sourceListV2 } from "./sourcelist";
 import type { DriverInterface } from "../../driver";
 import { LocalFSDriver } from "../../driver";
-import { ContentsZip } from "../../plugin-zip/contents-zip";
+import { ContentsZip } from "../../contents";
 
 export class ManifestV2 implements ManifestInterface {
   manifest: ManifestV2JsonObject;

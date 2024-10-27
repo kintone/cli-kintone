@@ -1,5 +1,5 @@
 import type { DriverInterface } from "../driver";
-import type { ContentsZip } from "../plugin-zip/contents-zip";
+import type { ContentsZip } from "../contents";
 
 export interface ManifestStaticInterface {
   parseJson(manifestJson: string): ManifestInterface;

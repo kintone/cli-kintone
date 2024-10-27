@@ -1,9 +1,9 @@
-import type { ManifestInterface } from "../../manifest";
-import { ManifestFactory } from "../../manifest";
+import type { ManifestInterface } from "../manifest";
+import { ManifestFactory } from "../manifest";
 
 import { validateContentsZip } from "./validate";
-import type { DriverInterface } from "../../driver";
-import { ZipFileDriver } from "../../driver";
+import type { DriverInterface } from "../driver";
+import { ZipFileDriver } from "../driver";
 import { createContentsZip } from "./zip";
 
 export interface ContentsZipInterface extends ZipFileDriver {

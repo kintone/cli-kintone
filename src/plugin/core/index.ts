@@ -1,5 +1,5 @@
-export { PluginZip } from "./plugin-zip";
-export type { PluginZipInterface } from "./plugin-zip";
+export { PluginZip } from "./plugin";
+export type { PluginZipInterface } from "./plugin";
 export { ManifestFactory, ManifestV1, ManifestV2 } from "./manifest";
 export type { ManifestInterface } from "./manifest";
 export { ZipFileDriver, LocalFSDriver } from "./driver";

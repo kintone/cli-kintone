@@ -4,7 +4,7 @@ import fs from "fs";
 import type { PluginZipInterface } from "../index";
 import { PluginZip } from "../index";
 import { PrivateKey, PublicKey } from "../../crypto";
-import { ContentsZip } from "../contents-zip";
+import { ContentsZip } from "../../contents";
 import { ZipFileDriver } from "../../driver";
 
 const contentsZipPath = path.join(__dirname, "fixtures", "contents.zip");

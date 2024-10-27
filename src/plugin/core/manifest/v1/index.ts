@@ -9,7 +9,7 @@ import type {
 import type { DriverInterface } from "../../driver";
 import { LocalFSDriver } from "../../driver";
 import { generateErrorMessages } from "../validate";
-import { ContentsZip } from "../../plugin-zip/contents-zip";
+import { ContentsZip } from "../../contents";
 
 const debug = _debug("manifest");
 

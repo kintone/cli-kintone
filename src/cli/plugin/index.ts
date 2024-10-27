@@ -9,7 +9,7 @@ const command = "plugin";
 const describe = "[Experimental] Commands for kintone plugin";
 
 const builder = (args: yargs.Argv) =>
-  args.command(packCommand).command(infoCommand).demandCommand();
+  args.command(infoCommand).command(packCommand).demandCommand();
 
 const handler = () => {
   emitExperimentalWarning("This feature is under early development");

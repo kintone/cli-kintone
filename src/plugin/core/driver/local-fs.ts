@@ -5,6 +5,9 @@ import { statSync, createReadStream } from "fs";
 import path from "path";
 import type { Readable } from "node:stream";
 
+/**
+ * LocalFSDriver is a Driver for the local disc
+ */
 export class LocalFSDriver implements DriverInterface {
   private currentDir: string;
 

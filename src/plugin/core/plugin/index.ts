@@ -8,6 +8,9 @@ import type { ManifestInterface } from "../manifest";
 import consumers from "node:stream/consumers";
 import { logger } from "../../../utils/log";
 
+/**
+ * Plugin represents plugin includes Contents, public key, and signature.
+ */
 export interface PluginInterface extends DriverInterface {}
 
 export class PluginZip extends ZipFileDriver implements PluginInterface {

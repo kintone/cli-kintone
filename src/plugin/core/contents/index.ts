@@ -5,8 +5,18 @@ import type { DriverInterface } from "../driver";
 import { ZipFileDriver } from "../driver";
 import { createContentsZip } from "./zip";
 
+/**
+ * Contents represents the plugin source files aggregated by Manifest
+ */
 export interface ContentsInterface extends DriverInterface {
+  /**
+   * returns Manifest
+   */
   manifest(): Promise<ManifestInterface>;
+
+  /**
+   * validate contents
+   */
   validate(): Promise<void>;
 }
 

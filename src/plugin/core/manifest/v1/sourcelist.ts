@@ -1,7 +1,7 @@
 import type { ManifestV1JsonObject } from "./index";
 
 /**
- * Create content file list from manifest.json
+ * Create contents file list from manifest.json
  */
 export const sourceList = (manifest: ManifestV1JsonObject): string[] => {
   const list = ([] as string[]).concat(

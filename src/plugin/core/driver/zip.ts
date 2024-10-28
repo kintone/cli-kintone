@@ -6,6 +6,9 @@ import consumers from "node:stream/consumers";
 
 type Entries = Map<string, yauzl.Entry>;
 
+/**
+ * ZipFileDriver is a Driver for a zip file
+ */
 export class ZipFileDriver implements DriverInterface {
   private readonly _buffer: Buffer;
 

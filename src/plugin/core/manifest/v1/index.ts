@@ -17,9 +17,6 @@ export class ManifestV1 implements ManifestInterface {
     return new ManifestV1(JSON.parse(manifestJson));
   }
 
-  /**
-   * Load JSON file without caching
-   */
   public static async loadJsonFile(
     jsonFilePath: string,
     driver?: DriverInterface,

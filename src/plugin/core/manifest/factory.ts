@@ -4,6 +4,9 @@ import type { ManifestInterface, ManifestStaticInterface } from "./interface";
 import { ManifestV1 } from "./v1";
 import { ManifestV2 } from "./v2";
 
+/**
+ * Factory to instantiate Manifest
+ */
 export class ManifestFactory {
   private constructor() {
     /* noop */
@@ -35,9 +38,6 @@ export class ManifestFactory {
     }
   }
 
-  /**
-   * Load JSON file without caching
-   */
   public static async loadJsonFile(
     jsonFilePath: string,
     driver?: DriverInterface,

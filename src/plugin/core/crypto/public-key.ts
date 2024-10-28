@@ -3,8 +3,21 @@ import { uuid } from "./uuid";
 import crypto from "crypto";
 
 export interface PublicKeyInterface {
+  /**
+   * Export public key file
+   * @returns {string} der formated public key
+   */
   exportPublicKey(): Buffer;
+  /**
+   * Generate UUID for this key
+   */
   uuid(): string;
+
+  /**
+   * Verify data with signature
+   * @param data
+   * @param signature
+   */
   verify(data: Buffer, signature: Buffer): boolean;
 }
 
@@ -34,16 +47,10 @@ export class PublicKey implements PublicKeyInterface {
     return new PublicKey(rsa);
   }
 
-  /**
-   * Export public key
-   */
   public exportPublicKey(): Buffer {
     return this.key.exportKey("pkcs8-public-der");
   }
 
-  /**
-   * Generate UUID for this key
-   */
   public uuid(): string {
     return uuid(this.exportPublicKey());
   }

@@ -1,13 +1,13 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { emitExperimentalWarning } from "../../utils/stability";
 import { run } from "../../plugin/packer/";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
+import { setStability } from "../stability";
 
 const command = "pack";
 
-const describe = "[Experimental] Packaging plugin project to a zip file";
+const describe = "Packaging plugin project to a zip file";
 
 const builder = (args: yargs.Argv) =>
   args
@@ -41,7 +41,6 @@ type Args = yargs.Arguments<
 
 const handler = async (args: Args) => {
   try {
-    emitExperimentalWarning("This feature is under early development");
     const flags = {
       ppk: args["private-key"],
       output: args.output,
@@ -59,9 +58,13 @@ const handler = async (args: Args) => {
   }
 };
 
-export const packCommand: CommandModule<{}, Args> = {
-  command,
-  describe,
-  builder,
-  handler,
-};
+export const packCommand: CommandModule<{}, Args> = setStability(
+  {
+    command,
+    describe,
+    builder,
+    handler,
+  },
+  "experimental",
+  "This feature is under early development",
+);

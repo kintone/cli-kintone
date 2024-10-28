@@ -1,14 +1,14 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { emitExperimentalWarning } from "../../utils/stability";
 import type { OutputFormat } from "../../plugin/info/";
 import { run } from "../../plugin/info/";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
+import { setStability } from "../stability";
 
 const command = "info";
 
-const describe = "[Experimental] Show information from plugin file";
+const describe = "Show information from plugin file";
 
 const outputFormats: OutputFormat[] = ["plain", "json"];
 
@@ -33,7 +33,6 @@ type Args = yargs.Arguments<
 
 const handler = async (args: Args) => {
   try {
-    emitExperimentalWarning("This feature is under early development");
     await run(args.input, args.format);
   } catch (error) {
     logger.error(new RunError(error));
@@ -42,9 +41,13 @@ const handler = async (args: Args) => {
   }
 };
 
-export const infoCommand: CommandModule<{}, Args> = {
-  command,
-  describe,
-  builder,
-  handler,
-};
+export const infoCommand: CommandModule<{}, Args> = setStability(
+  {
+    command,
+    describe,
+    builder,
+    handler,
+  },
+  "experimental",
+  "This feature is under early development",
+);

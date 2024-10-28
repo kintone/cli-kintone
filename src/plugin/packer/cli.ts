@@ -7,7 +7,7 @@ import { ManifestFactory, PluginZip, PrivateKey, LocalFSDriver } from "../core";
 
 type Options = Partial<{
   ppk: string;
-  out: string;
+  output: string;
   watch: boolean;
 }>;
 
@@ -68,8 +68,8 @@ export const run = async (pluginDir: string, options_?: Options) => {
   // 6. prepare output directory
   let outputDir = path.dirname(path.resolve(pluginDir));
   let outputFile = path.join(outputDir, "plugin.zip");
-  if (options.out) {
-    outputFile = options.out;
+  if (options.output) {
+    outputFile = options.output;
     outputDir = path.dirname(path.resolve(outputFile));
   }
   await fs.mkdir(outputDir, { recursive: true });

@@ -44,7 +44,7 @@ const handler = async (args: Args) => {
     emitExperimentalWarning("This feature is under early development");
     const flags = {
       ppk: args["private-key"],
-      out: args.output,
+      output: args.output,
       watch: args.watch,
     };
     if (process.env.NODE_ENV === "test") {

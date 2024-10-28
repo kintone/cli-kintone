@@ -57,6 +57,14 @@ const OVERRIDE_LICENSES_TEXT = {
     licensePageUrl:
       "https://raw.githubusercontent.com/dominictarr/through/master/LICENSE.MIT",
   },
+  "node-rsa": {
+    // License text is written in README.md
+    licenseText: "See https://github.com/rzcoder/node-rsa#license",
+  },
+  "stream-buffers": {
+    licensePageUrl:
+      "https://raw.githubusercontent.com/samcday/node-stream-buffer/refs/heads/main/UNLICENSE",
+  },
 };
 
 module.exports = config;

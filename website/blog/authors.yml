@@ -1,34 +1,31 @@
+extensions-platform-team:
+  name: kintone Extensions Platform Team
+  url: https://github.com/kintone
+  image_url: https://github.com/kintone.png
+
 tasshi:
   name: tasshi (Masaharu Tashiro)
-  title: Product Owner of kintone DX Team
   url: https://github.com/tasshi-me
   image_url: https://github.com/tasshi-me.png
 
+chihiro-adachi:
+  name: Chihiro Adachi
+  url: https://github.com/chihiro-adachi
+  image_url: https://github.com/chihiro-adachi.png
+
+shabaraba:
+  name: Takahiro Kawakami
+  url: https://github.com/shabaraba
+  image_url: https://github.com/shabaraba.png
+
+hisasami:
+  name: Mariko Hisamatsu
+  url: https://github.com/hisasami
+  image_url: https://github.com/hisasami.png
+
+# DX team have been closed.
+# Keeping this entry for past posts.
 dx-team:
   name: kintone DX Team
   url: https://github.com/kintone
   image_url: https://github.com/kintone.png
-
-ueokande:
-  name: Shin'ya Ueoka
-  title: Team leader of kintone DX team
-  url: https://ueokande.com
-  image_url: https://github.com/ueokande.png
-
-hung:
-  name: Nguyen Thai Hung
-  title: Software engineer of kintone DX team
-  url: https://github.com/hung-cybo
-  image_url: https://github.com/hung-cybo.png
-
-tuan:
-  name: tuan-pham
-  title: Software engineer of kintone DX team
-  url: https://github.com/tuanphamcybozu
-  image_url: https://github.com/tuanphamcybozu.png
-
-minh:
-  name: minh-nguyen
-  title: Quality assurance of kintone DX team
-  url: https://github.com/minh-nguyen1985
-  image_url: https://github.com/minh-nguyen1985.png

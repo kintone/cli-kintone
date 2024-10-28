@@ -5,6 +5,7 @@ const config = {
   testPathIgnorePatterns: [
     "<rootDir>/node_modules/",
     "<rootDir>/src/__tests__/setup.ts",
+    "<rootDir>/src/plugin/packer/__tests__/helpers/",
     "fixtures",
   ],
 };

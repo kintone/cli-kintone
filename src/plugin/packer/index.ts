@@ -1,1 +1,1 @@
-export { run } from "../packer/cli";
+export { run } from "../packer/pack";

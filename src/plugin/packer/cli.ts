@@ -92,7 +92,7 @@ export const run = async (pluginDir: string, options_?: Options) => {
 
   // 7. Start watch mode if watch option is given
   if (options.watch) {
-    // change events are fired before chagned files are flushed on Windows,
+    // change events are fired before changed files are flushed on Windows,
     // which generate an invalid plugin zip.
     // in order to fix this, we use awaitWriteFinish option only on Windows.
     const watchOptions =

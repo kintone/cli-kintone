@@ -16,24 +16,25 @@ type Options = Partial<{
 export const run = async (pluginDir: string, options_?: Options) => {
   const options = options_ || {};
 
-  // 1. check if pluginDir is a directory
+  // 1. Validate input parameters
+  // 1.1 Check if pluginDir is a directory
   if (!(await fs.stat(pluginDir)).isDirectory()) {
     throw new Error(`${pluginDir} should be a directory.`);
   }
 
-  // 2. check pluginDir/manifest.json
+  // 1.2 Check pluginDir/manifest.json
   const manifestJsonPath = path.join(pluginDir, "manifest.json");
   if (!(await fs.stat(manifestJsonPath)).isFile()) {
     throw new Error("Manifest file $PLUGIN_DIR/manifest.json not found.");
   }
 
-  // 3. load manifest.json
+  // 2. Load manifest.json
   const manifest = await ManifestFactory.loadJsonFile(manifestJsonPath);
   if (manifest.manifestVersion === 2) {
     logger.warn("Welcome to manifest v2 mode :)");
   }
 
-  // 4. validate manifest.json
+  // 3. Validate manifest.json
   const result = await manifest.validate(new LocalFSDriver(pluginDir));
 
   if (result.warnings.length > 0) {
@@ -50,7 +51,18 @@ export const run = async (pluginDir: string, options_?: Options) => {
     throw new Error("Invalid manifest.json");
   }
 
-  // 5. generate new ppk if not specified
+  // 4. Prepare output directory
+  let outputDir = path.dirname(path.resolve(pluginDir));
+  let outputFile = path.join(outputDir, "plugin.zip");
+  if (options.output) {
+    outputFile = options.output;
+    outputDir = path.dirname(path.resolve(outputFile));
+  }
+  await fs.mkdir(outputDir, { recursive: true });
+  logger.debug(`outputDir: ${outputDir}`);
+  logger.debug(`outputFile: ${outputFile}`);
+
+  // 5. Load ppk or generate new ppk if not specified
   const ppkFile = options.ppk;
   let privateKey: PrivateKey;
   if (ppkFile) {
@@ -63,25 +75,7 @@ export const run = async (pluginDir: string, options_?: Options) => {
   }
 
   const id = privateKey.uuid();
-  logger.debug(`id: ${id}`);
-
-  // 6. prepare output directory
-  let outputDir = path.dirname(path.resolve(pluginDir));
-  let outputFile = path.join(outputDir, "plugin.zip");
-  if (options.output) {
-    outputFile = options.output;
-    outputDir = path.dirname(path.resolve(outputFile));
-  }
-  await fs.mkdir(outputDir, { recursive: true });
-  logger.debug(`outputDir: ${outputDir}`);
-  logger.debug(`outputFile: ${outputFile}`);
-
-  // 7. package plugin.zip
-  const pluginZip = await PluginZip.build(
-    manifest,
-    privateKey,
-    new LocalFSDriver(pluginDir),
-  );
+  logger.debug(`plugin id: ${id}`);
 
   const ppkFilePath = path.join(outputDir, `${id}.ppk`);
   if (!ppkFile) {
@@ -89,6 +83,14 @@ export const run = async (pluginDir: string, options_?: Options) => {
     logger.info(`New private key generated: ${ppkFilePath}`);
   }
 
+  // 6. Package plugin.zip
+  const pluginZip = await PluginZip.build(
+    manifest,
+    privateKey,
+    new LocalFSDriver(pluginDir),
+  );
+
+  // 7. Start watch mode if watch option is given
   if (options.watch) {
     // change events are fired before chagned files are flushed on Windows,
     // which generate an invalid plugin zip.
@@ -114,6 +116,7 @@ export const run = async (pluginDir: string, options_?: Options) => {
     });
   }
 
+  // 8. Write out plugin.zip to filesystem
   await fs.writeFile(outputFile, pluginZip.buffer);
 
   logger.info(`The plugin file generated: ${outputFile}`);

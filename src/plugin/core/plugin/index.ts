@@ -23,7 +23,7 @@ export class PluginZip extends ZipFileDriver implements PluginInterface {
   }
 
   /**
-   * Create plugin.zip
+   * Build plugin.zip
    */
   public static async build(
     manifest: ManifestInterface,
@@ -35,7 +35,7 @@ export class PluginZip extends ZipFileDriver implements PluginInterface {
   }
 
   /**
-   * Create plugin.zip from contents.zip
+   * Build plugin.zip from contents.zip
    */
   public static async buildFromContentsZip(
     contentsZip: ContentsZip,

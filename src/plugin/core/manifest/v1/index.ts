@@ -61,7 +61,7 @@ export class ManifestV1 implements ManifestInterface {
   }
 
   async generateContentsZip(driver: DriverInterface): Promise<ContentsZip> {
-    return ContentsZip.createFromManifest(this, driver);
+    return ContentsZip.buildFromManifest(this, driver);
   }
 }
 

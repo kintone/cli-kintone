@@ -37,7 +37,7 @@ export const validateManifest = async (
     };
   }
 
-  const errors = generateErrorMessages(result.errors ?? []);
+  const errors = buildErrorMessages(result.errors ?? []);
   return {
     valid: false as const,
     warnings,
@@ -45,7 +45,7 @@ export const validateManifest = async (
   };
 };
 
-const generateErrorMessages = (errors: Ajv.ErrorObject[]): string[] => {
+const buildErrorMessages = (errors: Ajv.ErrorObject[]): string[] => {
   return errors.map((e) => {
     if (e.keyword === "enum") {
       return `"${e.instancePath}" ${e.message} (${(

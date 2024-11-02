@@ -3,7 +3,7 @@ import { ManifestFactory } from "../manifest";
 
 import type { DriverInterface } from "../driver";
 import { ZipFileDriver } from "../driver";
-import { createContentsZip } from "./zip";
+import { buildContentsZip } from "./zip";
 
 /**
  * Contents represents the plugin source files aggregated by Manifest
@@ -25,11 +25,11 @@ export class ContentsZip extends ZipFileDriver implements ContentsInterface {
     super(buffer);
   }
 
-  public static async createFromManifest(
+  public static async buildFromManifest(
     manifest: ManifestInterface,
     driver: DriverInterface,
   ): Promise<ContentsZip> {
-    const buffer = await createContentsZip(manifest, driver);
+    const buffer = await buildContentsZip(manifest, driver);
     // const buffer = await _createContentsZipStream(manifest, driver);
     return ContentsZip.fromBuffer(buffer);
   }

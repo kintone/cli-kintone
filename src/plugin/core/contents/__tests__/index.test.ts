@@ -14,7 +14,7 @@ describe("ContentsZip", () => {
       const manifestJSONPath = path.join(pluginDir, "manifest.json");
       const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
 
-      const contentsZip = await ContentsZip.createFromManifest(
+      const contentsZip = await ContentsZip.buildFromManifest(
         manifest,
         new LocalFSDriver(pluginDir),
       );
@@ -30,7 +30,7 @@ describe("ContentsZip", () => {
       const manifestJSONPath = path.join(pluginDir, "manifest.json");
       const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
 
-      const contentsZip = await ContentsZip.createFromManifest(
+      const contentsZip = await ContentsZip.buildFromManifest(
         manifest,
         new LocalFSDriver(pluginDir),
       );

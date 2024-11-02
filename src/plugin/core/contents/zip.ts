@@ -6,9 +6,9 @@ import consumers from "node:stream/consumers";
 import { logger } from "../../../utils/log";
 
 /**
- * Create a zipped contents
+ * Build a zipped contents
  */
-export const createContentsZip = async (
+export const buildContentsZip = async (
   manifest: ManifestInterface,
   driver: DriverInterface,
 ): Promise<Buffer> => {
@@ -28,9 +28,9 @@ export const createContentsZip = async (
 };
 
 /**
- * Create a zipped contents using stream. Can be faster than createContentsZip above.
+ * Build a zipped contents using stream. Can be faster than buildContentsZip above.
  */
-export const _createContentsZipStream = async (
+export const _buildContentsZipStream = async (
   manifest: ManifestInterface,
   driver: DriverInterface,
 ): Promise<Buffer> => {

@@ -12,6 +12,10 @@ import { buildPluginZip } from "./zip";
 export interface PluginInterface extends DriverInterface {}
 
 export class PluginZip extends ZipFileDriver implements PluginInterface {
+  /**
+   * Use static factory methods instead.
+   * @private
+   */
   private constructor(buffer: Buffer) {
     super(buffer);
   }

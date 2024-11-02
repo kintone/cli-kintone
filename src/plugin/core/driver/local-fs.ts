@@ -9,7 +9,7 @@ import type { Readable } from "node:stream";
  * LocalFSDriver is a Driver for the local disc
  */
 export class LocalFSDriver implements DriverInterface {
-  private currentDir: string;
+  private readonly currentDir: string;
 
   constructor(dir?: string) {
     this.currentDir = dir ?? process.cwd();

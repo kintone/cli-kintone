@@ -21,6 +21,10 @@ export interface ContentsInterface extends DriverInterface {
 }
 
 export class ContentsZip extends ZipFileDriver implements ContentsInterface {
+  /**
+   * Use static factory methods instead.
+   * @private
+   */
   private constructor(buffer: Buffer) {
     super(buffer);
   }

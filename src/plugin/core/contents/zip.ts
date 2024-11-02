@@ -30,7 +30,7 @@ export const buildContentsZip = async (
 /**
  * Build a zipped contents using stream. Can be faster than buildContentsZip above.
  */
-export const _buildContentsZipStream = async (
+const _buildContentsZipStream = async (
   manifest: ManifestInterface,
   driver: DriverInterface,
 ): Promise<Buffer> => {

@@ -18,6 +18,7 @@ export interface ManifestStaticInterface {
 }
 
 export interface ManifestInterface {
+  // TODO: Validating file existence and file size are better to be done in contents validation.
   /**
    * Validate Manifest
    * @param driver If set, also validate file existence and file size.
@@ -29,6 +30,7 @@ export interface ManifestInterface {
    */
   sourceList(): string[];
 
+  // TODO: Refactor this method as a static factory method of ContentsZip
   /**
    * Generate contents.zip from Manifest and Driver
    * @param driver

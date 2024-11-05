@@ -5,6 +5,7 @@ import type { DriverInterface } from "../driver";
 import { ZipFileDriver } from "../driver";
 import { buildContentsZip } from "./zip";
 
+// TODO: Depends on manifest and driver explicitly
 /**
  * Contents represents the plugin source files aggregated by Manifest
  */

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.2](https://github.com/kintone/cli-kintone/compare/v1.12.1...v1.12.2) (2024-11-06)
+
+
+### Miscellaneous Chores
+
+* plugin pack command for 2 ([#916](https://github.com/kintone/cli-kintone/issues/916)) ([268817c](https://github.com/kintone/cli-kintone/commit/268817c33a3f13743cc7df708794b228e9c7bd43))
+
 ## [1.12.1](https://github.com/kintone/cli-kintone/compare/v1.12.0...v1.12.1) (2024-10-24)
 
 

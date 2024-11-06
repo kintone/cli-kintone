@@ -20,8 +20,8 @@ importers:
         specifier: ^10.2.2
         version: 10.2.2
       '@kintone/rest-api-client':
-        specifier: ^5.5.2
-        version: 5.5.2
+        specifier: ^5.6.0
+        version: 5.6.0
       chalk:
         specifier: 4.1.2
         version: 4.1.2
@@ -5230,12 +5230,12 @@ packages:
       bytes: 3.1.2
     dev: false
 
-  /@kintone/rest-api-client@5.5.2:
-    resolution: {integrity: sha512-1nKynN5Lp1PdfGOr73tlEyGjT0gqr+fW5eV7BfkI5jEqbtNIqHfKNZi93zzPGIxz6cFr+PNGlfKO0+tZsO9DYw==}
+  /@kintone/rest-api-client@5.6.0:
+    resolution: {integrity: sha512-Ed+jC8nAQqBWpZbC+M2N0myVX5kdyYCXTOyUXdkt57wJ2vTyOjAEYFkK4v5z+uPMB24uX595FVVst0uSQPrrug==}
     engines: {node: '>=18'}
     dependencies:
-      axios: 1.7.4
-      core-js: 3.38.0
+      axios: 1.7.7
+      core-js: 3.39.0
       form-data: 4.0.0
       js-base64: 3.7.7
       mime: 3.0.0
@@ -6974,8 +6974,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /axios@1.7.4:
-    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
+  /axios@1.7.7:
+    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -7759,6 +7759,11 @@ packages:
   /core-js@3.38.0:
     resolution: {integrity: sha512-XPpwqEodRljce9KswjZShh95qJ1URisBeKCjUdq27YdenkslVe7OO0ZJhlYXAChW7OhXaRLl8AAba7IBfoIHug==}
     requiresBuild: true
+
+  /core-js@3.39.0:
+    resolution: {integrity: sha512-raM0ew0/jJUqkJ0E6e8UDtl+y/7ktFivgWvqw8dNSQeNWoSDLvQ1H/RN3aPXB9tBd4/FhyR4RDPGhsNIMsAn7g==}
+    requiresBuild: true
+    dev: false
 
   /core-util-is@1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}

@@ -105,7 +105,7 @@
   "dependencies": {
     "@inquirer/prompts": "^5.3.8",
     "@kintone/plugin-manifest-validator": "^10.2.2",
-    "@kintone/rest-api-client": "^5.5.2",
+    "@kintone/rest-api-client": "^5.6.0",
     "chalk": "4.1.2",
     "chokidar": "^4.0.1",
     "csv-parse": "^4.16.3",

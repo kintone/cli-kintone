@@ -50,8 +50,8 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0
       yazl:
-        specifier: ^3.3.0
-        version: 3.3.0
+        specifier: ^3.3.1
+        version: 3.3.1
     devDependencies:
       '@actions/core':
         specifier: ^1.11.1
@@ -15427,8 +15427,8 @@ packages:
       pend: 1.2.0
     dev: false
 
-  /yazl@3.3.0:
-    resolution: {integrity: sha512-Hm7GeOfxL5XxABWgdjHa95XuiVfjLUR+N5MeOm4radbFiYTiqKiiNpbERocn0DXcuWWxv7cZ7uvZdQjxOLmUMg==}
+  /yazl@3.3.1:
+    resolution: {integrity: sha512-BbETDVWG+VcMUle37k5Fqp//7SDOK2/1+T7X8TD96M3D9G8jK5VLUdQVdVjGi8im7FGkazX7kk5hkU8X4L5Bng==}
     dependencies:
       buffer-crc32: 1.0.0
     dev: false

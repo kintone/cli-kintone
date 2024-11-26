@@ -20,7 +20,7 @@ export class CsvStringifier implements Stringifier {
     const recordTransform = new RecordsTransform(schema, useLocalFilePath);
 
     const headerFields = buildHeaderFields(schema);
-    const csvStringifier = stringify({
+    const csvStringifier = stringify.stringify({
       columns: headerFields,
       header: true,
       delimiter: SEPARATOR,

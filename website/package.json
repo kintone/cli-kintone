@@ -37,7 +37,7 @@
     "@docusaurus/types": "3.4.0",
     "@eslint/eslintrc": "^3.2.0",
     "@octokit/rest": "^20.1.1",
-    "@types/node": "^18.19.66",
+    "@types/node": "^18.19.67",
     "ts-node": "^10.9.2",
     "typescript": "~5.7.2"
   },

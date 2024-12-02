@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { Given, Then } from "../utils/world";
+import { Given, Then } from "../../utils/world";
 import fs from "fs";
 import path from "path";
 import iconv from "iconv-lite";
@@ -7,7 +7,7 @@ import {
   compareBuffers,
   generateCsvRow,
   validateRequireColumnsInTable,
-} from "../utils/helper";
+} from "../../utils/helper";
 
 Given("I have a directory {string}", function (directory: string) {
   fs.mkdirSync(path.join(this.workingDir, directory));

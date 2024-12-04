@@ -1,6 +1,5 @@
 ---
-sidebar_position: 1400
-draft: true
+sidebar_position: 1100
 ---
 
 # plugin info

@@ -57,7 +57,7 @@ const buildDescriptionWithStability = (
 
   let output = "";
   if (description) {
-    output += description + "\n\n";
+    output += description + "\n";
   }
 
   output += `[${label}: ${msgLines[0]}]`;

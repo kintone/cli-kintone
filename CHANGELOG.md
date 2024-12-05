@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.3](https://github.com/kintone/cli-kintone/compare/v1.12.2...v1.12.3) (2024-12-05)
+
+
+### Bug Fixes
+
+* Fixed so that empty strings are not quoted. ([#949](https://github.com/kintone/cli-kintone/issues/949)) ([c5785a5](https://github.com/kintone/cli-kintone/commit/c5785a5c0a6afce2e4cc1e2dc4a250571805453e))
+
+
+### Miscellaneous Chores
+
+* expose plugin commands ([#948](https://github.com/kintone/cli-kintone/issues/948)) ([92fb24b](https://github.com/kintone/cli-kintone/commit/92fb24b6636380a098cc39478b6967c6a9c6e24c))
+
 ## [1.12.2](https://github.com/kintone/cli-kintone/compare/v1.12.1...v1.12.2) (2024-11-06)
 
 

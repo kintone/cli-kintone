@@ -25,7 +25,7 @@ export class CsvStringifier implements Stringifier {
       header: true,
       delimiter: SEPARATOR,
       record_delimiter: LINE_BREAK,
-      quoted_match: /^(?!\*$).*$/,
+      quoted_match: /^(?!\*$).+$/,
       quoted_empty: false,
     });
 

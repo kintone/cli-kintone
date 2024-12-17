@@ -1,26 +1,26 @@
 @common
 Feature: common
 
-  Scenario: unknown option
+  Scenario: Unknown option
     When I run the command with args "record export --app 1 --base-url http://example.com --foo"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Unknown argument: foo"
 
-  Scenario: unknown subcommand
+  Scenario: Unknown subcommand
     When I run the command with args "foo"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Unknown argument: foo"
 
-  Scenario: get version
+  Scenario: Get version
     When I run the command with args "--version"
     Then I should get the version formatted in "\d+.\d+.\d+"
 
-  Scenario: get help
+  Scenario: Get help
     When I run the command with args "--help"
     Then I should get the exit code is zero
     And The output message should match with the pattern: "cli-kintone-(macos|win\.exe|linux) <command>"
 
-  Scenario: base URL is not specified
+  Scenario: Base URL is not specified
     When I run the command with args "record export --app 1"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Missing required argument: base-url"

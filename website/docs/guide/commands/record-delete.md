@@ -9,7 +9,7 @@ The `delete` command allows you to delete records of a specified Kintone app.
 **Notice**
 
 - This command only supports API token authentication.
-- This action cannot be rollback.
+- This action cannot be rolled back.
 
 ## Example
 

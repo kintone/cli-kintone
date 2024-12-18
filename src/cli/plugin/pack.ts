@@ -11,8 +11,8 @@ const describe = "Packaging plugin project to a zip file";
 
 const builder = (args: yargs.Argv) =>
   args
-    .option("input", {
-      describe: "The input plugin project directory",
+    .option("manifest-file", {
+      describe: "The manifest.json file path",
       type: "string",
       demandOption: true,
       requiresArg: true,

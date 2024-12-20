@@ -103,7 +103,7 @@
     "zx": "^8.2.4"
   },
   "dependencies": {
-    "@inquirer/prompts": "^5.3.8",
+    "@inquirer/prompts": "^7.2.1",
     "@kintone/plugin-manifest-validator": "^10.2.2",
     "@kintone/rest-api-client": "^5.6.0",
     "chalk": "4.1.2",

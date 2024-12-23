@@ -1,4 +1,3 @@
-import React from "react";
 import Admonition from "@theme-original/Admonition";
 import Link from "@docusaurus/Link";
 

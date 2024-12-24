@@ -86,7 +86,7 @@
     "@vercel/ncc": "^0.38.3",
     "ajv": "^8.17.1",
     "allure-commandline": "^2.32.0",
-    "allure-cucumberjs": "^3.0.7",
+    "allure-cucumberjs": "^2.15.1",
     "allure-jest": "^3.0.7",
     "allure-js-commons": "^3.0.7",
     "babel-jest": "^29.7.0",

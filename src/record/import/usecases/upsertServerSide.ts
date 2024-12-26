@@ -1,8 +1,6 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { LocalRecord } from "../types/record";
-import type {
-  KintoneRecordForUpdateParameter,
-} from "../../../kintone/types";
+import type { KintoneRecordForUpdateParameter } from "../../../kintone/types";
 import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor } from "./add/field";

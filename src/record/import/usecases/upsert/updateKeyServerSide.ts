@@ -17,10 +17,7 @@ export class UpdateKey {
   private readonly field: UpdateKeyField;
   private readonly appCode: string;
 
-  constructor(
-    field: UpdateKeyField,
-    appCode: string,
-  ) {
+  constructor(field: UpdateKeyField, appCode: string) {
     this.field = field;
     this.appCode = appCode;
   }

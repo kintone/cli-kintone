@@ -8,12 +8,12 @@ import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor } from "./add/field";
 import { recordConverter } from "./add/record";
-import { UpdateKey } from "./upsert/updateKey";
+import { UpdateKey } from "./upsert/updateKeyServerSide";
 import { UpsertRecordsError } from "./upsert/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
 import type { LocalRecordRepository } from "./interface";
-import { groupByKeyChunked } from "../../../utils/iterator";
+import { chunked } from "../../../utils/iterator";
 
 const CHUNK_SIZE = 2000;
 
@@ -47,42 +47,26 @@ export const upsertRecords = async (
     await updateKey.validateUpdateKeyInRecords(recordSource);
 
     logger.info("Starting to import records...");
-    for await (const recordsByChunk of groupByKeyChunked(
+    for await (const recordsByChunk of chunked(
       recordSource.reader(),
-      (record) => (updateKey.isUpdate(record) ? "update" : "add"),
       CHUNK_SIZE,
     )) {
-      currentRecords = recordsByChunk.data;
-
-      if (recordsByChunk.key === "update") {
-        const recordsToUpload = await convertToKintoneRecordForUpdate(
-          apiClient,
-          app,
-          recordsByChunk.data,
-          schema,
-          updateKey,
-          { attachmentsDir, skipMissingFields },
-        );
-        await apiClient.record.updateAllRecords({
-          app,
-          records: recordsToUpload,
-        });
-      } else {
-        const recordsToUpload = await convertToKintoneRecordForAdd(
-          apiClient,
-          app,
-          recordsByChunk.data,
-          schema,
-          updateKey,
-          { attachmentsDir, skipMissingFields },
-        );
-        await apiClient.record.addAllRecords({
-          app,
-          records: recordsToUpload,
-        });
-      }
-      currentIndex += recordsByChunk.data.length;
-      lastSucceededRecord = recordsByChunk.data.slice(-1)[0];
+      currentRecords = recordsByChunk;
+      const recordsToUpload = await convertToKintoneRecordForUpdate(
+        apiClient,
+        app,
+        recordsByChunk,
+        schema,
+        updateKey,
+        { attachmentsDir, skipMissingFields },
+      );
+      console.log(recordsToUpload);
+      await apiClient.record.updateAllRecords({
+        app,
+        records: recordsToUpload,
+      });
+      currentIndex += recordsByChunk.length;
+      lastSucceededRecord = recordsByChunk.slice(-1)[0];
       progressLogger.update(currentIndex);
     }
     progressLogger.done();

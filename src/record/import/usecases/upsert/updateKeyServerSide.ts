@@ -16,16 +16,13 @@ type UpdateKeyField = {
 export class UpdateKey {
   private readonly field: UpdateKeyField;
   private readonly appCode: string;
-  private readonly existingUpdateKeyValues: Set<string>;
 
   constructor(
     field: UpdateKeyField,
     appCode: string,
-    existingUpdateKeyValues: Set<string>,
   ) {
     this.field = field;
     this.appCode = appCode;
-    this.existingUpdateKeyValues = existingUpdateKeyValues;
   }
 
   static build = async (
@@ -36,35 +33,14 @@ export class UpdateKey {
   ): Promise<UpdateKey> => {
     const updateKeyField = findUpdateKeyInSchema(updateKeyCode, schema);
     const appCode = (await apiClient.app.getApp({ id: app })).code;
-    const recordsOnKintone = await apiClient.record.getAllRecords({
-      app,
-      fields: [updateKeyField.code],
-    });
-    const existingUpdateKeyValues = new Set(
-      recordsOnKintone.map((record) => {
-        const updateKeyValue = record[updateKeyField.code].value as string;
-        if (updateKeyField.type === "RECORD_NUMBER") {
-          return removeAppCode(updateKeyValue, appCode);
-        }
-        return updateKeyValue;
-      }),
-    );
 
-    return new UpdateKey(updateKeyField, appCode, existingUpdateKeyValues);
+    return new UpdateKey(updateKeyField, appCode);
   };
 
   getUpdateKeyField = () => this.field;
 
   validateUpdateKeyInRecords = (records: LocalRecordRepository) =>
     validateUpdateKeyInRecords(this.field, this.appCode, records);
-
-  isUpdate = (record: LocalRecord) => {
-    const updateKeyValue = this.findUpdateKeyValueFromRecord(record);
-    return (
-      updateKeyValue.length > 0 &&
-      this.existingUpdateKeyValues.has(updateKeyValue)
-    );
-  };
 
   findUpdateKeyValueFromRecord = (record: LocalRecord): string => {
     const fieldValue = record.data[this.field.code].value as string;

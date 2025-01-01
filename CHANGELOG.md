@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.4](https://github.com/kintone/cli-kintone/compare/v1.12.3...v1.12.4) (2025-01-01)
+
+
+### Documentation
+
+* fix grammatical error ([#958](https://github.com/kintone/cli-kintone/issues/958)) ([001fd24](https://github.com/kintone/cli-kintone/commit/001fd2485793b57f9d3d0d689a8ad1b5e791189b))
+
 ## [1.12.3](https://github.com/kintone/cli-kintone/compare/v1.12.2...v1.12.3) (2024-12-05)
 
 

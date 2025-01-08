@@ -367,7 +367,7 @@ Feature: record import
       | $RECORD_NUMBERS[1] | Rose  | 40     |
       | \d+                | Jenny | 50     |
 
-  Scenario: Upsert by text field.
+  Scenario: Upsert by text field
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
       | Text  | Number |

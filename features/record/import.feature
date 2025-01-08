@@ -1,7 +1,8 @@
 @isolated
-Feature: cli-kintone import command
+@import
+Feature: record import
 
-  Scenario: CliKintoneTest-23 Should import the records with API Token successfully.
+  Scenario: API token authorization
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-23.csv" with content as below:
       | Text  | Number |
@@ -18,7 +19,7 @@ Feature: cli-kintone import command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-20 Should return the error message when the user has no privilege to add records.
+  Scenario: User does not have privilege to add records
     Given The CSV file "CliKintoneTest-20.csv" with content as below:
       | Text  | Number |
       | Alice | 10     |
@@ -28,7 +29,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed."
 
-  Scenario: CliKintoneTest-21 Should import records to app in space successfully.
+  Scenario: App in a space
     Given The app "app_in_space_for_import" has no records
     And The CSV file "CliKintoneTest-21.csv" with content as below:
       | Text  | Number |
@@ -45,7 +46,7 @@ Feature: cli-kintone import command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-22 Should import records to app with --api-token and --username, --password successfully.
+  Scenario: Invalid API token and valid login information
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-22.csv" with content as below:
       | Text  | Number |
@@ -62,7 +63,7 @@ Feature: cli-kintone import command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-24 Should return the error message when importing records with draft API Token.
+  Scenario: API token is a draft
     Given The CSV file "CliKintoneTest-24.csv" with content as below:
       | Text  | Number |
       | Alice | 10     |
@@ -72,7 +73,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
-  Scenario: CliKintoneTest-25 Should return the error message when importing records with two valid API Token.
+  Scenario: A duplicate API token for the same app
     Given The CSV file "CliKintoneTest-25.csv" with content as below:
       | Text  | Number |
       | Alice | 10     |
@@ -83,7 +84,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_DA03] You cannot specify a duplicate API token for the same app."
 
-  Scenario: CliKintoneTest-26 Should import the records successfully with two valid API Token in different apps.
+  Scenario: API tokens for different apps
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-26.csv" with content as below:
       | Text  | Number |
@@ -101,7 +102,7 @@ Feature: cli-kintone import command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-27 Should return the error message when importing records with valid and invalid API Tokens.
+  Scenario: Valid and invalid API tokens
     Given The CSV file "CliKintoneTest-27.csv" with content as below:
       | Text  | Number |
       | Alice | 10     |
@@ -111,7 +112,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
-  Scenario: CliKintoneTest-28 Should return the error message when importing records with an API Token without Add permission.
+  Scenario: API token does not have privilege to add records
     Given The CSV file "CliKintoneTest-28.csv" with content as below:
       | Text  | Number |
       | Alice | 10     |
@@ -121,7 +122,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 
-  Scenario: CliKintoneTest-29 Should return the error message when updating records with an API Token without View/Edit permission.
+  Scenario: API token does not have privilege to view and edit records
     Given The CSV file "CliKintoneTest-29.csv" with content as below:
       | Text  | Number |
       | Alice | 11     |
@@ -134,7 +135,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 
-  Scenario: CliKintoneTest-30 Should import the records successfully with username and password.
+  Scenario: Login authorization
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-30.csv" with content as below:
       | Text  | Number |
@@ -151,7 +152,7 @@ Feature: cli-kintone import command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-31 Should import the records successfully with username (-u option) and password.
+  Scenario: Login authorization - short username option
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-31.csv" with content as below:
       | Text  | Number |
@@ -168,7 +169,7 @@ Feature: cli-kintone import command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-32 Should import the records successfully with username and password (-p option).
+  Scenario: Login authorization - short password option
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-32.csv" with content as below:
       | Text  | Number |
@@ -185,7 +186,7 @@ Feature: cli-kintone import command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-33 Should import the records successfully with --attachments-dir specified and no attachment field.
+  Scenario: Specify attachments directory nevertheless app does not have an attachment field
     Given The CSV file "CliKintoneTest-33.csv" with content as below:
       | Text  | Number |
       | Alice | 10     |
@@ -201,7 +202,7 @@ Feature: cli-kintone import command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-34 Should return the error message when importing non-existent attachment.
+  Scenario: Specified attachment file does not exist
     Given The CSV file "CliKintoneTest-34.csv" with content as below:
       | Text  | Number | Attachment         |
       | Alice | 10     | non_exist_file.txt |
@@ -211,7 +212,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non_exist_file.txt'"
 
-  Scenario: CliKintoneTest-35 Should import the records successfully with attachment.
+  Scenario: Record with an attachment file
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And The CSV file "CliKintoneTest-35.csv" with content as below:
@@ -228,7 +229,7 @@ Feature: cli-kintone import command
       | RecordIndex | AttachmentFieldCode | File      | Content |
       | 0           | Attachment          | file1.txt | 123     |
 
-  Scenario: CliKintoneTest-36 Should return the error message when importing records with a non-existent directory.
+  Scenario: Specified attachment directory does not exist
     Given The CSV file "CliKintoneTest-36.csv" with content as below:
       | Text  | Number | Attachment        |
       | Alice | 10     | no_exist_file.txt |
@@ -238,7 +239,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non-exist-dir-c1aceeba-f3e0-45ab-8231-7729d4bc03a0[\/\\]+no_exist_file.txt'"
 
-  Scenario: CliKintoneTest-37 Should import the records successfully with multiple attachments on a field.
+  Scenario: Multiple attachments on a field
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And I have a file "attachments/file2.txt" with content: "abc"
@@ -257,7 +258,7 @@ Feature: cli-kintone import command
       | 0           | Attachment          | file1.txt | 123     |
       | 0           | Attachment          | file2.txt | abc     |
 
-  Scenario: CliKintoneTest-38 Should import the records successfully with multiple attachments on different fields in a record.
+  Scenario: Attachments on multiple fields
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And I have a file "attachments/file2.txt" with content: "456"
@@ -280,7 +281,7 @@ Feature: cli-kintone import command
       | 0           | Attachment_0        | file3.txt | abc     |
       | 0           | Attachment_0        | file4.txt | xyz     |
 
-  Scenario: CliKintoneTest-39 Should import the records successfully with multiple attachments on different records.
+  Scenario: Attachments on multiple records
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And I have a file "attachments/file2.txt" with content: "456"
@@ -305,7 +306,7 @@ Feature: cli-kintone import command
       | 1           | Attachment          | file3.txt | abc     |
       | 1           | Attachment          | file4.txt | xyz     |
 
-  Scenario: CliKintoneTest-40 Should import the records successfully with .txt attachment.
+  Scenario: Record with .txt file attachment
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file.txt" with content: "G3Gef76wJ5u1mPuh14QhwgeLd5eC0OHU"
     And The CSV file "CliKintoneTest-40.csv" with content as below:
@@ -322,28 +323,28 @@ Feature: cli-kintone import command
       | RecordIndex | AttachmentFieldCode | File     | Content                          |
       | 0           | Attachment          | file.txt | G3Gef76wJ5u1mPuh14QhwgeLd5eC0OHU |
 
-  Scenario: CliKintoneTest-41 Should return the error message when lacking of --file-path option.
+  Scenario: File path is not specified
     Given Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Missing required argument: file-path"
 
-  Scenario: CliKintoneTest-42 Should return the error message when importing an unsupported file type.
+  Scenario: Unsupported file type
     Given Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments --file-path CliKintoneTest-41.txt"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Unexpected file type: txt is unacceptable."
 
-  Scenario: CliKintoneTest-43 Should return the error message when importing a non-existent CSV file.
+  Scenario: Specified CSV does not exist
     Given Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --attachments-dir ./attachments --file-path 9f56a2be-c8f0-4ecc-8f62-b5b430e34e25.csv"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory"
 
-  Scenario: CliKintoneTest-44 Should upsert the records successfully with --update-key, a Record_number field.
+  Scenario: Upsert by record number
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
       | Text  | Number |
@@ -366,7 +367,7 @@ Feature: cli-kintone import command
       | $RECORD_NUMBERS[1] | Rose  | 40     |
       | \d+                | Jenny | 50     |
 
-  Scenario: CliKintoneTest-45 Should upsert the records successfully with --update-key is a Text field.
+  Scenario: Upsert by text field.
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
       | Text  | Number |
@@ -389,7 +390,7 @@ Feature: cli-kintone import command
       | $RECORD_NUMBERS[1] | Bob   | 40     |
       | \d+                | Jenny | 50     |
 
-  Scenario: CliKintoneTest-46 Should return the error message when upserting with a non-prohibit duplicate values Text field.
+  Scenario: Update-key field is not set to unique (text)
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
       | Text_Non_Prohibit_Duplicate_Values | Number |
@@ -403,7 +404,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Error: update key field should set to unique"
 
-  Scenario: CliKintoneTest-47 Should upsert the records successfully with --update-key is a Number field.
+  Scenario: Update by number field
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
       | Text  | Number |
@@ -426,7 +427,7 @@ Feature: cli-kintone import command
       | $RECORD_NUMBERS[1] | Rose  | 20     |
       | \d+                | Jenny | 30     |
 
-  Scenario: CliKintoneTest-48 Should return the error message when upserting with a non-prohibit duplicate values Number field.
+  Scenario: Update-key field is not set to unique (number)
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
       | Text  | Number_Non_Prohibit_Duplicate_Values |
@@ -440,7 +441,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Error: update key field should set to unique"
 
-  Scenario: CliKintoneTest-49 Should return the error message when upserting with an unsupported field.
+  Scenario: Specified update-key field is not supported
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
       | Text  | Date       |
@@ -454,7 +455,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Error: unsupported field type for update key"
 
-  Scenario: CliKintoneTest-50 Should return the error message when upserting with an API Token without Edit permission.
+  Scenario: API token does not have privilege to edit records
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
       | Text  | Number |
@@ -470,7 +471,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403\] \[GAIA_NO01\] Using this API token, you cannot run the specified API."
 
-  Scenario: CliKintoneTest-51 Should import the records successfully with --fields specified.
+  Scenario: Specify a field
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-51.csv" with content as below:
       | Text  | Number |
@@ -487,7 +488,7 @@ Feature: cli-kintone import command
       | Bob   |        |
       | Jenny |        |
 
-  Scenario: CliKintoneTest-52 Should import the records successfully with --fields specified multiple existent field codes.
+  Scenario: Specify multiple fields
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-52.csv" with content as below:
       | Text  | Number |
@@ -504,7 +505,7 @@ Feature: cli-kintone import command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-53 Should return the error message when importing records with --fields specified, including existent and non-existent field codes.
+  Scenario: Specified field does not exist
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-53.csv" with content as below:
       | Text  | Number |
@@ -517,7 +518,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: The specified field \"Non_Existent_Field_Code\" does not exist on the app"
 
-  Scenario: CliKintoneTest-54 Should return the error message when importing records with --fields specified, including fields within a table.
+  Scenario: Specify a field in a table
     Given The app "app_for_import_table" has no records
     And The CSV file "CliKintoneTest-54.csv" with content as below:
       | * | Text_0 | Number_0 | Table | Text    | Number |
@@ -532,7 +533,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: The field in a Table cannot be specified to the fields option \(\"Text\"\)"
 
-  Scenario: CliKintoneTest-55 Should import the records successfully with --fields specified, including field code of the table.
+  Scenario: Specify a table
     Given The app "app_for_import_table" has no records
     And The CSV file "CliKintoneTest-55.csv" with content as below:
       | * | Text_0 | Number_0 | Table | Text    | Number |
@@ -553,7 +554,7 @@ Feature: cli-kintone import command
       | * |        |          | \d+   | Jenny        | 400            |
       | * |        |          | \d+   | Michael      | 500            |
 
-  Scenario: CliKintoneTest-60 Should import the records successfully with the correct guest space id.
+  Scenario: App in a guest space
     Given The app "app_in_guest_space" has no records
     And The CSV file "CliKintoneTest-60.csv" with content as below:
       | Text  | Number |
@@ -571,7 +572,7 @@ Feature: cli-kintone import command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-61 Should return the error message when the guest space does not exist.
+  Scenario: Incorrect guest space
     Given The app "app_in_guest_space" has no records
     And The CSV file "CliKintoneTest-61.csv" with content as below:
       | Text  | Number |
@@ -584,7 +585,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed."
 
-  Scenario: CliKintoneTest-62 Should import the records successfully with --encoding option is utf8.
+  Scenario: Utf8 encoded file
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-62.csv" with "utf8" encoded content as below:
       | Text   | Number |
@@ -597,7 +598,7 @@ Feature: cli-kintone import command
       | Text   | Number |
       | レコード番号 | 10     |
 
-  Scenario: CliKintoneTest-63 Should import the records successfully with --encoding option is sjis.
+  Scenario: Sjis encoded file
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-63.csv" with "sjis" encoded content as below:
       | Text | Number |
@@ -610,7 +611,7 @@ Feature: cli-kintone import command
       | Text | Number |
       | 作成日時 | 10     |
 
-  Scenario: CliKintoneTest-64 Should return the error message when importing records with an unsupported character code.
+  Scenario: Unsupported encoding
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-64.csv" with content as below:
       | Text  | Number |
@@ -623,7 +624,7 @@ Feature: cli-kintone import command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Argument: encoding, Given: \"unsupported_character_code\", Choices: \"utf8\", \"sjis\""
 
-  Scenario: CliKintoneTest-75 Should delete attachments successfully when upserting records without the attachment field.
+  Scenario: Remove attachments by upserting
     Given The app "app_for_upsert" has no records
     And I have a file "attachments/file1.txt" with content: "123"
     And I have a file "attachments/file2.txt" with content: "abc"
@@ -648,7 +649,7 @@ Feature: cli-kintone import command
       | $RECORD_NUMBERS[1] | Rose  | 40     |            |
       | \d+                | Jenny | 50     |            |
 
-  Scenario: CliKintoneTest-76 Should import the records successfully including the Table field.
+  Scenario: Record data with table fields
     Given The app "app_for_import_table" has no records
     And The CSV file "CliKintoneTest-75.csv" with content as below:
       | * | Text_0 | Number_0 | Table | Text    | Number |
@@ -669,7 +670,7 @@ Feature: cli-kintone import command
       | * | Jenny  | 30       | \d+   | Jenny        | 400            |
       | * |        |          | \d+   | Michael      | 500            |
 
-  Scenario: CliKintoneTest-77 Should return the error message when importing with empty input for the required field.
+  Scenario: Record data with required field empty
     Given The CSV file "CliKintoneTest-77.csv" with content as below:
       | Text  | Number |
       | Alice | 10     |

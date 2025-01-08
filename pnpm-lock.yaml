@@ -111,8 +111,8 @@ importers:
         specifier: ^2.15.1
         version: 2.15.1
       allure-jest:
-        specifier: ^3.0.7
-        version: 3.0.7(jest@29.7.0)
+        specifier: ^3.0.8
+        version: 3.0.8(jest@29.7.0)
       allure-js-commons:
         specifier: ^3.0.7
         version: 3.0.7
@@ -6684,8 +6684,8 @@ packages:
       allure-js-commons: 2.15.1
     dev: true
 
-  /allure-jest@3.0.7(jest@29.7.0):
-    resolution: {integrity: sha512-vOFLkjreMI0br1PoSNP8AyPY3ieTLdHcBz1c5kXSyWNIxx23EPJ/TxKgg1cYyQrkpm3z3TMCj3XS3iYhVwz0/g==}
+  /allure-jest@3.0.8(jest@29.7.0):
+    resolution: {integrity: sha512-c7efTQFC+v+V/ANmpxSh2A40gf8FWA9rDq3poJUDVyX6cwWPSIIm8ioCthUlrAPDNmBwhBdoBUKeOjSWVd8WLg==}
     peerDependencies:
       jest: '>=24.8.0'
       jest-circus: '>=24.8.0'
@@ -6704,7 +6704,7 @@ packages:
       jest-environment-node:
         optional: true
     dependencies:
-      allure-js-commons: 3.0.7
+      allure-js-commons: 3.0.8
       jest: 29.7.0(@types/node@18.19.70)(ts-node@10.9.2)
     transitivePeerDependencies:
       - allure-playwright
@@ -6722,6 +6722,17 @@ packages:
     resolution: {integrity: sha512-keHlPAtmzdtEK8FT5W0mOMYh9ZrdlhbrDyaaAKMNHipF/EsFak18XdbLiAKhnHbHiicE+n3BrmBU4rfQEoFHzA==}
     peerDependencies:
       allure-playwright: 3.0.7
+    peerDependenciesMeta:
+      allure-playwright:
+        optional: true
+    dependencies:
+      md5: 2.3.0
+    dev: true
+
+  /allure-js-commons@3.0.8:
+    resolution: {integrity: sha512-ZEJDlMIhZNs7k7/V46buSeJQFQQcRnOMBGnoYowgSIU3P7frHANQFI3MlyoqHfC4DdE/irbVmfaP6lhaHxbfZQ==}
+    peerDependencies:
+      allure-playwright: 3.0.8
     peerDependenciesMeta:
       allure-playwright:
         optional: true

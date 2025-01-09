@@ -88,7 +88,7 @@
     "allure-commandline": "^2.32.0",
     "allure-cucumberjs": "^2.15.1",
     "allure-jest": "^3.0.8",
-    "allure-js-commons": "^3.0.7",
+    "allure-js-commons": "^3.0.8",
     "babel-jest": "^29.7.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.17.0",

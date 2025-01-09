@@ -1,4 +1,4 @@
-# Using an HTTP proxy
+# Using a HTTP proxy
 
 ## Command-line interface
 

@@ -57,9 +57,9 @@ export const upsertRecords = async (
         updateKey,
         { attachmentsDir, skipMissingFields },
       );
-      // TODO rest-api-clientのupsert対応が必要
       await apiClient.record.updateAllRecords({
         app,
+        upsert: true,
         records: recordsToUpload,
       });
       currentIndex += recordsByChunk.length;

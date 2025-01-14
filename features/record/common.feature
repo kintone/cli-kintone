@@ -1,5 +1,5 @@
 @common
-Feature: common
+Feature: record common
 
   Scenario: Unknown option
     When I run the command with args "record export --app 1 --base-url http://example.com --foo"

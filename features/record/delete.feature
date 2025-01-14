@@ -1,7 +1,8 @@
 @isolated
-Feature: cli-kintone delete command
+@delete
+Feature: record delete
 
-  Scenario: CliKintoneTest-126 Should return the error message with an API Token without Delete permission.
+  Scenario: API token does not have delete permission
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
       | Text  | Number |
@@ -12,7 +13,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 
-  Scenario: CliKintoneTest-127 Should delete the records of the app in a space.
+  Scenario: App in a space
     Given The app "app_in_space_for_delete" has no records
     And The app "app_in_space_for_delete" has some records as below:
       | Text  | Number |
@@ -25,7 +26,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is zero
     And The app "app_in_space_for_delete" should have no records
 
-  Scenario: CliKintoneTest-128 Should delete records when specifying an API Token and including username/password.
+  Scenario: API token and login information
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
       | Text  | Number |
@@ -39,7 +40,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is zero
     And The app "app_for_delete" should have no records
 
-  Scenario: CliKintoneTest-129 Should delete all records of a specified app
+  Scenario: Delete all records
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
       | Text  | Number |
@@ -52,14 +53,14 @@ Feature: cli-kintone delete command
     Then I should get the exit code is zero
     And The app "app_for_delete" should have no records
 
-  Scenario: CliKintoneTest-130 Should return the error message when deleting the record with a draft API Token.
+  Scenario: API token is a draft
     Given Load app ID of the app "app_for_draft_token" as env var: "APP_ID"
     And Load app token of the app "app_for_draft_token" with exact permissions "view,delete" as env var: "API_TOKEN"
     When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN --yes"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
-  Scenario: CliKintoneTest-131 Should return the error message when deleting records with two valid API Token.
+  Scenario: A duplicate API token for the same app
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN_1"
     And Load app token of the app "app_for_delete" with exact permissions "view,add,delete" as env var: "API_TOKEN_2"
@@ -67,7 +68,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_DA03] You cannot specify a duplicate API token for the same app."
 
-  Scenario: CliKintoneTest-132 Should delete records of specified app successfully with two valid API Tokens in different apps.
+  Scenario: API tokens for different apps
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
@@ -81,21 +82,21 @@ Feature: cli-kintone delete command
     Then I should get the exit code is zero
     And The app "app_for_delete" should have no records
 
-  Scenario: CliKintoneTest-133 Should return the error message when deleting records with valid and invalid API Tokens.
+  Scenario: Valid and invalid API tokens
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
     When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN,INVALID_API_TOKEN_2 --yes"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
-  Scenario: CliKintoneTest-134 Should return the error message when authorizing with username/password.
+  Scenario: Login authentication is not supported
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And Load username and password of the app "app_for_delete" with exact permissions "view,delete" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --username $USERNAME --password $PASSWORD --yes"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: The delete command only supports API token authentication."
 
-  Scenario: CliKintoneTest-135 Should delete the specified records successfully by --file-path option.
+  Scenario: Specify records with a file
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
       | Text  | Number |
@@ -118,14 +119,14 @@ Feature: cli-kintone delete command
       | $RECORD_NUMBERS[2] | Jenny | 30     |
       | $RECORD_NUMBERS[3] | Rose  | 40     |
 
-  Scenario: CliKintoneTest-136 Should return the error message when deleting records with a lacking value of --file-path option.
+  Scenario: File path is not specified
     And Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
     When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Not enough arguments following: file-path"
 
-  Scenario: CliKintoneTest-137 Should return the error message when deleting records with a non-existent file.
+  Scenario: File does not exist
     And Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
     When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --file-path non_existent_file.csv"
@@ -133,7 +134,7 @@ Feature: cli-kintone delete command
     # Specifying (.*) to ignore the absolute path of the file on Windows
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non_existent_file.csv'"
 
-  Scenario: CliKintoneTest-138 Should return the error message when deleting records with an unsupported file.
+  Scenario: Unsupported file type
     Given I have a file "unsupported_delete_file.txt" with content: "Record_number"
     And Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
@@ -141,7 +142,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Unexpected file type: txt is unacceptable."
 
-  Scenario: CliKintoneTest-139 Should delete the records of the app in which the Record_number field code has been changed.
+  Scenario: Specify record number with customized field code
     Given The app "app_has_changed_record_number" has no records
     And The app "app_has_changed_record_number" has some records as below:
       | Text  | Number |
@@ -164,7 +165,7 @@ Feature: cli-kintone delete command
       | $RECORD_NUMBERS[2]   | Jenny | 30     |
       | $RECORD_NUMBERS[3]   | Rose  | 40     |
 
-  Scenario: CliKintoneTest-140 Should return the error message when deleting records with non-existent record number.
+  Scenario: Specified record does not exist
     Given The app "app_for_delete" has no records
     And The CSV file "CliKintoneTest-140.csv" with content as below:
       | Record_number |
@@ -175,7 +176,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Not exists record number. ID: 0"
 
-  Scenario: CliKintoneTest-141 Should delete the records of the app that have set the App Code, and the Record_number contains the App Code.
+  Scenario: Specify with app code and record number
     Given The app "app_has_set_app_code" has no records
     And The app "app_has_set_app_code" has some records as below:
       | Text  | Number |
@@ -198,7 +199,7 @@ Feature: cli-kintone delete command
       | MyApp-$RECORD_NUMBERS[2] | Jenny | 30     |
       | MyApp-$RECORD_NUMBERS[3] | Rose  | 40     |
 
-  Scenario: CliKintoneTest-142 Should delete the records of the app that have set the App Code, and the Record_number does not contain the App Code.
+  Scenario: Specify without app code
     Given The app "app_has_set_app_code" has no records
     And The app "app_has_set_app_code" has some records as below:
       | Text  | Number |
@@ -221,7 +222,7 @@ Feature: cli-kintone delete command
       | MyApp-$RECORD_NUMBERS[2] | Jenny | 30     |
       | MyApp-$RECORD_NUMBERS[3] | Rose  | 40     |
 
-  Scenario: CliKintoneTest-143 Should return the error message when deleting records with incorrect App Code.
+  Scenario: Specify with incorrect app code
     Given The CSV file "CliKintoneTest-143.csv" with content as below:
       | Record_number        |
       | NonExistentAppCode-1 |
@@ -231,7 +232,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Invalid record number. ID: NonExistentAppCode-1"
 
-  Scenario: CliKintoneTest-144 Should delete the records without the delete confirmation message when specifying the -y option.
+  Scenario: Skip confirmation message
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
       | Text  | Number |
@@ -244,7 +245,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is zero
     And The app "app_for_delete" should have no records
 
-  Scenario: CliKintoneTest-149 Should delete the records of the app in a guest space.
+  Scenario: App in a guest space
     Given The app "app_in_guest_space" has no records
     And The app "app_in_guest_space" has some records as below:
       | Text  | Number |
@@ -258,14 +259,14 @@ Feature: cli-kintone delete command
     Then I should get the exit code is zero
     And The app "app_in_guest_space" should have no records
 
-  Scenario: CliKintoneTest-150 Should return the error message when deleting records with incorrect guest space ID.
+  Scenario: Incorrect guest space ID
     Given Load app ID of the app "app_in_guest_space" as env var: "APP_ID"
     And Load app token of the app "app_in_guest_space" with exact permissions "view,delete" as env var: "API_TOKEN"
     When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --guest-space-id 1"
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed.."
 
-  Scenario: CliKintoneTest-151 Should delete the records successfully with an encoded utf8 CSV file, and --encoding option is utf8.
+  Scenario: Utf8 encoded file
     Given The app "app_for_delete_encoding" has no records
     And The app "app_for_delete_encoding" has some records as below:
       | 文字列__1行_ |
@@ -288,7 +289,7 @@ Feature: cli-kintone delete command
       | $RECORD_NUMBERS[2] | Jenny    |
       | $RECORD_NUMBERS[3] | Rose     |
 
-  Scenario: CliKintoneTest-152 Should delete the records successfully with an encoded sjis CSV file, and --encoding option is sjis.
+  Scenario: Sjis encoded file
     Given The app "app_for_delete_encoding" has no records
     And The app "app_for_delete_encoding" has some records as below:
       | 文字列__1行_ |
@@ -311,7 +312,7 @@ Feature: cli-kintone delete command
       | $RECORD_NUMBERS[2] | Jenny    |
       | $RECORD_NUMBERS[3] | Rose     |
 
-  Scenario: CliKintoneTest-153 Should return the error message when specifying an encoded sjis CSV file, and --encoding option is utf8.
+  Scenario: Specify utf8 with sjis encoded file
     Given The CSV file "CliKintoneTest-153.csv" with "sjis" encoded content as below:
       | レコード番号 |
       | 1      |
@@ -321,7 +322,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: The specified encoding \(utf8\) might mismatch the actual encoding of the CSV file."
 
-  Scenario: CliKintoneTest-154 Should return the error message when specifying an encoded utf8 CSV file, and --encoding option is sjis.
+  Scenario: Specify sjis with utf8 encoded file
     Given The CSV file "CliKintoneTest-154.csv" with "utf8" encoded content as below:
       | レコード番号 |
       | 1      |
@@ -331,7 +332,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: The record number field code \(レコード番号\) is not found."
 
-  Scenario: CliKintoneTest-155 Should return the error message when specifying an unsupported encoding.
+  Scenario: Unsupported encoding
     Given The CSV file "CliKintoneTest-155.csv" with "utf8" encoded content as below:
       | レコード番号 |
       | 1      |
@@ -341,7 +342,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Argument: encoding, Given: \"unsupported_encoding\", Choices: \"utf8\", \"sjis\""
 
-  Scenario: CliKintoneTest-166 Should return the warning message when the specified app does not have any records.
+  Scenario: App does not have records
     Given The app "app_for_delete" has no records
     And Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
@@ -349,7 +350,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is zero
     And The output error message should match with the pattern: "WARN: The specified app does not have any records."
 
-  Scenario: CliKintoneTest-167 Should not delete the records when specifying "N" in the confirmation prompt.
+  Scenario: Cancel the execution by pressing "N"
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
@@ -369,7 +370,7 @@ Feature: cli-kintone delete command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-168 Should delete the records when specifying "Y" in the confirmation prompt.
+  Scenario: Proceed with the execution by pressing "Y"
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
@@ -384,7 +385,7 @@ Feature: cli-kintone delete command
     Then I should get the exit code is zero
     And The app "app_for_delete" should have no records
 
-  Scenario: CliKintoneTest-169 Should not delete the records when specifying other than Y, n in the confirmation prompt.
+  Scenario: Unsupported character for confirmation message
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
@@ -404,7 +405,7 @@ Feature: cli-kintone delete command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-170 Should not delete the records when pressing Enter (without a specific answer) in the confirmation prompt.
+  Scenario: Press Enter for confirmation message
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
@@ -423,7 +424,7 @@ Feature: cli-kintone delete command
       | Bob   | 20     |
       | Jenny | 30     |
 
-  Scenario: CliKintoneTest-171 Should return the error message when the record number field code does not exist in the CSV file.
+  Scenario: Record number is not specified in a file
     Given The CSV file "CliKintoneTest-171.csv" with content as below:
       | Text  | Number |
       | Alice | 10     |

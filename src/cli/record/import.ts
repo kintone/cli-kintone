@@ -46,7 +46,7 @@ const builder = (args: yargs.Argv) =>
       type: "string",
       requiresArg: true,
     })
-    .option("use-server-side-upsert", {
+    .option("experimental-use-server-side-upsert", {
       describe:
         "Use server-side upsert. This option is under early development.",
       type: "boolean",
@@ -71,7 +71,7 @@ const handler = (args: Args) => {
     filePath: args["file-path"],
     updateKey: args["update-key"],
     fields: args.fields?.split(","),
-    useServerSideUpsert: args["use-server-side-upsert"],
+    useServerSideUpsert: args["experimental-use-server-side-upsert"],
     encoding: args.encoding,
     pfxFilePath: args["pfx-file-path"],
     pfxFilePassword: args["pfx-file-password"],

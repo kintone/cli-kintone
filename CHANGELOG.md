@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.0](https://github.com/kintone/cli-kintone/compare/v1.12.3...v1.13.0) (2025-01-16)
+
+
+### Features
+
+* add use-server-side-upsert option ([#967](https://github.com/kintone/cli-kintone/issues/967)) ([e645b7b](https://github.com/kintone/cli-kintone/commit/e645b7b75afbee891c4179e7475f6c54b499e97a))
+* **website:** setup algolia docsearch ([#973](https://github.com/kintone/cli-kintone/issues/973)) ([b8ce7d3](https://github.com/kintone/cli-kintone/commit/b8ce7d3d82c3bc3754b632faaa1badd2c14e3e87))
+
+
+### Documentation
+
+* fix grammatical error ([#958](https://github.com/kintone/cli-kintone/issues/958)) ([001fd24](https://github.com/kintone/cli-kintone/commit/001fd2485793b57f9d3d0d689a8ad1b5e791189b))
+
 ## [1.12.3](https://github.com/kintone/cli-kintone/compare/v1.12.2...v1.12.3) (2024-12-05)
 
 

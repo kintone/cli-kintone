@@ -76,17 +76,29 @@ export type ManifestV2JsonObject = {
     ja?: string;
     en: string;
     zh?: string;
+    "zh-TW"?: string;
+    es?: string;
+    "pt-BR"?: string;
+    th?: string;
   };
   description?: {
     ja?: string;
     en: string;
     zh?: string;
+    "zh-TW"?: string;
+    es?: string;
+    "pt-BR"?: string;
+    th?: string;
   };
   icon: string;
   homepage_url?: {
     ja: string;
     en: string;
     zh: string;
+    "zh-TW"?: string;
+    es?: string;
+    "pt-BR"?: string;
+    th?: string;
   };
   components?: [
     {

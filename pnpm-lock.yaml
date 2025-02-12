@@ -20,8 +20,8 @@ importers:
         specifier: ^10.2.2
         version: 10.2.2
       '@kintone/rest-api-client':
-        specifier: ^5.7.0
-        version: 5.7.0
+        specifier: ^5.7.1
+        version: 5.7.1
       chalk:
         specifier: 4.1.2
         version: 4.1.2
@@ -3586,7 +3586,7 @@ packages:
       combine-promises: 1.2.0
       commander: 5.1.0
       copy-webpack-plugin: 11.0.0(webpack@5.93.0)
-      core-js: 3.38.0
+      core-js: 3.39.0
       css-loader: 6.11.0(webpack@5.93.0)
       css-minimizer-webpack-plugin: 5.0.1(clean-css@5.3.3)(webpack@5.93.0)
       cssnano: 6.1.2(postcss@8.4.41)
@@ -5338,16 +5338,16 @@ packages:
       bytes: 3.1.2
     dev: false
 
-  /@kintone/rest-api-client@5.7.0:
-    resolution: {integrity: sha512-vHzR7RMUYWxt1RaoGwywCLq1Rx2FTot/nvThO4cZEpwf7lQ0/LQ++xuZmYmi1U1jAuVqOHXxEglPAJDnAqhP2Q==}
+  /@kintone/rest-api-client@5.7.1:
+    resolution: {integrity: sha512-PWZ3AX/8wKYbjPT1p10ykpKit9j7RA28h9zL/xlohK42s9Vn5ACN+H1P35FOoO+pxkatVsNYC0nR7pgfIWvI/w==}
     engines: {node: '>=18'}
     dependencies:
       axios: 1.7.9
-      core-js: 3.39.0
+      core-js: 3.40.0
       form-data: 4.0.1
       js-base64: 3.7.7
       mime: 3.0.0
-      qs: 6.13.0
+      qs: 6.14.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -7900,9 +7900,14 @@ packages:
   /core-js@3.38.0:
     resolution: {integrity: sha512-XPpwqEodRljce9KswjZShh95qJ1URisBeKCjUdq27YdenkslVe7OO0ZJhlYXAChW7OhXaRLl8AAba7IBfoIHug==}
     requiresBuild: true
+    dev: false
 
   /core-js@3.39.0:
     resolution: {integrity: sha512-raM0ew0/jJUqkJ0E6e8UDtl+y/7ktFivgWvqw8dNSQeNWoSDLvQ1H/RN3aPXB9tBd4/FhyR4RDPGhsNIMsAn7g==}
+    requiresBuild: true
+
+  /core-js@3.40.0:
+    resolution: {integrity: sha512-7vsMc/Lty6AGnn7uFpYT56QesI5D2Y/UkgKounk87OP9Z2H9Z8kj6jzcSGAxFmUtDOS0ntK6lbQz+Nsa0Jj6mQ==}
     requiresBuild: true
     dev: false
 
@@ -13258,8 +13263,8 @@ packages:
     dependencies:
       side-channel: 1.1.0
 
-  /qs@6.13.0:
-    resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
+  /qs@6.14.0:
+    resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
     engines: {node: '>=0.6'}
     dependencies:
       side-channel: 1.1.0

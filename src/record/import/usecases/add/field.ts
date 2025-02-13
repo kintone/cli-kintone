@@ -3,6 +3,7 @@ import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type * as Fields from "../../types/field";
 import type { FieldSchema } from "../../types/schema";
 import path from "path";
+import { retry } from "../../../../utils/retry";
 
 export const fieldProcessor: (
   apiClient: KintoneRestAPIClient,
@@ -50,11 +51,13 @@ const fileFieldProcessor = async (
     if (!fileInfo.localFilePath) {
       throw new Error("local file path not defined.");
     }
-    const { fileKey } = await apiClient.file.uploadFile({
-      file: {
-        path: path.join(attachmentsDir, fileInfo.localFilePath),
-      },
-    });
+    const { fileKey } = await retry(() =>
+      apiClient.file.uploadFile({
+        file: {
+          path: path.join(attachmentsDir, fileInfo.localFilePath),
+        },
+      }),
+    );
     uploadedList.push({
       fileKey,
     });

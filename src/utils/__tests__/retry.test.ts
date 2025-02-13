@@ -1,46 +1,41 @@
 import { retry } from "../retry";
 
+// Mock setTimeout because we don't need to really wait.
+jest.mock("timers/promises", () => ({
+  setTimeout: () => {
+    /* noop */
+  },
+}));
+
 describe("retry", () => {
   it("should return result when given function is resolved", async () => {
-    const maxAttempt = 5;
-    const initialDelay = 100;
-    const maxDelay = 500;
-    const maxJitter = 10;
-
-    const promise = retry(
-      () => {
-        return true;
-      },
-      () => {
-        /* noop */
-      },
-      maxAttempt,
-      initialDelay,
-      maxDelay,
-      maxJitter,
-    );
+    const promise = retry(() => {
+      return true;
+    });
     await expect(promise).resolves.toBe(true);
   });
 
   it("should throw an error when all retries are failed", async () => {
-    const maxAttempt = 5;
-    const initialDelay = 100;
-    const maxDelay = 500;
-    const maxJitter = 10;
+    const promise = retry(() => {
+      throw new Error(`Error`);
+    });
+    await expect(promise).rejects.toThrow(new Error(`Error`));
+  });
 
+  it("should throw an error when retry conditions are not match", async () => {
+    let count = 0;
     const promise = retry(
       () => {
-        throw new Error(`Error`);
+        throw new Error(`Error: ${count}`);
       },
-      () => {
-        /* noop */
+      {
+        onError: () => {
+          count++;
+        },
+        retryCondition: (e) => e instanceof Error && e.message !== "Error: 3",
       },
-      maxAttempt,
-      initialDelay,
-      maxDelay,
-      maxJitter,
     );
-    await expect(promise).rejects.toThrow(new Error(`Error`));
+    await expect(promise).rejects.toThrow(new Error(`Error: 3`));
   });
 
   it(
@@ -66,17 +61,19 @@ describe("retry", () => {
           }
           throw new Error(`Error: ${count}`);
         },
-        (_, __, nextDelay) => {
-          expect(nextDelay).toBeGreaterThanOrEqual(
-            expectedNextDelays[count - 1].min,
-          );
-          expect(nextDelay).toBeLessThan(expectedNextDelays[count - 1].max);
-          count++;
+        {
+          onError: (_, __, ___, nextDelay) => {
+            expect(nextDelay).toBeGreaterThanOrEqual(
+              expectedNextDelays[count - 1].min,
+            );
+            expect(nextDelay).toBeLessThan(expectedNextDelays[count - 1].max);
+            count++;
+          },
+          maxAttempt,
+          initialDelay,
+          maxDelay,
+          maxJitter,
         },
-        maxAttempt,
-        initialDelay,
-        maxDelay,
-        maxJitter,
       );
       expect(result).toBe(true);
     },

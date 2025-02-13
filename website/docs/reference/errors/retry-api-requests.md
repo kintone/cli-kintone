@@ -4,9 +4,9 @@ For some types of API requests, cli-kintone retries request on error.
 
 ## Target API requests
 
-- Download File (`GET /k/v1/file.json`)
+- [Download File](https://kintone.dev/en/docs/kintone/rest-api/files/download-file/) (`GET /k/v1/file.json`)
   - 5xx errors
-- Upload File (`POST /k/v1/file.json`)
+- [Upload File](https://kintone.dev/en/docs/kintone/rest-api/files/upload-file/) (`POST /k/v1/file.json`)
   - 5xx errors
 
 ## Strategy

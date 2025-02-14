@@ -61,14 +61,21 @@ const fileFieldProcessor = async (
           },
         }),
       {
-        onError: (e, attemptCount, nextDelay) => {
+        onError: (e, attemptCount, toRetry, nextDelay, config) => {
           logger.warn(
             "Failed to upload attachment file due to an error on kintone",
           );
           logger.warn(e);
-          logger.warn(
-            `Retrying request after ${nextDelay} milliseconds... (count: ${attemptCount})`,
-          );
+          if (toRetry) {
+            if (attemptCount === config.maxAttempt) {
+              logger.error(
+                `Retry limit reached (count: ${attemptCount}), limit: ${config.maxAttempt}`,
+              );
+            }
+            logger.warn(
+              `Retrying request after ${nextDelay} milliseconds... (count: ${attemptCount}, limit: ${config.maxAttempt})`,
+            );
+          }
         },
         retryCondition: (e: unknown) =>
           e instanceof KintoneRestAPIError && e.status >= 500 && e.status < 600,

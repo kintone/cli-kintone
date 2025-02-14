@@ -20,6 +20,12 @@ export const retry = async <T>(
       attemptCount: number,
       toRetry: boolean,
       nextDelay: number,
+      config: {
+        maxAttempt: number;
+        initialDelay: number;
+        maxDelay: number;
+        maxJitter: number;
+      },
     ) => void | Promise<void>;
     retryCondition?: (error: unknown) => boolean;
     maxAttempt?: number;
@@ -42,7 +48,7 @@ export const retry = async <T>(
   let finalError: unknown;
   for (
     let attemptCount = 1, delay = 0;
-    attemptCount < maxAttempt;
+    attemptCount <= maxAttempt;
     attemptCount++
   ) {
     await setTimeout(delay);
@@ -58,8 +64,12 @@ export const retry = async <T>(
       const jitter = Math.floor(Math.random() * maxJitter);
       delay =
         Math.min(initialDelay * 2 ** (attemptCount - 1), maxDelay) + jitter;
-
-      await onError(e, attemptCount, retryCond, delay);
+      await onError(e, attemptCount, retryCond, delay, {
+        maxAttempt,
+        initialDelay,
+        maxDelay,
+        maxJitter,
+      });
 
       // Throw immediately if retry conditions are not met
       if (!retryCond) {

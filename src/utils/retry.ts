@@ -47,7 +47,9 @@ export const retry = async <T>(
   ) {
     await setTimeout(delay);
     try {
-      return fn();
+      // To catch an error in this try-catch block, we need to await this function before return
+      // ref. https://zenn.dev/azukiazusa/articles/difference-between-return-and-return-await
+      return await fn();
     } catch (e) {
       finalError = e;
 

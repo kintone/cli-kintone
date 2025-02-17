@@ -2,6 +2,10 @@
 
 For some types of API requests, cli-kintone retries request on error.
 
+## Retry units
+
+Retries are performed for each API request. When requests are wrapped in Bulk Request (`bulkRequest.json`), retries will be performed for each bulkRequest unit.
+
 ## Target API requests
 
 - [Download File](https://kintone.dev/en/docs/kintone/rest-api/files/download-file/) (`GET /k/v1/file.json`)

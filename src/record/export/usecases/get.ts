@@ -246,6 +246,7 @@ const downloadAndSaveFile: (
         logger.warn(
           "Failed to download attachment file due to an error on kintone",
         );
+        logger.warn(`fileKey: ${fileKey}, path: ${localFilePath}`);
         logger.warn(e);
         if (toRetry) {
           if (attemptCount === config.maxAttempt) {

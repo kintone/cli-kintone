@@ -65,6 +65,7 @@ const fileFieldProcessor = async (
           logger.warn(
             "Failed to upload attachment file due to an error on kintone",
           );
+          logger.warn(`path: ${fileInfo.localFilePath}`);
           logger.warn(e);
           if (toRetry) {
             if (attemptCount === config.maxAttempt) {

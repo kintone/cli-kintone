@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.0](https://github.com/kintone/cli-kintone/compare/v1.13.0...v1.14.0) (2025-02-19)
+
+
+### Features
+
+* retry API request on 5xx errors ([#1013](https://github.com/kintone/cli-kintone/issues/1013)) ([f3d19ae](https://github.com/kintone/cli-kintone/commit/f3d19ae207c7711ee4b5e26486754507ee0c9fa6))
+* Support three new locales ([#996](https://github.com/kintone/cli-kintone/issues/996)) ([709bc6c](https://github.com/kintone/cli-kintone/commit/709bc6cc11c0627b76a2f55d27cf2e9d3ecacb33))
+
 ## [1.13.0](https://github.com/kintone/cli-kintone/compare/v1.12.3...v1.13.0) (2025-01-16)
 
 

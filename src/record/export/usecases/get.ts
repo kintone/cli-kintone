@@ -6,6 +6,7 @@ import type {
   KintoneRecordField,
   KintoneRestAPIClient,
 } from "@kintone/rest-api-client";
+import { KintoneRestAPIError } from "@kintone/rest-api-client";
 
 import path from "path";
 
@@ -14,6 +15,7 @@ import { getAllRecords } from "./get/getAllRecords";
 import type { LocalRecordRepository } from "./interface";
 import { replaceSpecialCharacters } from "../utils/file";
 import { logger } from "../../../utils/log";
+import { retry } from "../../../utils/retry";
 
 export const NO_RECORDS_WARNING =
   "No records exist in the app or match the condition.";
@@ -234,9 +236,35 @@ const downloadAndSaveFile: (
   fileKey: string,
   localFilePath: string,
 ) => Promise<string> = async (apiClient, fileKey, localFilePath) => {
-  const file = await apiClient.file.downloadFile({
-    fileKey,
-  });
+  const file = await retry(
+    () =>
+      apiClient.file.downloadFile({
+        fileKey,
+      }),
+    {
+      onError: (e, attemptCount, toRetry, nextDelay, config) => {
+        logger.warn(
+          "Failed to download attachment file due to an error on kintone",
+        );
+        logger.warn(`fileKey: ${fileKey}, path: ${localFilePath}`);
+        logger.warn(e);
+        if (toRetry) {
+          if (attemptCount === config.maxAttempt) {
+            logger.error(
+              `Retry limit reached (count: ${attemptCount}), limit: ${config.maxAttempt}`,
+            );
+          } else {
+            logger.warn(
+              `Retrying request after ${nextDelay} milliseconds... (count: ${attemptCount}, limit: ${config.maxAttempt})`,
+            );
+          }
+        }
+      },
+      retryCondition: (e: unknown) =>
+        e instanceof KintoneRestAPIError && e.status >= 500 && e.status < 600,
+    },
+  );
+
   return saveFileWithoutOverwrite(localFilePath, file);
 };
 

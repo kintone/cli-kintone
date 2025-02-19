@@ -1,8 +1,11 @@
 import type { KintoneRecordForParameter } from "../../../../kintone/types";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
+import { KintoneRestAPIError } from "@kintone/rest-api-client";
 import type * as Fields from "../../types/field";
 import type { FieldSchema } from "../../types/schema";
 import path from "path";
+import { retry } from "../../../../utils/retry";
+import { logger } from "../../../../utils/log";
 
 export const fieldProcessor: (
   apiClient: KintoneRestAPIClient,
@@ -50,11 +53,36 @@ const fileFieldProcessor = async (
     if (!fileInfo.localFilePath) {
       throw new Error("local file path not defined.");
     }
-    const { fileKey } = await apiClient.file.uploadFile({
-      file: {
-        path: path.join(attachmentsDir, fileInfo.localFilePath),
+    const { fileKey } = await retry(
+      () =>
+        apiClient.file.uploadFile({
+          file: {
+            path: path.join(attachmentsDir, fileInfo.localFilePath),
+          },
+        }),
+      {
+        onError: (e, attemptCount, toRetry, nextDelay, config) => {
+          logger.warn(
+            "Failed to upload attachment file due to an error on kintone",
+          );
+          logger.warn(`path: ${fileInfo.localFilePath}`);
+          logger.warn(e);
+          if (toRetry) {
+            if (attemptCount === config.maxAttempt) {
+              logger.error(
+                `Retry limit reached (count: ${attemptCount}), limit: ${config.maxAttempt}`,
+              );
+            }
+            logger.warn(
+              `Retrying request after ${nextDelay} milliseconds... (count: ${attemptCount}, limit: ${config.maxAttempt})`,
+            );
+          }
+        },
+        retryCondition: (e: unknown) =>
+          e instanceof KintoneRestAPIError && e.status >= 500 && e.status < 600,
       },
-    });
+    );
+
     uploadedList.push({
       fileKey,
     });

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/kintone/cli-kintone/compare/v1.14.0...v1.14.1) (2025-03-22)
+
+
+### Documentation
+
+* add test report link ([#1026](https://github.com/kintone/cli-kintone/issues/1026)) ([9a752ff](https://github.com/kintone/cli-kintone/commit/9a752ff61a1135d8c6ea6ac43a66a4fc01764f1c))
+
 ## [1.14.0](https://github.com/kintone/cli-kintone/compare/v1.13.0...v1.14.0) (2025-02-19)
 
 

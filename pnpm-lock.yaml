@@ -150,7 +150,7 @@ importers:
         specifier: ^5.8.2
         version: 5.8.2
       zx:
-        specifier: ^8.4.2
+        specifier: ^8.5.0
         version: 8.5.0
 
   website:

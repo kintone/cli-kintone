@@ -105,8 +105,8 @@ importers:
         specifier: ^8.17.1
         version: 8.17.1
       allure-commandline:
-        specifier: ^2.33.0
-        version: 2.33.0
+        specifier: ^2.34.0
+        version: 2.34.0
       allure-cucumberjs:
         specifier: ^2.15.1
         version: 2.15.1
@@ -1405,7 +1405,7 @@ packages:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.26.5
       '@babel/helper-remap-async-to-generator': 7.25.9(@babel/core@7.25.2)
-      '@babel/traverse': 7.26.10
+      '@babel/traverse': 7.26.9
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -6728,8 +6728,8 @@ packages:
       '@algolia/transporter': 4.24.0
     dev: false
 
-  /allure-commandline@2.33.0:
-    resolution: {integrity: sha512-oGMW1Zaqd9SqYJHUqeET1AP363guQkswnCKD+6jSX9YCK8BbttSqZJy9PeSmJtU16uW3qGB6cvgrvJwKUWG5Ew==}
+  /allure-commandline@2.34.0:
+    resolution: {integrity: sha512-+SgVJ9+o7OH43KVCln0KT7VIsXCfMVEvFuYArIFNtS0fWu61UFdeiCYvrlQPC9trEoFhOe2e5i8Xhghwo46iRQ==}
     hasBin: true
     dev: true
 

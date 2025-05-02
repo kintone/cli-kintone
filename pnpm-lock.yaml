@@ -20,8 +20,8 @@ importers:
         specifier: ^10.3.0
         version: 10.3.0
       '@kintone/rest-api-client':
-        specifier: ^5.7.1
-        version: 5.7.1
+        specifier: ^5.7.2
+        version: 5.7.2
       chalk:
         specifier: 4.1.2
         version: 4.1.2
@@ -3484,7 +3484,7 @@ packages:
       combine-promises: 1.2.0
       commander: 5.1.0
       copy-webpack-plugin: 11.0.0(webpack@5.93.0)
-      core-js: 3.39.0
+      core-js: 3.40.0
       css-loader: 6.11.0(webpack@5.93.0)
       css-minimizer-webpack-plugin: 5.0.1(clean-css@5.3.3)(webpack@5.93.0)
       cssnano: 6.1.2(postcss@8.4.41)
@@ -5234,11 +5234,11 @@ packages:
       bytes: 3.1.2
     dev: false
 
-  /@kintone/rest-api-client@5.7.1:
-    resolution: {integrity: sha512-PWZ3AX/8wKYbjPT1p10ykpKit9j7RA28h9zL/xlohK42s9Vn5ACN+H1P35FOoO+pxkatVsNYC0nR7pgfIWvI/w==}
+  /@kintone/rest-api-client@5.7.2:
+    resolution: {integrity: sha512-VuZ30p/17yBtr2XB1Jp6RJupnFKgr4s+sslPBkVl1NitWkX+TvUjbgm4AcUCiC7IM01WtmtgRwtvZp+Ao0aVjg==}
     engines: {node: '>=18'}
     dependencies:
-      axios: 1.7.9
+      axios: 1.9.0
       core-js: 3.40.0
       form-data: 4.0.1
       js-base64: 3.7.7
@@ -6962,8 +6962,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /axios@1.7.9:
-    resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
+  /axios@1.9.0:
+    resolution: {integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==}
     dependencies:
       follow-redirects: 1.15.9
       form-data: 4.0.1
@@ -7771,14 +7771,9 @@ packages:
     requiresBuild: true
     dev: false
 
-  /core-js@3.39.0:
-    resolution: {integrity: sha512-raM0ew0/jJUqkJ0E6e8UDtl+y/7ktFivgWvqw8dNSQeNWoSDLvQ1H/RN3aPXB9tBd4/FhyR4RDPGhsNIMsAn7g==}
-    requiresBuild: true
-
   /core-js@3.40.0:
     resolution: {integrity: sha512-7vsMc/Lty6AGnn7uFpYT56QesI5D2Y/UkgKounk87OP9Z2H9Z8kj6jzcSGAxFmUtDOS0ntK6lbQz+Nsa0Jj6mQ==}
     requiresBuild: true
-    dev: false
 
   /core-util-is@1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}

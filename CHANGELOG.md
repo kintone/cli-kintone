@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/kintone/cli-kintone/compare/v1.14.0...v1.14.1) (2025-05-09)
+
+
+### Bug Fixes
+
+* update rest-api-client ([#1063](https://github.com/kintone/cli-kintone/issues/1063)) ([#1068](https://github.com/kintone/cli-kintone/issues/1068)) ([ae68509](https://github.com/kintone/cli-kintone/commit/ae68509bc9e22b048fa54f48d7b78206db12026d))
+
+
+### Documentation
+
+* add test report link ([#1026](https://github.com/kintone/cli-kintone/issues/1026)) ([9a752ff](https://github.com/kintone/cli-kintone/commit/9a752ff61a1135d8c6ea6ac43a66a4fc01764f1c))
+
 ## [1.14.0](https://github.com/kintone/cli-kintone/compare/v1.13.0...v1.14.0) (2025-02-19)
 
 

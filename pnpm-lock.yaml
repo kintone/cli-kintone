@@ -20,8 +20,8 @@ importers:
         specifier: ^10.3.1
         version: 10.3.1
       '@kintone/rest-api-client':
-        specifier: ^5.7.2
-        version: 5.7.2
+        specifier: ^5.7.3
+        version: 5.7.3
       chalk:
         specifier: 4.1.2
         version: 4.1.2
@@ -5210,8 +5210,8 @@ packages:
       bytes: 3.1.2
     dev: false
 
-  /@kintone/rest-api-client@5.7.2:
-    resolution: {integrity: sha512-VuZ30p/17yBtr2XB1Jp6RJupnFKgr4s+sslPBkVl1NitWkX+TvUjbgm4AcUCiC7IM01WtmtgRwtvZp+Ao0aVjg==}
+  /@kintone/rest-api-client@5.7.3:
+    resolution: {integrity: sha512-N6gy+t8fGuGUoUIUJpJDrxO9/T8tfiVkInZOEu3QZ7DjSYGlZyVzNcOAw3pnjuNrfza5EVJ7cEuQO4ESRXkcdA==}
     engines: {node: '>=18'}
     dependencies:
       axios: 1.9.0
@@ -7691,7 +7691,7 @@ packages:
     resolution: {integrity: sha512-AF3r7P5dWxL8MxyITRMlORQNaOA2IkAFaTr4k7BUumjPtRpGDTZpl0Pb1XCO6JeDCBdp126Cgs9sMxqSjgYyRg==}
     engines: {node: '>= 0.6'}
     dependencies:
-      mime-db: 1.53.0
+      mime-db: 1.54.0
 
   /compression@1.7.4:
     resolution: {integrity: sha512-jaSIDzP9pZVS4ZfQ+TzvtiWhdpFhE2RDHz8QJkpX9SIpLq88VueF5jJw6t+6CUQcAoA6t+x89MLrWAqpfDE8iQ==}
@@ -12026,14 +12026,9 @@ packages:
     resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
     engines: {node: '>= 0.6'}
 
-  /mime-db@1.53.0:
-    resolution: {integrity: sha512-oHlN/w+3MQ3rba9rqFr6V/ypF10LSkdwUysQL7GkXoTgIWeV+tcXGA852TBxH+gsh8UWoyhR1hKcoMJTuWflpg==}
-    engines: {node: '>= 0.6'}
-
   /mime-db@1.54.0:
     resolution: {integrity: sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ==}
     engines: {node: '>= 0.6'}
-    dev: true
 
   /mime-types@2.1.18:
     resolution: {integrity: sha512-lc/aahn+t4/SWV/qcmumYjymLsWfN3ELhpmVuUFjgsORruuZPVSwAQryq+HHGvO/SI2KVX26bx+En+zhM8g8hQ==}

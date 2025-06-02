@@ -20,8 +20,8 @@ importers:
         specifier: ^10.3.1
         version: 10.3.1
       '@kintone/rest-api-client':
-        specifier: ^5.7.3
-        version: 5.7.3
+        specifier: ^5.7.4
+        version: 5.7.4
       chalk:
         specifier: 4.1.2
         version: 4.1.2
@@ -5266,8 +5266,8 @@ packages:
       bytes: 3.1.2
     dev: false
 
-  /@kintone/rest-api-client@5.7.3:
-    resolution: {integrity: sha512-N6gy+t8fGuGUoUIUJpJDrxO9/T8tfiVkInZOEu3QZ7DjSYGlZyVzNcOAw3pnjuNrfza5EVJ7cEuQO4ESRXkcdA==}
+  /@kintone/rest-api-client@5.7.4:
+    resolution: {integrity: sha512-R6FFVMs2pFwaMdgt+GOCdjnA/J9q5dH9zD5iJLIeCA8sZrDna5sUtLvaapcKUhMHd2Ls6T1TZ+sXZ+nGksGOKw==}
     engines: {node: '>=18'}
     dependencies:
       axios: 1.9.0

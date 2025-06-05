@@ -113,7 +113,7 @@
     "https-proxy-agent": "^7.0.6",
     "iconv-lite": "^0.6.3",
     "node-rsa": "^1.1.1",
-    "yargs": "^17.7.2",
+    "yargs": "^18.0.0",
     "yauzl": "^3.2.0",
     "yazl": "^3.3.1"
   },

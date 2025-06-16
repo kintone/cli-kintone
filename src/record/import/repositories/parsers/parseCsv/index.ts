@@ -1,6 +1,6 @@
 import type { RecordSchema } from "../../../types/schema";
 
-import csvParse from "csv-parse";
+import { parse } from "csv-parse";
 
 import { convertRecord, recordReader } from "./record";
 import { SEPARATOR } from "./constants";
@@ -16,7 +16,7 @@ export async function* csvReader(
   try {
     const sourceStream = source();
     const csvStream = source().pipe(
-      csvParse({
+      parse({
         columns: true,
         skip_empty_lines: true,
         delimiter: SEPARATOR,
@@ -39,7 +39,7 @@ export const countRecordsFromCsv = async (
 ): Promise<number> => {
   try {
     const csvStream = source.pipe(
-      csvParse({
+      parse({
         columns: true,
         skip_empty_lines: true,
         delimiter: SEPARATOR,

@@ -20,7 +20,7 @@ describe("retry", () => {
       const promise = retry(() => {
         throw new Error(`Error`);
       });
-      await expect(promise).rejects.toThrow(new Error(`Error`));
+      await expect(promise).rejects.toThrow("Error");
     });
 
     it("should throw an error when retry conditions are not match", async () => {
@@ -36,7 +36,7 @@ describe("retry", () => {
           retryCondition: (e) => e instanceof Error && e.message !== "Error: 3",
         },
       );
-      await expect(promise).rejects.toThrow(new Error(`Error: 3`));
+      await expect(promise).rejects.toThrow("Error: 3");
     });
 
     it(
@@ -94,7 +94,7 @@ describe("retry", () => {
       const promise = retry(async () => {
         throw new Error(`Error`);
       });
-      await expect(promise).rejects.toThrow(new Error(`Error`));
+      await expect(promise).rejects.toThrow("Error");
     });
 
     it("should throw an error when retry conditions are not match", async () => {
@@ -110,7 +110,7 @@ describe("retry", () => {
           retryCondition: (e) => e instanceof Error && e.message !== "Error: 3",
         },
       );
-      await expect(promise).rejects.toThrow(new Error(`Error: 3`));
+      await expect(promise).rejects.toThrow("Error: 3");
     });
 
     it(

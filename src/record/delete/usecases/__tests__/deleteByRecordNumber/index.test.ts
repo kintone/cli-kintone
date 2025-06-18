@@ -55,6 +55,6 @@ describe("deleteRecords", () => {
     apiClient.record.getAllRecordsWithId = jest.fn().mockResolvedValue([]);
     return expect(
       deleteByRecordNumber(apiClient, "1", [{ value: "appcode-1" }]),
-    ).rejects.toThrow(error);
+    ).rejects.toThrow("Failed to delete records");
   });
 });

@@ -1,4 +1,4 @@
-/** @type {import('@jest/types').Config.InitialOptions} */
+/** @type {import('jest').Config} */
 const config = {
   roots: ["<rootDir>/src", "<rootDir>/features"],
   clearMocks: true,

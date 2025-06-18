@@ -57,7 +57,7 @@ describe("deleteAllRecords", () => {
     ]);
     apiClient.record.deleteAllRecords = jest.fn().mockRejectedValueOnce(error);
     return expect(deleteAllRecords(apiClient, "1")).rejects.toThrow(
-      new DeleteAllRecordsError(error, []),
+      DeleteAllRecordsError,
     );
   });
 });

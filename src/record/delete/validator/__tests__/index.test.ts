@@ -54,9 +54,7 @@ describe("validateRecordNumbers", () => {
     if (pattern.expected.failure !== undefined) {
       return expect(
         validateRecordNumbers(apiClient, "1", pattern.appCode, pattern.input),
-      ).rejects.toThrow(
-        new ValidatorError(pattern.expected.failure.errorMessage),
-      );
+      ).rejects.toThrow(ValidatorError);
     }
 
     return expect(

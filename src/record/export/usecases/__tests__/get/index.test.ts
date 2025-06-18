@@ -252,7 +252,7 @@ describe("getRecords", () => {
         {},
         getAllRecordsMockFn,
       ),
-    ).rejects.toThrow(error);
+    ).rejects.toThrow("error for test");
   });
 
   it("should show warning message if there is no records exist in the app or match the condition.", async () => {

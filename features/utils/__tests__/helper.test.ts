@@ -88,7 +88,7 @@ describe("Helper functions", () => {
 
       expect(() => {
         validateRequireColumnsInTable(columns, requiredColumns);
-      }).toThrowError("The table should have FileName column");
+      }).toThrow("The table should have FileName column");
     });
   });
 

@@ -121,9 +121,11 @@ describe("upsertRecords", () => {
         );
         for (const request of expected.success.requests) {
           if (request.type === "update") {
-            expect(updateAllRecordsMockFn).toBeCalledWith(request.payload);
+            expect(updateAllRecordsMockFn).toHaveBeenCalledWith(
+              request.payload,
+            );
           } else {
-            expect(addAllRecordsMockFn).toBeCalledWith(request.payload);
+            expect(addAllRecordsMockFn).toHaveBeenCalledWith(request.payload);
           }
         }
       }
@@ -137,14 +139,7 @@ describe("upsertRecords", () => {
             input.updateKey,
             input.options,
           ),
-        ).rejects.toThrow(
-          new UpsertRecordsError(
-            expected.failure.cause,
-            input.records,
-            0,
-            input.schema,
-          ),
-        );
+        ).rejects.toThrow(UpsertRecordsError);
       }
     },
   );

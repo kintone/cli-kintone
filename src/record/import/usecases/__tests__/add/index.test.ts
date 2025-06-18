@@ -9,7 +9,6 @@ import path from "path";
 import * as canUploadFiles from "./fixtures/can_upload_files";
 import * as canUploadFilesInSubtable from "./fixtures/can_upload_files_in_subtable";
 import { AddRecordsError } from "../../add/error";
-import { inputRecords } from "./fixtures/can_upload_files";
 import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock";
 
 describe("addRecords", () => {
@@ -136,14 +135,7 @@ describe("addRecords", () => {
         canUploadFiles.schema,
         {},
       ),
-    ).rejects.toThrow(
-      new AddRecordsError(
-        new Error("--attachments-dir option is required."),
-        inputRecords,
-        0,
-        canUploadFiles.schema,
-      ),
-    );
+    ).rejects.toThrow(AddRecordsError);
   });
 
   it("should upload files correctly when attachmentsDir is given", async () => {

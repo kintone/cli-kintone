@@ -114,8 +114,8 @@ importers:
         specifier: ^3.3.0
         version: 3.3.0(jest@29.7.0)
       allure-js-commons:
-        specifier: ^3.2.2
-        version: 3.2.2
+        specifier: ^3.3.0
+        version: 3.3.0
       babel-jest:
         specifier: ^29.7.0
         version: 29.7.0(@babel/core@7.27.4)
@@ -6755,17 +6755,6 @@ packages:
       md5: 2.3.0
       properties: 1.2.1
       strip-ansi: 5.2.0
-    dev: true
-
-  /allure-js-commons@3.2.2:
-    resolution: {integrity: sha512-qr9r9+HpyNmbaaAtNDK6qXXar7RcYQECf8hOtH/e8DFKZNahIkfFYU0LP4Q7SPbqyAZsGbocTKikVx9L2po+eg==}
-    peerDependencies:
-      allure-playwright: 3.2.2
-    peerDependenciesMeta:
-      allure-playwright:
-        optional: true
-    dependencies:
-      md5: 2.3.0
     dev: true
 
   /allure-js-commons@3.3.0:

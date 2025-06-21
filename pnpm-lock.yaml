@@ -96,8 +96,8 @@ importers:
         specifier: ^2.10.3
         version: 2.10.3
       '@types/yazl':
-        specifier: ^2.4.6
-        version: 2.4.6
+        specifier: ^3.3.0
+        version: 3.3.0
       '@vercel/ncc':
         specifier: ^0.38.3
         version: 0.38.3
@@ -6197,8 +6197,8 @@ packages:
       '@types/node': 18.19.112
     dev: true
 
-  /@types/yazl@2.4.6:
-    resolution: {integrity: sha512-/ifFjQtcKaoZOjl5NNCQRR0fAKafB3Foxd7J/WvFPTMea46zekapcR30uzkwIkKAAuq5T6d0dkwz754RFH27hg==}
+  /@types/yazl@3.3.0:
+    resolution: {integrity: sha512-mFL6lGkk2N5u5nIxpNV/K5LW3qVSbxhJrMxYGOOxZndWxMgCamr/iCsq/1t9kd8pEwhuNP91LC5qZm/qS9pOEw==}
     dependencies:
       '@types/node': 18.19.112
     dev: true

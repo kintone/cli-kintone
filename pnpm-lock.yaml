@@ -105,8 +105,8 @@ importers:
         specifier: ^8.17.1
         version: 8.17.1
       allure-commandline:
-        specifier: ^2.34.0
-        version: 2.34.0
+        specifier: ^2.34.1
+        version: 2.34.1
       allure-cucumberjs:
         specifier: ^2.15.1
         version: 2.15.1
@@ -6706,8 +6706,8 @@ packages:
       '@algolia/transporter': 4.24.0
     dev: false
 
-  /allure-commandline@2.34.0:
-    resolution: {integrity: sha512-+SgVJ9+o7OH43KVCln0KT7VIsXCfMVEvFuYArIFNtS0fWu61UFdeiCYvrlQPC9trEoFhOe2e5i8Xhghwo46iRQ==}
+  /allure-commandline@2.34.1:
+    resolution: {integrity: sha512-l42csZ2bz7FdtJI1t5zA3IXtOZ0YJaP/+JMRC9gt6aBHRVUIu+6r+3F7KRyshQ79osLz9/MHlGqAjBPRqH0QFw==}
     hasBin: true
     dev: true
 

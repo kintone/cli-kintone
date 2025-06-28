@@ -7,7 +7,7 @@ settings:
 overrides:
   braces: '>=3.0.3'
   undici: '>=7.2.3'
-  ws: '>=8.18.2'
+  ws: '>=8.18.3'
 
 importers:
 
@@ -14096,7 +14096,7 @@ packages:
       opener: 1.5.2
       picocolors: 1.1.1
       sirv: 2.0.4
-      ws: 8.18.2
+      ws: 8.18.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -14157,7 +14157,7 @@ packages:
       spdy: 4.0.2
       webpack: 5.93.0
       webpack-dev-middleware: 5.3.4(webpack@5.93.0)
-      ws: 8.18.2
+      ws: 8.18.3
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -14380,8 +14380,8 @@ packages:
       signal-exit: 3.0.7
     dev: true
 
-  /ws@8.18.2:
-    resolution: {integrity: sha512-DMricUmwGZUVr++AEAe2uiVM7UoO9MAVZMDu05UQOaUII0lp+zOzLLU4Xqh/JvTqklB1T4uELaaPBKyjE1r4fQ==}
+  /ws@8.18.3:
+    resolution: {integrity: sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1

@@ -61,6 +61,10 @@ const OVERRIDE_LICENSES_TEXT = {
     // License text is written in README.md
     licenseText: "See https://github.com/rzcoder/node-rsa#license",
   },
+  "undici-types": {
+    licensePageUrl:
+      "https://raw.githubusercontent.com/nodejs/undici/main/LICENSE",
+  },
 };
 
 module.exports = config;

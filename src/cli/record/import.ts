@@ -45,12 +45,6 @@ const builder = (args: yargs.Argv) =>
       describe: "The fields to be imported in comma-separated",
       type: "string",
       requiresArg: true,
-    })
-    .option("experimental-use-server-side-upsert", {
-      describe:
-        "Use server-side upsert. This option is under early development.",
-      type: "boolean",
-      default: false,
     });
 
 type Args = yargs.Arguments<
@@ -71,7 +65,6 @@ const handler = (args: Args) => {
     filePath: args["file-path"],
     updateKey: args["update-key"],
     fields: args.fields?.split(","),
-    useServerSideUpsert: args["experimental-use-server-side-upsert"],
     encoding: args.encoding,
     pfxFilePath: args["pfx-file-path"],
     pfxFilePassword: args["pfx-file-password"],

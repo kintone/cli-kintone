@@ -3,7 +3,6 @@ import { buildRestAPIClient } from "../../kintone/client";
 import type { SupportedImportEncoding } from "../../utils/file";
 import { extractFileFormat, openFsStreamWithEncode } from "../../utils/file";
 import { addRecords } from "./usecases/add";
-import { upsertRecords } from "./usecases/upsert";
 import { upsertRecords as upsertRecordsServerSide } from "./usecases/upsertServerSide";
 import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
@@ -12,7 +11,6 @@ import { logger } from "../../utils/log";
 import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
 import { RunError } from "../error";
 import { isMismatchEncoding } from "../../utils/encoding";
-import { emitExperimentalWarning } from "../../utils/stability";
 
 export type Options = {
   app: string;
@@ -21,7 +19,6 @@ export type Options = {
   updateKey?: string;
   encoding?: SupportedImportEncoding;
   fields?: string[];
-  useServerSideUpsert?: boolean;
 };
 
 export const run: (
@@ -35,7 +32,6 @@ export const run: (
       attachmentsDir,
       updateKey,
       fields,
-      useServerSideUpsert,
       ...restApiClientOptions
     } = argv;
 
@@ -64,35 +60,17 @@ export const run: (
 
     const skipMissingFields = !fields;
     if (updateKey) {
-      if (useServerSideUpsert) {
-        emitExperimentalWarning(
-          "Use server-side upsert. This option is under early development.",
-          logger,
-        );
-        await upsertRecordsServerSide(
-          apiClient,
-          app,
-          localRecordRepository,
-          schema,
-          updateKey,
-          {
-            attachmentsDir,
-            skipMissingFields,
-          },
-        );
-      } else {
-        await upsertRecords(
-          apiClient,
-          app,
-          localRecordRepository,
-          schema,
-          updateKey,
-          {
-            attachmentsDir,
-            skipMissingFields,
-          },
-        );
-      }
+      await upsertRecordsServerSide(
+        apiClient,
+        app,
+        localRecordRepository,
+        schema,
+        updateKey,
+        {
+          attachmentsDir,
+          skipMissingFields,
+        },
+      );
     } else {
       await addRecords(apiClient, app, localRecordRepository, schema, {
         attachmentsDir,

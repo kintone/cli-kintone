@@ -2,7 +2,7 @@ import type { LocalRecord } from "../../../types/record";
 import type { RecordSchema } from "../../../types/schema";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { upsertRecords } from "../../upsert";
+import { upsertRecords } from "../../upsertServerSide";
 
 import { pattern as upsertByRecordNumber } from "./fixtures/upsertByRecordNumber";
 import { pattern as upsertByRecordNumberWithAppCode } from "./fixtures/upsertByRecordNumberWithAppCode";
@@ -104,8 +104,6 @@ describe("upsertRecords", () => {
         ],
       });
       apiClient.record.updateAllRecords = updateAllRecordsMockFn;
-      const addAllRecordsMockFn = jest.fn().mockResolvedValue({});
-      apiClient.record.addAllRecords = addAllRecordsMockFn;
       apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "App" });
 
       const APP_ID = "1";
@@ -120,11 +118,7 @@ describe("upsertRecords", () => {
           input.options,
         );
         for (const request of expected.success.requests) {
-          if (request.type === "update") {
-            expect(updateAllRecordsMockFn).toBeCalledWith(request.payload);
-          } else {
-            expect(addAllRecordsMockFn).toBeCalledWith(request.payload);
-          }
+          expect(updateAllRecordsMockFn).toBeCalledWith(request.payload);
         }
       }
       if (expected.failure !== undefined) {

@@ -2,7 +2,7 @@ import type { LocalRecord } from "../../../types/record";
 import type { RecordSchema } from "../../../types/schema";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { upsertRecords } from "../../upsertServerSide";
+import { upsertRecords } from "../../upsert";
 
 import { pattern as upsertByRecordNumber } from "./fixtures/upsertByRecordNumber";
 import { pattern as upsertByRecordNumberWithAppCode } from "./fixtures/upsertByRecordNumberWithAppCode";

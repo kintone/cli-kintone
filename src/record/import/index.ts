@@ -3,7 +3,7 @@ import { buildRestAPIClient } from "../../kintone/client";
 import type { SupportedImportEncoding } from "../../utils/file";
 import { extractFileFormat, openFsStreamWithEncode } from "../../utils/file";
 import { addRecords } from "./usecases/add";
-import { upsertRecords as upsertRecordsServerSide } from "./usecases/upsertServerSide";
+import { upsertRecords } from "./usecases/upsert";
 import { createSchema } from "./schema";
 import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
@@ -60,7 +60,7 @@ export const run: (
 
     const skipMissingFields = !fields;
     if (updateKey) {
-      await upsertRecordsServerSide(
+      await upsertRecords(
         apiClient,
         app,
         localRecordRepository,

@@ -5,7 +5,7 @@ import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor } from "./add/field";
 import { recordConverter } from "./add/record";
-import { UpdateKey } from "./upsert/updateKeyServerSide";
+import { UpdateKey } from "./upsert/updateKey";
 import { UpsertRecordsError } from "./upsert/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";

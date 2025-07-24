@@ -123,12 +123,12 @@ Feature: record import
     And The output error message should match with the pattern: "\[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 
   Scenario: API token does not have privilege to view and edit records
-    Given The CSV file "CliKintoneTest-29.csv" with content as below:
+    Given The app "app_for_import" has some records as below:
       | Text  | Number |
-      | Alice | 11     |
-    And The app "app_for_import" has some records as below:
+      | Alice | 10     |
+    And The CSV file "CliKintoneTest-29.csv" with content as below:
       | Record_number | Text  | Number |
-      |               | Alice | 10     |
+      |               | Alice | 11     |
     And Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN_IMPORT"
     When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN_IMPORT --file-path CliKintoneTest-29.csv --update-key Record_number"

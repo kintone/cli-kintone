@@ -141,7 +141,7 @@ const convertToKintoneRecordForUpdate = async (
     kintoneRecords.push(
       updateKeyField.type === "RECORD_NUMBER"
         ? {
-            id: updateKeyValue || dummyId--,
+            id: updateKeyValue ? updateKeyValue : String(dummyId--),
             record: kintoneRecord,
           }
         : {

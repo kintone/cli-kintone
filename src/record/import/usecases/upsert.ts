@@ -115,7 +115,10 @@ const convertToKintoneRecordForUpdate = async (
     .concat(updateKeyField.code);
 
   const kintoneRecords: KintoneRecordForUpdateParameter[] = [];
-  // HACK: When creating a new record, a unique dummy ID is required for API specifications
+  // HACK: When creating a new record, the API requires a unique ID.
+  // Since the record number field is not available for new records,
+  // we use a dummy ID starting from Number.MAX_SAFE_INTEGER and decrement it for each new record.
+  // Note: This is the intended solution unless the API behavior changes.
   let dummyId = Number.MAX_SAFE_INTEGER;
   for (const record of records) {
     const kintoneRecord = await recordConverter(

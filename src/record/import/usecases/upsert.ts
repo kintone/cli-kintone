@@ -1,9 +1,6 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { LocalRecord } from "../types/record";
-import type {
-  KintoneRecordForParameter,
-  KintoneRecordForUpdateParameter,
-} from "../../../kintone/types";
+import type { KintoneRecordForUpdateParameter } from "../../../kintone/types";
 import type { RecordSchema } from "../types/schema";
 
 import { fieldProcessor } from "./add/field";
@@ -13,7 +10,7 @@ import { UpsertRecordsError } from "./upsert/error";
 import { logger } from "../../../utils/log";
 import { ProgressLogger } from "./add/progress";
 import type { LocalRecordRepository } from "./interface";
-import { groupByKeyChunked } from "../../../utils/iterator";
+import { chunked } from "../../../utils/iterator";
 
 const CHUNK_SIZE = 2000;
 
@@ -47,42 +44,26 @@ export const upsertRecords = async (
     await updateKey.validateUpdateKeyInRecords(recordSource);
 
     logger.info("Starting to import records...");
-    for await (const recordsByChunk of groupByKeyChunked(
+    for await (const recordsByChunk of chunked(
       recordSource.reader(),
-      (record) => (updateKey.isUpdate(record) ? "update" : "add"),
       CHUNK_SIZE,
     )) {
-      currentRecords = recordsByChunk.data;
-
-      if (recordsByChunk.key === "update") {
-        const recordsToUpload = await convertToKintoneRecordForUpdate(
-          apiClient,
-          app,
-          recordsByChunk.data,
-          schema,
-          updateKey,
-          { attachmentsDir, skipMissingFields },
-        );
-        await apiClient.record.updateAllRecords({
-          app,
-          records: recordsToUpload,
-        });
-      } else {
-        const recordsToUpload = await convertToKintoneRecordForAdd(
-          apiClient,
-          app,
-          recordsByChunk.data,
-          schema,
-          updateKey,
-          { attachmentsDir, skipMissingFields },
-        );
-        await apiClient.record.addAllRecords({
-          app,
-          records: recordsToUpload,
-        });
-      }
-      currentIndex += recordsByChunk.data.length;
-      lastSucceededRecord = recordsByChunk.data.slice(-1)[0];
+      currentRecords = recordsByChunk;
+      const recordsToUpload = await convertToKintoneRecordForUpdate(
+        apiClient,
+        app,
+        recordsByChunk,
+        schema,
+        updateKey,
+        { attachmentsDir, skipMissingFields },
+      );
+      await apiClient.record.updateAllRecords({
+        app,
+        upsert: true,
+        records: recordsToUpload,
+      });
+      currentIndex += recordsByChunk.length;
+      lastSucceededRecord = recordsByChunk.slice(-1)[0];
       progressLogger.update(currentIndex);
     }
     progressLogger.done();
@@ -134,6 +115,11 @@ const convertToKintoneRecordForUpdate = async (
     .concat(updateKeyField.code);
 
   const kintoneRecords: KintoneRecordForUpdateParameter[] = [];
+  // HACK: When creating a new record, the API requires a unique ID.
+  // Since the record number field is not available for new records,
+  // we use a dummy ID starting from Number.MAX_SAFE_INTEGER and decrement it for each new record.
+  // Note: This is the intended solution unless the API behavior changes.
+  let dummyId = Number.MAX_SAFE_INTEGER;
   for (const record of records) {
     const kintoneRecord = await recordConverter(
       record,
@@ -155,7 +141,7 @@ const convertToKintoneRecordForUpdate = async (
     kintoneRecords.push(
       updateKeyField.type === "RECORD_NUMBER"
         ? {
-            id: updateKeyValue,
+            id: updateKeyValue ? updateKeyValue : String(dummyId--),
             record: kintoneRecord,
           }
         : {
@@ -163,47 +149,6 @@ const convertToKintoneRecordForUpdate = async (
             record: kintoneRecord,
           },
     );
-  }
-
-  return kintoneRecords;
-};
-
-const convertToKintoneRecordForAdd = async (
-  apiClient: KintoneRestAPIClient,
-  app: string,
-  records: LocalRecord[],
-  schema: RecordSchema,
-  updateKey: UpdateKey,
-  options: {
-    attachmentsDir?: string;
-    skipMissingFields: boolean;
-  },
-): Promise<KintoneRecordForParameter[]> => {
-  const { attachmentsDir, skipMissingFields } = options;
-
-  // Ignore a Record number field
-  const recordNumberFieldCode = schema.fields.find(
-    (fieldSchema) => fieldSchema.type === "RECORD_NUMBER",
-  )?.code;
-
-  const kintoneRecords: KintoneRecordForParameter[] = [];
-  for (const record of records) {
-    const kintoneRecord = await recordConverter(
-      record,
-      schema,
-      skipMissingFields,
-      (field, fieldSchema) =>
-        fieldProcessor(apiClient, field, fieldSchema, {
-          attachmentsDir,
-          skipMissingFields,
-        }),
-    );
-
-    if (recordNumberFieldCode !== undefined) {
-      delete kintoneRecord[recordNumberFieldCode];
-    }
-
-    kintoneRecords.push(kintoneRecord);
   }
 
   return kintoneRecords;

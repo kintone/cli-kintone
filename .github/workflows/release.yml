@@ -12,7 +12,7 @@ jobs:
       tag_name: ${{ steps.release.outputs.tag_name }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: create-iat
         with:
           app-id: ${{ secrets.RELEASE_GITHUB_APP_ID}}

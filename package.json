@@ -100,7 +100,7 @@
     "rimraf": "^5.0.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
-    "zx": "^8.7.1"
+    "zx": "^8.7.2"
   },
   "dependencies": {
     "@inquirer/prompts": "^7.6.0",

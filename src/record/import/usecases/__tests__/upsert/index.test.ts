@@ -9,6 +9,7 @@ import { pattern as upsertByRecordNumberWithAppCode } from "./fixtures/upsertByR
 import { pattern as upsertByRecordNumberWithAppCodeOnKintone } from "./fixtures/upsertByRecordNumberWithAppCodeOnKintone";
 import { pattern as upsertBySingleLineText } from "./fixtures/upsertByNumber";
 import { pattern as upsertByNumber } from "./fixtures/upsertBySingleLineText";
+import { pattern as upsertRecordsSequentially } from "./fixtures/upsertRecordsSequentially";
 import { pattern as upsertByNonUniqueKey } from "./fixtures/upsertByNonUniqueKey";
 import { pattern as upsertByUnsupportedField } from "./fixtures/upsertByUnsupportedField";
 import { pattern as upsertByNonExistentField } from "./fixtures/upsertByNonExistentField";
@@ -17,6 +18,8 @@ import { pattern as upsertWithMissingFieldFromRecord } from "./fixtures/upsertWi
 import { pattern as upsertWithMissingFieldInTableFromRecord } from "./fixtures/upsertWithMissingFieldInTableFromRecord";
 import { pattern as upsertByRecordNumberWithMixedRecordNumber } from "./fixtures/upsertByRecordNumberWithInvalidRecordNumber";
 import { pattern as upsertByRecordNumberWithInvalidRecordNumber } from "./fixtures/upsertByRecordNumberWithMixedRecordNumber";
+import { pattern as upsertWithNonUpdatableFields } from "./fixtures/upsertWithNonUpdatableFields";
+import { pattern as upsertWithRecordNumber } from "./fixtures/upsertWithRecordNumber";
 
 import { UpsertRecordsError } from "../../upsert/error";
 import type { LocalRecordRepository } from "../../interface";
@@ -38,12 +41,20 @@ export type TestPattern = {
   >;
   expected: {
     success?: {
-      requests: Array<{
-        type: "update";
-        payload: Parameters<
-          KintoneRestAPIClient["record"]["updateAllRecords"]
-        >[0];
-      }>;
+      requests: Array<
+        | {
+            type: "update";
+            payload: Parameters<
+              KintoneRestAPIClient["record"]["updateAllRecords"]
+            >[0];
+          }
+        | {
+            type: "add";
+            payload: Parameters<
+              KintoneRestAPIClient["record"]["addAllRecords"]
+            >[0];
+          }
+      >;
     };
     failure?: {
       cause: unknown;
@@ -66,6 +77,7 @@ describe("upsertRecords", () => {
     upsertByRecordNumberWithAppCodeOnKintone,
     upsertBySingleLineText,
     upsertByNumber,
+    upsertRecordsSequentially,
     upsertByNonUniqueKey,
     upsertByUnsupportedField,
     upsertByNonExistentField,
@@ -74,6 +86,8 @@ describe("upsertRecords", () => {
     upsertWithMissingFieldInTableFromRecord,
     upsertByRecordNumberWithMixedRecordNumber,
     upsertByRecordNumberWithInvalidRecordNumber,
+    upsertWithNonUpdatableFields,
+    upsertWithRecordNumber,
   ];
 
   it.each(patterns)(
@@ -90,6 +104,8 @@ describe("upsertRecords", () => {
         ],
       });
       apiClient.record.updateAllRecords = updateAllRecordsMockFn;
+      const addAllRecordsMockFn = jest.fn().mockResolvedValue({});
+      apiClient.record.addAllRecords = addAllRecordsMockFn;
       apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "App" });
 
       const APP_ID = "1";
@@ -104,7 +120,11 @@ describe("upsertRecords", () => {
           input.options,
         );
         for (const request of expected.success.requests) {
-          expect(updateAllRecordsMockFn).toBeCalledWith(request.payload);
+          if (request.type === "update") {
+            expect(updateAllRecordsMockFn).toBeCalledWith(request.payload);
+          } else {
+            expect(addAllRecordsMockFn).toBeCalledWith(request.payload);
+          }
         }
       }
       if (expected.failure !== undefined) {

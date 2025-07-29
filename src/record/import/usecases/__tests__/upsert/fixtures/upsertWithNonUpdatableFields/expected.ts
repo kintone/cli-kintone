@@ -3,6 +3,7 @@ import type { TestPattern } from "../../index.test";
 export const expected: TestPattern["expected"] = {
   success: {
     requests: [
+      // Record for update should not include non-updatable fields
       {
         type: "update",
         payload: {
@@ -22,6 +23,7 @@ export const expected: TestPattern["expected"] = {
           ],
         },
       },
+      // Record for add should include non-updatable fields
       {
         type: "add",
         payload: {
@@ -34,6 +36,18 @@ export const expected: TestPattern["expected"] = {
               number: {
                 value: "3",
               },
+              creator: {
+                value: {
+                  code: "creator3",
+                },
+              },
+              modifier: {
+                value: {
+                  code: "modifier3",
+                },
+              },
+              createdTime: { value: "2021-02-16T02:43:00Z" },
+              updatedTime: { value: "2022-03-27T03:54:00Z" },
             },
           ],
         },

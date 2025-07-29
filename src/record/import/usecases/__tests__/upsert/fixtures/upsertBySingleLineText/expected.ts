@@ -7,7 +7,6 @@ export const expected: TestPattern["expected"] = {
         type: "update",
         payload: {
           app: "1",
-          upsert: true,
           records: [
             {
               updateKey: {
@@ -26,21 +25,26 @@ export const expected: TestPattern["expected"] = {
                 },
               },
             },
+          ],
+        },
+      },
+      {
+        type: "add",
+        payload: {
+          app: "1",
+          records: [
             {
-              updateKey: {
-                field: "singleLineText",
+              singleLineText: {
                 value: "value3",
               },
-              record: {
-                number: {
-                  value: "3",
-                },
-                date: {
-                  value: "2022-04-01",
-                },
-                singleLineText_nonUnique: {
-                  value: "value1",
-                },
+              number: {
+                value: "3",
+              },
+              date: {
+                value: "2022-04-01",
+              },
+              singleLineText_nonUnique: {
+                value: "value1",
               },
             },
           ],

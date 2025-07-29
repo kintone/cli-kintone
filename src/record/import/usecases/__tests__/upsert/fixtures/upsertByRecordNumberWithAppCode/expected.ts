@@ -7,7 +7,6 @@ export const expected: TestPattern["expected"] = {
         type: "update",
         payload: {
           app: "1",
-          upsert: true,
           records: [
             {
               id: "1",
@@ -20,15 +19,20 @@ export const expected: TestPattern["expected"] = {
                 },
               },
             },
+          ],
+        },
+      },
+      {
+        type: "add",
+        payload: {
+          app: "1",
+          records: [
             {
-              id: "3",
-              record: {
-                number: {
-                  value: "3",
-                },
-                singleLineText: {
-                  value: "value3",
-                },
+              singleLineText: {
+                value: "value3",
+              },
+              number: {
+                value: "3",
               },
             },
           ],

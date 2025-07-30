@@ -11,6 +11,7 @@ import { logger } from "../../utils/log";
 import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
 import { RunError } from "../error";
 import { isMismatchEncoding } from "../../utils/encoding";
+import { emitDeprecationWarning } from "../../utils/stability";
 
 export type Options = {
   app: string;
@@ -19,6 +20,7 @@ export type Options = {
   updateKey?: string;
   encoding?: SupportedImportEncoding;
   fields?: string[];
+  useServerSideUpsert?: boolean;
 };
 
 export const run: (
@@ -32,6 +34,7 @@ export const run: (
       attachmentsDir,
       updateKey,
       fields,
+      useServerSideUpsert,
       ...restApiClientOptions
     } = argv;
 
@@ -60,6 +63,12 @@ export const run: (
 
     const skipMissingFields = !fields;
     if (updateKey) {
+      if (useServerSideUpsert) {
+        emitDeprecationWarning(
+          "Server-side upsert is now the default behavior. This flag is no longer needed and will be removed in a future version.",
+          logger,
+        );
+      }
       await upsertRecords(
         apiClient,
         app,

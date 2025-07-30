@@ -118,7 +118,7 @@ const convertToKintoneRecordForUpdate = async (
   // HACK: When creating a new record, the API requires a unique ID.
   // Since the record number field is not available for new records,
   // we use a dummy ID starting from Number.MAX_SAFE_INTEGER and decrement it for each new record.
-  // Note: This is the intended solution unless the API behavior changes.
+  // NOTE: This is the intended solution unless the API behavior changes.
   let dummyId = Number.MAX_SAFE_INTEGER;
   for (const record of records) {
     const kintoneRecord = await recordConverter(
@@ -138,17 +138,29 @@ const convertToKintoneRecordForUpdate = async (
       delete kintoneRecord[fieldCode];
     }
 
-    kintoneRecords.push(
-      updateKeyField.type === "RECORD_NUMBER"
-        ? {
-            id: updateKeyValue ? updateKeyValue : String(dummyId--),
-            record: kintoneRecord,
-          }
-        : {
-            updateKey: { field: updateKeyField.code, value: updateKeyValue },
-            record: kintoneRecord,
-          },
-    );
+    let recordForUpdate: KintoneRecordForUpdateParameter;
+    if (updateKeyField.type === "RECORD_NUMBER") {
+      recordForUpdate = {
+        id: updateKeyValue ? updateKeyValue : String(dummyId--),
+        record: kintoneRecord,
+      };
+    } else if (!updateKeyValue) {
+      // HACK: When the update key value is empty or missing for non-record-number fields,
+      // we still need to create a new record. The API requires a unique ID for new records,
+      // so we use a dummy ID starting from Number.MAX_SAFE_INTEGER and decrement it.
+      // NOTE: This is the intended solution unless the API behavior changes.
+      recordForUpdate = {
+        id: String(dummyId--),
+        record: kintoneRecord,
+      };
+    } else {
+      recordForUpdate = {
+        updateKey: { field: updateKeyField.code, value: updateKeyValue },
+        record: kintoneRecord,
+      };
+    }
+
+    kintoneRecords.push(recordForUpdate);
   }
 
   return kintoneRecords;

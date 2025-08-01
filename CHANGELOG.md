@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.2](https://github.com/kintone/cli-kintone/compare/v1.14.1...v1.14.2) (2025-08-01)
+
+
+### Bug Fixes
+
+* obsolete experimental-use-server-side-upsert option ([#1125](https://github.com/kintone/cli-kintone/issues/1125)) ([4fb2770](https://github.com/kintone/cli-kintone/commit/4fb27702f6c3f6624c49febc8ea2ead89d1f6994))
+
 ## [1.14.1](https://github.com/kintone/cli-kintone/compare/v1.14.0...v1.14.1) (2025-05-09)
 
 

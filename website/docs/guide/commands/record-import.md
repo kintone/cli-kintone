@@ -20,15 +20,14 @@ cli-kintone record import \
 
 See [Options](/guide/options) page for common options.
 
-| Option                                    | Required | Description                                                                                                                                                     |
-| ----------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--app`                                   | Yes      | The ID of the app                                                                                                                                               |
-| `--attachments-dir`                       |          | Attachment file directory                                                                                                                                       |
-| `--file-path`                             | Yes      | The path to the source file.<br/>The file extension should be ".csv"                                                                                            |
-| `--encoding  `                            |          | Character encoding<br/>Default to `utf8`<br/>Encodings: `utf8` and `sjis`                                                                                       |
-| `--update-key`                            |          | The key to Bulk Update<br/>When this option is set, cli-kintone will be in the UPSERT mode.<br/>See [Upsert records](#upsert-records) section for more details. |
-| `--fields  `                              |          | The fields to be imported in comma-separated                                                                                                                    |
-| `--experimental-use-server-side-upsert  ` |          | Execute upsert using the upsert option of the bulk record update API.<br/>See [Using server side upsert](#using-server-side-upsert) section for more details.   |
+| Option              | Required | Description                                                                                                                                                     |
+| ------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--app`             | Yes      | The ID of the app                                                                                                                                               |
+| `--attachments-dir` |          | Attachment file directory                                                                                                                                       |
+| `--file-path`       | Yes      | The path to the source file.<br/>The file extension should be ".csv"                                                                                            |
+| `--encoding  `      |          | Character encoding<br/>Default to `utf8`<br/>Encodings: `utf8` and `sjis`                                                                                       |
+| `--update-key`      |          | The key to Bulk Update<br/>When this option is set, cli-kintone will be in the UPSERT mode.<br/>See [Upsert records](#upsert-records) section for more details. |
+| `--fields  `        |          | The fields to be imported in comma-separated                                                                                                                    |
 
 :::note
 A field within a Table cannot be specified to the `fields` option.
@@ -68,15 +67,3 @@ The field specified as "Key to Bulk Update" must meet one of the following requi
   - Created datetime
   - Updated by
   - Updated datetime
-
-### Using server side upsert
-
-:::experimental
-
-This feature is under early development.
-
-:::
-
-If you specify the `--experimental-use-server-side-upsert` option, upsert will be executed using [the upsert option of the bulk record update API](https://cybozu.dev/ja/kintone/docs/rest-api/records/update-records/).
-
-Using this option may improve import performance.

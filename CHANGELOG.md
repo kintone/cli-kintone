@@ -6,6 +6,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [1.14.2](https://github.com/kintone/cli-kintone/compare/v1.14.1...v1.14.2) (2025-08-06)
 
 
+Starting with this release, server-side UPSERT is now the default behavior.
+See the [release blog](https://cli.kintone.dev/blog/cli-kintone-v1-14-2/) for more details.
+
 ### Bug Fixes
 
 * adjustment server-side-upsert ([#1134](https://github.com/kintone/cli-kintone/issues/1134)) ([f50e99b](https://github.com/kintone/cli-kintone/commit/f50e99b557c3f790032e1807317e35df23475e7c))

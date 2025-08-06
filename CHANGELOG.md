@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.2](https://github.com/kintone/cli-kintone/compare/v1.14.1...v1.14.2) (2025-08-06)
+
+
+### Bug Fixes
+
+* adjustment server-side-upsert ([#1134](https://github.com/kintone/cli-kintone/issues/1134)) ([f50e99b](https://github.com/kintone/cli-kintone/commit/f50e99b557c3f790032e1807317e35df23475e7c))
+* obsolete experimental-use-server-side-upsert option ([#1125](https://github.com/kintone/cli-kintone/issues/1125)) ([4fb2770](https://github.com/kintone/cli-kintone/commit/4fb27702f6c3f6624c49febc8ea2ead89d1f6994))
+
+
+### Documentation
+
+* add release blog for v1.14.2 ([#1137](https://github.com/kintone/cli-kintone/issues/1137)) ([6bff613](https://github.com/kintone/cli-kintone/commit/6bff6136cf13984094759e52de1b21f9c90ee8d0))
+* remove  `experimental-use-server-side-upsert` option ([#1136](https://github.com/kintone/cli-kintone/issues/1136)) ([85ee8f2](https://github.com/kintone/cli-kintone/commit/85ee8f2f54b70d774c3c6584a2c09e776ee23450))
+
 ## [1.14.1](https://github.com/kintone/cli-kintone/compare/v1.14.0...v1.14.1) (2025-05-09)
 
 

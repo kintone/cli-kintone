@@ -111,8 +111,8 @@ importers:
         specifier: ^2.15.1
         version: 2.15.1
       allure-jest:
-        specifier: ^3.3.3
-        version: 3.3.3(jest@29.7.0)
+        specifier: ^3.4.0
+        version: 3.4.1(jest@29.7.0)
       allure-js-commons:
         specifier: ^3.3.3
         version: 3.3.3
@@ -3580,15 +3580,6 @@ packages:
       eslint-visitor-keys: 3.4.3
     dev: true
 
-  /@eslint-community/eslint-utils@4.7.0(eslint@8.57.1):
-    resolution: {integrity: sha512-dyybb3AcajC7uha6CvhdVRJqaKyn7w2YKqKyAN37NKYgZT36w+iRb0Dymmc5qEJ549c/S31cMMSFd75bteCpCw==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
-    dependencies:
-      eslint: 8.57.1
-      eslint-visitor-keys: 3.4.3
-
   /@eslint-community/eslint-utils@4.7.0(eslint@9.35.0):
     resolution: {integrity: sha512-dyybb3AcajC7uha6CvhdVRJqaKyn7w2YKqKyAN37NKYgZT36w+iRb0Dymmc5qEJ549c/S31cMMSFd75bteCpCw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -3598,6 +3589,15 @@ packages:
       eslint: 9.35.0
       eslint-visitor-keys: 3.4.3
     dev: true
+
+  /@eslint-community/eslint-utils@4.8.0(eslint@8.57.1):
+    resolution: {integrity: sha512-MJQFqrZgcW0UNYLGOuQpey/oTN59vyWwplvCGZztn1cKz9agZPPYpJB7h2OMmuu7VLqkvEjN8feFZJmxNF9D+Q==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
+    dependencies:
+      eslint: 8.57.1
+      eslint-visitor-keys: 3.4.3
 
   /@eslint-community/eslint-utils@4.8.0(eslint@9.35.0):
     resolution: {integrity: sha512-MJQFqrZgcW0UNYLGOuQpey/oTN59vyWwplvCGZztn1cKz9agZPPYpJB7h2OMmuu7VLqkvEjN8feFZJmxNF9D+Q==}
@@ -6058,8 +6058,8 @@ packages:
       allure-js-commons: 2.15.1
     dev: true
 
-  /allure-jest@3.3.3(jest@29.7.0):
-    resolution: {integrity: sha512-ZmHqLsoCJ0ucx8xySLWRb/j/wb64Y2Fz+Pi9arson2EyfadQ9A+GjFmavzXXnV0rhcbzyf5wevNxh7DItnlQsQ==}
+  /allure-jest@3.4.1(jest@29.7.0):
+    resolution: {integrity: sha512-8Sh2J6yTwDpSUvc984abyZ1sjhZrYyTds/oSxAlFGV3qYOn0ezhQOHryjsTa6/0pENM3cJyZsC3lgEj88EtjEg==}
     peerDependencies:
       jest: '>=24.8.0'
       jest-circus: '>=24.8.0'
@@ -6078,7 +6078,7 @@ packages:
       jest-environment-node:
         optional: true
     dependencies:
-      allure-js-commons: 3.3.3
+      allure-js-commons: 3.4.1
       jest: 29.7.0(@types/node@18.19.124)(ts-node@10.9.2)
     transitivePeerDependencies:
       - allure-playwright
@@ -6096,6 +6096,17 @@ packages:
     resolution: {integrity: sha512-MLkPWrVtrt/2TdAvaExNSM8yTuY/lEo+MSLoM2DOUUsWzbzki8XIxHoX+mSdkatZAJargsU9JeO/dL5kQyR5IQ==}
     peerDependencies:
       allure-playwright: 3.3.3
+    peerDependenciesMeta:
+      allure-playwright:
+        optional: true
+    dependencies:
+      md5: 2.3.0
+    dev: true
+
+  /allure-js-commons@3.4.1:
+    resolution: {integrity: sha512-Lzs91+8fTPUucnLwQULuuLyEJWQCBCxsZl5tX6lMPFZcAVXgwu/Dti0XfzhH9R1Hw8e43k20XAlmyh/ZDqqpYA==}
+    peerDependencies:
+      allure-playwright: 3.4.1
     peerDependenciesMeta:
       allure-playwright:
         optional: true
@@ -8211,7 +8222,7 @@ packages:
     deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     dependencies:
-      '@eslint-community/eslint-utils': 4.7.0(eslint@8.57.1)
+      '@eslint-community/eslint-utils': 4.8.0(eslint@8.57.1)
       '@eslint-community/regexpp': 4.12.1
       '@eslint/eslintrc': 2.1.4
       '@eslint/js': 8.57.1

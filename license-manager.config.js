@@ -5,6 +5,7 @@ const config = createConfig({
   analyze: {
     allowLicenses: [
       "MIT",
+      "MIT-0",
       "Apache-2.0",
       "BSD-2-Clause",
       "BSD-3-Clause",
@@ -22,7 +23,7 @@ const config = createConfig({
       "(BSD-2-Clause OR MIT OR Apache-2.0)",
       "Unlicense",
     ],
-    allowPackages: ["map-stream", "pause-stream", "node-forge"],
+    allowPackages: ["map-stream", "pause-stream", "node-forge", "@inquirer/ansi"],
   },
   extract: {
     output: "./NOTICE",
@@ -64,6 +65,10 @@ const OVERRIDE_LICENSES_TEXT = {
   "undici-types": {
     licensePageUrl:
       "https://raw.githubusercontent.com/nodejs/undici/main/LICENSE",
+  },
+  "@inquirer/ansi": {
+    licensePageUrl:
+      "https://raw.githubusercontent.com/SBoudrias/Inquirer.js/main/LICENSE",
   },
 };
 

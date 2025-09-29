@@ -22,7 +22,13 @@ const config = createConfig({
       "(BSD-2-Clause OR MIT OR Apache-2.0)",
       "Unlicense",
     ],
-    allowPackages: ["map-stream", "pause-stream", "node-forge"],
+    allowPackages: [
+      // https://github.com/npm/cli/blob/latest/LICENSE
+      "npm",
+      "map-stream",
+      "pause-stream",
+      "node-forge",
+    ],
   },
   extract: {
     output: "./NOTICE",

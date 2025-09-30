@@ -1,3 +1,6 @@
+// Import polyfill for undici with Node.js 18
+import "./undici-polyfill";
+
 import { AfterAll, BeforeAll, Status } from "@cucumber/cucumber";
 import fs from "fs";
 import path from "path";

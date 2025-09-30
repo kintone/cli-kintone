@@ -1,2 +1,4 @@
 packages:
   - "website"
+
+minimumReleaseAge: 1440

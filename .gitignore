@@ -40,3 +40,6 @@ attachments
 # allure report
 allure-report
 allure-results
+
+# mise
+mise.local.toml

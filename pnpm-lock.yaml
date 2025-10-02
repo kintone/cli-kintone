@@ -99,7 +99,7 @@ importers:
         specifier: ^2.4.6
         version: 2.4.6
       '@vercel/ncc':
-        specifier: ^0.38.3
+        specifier: ^0.38.4
         version: 0.38.4
       ajv:
         specifier: ^8.17.1

@@ -32,7 +32,7 @@ jobs:
       - name: Build test report
         id: allure-report
         if: always()
-        uses: simple-elf/allure-report-action@91e6ff976a8b2303f2551ca36c39ba5256952c08 # v1.11
+        uses: simple-elf/allure-report-action@53ebb757a2097edc77c53ecef4d454fc2f2f774c # v1.13
         with:
           gh_pages: gh-pages
           allure_history: allure-history

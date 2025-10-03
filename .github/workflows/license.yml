@@ -16,7 +16,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v5

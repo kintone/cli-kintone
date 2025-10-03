@@ -20,7 +20,7 @@ importers:
         specifier: ^10.3.1
         version: 10.3.1
       '@kintone/rest-api-client':
-        specifier: ^5.7.4
+        specifier: ^5.7.5
         version: 5.7.5
       chalk:
         specifier: 4.1.2

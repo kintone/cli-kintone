@@ -123,7 +123,7 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
       eslint:
-        specifier: ^9.35.0
+        specifier: ^9.36.0
         version: 9.36.0(jiti@1.21.7)
       glob:
         specifier: ^10.4.5

@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x, 22.x, 24.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
@@ -26,7 +26,6 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -72,7 +71,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        node-version: [18.x]
+        node-version: [24.x]
         os: ${{ fromJSON(needs.get-running-os-for-test-e2e.outputs.os) }}
     steps:
       - uses: actions/checkout@v4
@@ -80,7 +79,6 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - run: pnpm build:executables

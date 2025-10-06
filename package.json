@@ -65,7 +65,7 @@
   },
   "homepage": "https://github.com/kintone/cli-kintone/#readme",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "devDependencies": {
     "@actions/core": "^1.11.1",

@@ -18,11 +18,9 @@ jobs:
 
       - uses: pnpm/action-setup@v3
 
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 18.x
-          cache: "pnpm"
+          node-version: "24"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

@@ -16,8 +16,7 @@ jobs:
       - uses: pnpm/action-setup@v3
       - uses: actions/setup-node@v5
         with:
-          node-version: "18"
-          cache: "pnpm"
+          node-version: "24"
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
@@ -34,7 +33,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [22.x, 20.x, 18.x]
+        node-version: [20.x, 22.x, 24.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/setup-node@v5
@@ -52,7 +51,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [22.x, 20.x, 18.x]
+        node-version: [20.x, 22.x, 24.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/setup-node@v5

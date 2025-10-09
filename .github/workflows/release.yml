@@ -53,8 +53,7 @@ jobs:
       - uses: pnpm/action-setup@v3
       - uses: actions/setup-node@v5
         with:
-          node-version: "18"
-          cache: "pnpm"
+          node-version: "24"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - run: pnpm build:artifacts
@@ -92,8 +91,7 @@ jobs:
       - uses: pnpm/action-setup@v3
       - uses: actions/setup-node@v5
         with:
-          node-version: "18"
-          cache: "pnpm"
+          node-version: "24"
           registry-url: "https://registry.npmjs.org"
       # Ensure npm 11.5.1 or later is installed
       # ref. https://docs.npmjs.com/trusted-publishers#github-actions-configuration

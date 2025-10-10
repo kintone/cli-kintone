@@ -72,8 +72,8 @@ importers:
         specifier: ^24.3.0
         version: 24.3.0(@types/eslint@9.6.1)(@typescript-eslint/utils@8.44.1(eslint@9.36.0(jiti@1.21.7))(typescript@5.9.2))(eslint@9.36.0(jiti@1.21.7))(prettier@3.6.2)(typescript@5.9.2)
       '@cybozu/license-manager':
-        specifier: ^1.3.1
-        version: 1.3.1
+        specifier: ^1.4.0
+        version: 1.4.0
       '@octokit/rest':
         specifier: ^20.1.2
         version: 20.1.2
@@ -1411,8 +1411,8 @@ packages:
       eslint: ^8.56.0 || ^9.0.0-0
       typescript: '>=4.7.5 || ^5.0.0'
 
-  '@cybozu/license-manager@1.3.1':
-    resolution: {integrity: sha512-4BOZdZA2e6r1MzhGbdAV+dT+/y/lPKdnByPIa7ltGwcqs/4/za/pioz7mVfKM6X7SV9+CDTsJc/gawRK1T33ug==}
+  '@cybozu/license-manager@1.4.0':
+    resolution: {integrity: sha512-vXqQ6PHdDtbnIOCs3lrasrG3bYOpzT1sGBkbu22uOfqiQZlMCHFQ15DNo7cV0D4sKtfoKfmvc0bsLjyYyQPVOw==}
     engines: {node: '>=18.14.0', npm: '>=9.3.1', pnpm: '>=8.10.0'}
     hasBin: true
 
@@ -9956,7 +9956,7 @@ snapshots:
       - prettier
       - supports-color
 
-  '@cybozu/license-manager@1.3.1':
+  '@cybozu/license-manager@1.4.0':
     dependencies:
       commander: 9.5.0
       glob: 8.1.0

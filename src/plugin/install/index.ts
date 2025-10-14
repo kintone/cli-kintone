@@ -80,7 +80,7 @@ export const install = async (
         : {};
     const watcher = chokidar.watch(pluginFilePath, watchOptions);
     watcher.on("change", () => {
-      install(params);
+      install({ ...params, watch: false });
     });
   }
 

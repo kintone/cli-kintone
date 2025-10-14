@@ -1,6 +1,5 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { run } from "../../plugin/packer/";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
 import { setStability } from "../stability";

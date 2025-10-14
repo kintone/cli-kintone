@@ -6,7 +6,6 @@ import {
   type RestAPIClientOptions,
 } from "../../kintone/client";
 import { logger } from "../../utils/log";
-import { CliKintoneError } from "../../utils/error";
 import os from "os";
 import * as chokidar from "chokidar";
 

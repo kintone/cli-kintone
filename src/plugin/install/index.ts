@@ -7,6 +7,8 @@ import {
 } from "../../kintone/client";
 import { logger } from "../../utils/log";
 import { CliKintoneError } from "../../utils/error";
+import os from "os";
+import * as chokidar from "chokidar";
 
 export type Params = {
   pluginFilePath: string;
@@ -19,12 +21,12 @@ export const install = async (
 ): Promise<void> => {
   const { pluginFilePath, ...restApiClientOptions } = params;
 
+  const apiClient = buildRestAPIClient(restApiClientOptions);
+
   const buffer = await fs.readFile(pluginFilePath);
   const pluginZip = await PluginZip.fromBuffer(buffer);
   const pluginId = await pluginZip.getPluginID();
   const pluginManifest = await pluginZip.manifest();
-
-  const apiClient = buildRestAPIClient(restApiClientOptions);
 
   const { plugins: installedPlugins } = await apiClient.plugin.getPlugins({
     ids: [pluginId],
@@ -32,17 +34,17 @@ export const install = async (
   const installedPlugin = installedPlugins.find((p) => p.id === pluginId);
   const isInstalled = installedPlugin !== undefined;
 
-  if (!params.force) {
-    const installationSummary = `
+  const installationSummary = `
+  Installation Summary:
     Destination: ${restApiClientOptions.baseUrl}
     File Path: ${pluginFilePath}
     Plugin ID: ${pluginId}
     Plugin Name: ${pluginManifest.name}
     Current version: ${installedPlugin?.version ?? "(not installed)"}
     Target version: ${pluginManifest.version}`;
+  logger.info(installationSummary);
 
-    logger.info(installationSummary);
-
+  if (!params.force && !params.watch) {
     const answers = await confirm({
       message: `Do you continue to install this plugin?`,
       default: false,
@@ -62,6 +64,25 @@ export const install = async (
     await apiClient.plugin.updatePlugin({ id: pluginId, fileKey });
   } else {
     await apiClient.plugin.installPlugin({ fileKey });
+  }
+
+  if (params.watch) {
+    // change events are fired before changed files are flushed on Windows,
+    // which generate an invalid plugin zip.
+    // in order to fix this, we use awaitWriteFinish option only on Windows.
+    const watchOptions =
+      os.platform() === "win32"
+        ? {
+            awaitWriteFinish: {
+              stabilityThreshold: 1000,
+              pollInterval: 250,
+            },
+          }
+        : {};
+    const watcher = chokidar.watch(pluginFilePath, watchOptions);
+    watcher.on("change", () => {
+      install(params);
+    });
   }
 
   logger.info("Plugin installed successfully.");

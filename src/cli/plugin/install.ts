@@ -1,0 +1,79 @@
+import type yargs from "yargs";
+import type { CommandModule } from "yargs";
+import { run } from "../../plugin/packer/";
+import { logger } from "../../utils/log";
+import { RunError } from "../../record/error";
+import { setStability } from "../stability";
+import { commonOptions } from "../commonOptions";
+import type { Params } from "../../plugin/install";
+import { install } from "../../plugin/install";
+import type { RestAPIClientOptions } from "../../kintone/client";
+
+const command = "install";
+
+const describe = "Install the plugin to kintone";
+
+const builder = (args: yargs.Argv) =>
+  args
+    .options(commonOptions)
+    .option("input", {
+      describe: "The input plugin zip",
+      type: "string",
+      demandOption: true,
+      requiresArg: true,
+    })
+    .option("yes", {
+      alias: "y",
+      describe: "Skip confirmation",
+      type: "boolean",
+      default: false,
+    })
+    .option("watch", {
+      describe: "run in watch mode",
+      type: "boolean",
+      default: false,
+    });
+
+type Args = yargs.Arguments<
+  ReturnType<typeof builder> extends yargs.Argv<infer U> ? U : never
+>;
+
+const handler = async (args: Args) => {
+  try {
+    const params: Params = {
+      ...args,
+      pluginFilePath: args.input,
+      force: args.yes,
+      watch: args.watch,
+    };
+    const apiClientOptions: RestAPIClientOptions = {
+      // TODO: Refactor API client params
+      baseUrl: args["base-url"],
+      username: args.username,
+      password: args.password,
+      apiToken: args["api-token"],
+      basicAuthUsername: args["basic-auth-username"],
+      basicAuthPassword: args["basic-auth-password"],
+      guestSpaceId: args["guest-space-id"],
+      pfxFilePath: args["pfx-file-path"],
+      pfxFilePassword: args["pfx-file-password"],
+      httpsProxy: args.proxy,
+    };
+    await install({ ...params, ...apiClientOptions });
+  } catch (error) {
+    logger.error(new RunError(error));
+    // eslint-disable-next-line n/no-process-exit
+    process.exit(1);
+  }
+};
+
+export const installCommand: CommandModule<{}, Args> = setStability(
+  {
+    command,
+    describe,
+    builder,
+    handler,
+  },
+  "experimental",
+  "This feature is under early development",
+);

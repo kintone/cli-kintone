@@ -45,7 +45,7 @@ export const install = async (
     Plugin ID: ${pluginId}
     Plugin Name: ${pluginManifest.name}
     Current version: ${installedPlugin?.version ?? "(not installed)"}
-    Target version: ${pluginManifest.version}${isSameVersion ? "(reinstall)" : ""}`;
+    Target version: ${pluginManifest.version}${isSameVersion ? " (reinstall)" : ""}`;
   logger.info(installationSummary);
 
   // Get confirmation from user if required

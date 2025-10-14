@@ -22,17 +22,20 @@ export const install = async (
 
   const apiClient = buildRestAPIClient(restApiClientOptions);
 
+  // Read plugin zip file
   const buffer = await fs.readFile(pluginFilePath);
   const pluginZip = await PluginZip.fromBuffer(buffer);
   const pluginId = await pluginZip.getPluginID();
   const pluginManifest = await pluginZip.manifest();
 
+  // Read plugin info from kintone
   const { plugins: installedPlugins } = await apiClient.plugin.getPlugins({
     ids: [pluginId],
   } as any);
   const installedPlugin = installedPlugins.find((p) => p.id === pluginId);
   const isInstalled = installedPlugin !== undefined;
 
+  // Show installation summary
   const installationSummary = `
   Installation Summary:
     Destination: ${restApiClientOptions.baseUrl}
@@ -43,6 +46,7 @@ export const install = async (
     Target version: ${pluginManifest.version}`;
   logger.info(installationSummary);
 
+  // Get confirmation from user if required
   if (!params.force && !params.watch) {
     const answers = await confirm({
       message: `Do you continue to install this plugin?`,
@@ -55,16 +59,19 @@ export const install = async (
     }
   }
 
+  // Upload plugin zip file to kintone
   const { fileKey } = await apiClient.file.uploadFile({
     file: { name: pluginFilePath, data: buffer },
   });
 
+  // Install or update plugin
   if (isInstalled) {
     await apiClient.plugin.updatePlugin({ id: pluginId, fileKey });
   } else {
     await apiClient.plugin.installPlugin({ fileKey });
   }
 
+  // Start watch mode if watch option is given
   if (params.watch) {
     // change events are fired before changed files are flushed on Windows,
     // which generate an invalid plugin zip.

@@ -35,6 +35,8 @@ export const install = async (
   const installedPlugin = installedPlugins.find((p) => p.id === pluginId);
   const isInstalled = installedPlugin !== undefined;
 
+  const isSameVersion = installedPlugin?.version === pluginManifest.version;
+
   // Show installation summary
   const installationSummary = `
   Installation Summary:
@@ -43,7 +45,7 @@ export const install = async (
     Plugin ID: ${pluginId}
     Plugin Name: ${pluginManifest.name}
     Current version: ${installedPlugin?.version ?? "(not installed)"}
-    Target version: ${pluginManifest.version}`;
+    Target version: ${pluginManifest.version}${isSameVersion ? "(reinstall)" : ""}`;
   logger.info(installationSummary);
 
   // Get confirmation from user if required

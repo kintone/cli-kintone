@@ -55,9 +55,9 @@ export const install = async (
       default: false,
     });
     if (!answers) {
-      logger.info("Plugin installation aborted.");
+      logger.info("Plugin installation cancelled by user.");
       // TODO: ユーザーによって中止された場合のエラー
-      throw new Error();
+      return;
     }
   }
 

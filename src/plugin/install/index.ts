@@ -74,6 +74,7 @@ export const install = async (
 
   // Start watch mode if watch option is given
   if (params.watch) {
+    // TODO: 他のコマンドとwatchモードに渡すオプションを共通化する
     // change events are fired before changed files are flushed on Windows,
     // which generate an invalid plugin zip.
     // in order to fix this, we use awaitWriteFinish option only on Windows.

@@ -15,6 +15,8 @@ const describe = "Install the plugin to kintone";
 const builder = (args: yargs.Argv) =>
   args
     .options(commonOptions)
+    // NOTE: This command only supports password authn.
+    .hide("api-token")
     .option("input", {
       describe: "The input plugin zip",
       type: "string",

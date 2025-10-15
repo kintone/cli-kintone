@@ -12,6 +12,10 @@ This feature is under early development.
 
 :::
 
+**Notice**
+
+- This command only supports password authentication.
+
 ## Example
 
 ```shell

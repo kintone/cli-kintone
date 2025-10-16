@@ -38,7 +38,7 @@ Feature: record common
   Scenario: Invalid URL format
     When I run the command with args "record export --base-url foo --app 1 --api-token abc"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "ERROR: TypeError \[ERR_INVALID_URL]: Invalid URL"
+    And The output error message should match with the pattern: "ERROR: TypeError: Invalid URL"
 
   Scenario: No app option
     When I run the command with args "record export --base-url http://example.com"

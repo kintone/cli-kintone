@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x, 22.x, 24.x]
+        node-version: [20, 22, 24]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
@@ -39,7 +39,7 @@ jobs:
         if: ${{ env.platform == 'ubuntu' && !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: allure_results_unit_${{ env.platform }}
+          name: allure_results_unit_${{ env.platform }}_node${{ matrix.node-version }}
           path: allure-results
           if-no-files-found: ignore
     outputs:

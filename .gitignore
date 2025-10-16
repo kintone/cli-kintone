@@ -23,7 +23,6 @@ artifacts
 # misc
 **/.DS_Store
 *.tsbuildinfo
-sea-prep.blob
 attachments
 /*.csv
 .e2e-credentials.json

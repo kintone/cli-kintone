@@ -20,7 +20,7 @@
     "build:executables": "run-s build:ncc package",
     "build:tsc": "tsc --build ./tsconfig.build.json",
     "build:ncc": "ncc build ./src/cli/main.ts -m",
-    "package": "mkdirp ./bin && pkg --sea ./dist/index.js --compress Brotli -o ./bin/cli-kintone -t linux,macos,win",
+    "package": "mkdirp ./bin && pkg --sea ./dist/index.js -o ./bin/cli-kintone -t linux,macos,win",
     "license:analyze": "license-manager analyze -c license-manager.config.js",
     "license:extract": "license-manager extract -c license-manager.config.js -w .",
     "compress": "zx ./scripts/compress-to-zip-file.mjs",

@@ -9,6 +9,9 @@ on:
 jobs:
   build-executables:
     name: Build executables
+    # ubuntu上でビルドしたmacOS向けの実行ファイルが正常に動作しないため、
+    # macOSランナー上でビルドする
+    # ref. https://github.com/yao-pkg/pkg/issues/183
     runs-on: macos-latest
     steps:
       - uses: Kesin11/actions-timeline@3046833d9aacfd7745c5264b7f3af851c3e2a619 # v2
@@ -42,10 +45,10 @@ jobs:
         with:
           name: executables
       - run: chmod +x ./cli-kintone-*
-      - run: ./cli-kintone-linux-x64 --version > ACTUAL_VERSION
+      - run: ./cli-kintone-linux-x64 --version | tee ACTUAL
         if: ${{ matrix.os == 'ubuntu-latest' }}
-      - run: ./cli-kintone-win-x64.exe --version > ACTUAL_VERSION
+      - run: ./cli-kintone-win-x64.exe --version | tee ACTUAL
         if: ${{ matrix.os == 'windows-latest' }}
-      - run: ./cli-kintone-macos-arm64 --version > ACTUAL_VERSION
+      - run: ./cli-kintone-macos-arm64 --version | tee ACTUAL
         if: ${{ matrix.os == 'macos-latest' }}
       - run: diff EXPECTED_VERSION ACTUAL_VERSION

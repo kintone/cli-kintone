@@ -45,7 +45,10 @@ jobs:
     name: Upload executables
     permissions:
       contents: write
-    runs-on: ubuntu-latest
+    # ubuntu上でビルドしたmacOS向けの実行ファイルが正常に動作しないため、
+    # macOSランナー上でビルドする
+    # ref. https://github.com/yao-pkg/pkg/issues/183
+    runs-on: macos-latest
     needs: release
     if: ${{ needs.release.outputs.release_created }}
     steps:

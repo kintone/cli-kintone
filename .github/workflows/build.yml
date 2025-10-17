@@ -9,7 +9,10 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    # ubuntu上でビルドしたmacOS向けの実行ファイルが正常に動作しないため、
+    # macOSランナー上でビルドする
+    # ref. https://github.com/yao-pkg/pkg/issues/183
+    runs-on: macos-latest
     steps:
       - uses: Kesin11/actions-timeline@3046833d9aacfd7745c5264b7f3af851c3e2a619 # v2
 

@@ -42,10 +42,10 @@ jobs:
         with:
           name: executables
       - run: chmod +x ./cli-kintone-*
-      - run: ./cli-kintone-linux --version > ACTUAL_VERSION
+      - run: ./cli-kintone-linux-x64 --version > ACTUAL_VERSION
         if: ${{ matrix.os == 'ubuntu-latest' }}
-      - run: ./cli-kintone-win.exe --version > ACTUAL_VERSION
+      - run: ./cli-kintone-win-x64.exe --version > ACTUAL_VERSION
         if: ${{ matrix.os == 'windows-latest' }}
-      - run: ./cli-kintone-macos --version > ACTUAL_VERSION
+      - run: ./cli-kintone-macos-arm64 --version > ACTUAL_VERSION
         if: ${{ matrix.os == 'macos-latest' }}
       - run: diff EXPECTED_VERSION ACTUAL_VERSION

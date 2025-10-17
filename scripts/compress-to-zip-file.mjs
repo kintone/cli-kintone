@@ -46,17 +46,17 @@ try {
 const recipes = [
   {
     type: "linux",
-    input: "cli-kintone-linux",
+    input: "cli-kintone-linux-x64",
     output: "cli-kintone",
   },
   {
     type: "macos",
-    input: "cli-kintone-macos",
+    input: "cli-kintone-macos-arm64",
     output: "cli-kintone",
   },
   {
     type: "win",
-    input: "cli-kintone-win.exe",
+    input: "cli-kintone-win-x64.exe",
     output: "cli-kintone.exe",
   },
 ];

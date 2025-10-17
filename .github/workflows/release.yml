@@ -51,9 +51,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: "24"
+          cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - run: pnpm build:artifacts
@@ -89,9 +90,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: "24"
+          cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
       # Ensure npm 11.5.1 or later is installed
       # ref. https://docs.npmjs.com/trusted-publishers#github-actions-configuration

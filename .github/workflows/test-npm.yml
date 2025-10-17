@@ -14,9 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: "24"
+          cache: "pnpm"
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
@@ -36,7 +37,7 @@ jobs:
         node-version: [20, 22, 24]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
       - uses: actions/download-artifact@v4
@@ -54,7 +55,7 @@ jobs:
         node-version: [20, 22, 24]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
       - uses: actions/download-artifact@v4

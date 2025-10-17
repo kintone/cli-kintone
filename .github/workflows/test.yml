@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20, 22, 24]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
@@ -40,7 +40,7 @@ jobs:
         if: ${{ env.platform == 'ubuntu' && !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: allure_results_unit_${{ env.platform }}
+          name: allure_results_unit_${{ env.platform }}_node${{ matrix.node-version }}
           path: allure-results
           if-no-files-found: ignore
     outputs:
@@ -72,7 +72,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        node-version: [18.x]
+        node-version: [24]
         os: ${{ fromJSON(needs.get-running-os-for-test-e2e.outputs.os) }}
     steps:
       - uses: actions/checkout@v4

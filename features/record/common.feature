@@ -18,7 +18,7 @@ Feature: record common
   Scenario: Get help
     When I run the command with args "--help"
     Then I should get the exit code is zero
-    And The output message should match with the pattern: "cli-kintone-(macos|win\.exe|linux) <command>"
+    And The output message should match with the pattern: "cli-kintone-(macos-arm64|win-x64\.exe|linux-x64) <command>"
 
   Scenario: Base URL is not specified
     When I run the command with args "record export --app 1"
@@ -38,7 +38,7 @@ Feature: record common
   Scenario: Invalid URL format
     When I run the command with args "record export --base-url foo --app 1 --api-token abc"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "ERROR: TypeError \[ERR_INVALID_URL]: Invalid URL"
+    And The output error message should match with the pattern: "ERROR: TypeError: Invalid URL"
 
   Scenario: No app option
     When I run the command with args "record export --base-url http://example.com"

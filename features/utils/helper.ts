@@ -62,11 +62,11 @@ export const getCliKintoneBinary = (): string => {
   const dir = path.join(__dirname, "..", "..", "bin");
   switch (process.platform) {
     case "darwin":
-      return path.join(dir, "cli-kintone-macos");
+      return path.join(dir, "cli-kintone-macos-arm64");
     case "linux":
-      return path.join(dir, "cli-kintone-linux");
+      return path.join(dir, "cli-kintone-linux-x64");
     case "win32":
-      return path.join(dir, "cli-kintone-win.exe");
+      return path.join(dir, "cli-kintone-win-x64.exe");
     default:
       throw new Error(`Unsupported platform ${process.platform}`);
   }

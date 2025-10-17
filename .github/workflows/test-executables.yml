@@ -1,0 +1,54 @@
+name: test-executables
+on:
+  push:
+    branches:
+      - main
+      - "renovate/**"
+  pull_request:
+
+jobs:
+  build-executables:
+    name: Build executables
+    # ubuntu上でビルドしたmacOS向けの実行ファイルが正常に動作しないため、
+    # macOSランナー上でビルドする
+    # ref. https://github.com/yao-pkg/pkg/issues/183
+    runs-on: macos-latest
+    steps:
+      - uses: Kesin11/actions-timeline@3046833d9aacfd7745c5264b7f3af851c3e2a619 # v2
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:executables
+      - run: jq -r '.version' ./package.json > bin/EXPECTED_VERSION
+      - uses: actions/upload-artifact@v4
+        with:
+          name: executables
+          path: bin/*
+          retention-days: 1day
+
+  test-executables:
+    name: Test executables - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: build-executables
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: executables
+      - run: chmod +x ./cli-kintone-*
+      - run: ./cli-kintone-linux-x64 --version | tee ACTUAL_VERSION
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+      - run: ./cli-kintone-win-x64.exe --version | tee ACTUAL_VERSION
+        if: ${{ matrix.os == 'windows-latest' }}
+      - run: ./cli-kintone-macos-arm64 --version | tee ACTUAL_VERSION
+        if: ${{ matrix.os == 'macos-latest' }}
+      - run: diff EXPECTED_VERSION ACTUAL_VERSION

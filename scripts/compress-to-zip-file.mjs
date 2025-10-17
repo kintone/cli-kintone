@@ -5,7 +5,7 @@ import path from "path";
 import os from "os";
 import { rimraf } from "rimraf";
 import { fileURLToPath } from "url";
-import packageJson from "../package.json" assert { type: "json" };
+import packageJson from "../package.json" with { type: "json" };
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(dirname, "../");
@@ -46,17 +46,17 @@ try {
 const recipes = [
   {
     type: "linux",
-    input: "cli-kintone-linux",
+    input: "cli-kintone-linux-x64",
     output: "cli-kintone",
   },
   {
     type: "macos",
-    input: "cli-kintone-macos",
+    input: "cli-kintone-macos-arm64",
     output: "cli-kintone",
   },
   {
     type: "win",
-    input: "cli-kintone-win.exe",
+    input: "cli-kintone-win-x64.exe",
     output: "cli-kintone.exe",
   },
 ];

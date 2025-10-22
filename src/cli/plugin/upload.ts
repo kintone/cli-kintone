@@ -4,13 +4,13 @@ import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
 import { setStability } from "../stability";
 import { commonOptions } from "../commonOptions";
-import type { Params } from "../../plugin/install";
-import { install } from "../../plugin/install";
+import type { Params } from "../../plugin/upload";
+import { upload } from "../../plugin/upload";
 import type { RestAPIClientOptions } from "../../kintone/client";
 
 const command = "install";
 
-const describe = "Install the plugin to kintone";
+const describe = "Upload a plugin to kintone";
 
 const builder = (args: yargs.Argv) =>
   args
@@ -60,7 +60,7 @@ const handler = async (args: Args) => {
       pfxFilePassword: args["pfx-file-password"],
       httpsProxy: args.proxy,
     };
-    await install({ ...params, ...apiClientOptions });
+    await upload({ ...params, ...apiClientOptions });
   } catch (error) {
     logger.error(new RunError(error));
     // eslint-disable-next-line n/no-process-exit
@@ -68,7 +68,7 @@ const handler = async (args: Args) => {
   }
 };
 
-export const installCommand: CommandModule<{}, Args> = setStability(
+export const uploadCommand: CommandModule<{}, Args> = setStability(
   {
     command,
     describe,

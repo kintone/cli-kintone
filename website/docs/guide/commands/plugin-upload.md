@@ -2,9 +2,9 @@
 sidebar_position: 1600
 ---
 
-# plugin install
+# plugin upload
 
-Installs a plugin to a kintone environment.
+Uploading a plugin to a kintone environment.
 
 :::experimental
 
@@ -19,7 +19,7 @@ This feature is under early development.
 ## Example
 
 ```shell
-cli-kintone plugin install --input ./plugin.zip
+cli-kintone plugin upload --input ./plugin.zip
 ```
 
 ## Options

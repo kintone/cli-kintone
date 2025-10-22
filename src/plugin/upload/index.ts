@@ -15,7 +15,7 @@ export type Params = {
   watch: boolean;
 };
 
-export const install = async (
+export const upload = async (
   params: Params & RestAPIClientOptions,
 ): Promise<void> => {
   const { pluginFilePath, ...restApiClientOptions } = params;
@@ -51,7 +51,7 @@ export const install = async (
   // Get confirmation from user if required
   if (!params.force && !params.watch) {
     const answers = await confirm({
-      message: `Do you continue to install this plugin?`,
+      message: `Do you continue to add this plugin?`,
       default: false,
     });
     if (!answers) {
@@ -89,7 +89,7 @@ export const install = async (
         : {};
     const watcher = chokidar.watch(pluginFilePath, watchOptions);
     watcher.on("change", () => {
-      install({ ...params, watch: false });
+      upload({ ...params, watch: false });
     });
   }
 

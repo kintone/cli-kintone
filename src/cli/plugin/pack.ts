@@ -34,7 +34,7 @@ const builder = (args: yargs.Argv) =>
       requiresArg: true,
     })
     .option("watch", {
-      describe: "run in watch mode",
+      describe: "Run in watch mode",
       type: "boolean",
     });
 

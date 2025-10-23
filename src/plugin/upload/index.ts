@@ -11,8 +11,8 @@ import * as chokidar from "chokidar";
 
 export type Params = {
   pluginFilePath: string;
-  force: boolean;
-  watch: boolean;
+  force?: boolean;
+  watch?: boolean;
 };
 
 export const upload = async (

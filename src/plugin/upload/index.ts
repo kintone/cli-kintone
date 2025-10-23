@@ -54,7 +54,7 @@ export const upload = async (
   // Get confirmation from user if required
   if (!params.force && !params.watch) {
     const answers = await confirm({
-      message: `Do you continue to add this plugin?`,
+      message: `Do you want to continue?`,
       default: false,
     });
     if (!answers) {

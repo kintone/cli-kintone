@@ -22,6 +22,6 @@ cli-kintone plugin keygen --output private.ppk
 
 See [Options](/guide/options) page for common options.
 
-| Option     | Required | Description                                                       |
-| ---------- | -------- | ----------------------------------------------------------------- |
-| `--output` |          | The output private key file path. Default to `./${plugin_id}.ppk` |
+| Option           | Required | Description                                                       |
+| ---------------- | -------- | ----------------------------------------------------------------- |
+| `--output`, `-o` |          | The output private key file path. Default to `./${plugin_id}.ppk` |

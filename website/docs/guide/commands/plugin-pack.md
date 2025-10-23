@@ -27,7 +27,7 @@ See [Options](/guide/options) page for common options.
 
 | Option            | Required | Description                                                                                                                       |
 | ----------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `--input`         | Yes      | The input plugin manifest file path.                                                                                              |
-| `--output`        |          | The destination file path to generate plugin zip file.<br/>Default to `./plugin.zip`.                                             |
+| `--input`, `-i`   | Yes      | The input plugin manifest file path.                                                                                              |
+| `--output`, `-o`  |          | The destination file path to generate plugin zip file.<br/>Default to `./plugin.zip`.                                             |
 | `--private-key  ` | Yes      | The path of private key file. If you don't have a private key, you can generate with [`plugin keygen`](./plugin-pack.md) command. |
 | `--watch  `       |          | Run in watch mode.                                                                                                                |

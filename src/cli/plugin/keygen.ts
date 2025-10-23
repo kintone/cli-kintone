@@ -11,6 +11,7 @@ const describe = "Generate private key for packaging a plugin";
 
 const builder = (args: yargs.Argv) =>
   args.option("output", {
+    alias: "o",
     describe: "The output private key file path",
     type: "string",
     defaultDescription: "<plugin_id>.ppk",

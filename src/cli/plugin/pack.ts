@@ -1,6 +1,6 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { run } from "../../plugin/packer/";
+import { pack } from "../../plugin/packer/";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
 import { setStability } from "../stability";
@@ -25,9 +25,9 @@ const builder = (args: yargs.Argv) =>
       requiresArg: true,
     })
     .option("private-key", {
-      describe:
-        "The path of private key file\nIf omitted, new private key will be generated.",
+      describe: "The path of private key file.",
       type: "string",
+      demandOption: true,
       requiresArg: true,
     })
     .option("watch", {
@@ -41,15 +41,16 @@ type Args = yargs.Arguments<
 
 const handler = async (args: Args) => {
   try {
-    const flags = {
-      ppk: args["private-key"],
+    const params = {
+      input: args.input,
       output: args.output,
+      ppkFilePath: args["private-key"],
       watch: args.watch,
     };
     if (process.env.NODE_ENV === "test") {
-      console.log(JSON.stringify({ pluginDir: args.input, flags: flags }));
+      console.log(JSON.stringify(params));
     } else {
-      await run(args.input, flags);
+      await pack(params);
     }
   } catch (error) {
     logger.error(new RunError(error));

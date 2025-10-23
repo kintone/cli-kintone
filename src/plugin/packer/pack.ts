@@ -5,16 +5,18 @@ import * as chokidar from "chokidar";
 import { logger } from "../../utils/log";
 import { ManifestFactory, PluginZip, PrivateKey, LocalFSDriver } from "../core";
 
-type Options = Partial<{
-  ppk: string;
-  output: string;
-  watch: boolean;
-}>;
+type Params = {
+  input: string;
+  ppkFilePath: string;
+  output?: string;
+  watch?: boolean;
+};
 
 // TODO: Reduce statements in this func
-// eslint-disable-next-line max-statements
-export const run = async (pluginDir: string, options_?: Options) => {
-  const options = options_ || {};
+
+export const pack = async (params: Params) => {
+  const pluginDir = path.resolve(params.input);
+  // const outputDir = path.resolve(params.output || "./plugin.zip");
 
   // 1. Validate input parameters
   // 1.1 Check if pluginDir is a directory
@@ -54,8 +56,8 @@ export const run = async (pluginDir: string, options_?: Options) => {
   // 4. Prepare output directory
   let outputDir = path.dirname(path.resolve(pluginDir));
   let outputFile = path.join(outputDir, "plugin.zip");
-  if (options.output) {
-    outputFile = options.output;
+  if (outputDir) {
+    outputFile = outputDir;
     outputDir = path.dirname(path.resolve(outputFile));
   }
   await fs.mkdir(outputDir, { recursive: true });
@@ -63,25 +65,13 @@ export const run = async (pluginDir: string, options_?: Options) => {
   logger.debug(`outputFile: ${outputFile}`);
 
   // 5. Load ppk or generate new ppk if not specified
-  const ppkFile = options.ppk;
-  let privateKey: PrivateKey;
-  if (ppkFile) {
-    logger.debug(`loading an existing key: ${ppkFile}`);
-    const ppk = await fs.readFile(ppkFile, "utf8");
-    privateKey = PrivateKey.importKey(ppk);
-  } else {
-    logger.debug("generating a new key");
-    privateKey = PrivateKey.generateKey();
-  }
+  const ppkFilePath = path.resolve(params.ppkFilePath);
+  logger.debug(`loading an existing key: ${ppkFilePath}`);
+  const ppk = await fs.readFile(ppkFilePath, "utf8");
+  const privateKey = PrivateKey.importKey(ppk);
 
   const id = privateKey.uuid();
   logger.debug(`plugin id: ${id}`);
-
-  const ppkFilePath = path.join(outputDir, `${id}.ppk`);
-  if (!ppkFile) {
-    await fs.writeFile(ppkFilePath, privateKey.exportPrivateKey(), "utf8");
-    logger.info(`New private key generated: ${ppkFilePath}`);
-  }
 
   // 6. Package plugin.zip
   const pluginZip = await PluginZip.build(
@@ -91,7 +81,7 @@ export const run = async (pluginDir: string, options_?: Options) => {
   );
 
   // 7. Start watch mode if watch option is given
-  if (options.watch) {
+  if (params.watch) {
     // change events are fired before changed files are flushed on Windows,
     // which generate an invalid plugin zip.
     // in order to fix this, we use awaitWriteFinish option only on Windows.
@@ -106,17 +96,14 @@ export const run = async (pluginDir: string, options_?: Options) => {
         : {};
     const watcher = chokidar.watch(pluginDir, watchOptions);
     watcher.on("change", () => {
-      run(
-        pluginDir,
-        Object.assign({}, options, {
-          watch: false,
-          ppk: options.ppk || ppkFilePath,
-        }),
-      );
+      pack({
+        ...params,
+        watch: false,
+      });
     });
   }
 
-  // 8. Write out plugin.zip to filesystem
+  // 7. Write out plugin.zip to filesystem
   await fs.writeFile(outputFile, pluginZip.buffer);
 
   logger.info(`The plugin file generated: ${outputFile}`);

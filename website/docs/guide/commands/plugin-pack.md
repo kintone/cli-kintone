@@ -25,9 +25,9 @@ cli-kintone plugin pack \
 
 See [Options](/guide/options) page for common options.
 
-| Option            | Required | Description                                                                                    |
-| ----------------- | -------- | ---------------------------------------------------------------------------------------------- |
-| `--input`         | Yes      | The input plugin project directory.                                                            |
-| `--output`        |          | The destination path of generated plugin file.<br/>Default to plugin.zip on current directory. |
-| `--private-key  ` |          | The path of private key file<br/>If omitted, new private key will be generated.                |
-| `--watch  `       |          | Run in watch mode.                                                                             |
+| Option            | Required | Description                                                                                                                       |
+| ----------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `--input`         | Yes      | The input plugin project directory.                                                                                               |
+| `--output`        |          | The destination path of generated plugin file.<br/>Default to plugin.zip on current directory.                                    |
+| `--private-key  ` | Yes      | The path of private key file. If you don't have a private key, you can generate with [`plugin keygen`](./plugin-pack.md) command. |
+| `--watch  `       |          | Run in watch mode.                                                                                                                |

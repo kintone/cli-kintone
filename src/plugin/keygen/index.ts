@@ -12,7 +12,7 @@ export const keygen = async (output?: string) => {
   // Write out ppk to filesystem
   const outputFilePath = path.resolve(output ? output : `./${id}.ppk`);
 
-  if ((await fs.stat(outputFilePath)).isFile()) {
+  if ((await fs.stat(outputFilePath).catch((_) => undefined))?.isFile()) {
     throw new Error(`File ${outputFilePath} already exists.`);
   }
 

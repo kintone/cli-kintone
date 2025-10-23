@@ -21,6 +21,8 @@ import {
   getUserCredentialByAppAndUserPermissions,
 } from "./credentials";
 import type { Writable, Readable } from "node:stream";
+import { stat } from "fs/promises";
+import path from "path";
 
 type Response = {
   stdout: Buffer;
@@ -158,6 +160,10 @@ export class OurWorld extends World {
 
   public async generateFile(filePath: string) {
     return generateFile(filePath, { baseDir: this.workingDir });
+  }
+
+  public async isFileExists(filePath: string): Promise<boolean> {
+    return (await stat(path.join(this.workingDir, filePath))).isFile();
   }
 
   public getAppCredentialByAppKey(appKey: string): AppCredential {

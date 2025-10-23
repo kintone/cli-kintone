@@ -53,7 +53,6 @@ const handler = async (args: Args) => {
       baseUrl: args["base-url"],
       username: args.username,
       password: args.password,
-      apiToken: args["api-token"],
       basicAuthUsername: args["basic-auth-username"],
       basicAuthPassword: args["basic-auth-password"],
       guestSpaceId: args["guest-space-id"],

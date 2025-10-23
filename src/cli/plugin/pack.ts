@@ -12,14 +12,14 @@ const describe = "Packaging plugin project to a zip file";
 const builder = (args: yargs.Argv) =>
   args
     .option("input", {
-      describe: "The input plugin project directory",
+      describe: "The input plugin manifest file path.",
       type: "string",
       demandOption: true,
       requiresArg: true,
     })
     .option("output", {
       describe:
-        "The destination path of generated plugin file\nDefault to plugin.zip on current directory",
+        "The destination file path to generate plugin zip file.\nDefault to `./plugin.zip`.",
       type: "string",
       default: "plugin.zip",
       requiresArg: true,

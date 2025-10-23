@@ -15,29 +15,29 @@ type Params = {
 // TODO: Reduce statements in this func
 
 export const pack = async (params: Params) => {
-  const pluginDir = path.resolve(params.input);
-  // const outputDir = path.resolve(params.output || "./plugin.zip");
+  const manifestJsonFilePath = path.resolve(params.input);
+  logger.debug(`input manifest file path: ${manifestJsonFilePath}`);
+  const outputFilePath = path.resolve(params.output || "./plugin.zip");
+  logger.debug(`output file path: ${outputFilePath}`);
+
+  // Root directory of source files
+  // Default to the directory where manifest.json is located
+  const sourceRootDir = path.resolve(path.dirname(manifestJsonFilePath));
 
   // 1. Validate input parameters
-  // 1.1 Check if pluginDir is a directory
-  if (!(await fs.stat(pluginDir)).isDirectory()) {
-    throw new Error(`${pluginDir} should be a directory.`);
-  }
-
-  // 1.2 Check pluginDir/manifest.json
-  const manifestJsonPath = path.join(pluginDir, "manifest.json");
-  if (!(await fs.stat(manifestJsonPath)).isFile()) {
+  // Check manifest.json exists
+  if (!(await fs.stat(manifestJsonFilePath)).isFile()) {
     throw new Error("Manifest file $PLUGIN_DIR/manifest.json not found.");
   }
 
   // 2. Load manifest.json
-  const manifest = await ManifestFactory.loadJsonFile(manifestJsonPath);
+  const manifest = await ManifestFactory.loadJsonFile(manifestJsonFilePath);
   if (manifest.manifestVersion === 2) {
     logger.warn("Welcome to manifest v2 mode :)");
   }
 
   // 3. Validate manifest.json
-  const result = await manifest.validate(new LocalFSDriver(pluginDir));
+  const result = await manifest.validate(new LocalFSDriver(sourceRootDir));
 
   if (result.warnings.length > 0) {
     result.warnings.forEach((warning) => {
@@ -54,15 +54,8 @@ export const pack = async (params: Params) => {
   }
 
   // 4. Prepare output directory
-  let outputDir = path.dirname(path.resolve(pluginDir));
-  let outputFile = path.join(outputDir, "plugin.zip");
-  if (outputDir) {
-    outputFile = outputDir;
-    outputDir = path.dirname(path.resolve(outputFile));
-  }
-  await fs.mkdir(outputDir, { recursive: true });
-  logger.debug(`outputDir: ${outputDir}`);
-  logger.debug(`outputFile: ${outputFile}`);
+  await fs.mkdir(path.dirname(outputFilePath), { recursive: true });
+  logger.debug(`outputFile: ${outputFilePath}`);
 
   // 5. Load ppk or generate new ppk if not specified
   const ppkFilePath = path.resolve(params.ppkFilePath);
@@ -77,7 +70,7 @@ export const pack = async (params: Params) => {
   const pluginZip = await PluginZip.build(
     manifest,
     privateKey,
-    new LocalFSDriver(pluginDir),
+    new LocalFSDriver(sourceRootDir),
   );
 
   // 7. Start watch mode if watch option is given
@@ -94,7 +87,11 @@ export const pack = async (params: Params) => {
             },
           }
         : {};
-    const watcher = chokidar.watch(pluginDir, watchOptions);
+    const watchTargets = [
+      manifestJsonFilePath,
+      ...manifest.sourceList().map((src) => path.resolve(sourceRootDir, src)),
+    ];
+    const watcher = chokidar.watch(watchTargets, watchOptions);
     watcher.on("change", () => {
       pack({
         ...params,
@@ -103,8 +100,8 @@ export const pack = async (params: Params) => {
     });
   }
 
-  // 7. Write out plugin.zip to filesystem
-  await fs.writeFile(outputFile, pluginZip.buffer);
+  // 8. Write out plugin.zip to filesystem
+  await fs.writeFile(outputFilePath, pluginZip.buffer);
 
-  logger.info(`The plugin file generated: ${outputFile}`);
+  logger.info(`The plugin file generated: ${outputFilePath}`);
 };

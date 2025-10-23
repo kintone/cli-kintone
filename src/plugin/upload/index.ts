@@ -91,8 +91,8 @@ export const upload = async (
           }
         : {};
     const watcher = chokidar.watch(pluginFilePath, watchOptions);
-    watcher.on("change", () => {
-      upload({ ...params, watch: false });
+    watcher.on("change", async () => {
+      await upload({ ...params, force: true, watch: false });
     });
   }
 

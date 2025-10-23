@@ -21,13 +21,14 @@ const builder = (args: yargs.Argv) =>
     .option("output", {
       alias: "o",
       describe:
-        "The destination file path to generate plugin zip file.\nDefault to `./plugin.zip`.",
+        'The destination file path to generate plugin zip file.\nDefault to "./plugin.zip".',
       type: "string",
       default: "plugin.zip",
       requiresArg: true,
     })
     .option("private-key", {
-      describe: "The path of private key file.",
+      describe:
+        'The path of private key file.\nTo generate private key, use "plugin keygen" command.',
       type: "string",
       demandOption: true,
       requiresArg: true,

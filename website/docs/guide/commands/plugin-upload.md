@@ -4,7 +4,7 @@ sidebar_position: 1600
 
 # plugin upload
 
-Uploading a plugin to a kintone environment.
+The `plugin upload` command allows you to upload a plugin to a kintone environment.
 
 :::experimental
 

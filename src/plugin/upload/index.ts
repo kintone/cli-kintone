@@ -8,6 +8,8 @@ import {
 import { logger } from "../../utils/log";
 import os from "os";
 import * as chokidar from "chokidar";
+import path from "path";
+import { isFile } from "../../utils/file";
 
 export type Params = {
   pluginFilePath: string;
@@ -18,7 +20,12 @@ export type Params = {
 export const upload = async (
   params: Params & RestAPIClientOptions,
 ): Promise<void> => {
-  const { pluginFilePath, ...restApiClientOptions } = params;
+  const { pluginFilePath: _, ...restApiClientOptions } = params;
+  const pluginFilePath = path.resolve(params.pluginFilePath);
+
+  if (!(await isFile(pluginFilePath))) {
+    throw new Error(`Plugin file not found: ${pluginFilePath}`);
+  }
 
   const apiClient = buildRestAPIClient(restApiClientOptions);
 

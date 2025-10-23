@@ -57,3 +57,16 @@ export const extractFileFormat: (filepath: string) => string = (filepath) => {
   // TODO this cannot detect file format without extensions
   return path.extname(filepath).split(".").pop() || "";
 };
+
+/**
+ * Check if the given path is a file.
+ * Wrapping fs.stat() to reduce error handling code.
+ * @param filePath
+ */
+export const isFile = async (filePath: string): Promise<boolean> => {
+  try {
+    return (await fs.promises.stat(filePath)).isFile();
+  } catch (_) {
+    return false;
+  }
+};

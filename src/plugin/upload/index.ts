@@ -29,9 +29,12 @@ export const upload = async (
   const pluginManifest = await pluginZip.manifest();
 
   // Read plugin info from kintone
-  const { plugins: installedPlugins } = await apiClient.plugin.getPlugins({
-    ids: [pluginId],
-  } as any);
+  const { plugins: installedPlugins } = await apiClient.plugin.getPlugins(
+    // TODO: rest-api-client should accept array of ids
+    {
+      ids: [pluginId],
+    } as any,
+  );
   const installedPlugin = installedPlugins.find((p) => p.id === pluginId);
   const isInstalled = installedPlugin !== undefined;
 

@@ -8,7 +8,7 @@ import type { Params } from "../../plugin/upload";
 import { upload } from "../../plugin/upload";
 import type { RestAPIClientOptions } from "../../kintone/client";
 
-const command = "install";
+const command = "upload";
 
 const describe = "Upload a plugin to kintone";
 

@@ -25,4 +25,4 @@ See [Options](/guide/options) page for common options.
 | Option          | Required | Description                                                           |
 | --------------- | -------- | --------------------------------------------------------------------- |
 | `--input`, `-i` | Yes      | The input plugin zip file path.                                       |
-| `--format  `    |          | Output format.<br/>Format: `plain` or `json`.<br/>Default to `plain`. |
+| `--format`    |          | Output format.<br/>Format: `plain` or `json`.<br/>Default to `plain`. |

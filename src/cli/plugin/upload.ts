@@ -18,6 +18,7 @@ const builder = (args: yargs.Argv) =>
     // NOTE: This command only supports password authn.
     .hide("api-token")
     .option("input", {
+      alias: "i",
       describe: "The input plugin zip",
       type: "string",
       demandOption: true,

@@ -28,6 +28,6 @@ See [Options](/guide/options) page for common options.
 
 | Option          | Required | Description                     |
 | --------------- | -------- | ------------------------------- |
-| `--input`       | Yes      | The input plugin zip file path. |
+| `--input`, `-i` | Yes      | The input plugin zip file path. |
 | `--yes  `, `-y` |          | Skip confirmation.              |
 | `--watch  `     |          | Run in watch mode.              |

@@ -37,9 +37,9 @@
     "@docusaurus/types": "3.4.0",
     "@eslint/eslintrc": "^3.3.1",
     "@octokit/rest": "^20.1.2",
-    "@types/node": "^18.19.127",
+    "@types/node": "^18.19.129",
     "ts-node": "^10.9.2",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.3"
   },
   "browserslist": {
     "production": [

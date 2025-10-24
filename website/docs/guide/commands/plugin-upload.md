@@ -4,7 +4,7 @@ sidebar_position: 1600
 
 # plugin upload
 
-Uploading a plugin to a kintone environment.
+The `plugin upload` command allows you to upload a plugin to a kintone environment.
 
 :::experimental
 
@@ -29,5 +29,5 @@ See [Options](/guide/options) page for common options.
 | Option          | Required | Description                     |
 | --------------- | -------- | ------------------------------- |
 | `--input`, `-i` | Yes      | The input plugin zip file path. |
-| `--yes  `, `-y` |          | Skip confirmation.              |
-| `--watch  `     |          | Run in watch mode.              |
+| `--yes`, `-y`   |          | Skip confirmation.              |
+| `--watch`       |          | Run in watch mode.              |

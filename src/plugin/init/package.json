@@ -1,0 +1,67 @@
+{
+  "name": "@kintone/create-plugin",
+  "version": "9.0.0",
+  "description": "A CLI tool for creating a kintone plugin!",
+  "keywords": [
+    "kintone"
+  ],
+  "homepage": "https://github.com/kintone/js-sdk/tree/main/packages/create-plugin",
+  "bugs": "https://github.com/kintone/js-sdk/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kintone/js-sdk.git",
+    "directory": "packages/create-plugin"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Cybozu, Inc.",
+    "url": "https://cybozu.co.jp"
+  },
+  "main": "dist/src/index.js",
+  "bin": {
+    "create-plugin": "bin/cli.js",
+    "create-kintone-plugin": "bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "dist/src",
+    "templates"
+  ],
+  "scripts": {
+    "build": "pnpm clean && tsc --build --force",
+    "clean": "rimraf dist",
+    "fix": "pnpm lint --fix",
+    "lint": "eslint src --max-warnings 0",
+    "start": "pnpm build --watch",
+    "test": "jest --testPathIgnorePatterns=/__tests__/generator\\.test\\.ts$",
+    "test:all": "run-p test test:generator test:e2e",
+    "test:ci": "pnpm test test:generator",
+    "test:e2e": "cross-env NODE_ENV=e2e jest --config=jest.e2e.config.js",
+    "test:generator": "cross-env NODE_ENV=e2e jest --testPathPattern=/__tests__/generator\\.test\\.ts$"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^5.5.0",
+    "chalk": "^4.1.2",
+    "glob": "^10.4.5",
+    "lodash": "^4.17.21",
+    "meow": "^9.0.0",
+    "node-rsa": "^1.1.1",
+    "normalize-path": "^3.0.0",
+    "os-locale": "^5.0.0",
+    "prettier": "^3.6.2",
+    "rimraf": "^5.0.10",
+    "sort-package-json": "^1.57.0"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/inquirer": "^8.2.12",
+    "@types/lodash": "^4.17.20",
+    "@types/node-rsa": "^1.1.4",
+    "@types/normalize-path": "^3.0.2",
+    "cross-env": "^7.0.3",
+    "jest-environment-node": "^29.7.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

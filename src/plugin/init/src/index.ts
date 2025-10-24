@@ -5,12 +5,12 @@ import * as fs from "fs";
 import { rimraf } from "rimraf";
 import { generatePlugin } from "./generator";
 import type { Lang } from "./lang";
-import { printError, printLog } from "./logger";
 import type { Manifest } from "./manifest";
 import { buildManifest } from "./manifest";
 import { getBoundMessage, getMessage } from "./messages";
 import type { TemplateType } from "./template";
 import { runPrompt } from "./qa";
+import { logger } from "../../../utils/log";
 
 /**
  * Verify whether the output directory is valid
@@ -67,10 +67,14 @@ ${m("developerSite")}
  * @param lang
  * @param templateType
  */
-const run = (outputDir: string, lang: Lang, templateType: TemplateType) => {
+export const init = (
+  outputDir: string,
+  lang: Lang,
+  templateType: TemplateType,
+) => {
   const m = getBoundMessage(lang);
   verifyOutputDirectory(outputDir, lang);
-  printLog(`
+  logger.info(`
 
   ${m("introduction")}
 
@@ -79,6 +83,7 @@ const run = (outputDir: string, lang: Lang, templateType: TemplateType) => {
   runPrompt(m, outputDir, lang)
     .then(async (answers): Promise<[Manifest, boolean]> => {
       const manifest = buildManifest(answers, templateType);
+      logger.debug(`manifest built: type = ${templateType}`);
       await generatePlugin(
         outputDir,
         manifest,
@@ -89,7 +94,7 @@ const run = (outputDir: string, lang: Lang, templateType: TemplateType) => {
       return [manifest, answers.enablePluginUploader];
     })
     .then(([manifest, enablePluginUploader]) => {
-      printLog(
+      logger.info(
         getSuccessCreatedPluginMessage(
           manifest,
           outputDir,
@@ -101,7 +106,7 @@ const run = (outputDir: string, lang: Lang, templateType: TemplateType) => {
     .catch((error: Error) => {
       rimraf(outputDir, { glob: true })
         .then(() => {
-          printError(m("Error_cannotCreatePlugin"), error.message);
+          logger.error(m("Error_cannotCreatePlugin") + error.message);
         })
         .finally(() => {
           // eslint-disable-next-line n/no-process-exit
@@ -109,6 +114,3 @@ const run = (outputDir: string, lang: Lang, templateType: TemplateType) => {
         });
     });
 };
-
-module.exports = run;
-module.exports.default = run;

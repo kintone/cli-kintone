@@ -2,8 +2,8 @@
 
 import { spawnSync } from "child_process";
 import type { Lang } from "./lang";
-import { printLog } from "./logger";
 import { getMessage } from "./messages";
+import { logger } from "../../../utils/log";
 
 /**
  * Install specified dependencies
@@ -14,7 +14,7 @@ export const installDependencies = (
   outputDirectory: string,
   lang: Lang,
 ): void => {
-  printLog(getMessage(lang, "installDependencies"));
+  logger.info(getMessage(lang, "installDependencies"));
 
   const result = spawnSync("npm", ["install"], {
     cwd: outputDirectory,

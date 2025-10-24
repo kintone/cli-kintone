@@ -9,7 +9,7 @@ import type { Manifest } from "./manifest";
 import { generatePrivateKey } from "./privateKey";
 import type { TemplateType } from "./template";
 import { isNecessaryFile, processTemplateFile } from "./template";
-import normalize from "normalize-path";
+import { logger } from "../../../utils/log";
 
 /**
  * Create a plugin project based on passed manifest and install dependencies
@@ -57,7 +57,10 @@ const buildProject = async (
     __dirname.indexOf("dist") === -1
       ? path.join(__dirname, "..", "templates", templateType)
       : path.join(__dirname, "..", "..", "templates", templateType);
-  const templatePathPattern = normalize(path.resolve(templatePath, "**", "*"));
+  const templatePathPattern = path.normalize(
+    path.resolve(templatePath, "**", "*"),
+  );
+  logger.debug(`template path: ${templatePath}`)
   const templateFiles = globSync(templatePathPattern, {
     dot: true,
   }).filter((file) => isNecessaryFile(manifest, file));

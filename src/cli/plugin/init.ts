@@ -1,58 +1,62 @@
-#!/usr/bin/env node
+import type yargs from "yargs";
+import type { CommandModule } from "yargs";
 
-"use strict";
+import { logger } from "../../utils/log";
+import { RunError } from "../../record/error";
+import { setStability } from "../stability";
+import type { TemplateType } from "../../plugin/init/src/template";
+import { SUPPORT_TEMPLATE_TYPE } from "../../plugin/init/src/template";
+import { run } from "../../plugin/init";
 
-const osLocale = require("os-locale");
-const meow = require("meow");
-const run = require("../dist/src/index");
-const { getDefaultLang } = require("../dist/src/lang");
-const {
-  isValidTemplateType,
-  SUPPORT_TEMPLATE_TYPE,
-} = require("../dist/src/template");
+const command = "init";
 
-const cli = meow(
-  `
-  Usage
-    $ create-kintone-plugin <directory>
-  Options
-    --lang Using language (en or ja)
-    --template A template for a generated plug-in (${SUPPORT_TEMPLATE_TYPE.join(
-      ","
-    )}: the default value is minimum)
-`,
-  {
-    flags: {
-      lang: {
-        type: "string",
-        default: getDefaultLang(osLocale.sync()),
-      },
-      template: {
-        type: "string",
-        default: "minimum",
-      },
-    },
+const describe = "Initialoze plugin project";
+
+const builder = (args: yargs.Argv) =>
+  args
+    .option("name", {
+      describe: "The name of your plugin",
+      type: "string",
+      demandOption: true,
+      requiresArg: true,
+    })
+    .option("template", {
+      describe: "A template for a generated plug-in",
+      type: "string",
+      default: "minimum",
+      choices: SUPPORT_TEMPLATE_TYPE,
+      requiresArg: true,
+    });
+
+type Args = yargs.Arguments<
+  ReturnType<typeof builder> extends yargs.Argv<infer U> ? U : never
+>;
+
+const handler = async (args: Args) => {
+  try {
+    const flags = {
+      name: args.name,
+      template: args.template as TemplateType,
+    };
+    if (process.env.NODE_ENV === "test") {
+      console.log(JSON.stringify({ flags: flags }));
+    } else {
+      run(flags);
+    }
+  } catch (error) {
+    logger.error(new RunError(error));
+    // eslint-disable-next-line n/no-process-exit
+    process.exit(1);
   }
+};
+
+export const initCommand: CommandModule<{}, Args> = setStability(
+  {
+    command,
+    describe,
+    builder,
+    handler,
+  },
+  "experimental",
+  "This feature is under early development",
 );
-
-const directory = cli.input[0];
-const { lang, template } = cli.flags;
-
-if (!directory) {
-  console.error("Please specify the output directory");
-  cli.showHelp();
-}
-
-if (lang !== "ja" && lang !== "en") {
-  console.error("--lang option only supports en or ja");
-  cli.showHelp();
-}
-
-if (!isValidTemplateType(template)) {
-  console.error(
-    `--template option only supports ${SUPPORT_TEMPLATE_TYPE.join(",")}`
-  );
-  cli.showHelp();
-}
-
-run(directory, lang, template);

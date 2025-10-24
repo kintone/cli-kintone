@@ -4,6 +4,7 @@ import os from "os";
 import * as chokidar from "chokidar";
 import { logger } from "../../utils/log";
 import { ManifestFactory, PluginZip, PrivateKey, LocalFSDriver } from "../core";
+import { isFile } from "../../utils/file";
 
 type Params = {
   input: string;
@@ -26,8 +27,14 @@ export const pack = async (params: Params) => {
 
   // 1. Validate input parameters
   // Check manifest.json exists
-  if (!(await fs.stat(manifestJsonFilePath)).isFile()) {
-    throw new Error("Manifest file $PLUGIN_DIR/manifest.json not found.");
+  if (!(await isFile(manifestJsonFilePath))) {
+    throw new Error(`Manifest file not found: ${manifestJsonFilePath}`);
+  }
+
+  // Check ppk exists
+  const ppkFilePath = path.resolve(params.ppkFilePath);
+  if (!(await isFile(ppkFilePath))) {
+    throw new Error(`Private key file not found: ${ppkFilePath}`);
   }
 
   // 2. Load manifest.json
@@ -58,7 +65,6 @@ export const pack = async (params: Params) => {
   logger.debug(`outputFile: ${outputFilePath}`);
 
   // 5. Load ppk or generate new ppk if not specified
-  const ppkFilePath = path.resolve(params.ppkFilePath);
   logger.debug(`loading an existing key: ${ppkFilePath}`);
   const ppk = await fs.readFile(ppkFilePath, "utf8");
   const privateKey = PrivateKey.importKey(ppk);

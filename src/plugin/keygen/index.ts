@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import { PrivateKey } from "../core";
 import path from "path";
 import { logger } from "../../utils/log";
+import { isFile } from "../../utils/file";
 
 export const keygen = async (output?: string) => {
   // Generate new ppk
@@ -12,7 +13,7 @@ export const keygen = async (output?: string) => {
   // Write out ppk to filesystem
   const outputFilePath = path.resolve(output ? output : `./${id}.ppk`);
 
-  if ((await fs.stat(outputFilePath).catch((_) => undefined))?.isFile()) {
+  if (await isFile(outputFilePath)) {
     throw new Error(`File ${outputFilePath} already exists.`);
   }
 

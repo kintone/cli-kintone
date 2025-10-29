@@ -95,9 +95,9 @@ Executables will be generated in `bin` directory.
 
 ```
 bin
-├── cli-kintone-linux
-├── cli-kintone-macos
-└── cli-kintone-win.exe
+├── cli-kintone-linux-x64
+├── cli-kintone-macos-arm64
+└── cli-kintone-win-x64.exe
 ```
 
 ### Testing

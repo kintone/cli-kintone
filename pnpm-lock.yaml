@@ -81,7 +81,7 @@ importers:
         specifier: ^29.5.14
         version: 29.5.14
       '@types/node':
-        specifier: ^18.19.129
+        specifier: ^18.19.130
         version: 18.19.130
       '@types/node-rsa':
         specifier: ^1.1.4
@@ -214,7 +214,7 @@ importers:
         specifier: ^20.1.2
         version: 20.1.2
       '@types/node':
-        specifier: ^18.19.129
+        specifier: ^18.19.130
         version: 18.19.130
       ts-node:
         specifier: ^10.9.2

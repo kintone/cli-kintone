@@ -12,6 +12,9 @@ import * as prettierPluginEstree from "prettier/plugins/estree";
 export const SUPPORT_TEMPLATE_TYPE = ["javascript", "typescript"];
 export type TemplateType = "javascript" | "typescript";
 
+export const getTemplateDir = () =>
+  path.join(__dirname, "..", "assets", "templates");
+
 export const isValidTemplateType = (templateType: string) => {
   return SUPPORT_TEMPLATE_TYPE.indexOf(templateType) !== -1;
 };

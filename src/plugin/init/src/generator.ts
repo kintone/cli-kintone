@@ -8,7 +8,11 @@ import type { Lang } from "./lang";
 import type { Manifest } from "./manifest";
 import { generatePrivateKey } from "./privateKey";
 import type { TemplateType } from "./template";
-import { isNecessaryFile, processTemplateFile } from "./template";
+import {
+  getTemplateDir,
+  isNecessaryFile,
+  processTemplateFile,
+} from "./template";
 import { logger } from "../../../utils/log";
 
 /**
@@ -42,31 +46,8 @@ const buildProject = async (
   templateType: TemplateType,
 ): Promise<void> => {
   fs.mkdirSync(outputDirectory);
-  // This is necessary for unit testing
-  // We use src/generator.ts directory instead of dist/src/generator.js when unit testing
-  const templatePath =
-    __dirname.indexOf("dist") === -1
-      ? path.join(
-          __dirname,
-          "..",
-          "..",
-          "..",
-          "..",
-          "assets",
-          "templates",
-          templateType,
-        )
-      : path.join(
-          __dirname,
-          "..",
-          "..",
-          "..",
-          "..",
-          "..",
-          "assets",
-          "templates",
-          templateType,
-        );
+
+  const templatePath = path.join(getTemplateDir(), templateType);
   const templatePathPattern = path.normalize(
     path.resolve(templatePath, "**", "*"),
   );

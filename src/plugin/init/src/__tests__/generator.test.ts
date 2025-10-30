@@ -6,6 +6,7 @@ import * as path from "path";
 import { rimraf } from "rimraf";
 
 import { generatePlugin } from "../generator";
+import * as template from "../template";
 
 describe("generator", function () {
   // This timeout is for npm install
@@ -14,9 +15,24 @@ describe("generator", function () {
   beforeEach(() => {
     outputDir = fs.mkdtempSync(`${os.tmpdir()}${path.sep}`);
     rimraf.sync(outputDir);
+    jest
+      .spyOn(template, "getTemplateDir")
+      .mockReturnValue(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "..",
+          "assets",
+          "templates",
+        ),
+      );
   });
   afterEach(() => {
     rimraf.sync(outputDir);
+    jest.restoreAllMocks();
   });
   describe("javascript template", () => {
     it("should be able to create a plugin project based on the javascript template", async () => {
@@ -26,7 +42,7 @@ describe("generator", function () {
           "utf8",
         ),
       );
-      await generatePlugin(outputDir, manifest, "ja", true, "javascript");
+      await generatePlugin(outputDir, manifest, "ja", "javascript");
 
       // test that `npm run lint` doesn't fail
       const lintResult = spawnSync("npm", ["run", "lint"], {
@@ -88,7 +104,7 @@ describe("generator", function () {
           "utf8",
         ),
       );
-      await generatePlugin(outputDir, manifest, "ja", false, "typescript");
+      await generatePlugin(outputDir, manifest, "ja", "typescript");
 
       // test that `npm run lint` doesn't fail
       const lintResult = spawnSync("npm", ["run", "lint"], {

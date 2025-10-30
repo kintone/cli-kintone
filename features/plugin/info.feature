@@ -2,7 +2,7 @@
 @plugin-info
 Feature: plugin info
 
-  Scenario: Show plugin info in plain text
+  Scenario: Display plugin info in plain text format
     Given An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin.zip"
     When I run the command with args "plugin info --input ./plugin.zip"
     Then I should get the exit code is zero
@@ -15,7 +15,7 @@ Feature: plugin info
       homepage: https://example.com/en/
       """
 
-  Scenario: Show plugin info in json
+  Scenario: Display plugin info in JSON format
     Given An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin.zip"
     When I run the command with args "plugin info --input ./plugin.zip --format json"
     Then I should get the exit code is zero

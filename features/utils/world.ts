@@ -23,6 +23,7 @@ import {
 import type { Writable, Readable } from "node:stream";
 import { stat } from "fs/promises";
 import path from "path";
+import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 
 type Response = {
   stdout: Buffer;
@@ -247,6 +248,28 @@ export class OurWorld extends World {
       fieldCode,
       guestSpaceId: credential.guestSpaceId,
     });
+  }
+
+  public async getPluginByPluginId(pluginId: string) {
+    const credential = this.getUserCredentialByUserKey("kintone_admin");
+    const client = new KintoneRestAPIClient({
+      baseUrl: process.env.TEST_KINTONE_BASE_URL,
+      auth: { username: credential.username, password: credential.password },
+    });
+    const resp = await client.plugin.getPlugins({ ids: [pluginId] } as any);
+    return resp.plugins.find((plugin) => plugin.id === pluginId);
+  }
+
+  public async uninstallPluginByPluginId(pluginId: string) {
+    const credential = this.getUserCredentialByUserKey("kintone_admin");
+    const client = new KintoneRestAPIClient({
+      baseUrl: process.env.TEST_KINTONE_BASE_URL,
+      auth: { username: credential.username, password: credential.password },
+    });
+    const plugin = await this.getPluginByPluginId(pluginId);
+    if (plugin) {
+      await client.plugin.uninstallPlugin({ id: pluginId });
+    }
   }
 
   public replacePlaceholdersInRawDataTables(table: string[][]): string[][] {

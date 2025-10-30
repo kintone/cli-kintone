@@ -1,0 +1,15 @@
+{
+  "name": "kintone-plugin-template-minimum",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "npm run develop",
+    "develop": "npm run build -- --watch",
+    "build": "kintone-plugin-packer --ppk private.ppk --out dist/plugin.zip src",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@cybozu/eslint-config": "^24.0.0",
+    "@kintone/plugin-packer": "^8.1.3",
+    "eslint": "^9.18.0"
+  }
+}

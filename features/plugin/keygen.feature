@@ -1,5 +1,5 @@
 @isolated
-@keygen
+@plugin-keygen
 Feature: plugin keygen
 
   Scenario: Private key generation

@@ -75,10 +75,6 @@ export const pattern: TestPattern = {
         question: m("Q_MobileSupport"),
         answer: ANSWER_YES,
       },
-      {
-        question: m("Q_EnablePluginUploader"),
-        answer: ANSWER_YES,
-      },
     ],
   },
   expected: {

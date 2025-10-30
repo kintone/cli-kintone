@@ -15,7 +15,6 @@ describe("manifest", () => {
           description: baseManifest.name,
           homepage_url: {},
           supportMobile: false,
-          enablePluginUploader: false,
         },
         templateType,
       );
@@ -32,7 +31,6 @@ describe("manifest", () => {
           description: baseManifest.name,
           homepage_url: {},
           supportMobile: true,
-          enablePluginUploader: false,
         },
         templateType,
       );
@@ -47,7 +45,6 @@ describe("manifest", () => {
           description: baseManifest.name,
           homepage_url: {},
           supportMobile: false,
-          enablePluginUploader: false,
         },
         templateType,
       );

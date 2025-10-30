@@ -115,7 +115,9 @@ export const buildManifest = (
   templateType: TemplateType,
 ): Manifest => {
   let manifest = {
-    ...(templateType === "typescript" ? typescriptManifest : javascriptManifest),
+    ...(templateType === "typescript"
+      ? typescriptManifest
+      : javascriptManifest),
     ...answer2Manifest(answers),
   };
   if (answers.supportMobile) {

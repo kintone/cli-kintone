@@ -19,7 +19,6 @@ describe("template", () => {
     it("should returns a boolean that shows whether the file should include or not", () => {
       const manifest = createBaseManifest();
       assert(!isNecessaryFile(manifest, "webpack.entry.json"));
-      assert(!isNecessaryFile(manifest, "with-plugin-uploader.json"));
       assert(!isNecessaryFile(manifest, "js/mobile.js"));
       assert(!isNecessaryFile(manifest, "js/config.js"));
       assert(isNecessaryFile(manifest, "js/other.js"));
@@ -37,17 +36,16 @@ describe("template", () => {
       );
     });
 
-    const patterns: Array<{ template: string; enablePluginUploader: boolean }> =
-      [
-        { template: "javascript", enablePluginUploader: false },
-        { template: "javascript", enablePluginUploader: true },
-        { template: "typescript", enablePluginUploader: false },
-        { template: "typescript", enablePluginUploader: true },
-      ];
+    const patterns: Array<{ template: string }> = [
+      { template: "javascript" },
+      { template: "javascript" },
+      { template: "typescript" },
+      { template: "typescript" },
+    ];
 
     it.each(patterns)(
-      "should convert package.json correctly (template: $template, enablePluginUploader: $enablePluginUploader)",
-      async ({ template, enablePluginUploader }) => {
+      "should convert package.json correctly (template: $template)",
+      async ({ template }) => {
         const srcDir = path.resolve(
           __dirname,
           "..",
@@ -61,7 +59,6 @@ describe("template", () => {
           srcDir,
           destDir,
           manifest,
-          enablePluginUploader,
         );
 
         const packageJson = JSON.parse(
@@ -72,17 +69,12 @@ describe("template", () => {
         assert(packageJson.version);
         assert(packageJson.scripts);
         assert(packageJson.devDependencies);
-
-        if (enablePluginUploader) {
-          assert(packageJson.scripts.upload);
-          assert(packageJson.devDependencies["@kintone/plugin-uploader"]);
-        }
       },
     );
 
     it.each(patterns)(
-      "should convert template file correctly (template: $template, enablePluginUploader: $enablePluginUploader)",
-      async ({ template, enablePluginUploader }) => {
+      "should convert template file correctly (template: $template)",
+      async ({ template }) => {
         const srcDir = path.resolve(
           __dirname,
           "..",
@@ -96,13 +88,7 @@ describe("template", () => {
             ? path.resolve(srcDir, "plugin", "html", "config.html.tmpl")
             : path.resolve(srcDir, "src", "html", "config.html.tmpl");
 
-        await processTemplateFile(
-          templateFile,
-          srcDir,
-          destDir,
-          manifest,
-          enablePluginUploader,
-        );
+        await processTemplateFile(templateFile, srcDir, destDir, manifest);
 
         const destFile =
           template === "typescript"
@@ -112,8 +98,8 @@ describe("template", () => {
       },
     );
     it.each(patterns)(
-      "should copy normal file correctly (template: $template, enablePluginUploader: $enablePluginUploader)",
-      async ({ template, enablePluginUploader }) => {
+      "should copy normal file correctly (template: $template)",
+      async ({ template }) => {
         const srcDir = path.resolve(
           __dirname,
           "..",
@@ -124,27 +110,26 @@ describe("template", () => {
 
         const templateFile = path.resolve(srcDir, ".gitignore");
 
-        await processTemplateFile(
-          templateFile,
-          srcDir,
-          destDir,
-          manifest,
-          enablePluginUploader,
-        );
+        await processTemplateFile(templateFile, srcDir, destDir, manifest);
 
         assert(await fs.stat(path.resolve(destDir, ".gitignore")));
       },
     );
 
     it("should convert webpack.config.js correctly with typescript template", async () => {
-      const srcDir = path.resolve(__dirname, "..", "..", "templates", "typescript");
+      const srcDir = path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "templates",
+        "typescript",
+      );
 
       await processTemplateFile(
         path.resolve(srcDir, "webpack.config.template.js"),
         srcDir,
         destDir,
         manifest,
-        false,
       );
       const destFile = path.resolve(destDir, "webpack.config.js");
       assert(await fs.stat(destFile));

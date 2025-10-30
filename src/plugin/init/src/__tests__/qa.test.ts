@@ -37,9 +37,6 @@ describe("qa", () => {
         jest.spyOn(prompt, "promptForHomepage").mockResolvedValue("pass");
         jest.spyOn(prompt, "promptForSupportLang").mockResolvedValue(true);
         jest.spyOn(prompt, "promptForSupportMobile").mockResolvedValue(true);
-        jest
-          .spyOn(prompt, "promptForEnablePluginUploader")
-          .mockResolvedValue(true);
       });
       it("should be set ja parameters in supportJa is true", async () => {
         jest

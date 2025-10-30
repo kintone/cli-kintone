@@ -28,7 +28,6 @@ const verifyOutputDirectory = (outputDirectory: string, lang: Lang): void => {
 const getSuccessCreatedPluginMessage = (
   manifest: Manifest,
   outputDir: string,
-  enablePluginUploader: boolean,
   lang: Lang,
 ) => {
   const m = getBoundMessage(lang);
@@ -39,7 +38,6 @@ Success! Created ${manifest.name.en} at ${outputDir}
 ${chalk.cyan("npm start")}
 
   ${m("npmStart")}
-  ${enablePluginUploader ? m("npmStartWithPluginUploader") : ""}
 
 ${chalk.cyan("npm run build")}
 
@@ -50,7 +48,6 @@ ${chalk.cyan("npm run lint")}
   ${m("npmLint")}
 
 ${m("nextAction")}
-${enablePluginUploader ? m("howToUsePluginUploader") : ""}
 
   cd ${outputDir}
   npm start
@@ -81,27 +78,14 @@ export const init = (
   `);
 
   runPrompt(m, outputDir, lang)
-    .then(async (answers): Promise<[Manifest, boolean]> => {
+    .then(async (answers): Promise<Manifest> => {
       const manifest = buildManifest(answers, templateType);
       logger.debug(`manifest built: type = ${templateType}`);
-      await generatePlugin(
-        outputDir,
-        manifest,
-        lang,
-        answers.enablePluginUploader,
-        templateType,
-      );
-      return [manifest, answers.enablePluginUploader];
+      await generatePlugin(outputDir, manifest, lang, templateType);
+      return manifest;
     })
-    .then(([manifest, enablePluginUploader]) => {
-      logger.info(
-        getSuccessCreatedPluginMessage(
-          manifest,
-          outputDir,
-          enablePluginUploader,
-          lang,
-        ),
-      );
+    .then((manifest) => {
+      logger.info(getSuccessCreatedPluginMessage(manifest, outputDir, lang));
     })
     .catch((error: Error) => {
       rimraf(outputDir, { glob: true })

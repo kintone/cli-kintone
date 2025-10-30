@@ -102,10 +102,6 @@ const messages = {
     en: "Does your plug-in support mobile views?",
     ja: "モバイルページをサポートしますか？",
   },
-  Q_EnablePluginUploader: {
-    en: "Would you like to use @kintone/plugin-uploader?",
-    ja: "@kintone/plugin-uploaderを使いますか？",
-  },
   installDependencies: {
     en: "Installing dependencies...",
     ja: "依存ライブラリをインストールします",
@@ -124,10 +120,6 @@ kintoneプラグインのプロジェクトを作成するために、いくつ�
     en: "Start watching file changes and create a Kintone plug-in zip file.",
     ja: "ファイルの変更を監視してプラグインのzipを自動的に作成するプロセスを起動します",
   },
-  npmStartWithPluginUploader: {
-    en: "Next, the plug-in zip file is uploaded automatically by @kintone/plugin-uploader.",
-    ja: "その後、@kintone/plugin-uploaderにより、プラグインのzipは自動的にアップロードされます",
-  },
   npmBuild: {
     en: "Create a Kintone plug-in zip file.",
     ja: "プラグインのzipを作成します",
@@ -139,10 +131,6 @@ kintoneプラグインのプロジェクトを作成するために、いくつ�
   nextAction: {
     en: "Try the following commands",
     ja: "まずは次のコマンドを実行してください",
-  },
-  howToUsePluginUploader: {
-    en: "Next, input your Kintone subdomain information.",
-    ja: "その後、あなたのkintone環境の情報を入力してください",
   },
   lastMessage: {
     en: "Have fun developing Kintone plug-ins!",

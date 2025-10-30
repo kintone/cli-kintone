@@ -1,9 +1,9 @@
 // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/24419
 declare interface Element {}
 declare interface Document {}
-declare interface NodeListOf<T = {}> {}
+declare interface NodeListOf<_ = {}> {}
 
-/* eslint-disable no-var,vars-on-top */
+/* eslint-disable vars-on-top */
 // We cannot use let,const to declare global object:(
 // https://stackoverflow.com/a/69230938
 declare global {

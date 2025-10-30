@@ -16,23 +16,16 @@ import { logger } from "../../../utils/log";
  * @param outputDirectory
  * @param manifest
  * @param lang
- * @param enablePluginUploader
  * @param templateType
  */
 export const generatePlugin = async (
   outputDirectory: string,
   manifest: Manifest,
   lang: Lang,
-  enablePluginUploader: boolean,
   templateType: TemplateType,
 ): Promise<void> => {
   // copy and build a project into the output diretory
-  await buildProject(
-    outputDirectory,
-    manifest,
-    enablePluginUploader,
-    templateType,
-  );
+  await buildProject(outputDirectory, manifest, templateType);
   // npm install
   installDependencies(outputDirectory, lang);
 };
@@ -41,13 +34,11 @@ export const generatePlugin = async (
  * Create a plugin project based on passed manifest
  * @param outputDirectory
  * @param manifest
- * @param enablePluginUploader
  * @param templateType
  */
 const buildProject = async (
   outputDirectory: string,
   manifest: Manifest,
-  enablePluginUploader: boolean,
   templateType: TemplateType,
 ): Promise<void> => {
   fs.mkdirSync(outputDirectory);
@@ -55,23 +46,36 @@ const buildProject = async (
   // We use src/generator.ts directory instead of dist/src/generator.js when unit testing
   const templatePath =
     __dirname.indexOf("dist") === -1
-      ? path.join(__dirname, "..", "templates", templateType)
-      : path.join(__dirname, "..", "..", "templates", templateType);
+      ? path.join(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "assets",
+          "templates",
+          templateType,
+        )
+      : path.join(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "..",
+          "assets",
+          "templates",
+          templateType,
+        );
   const templatePathPattern = path.normalize(
     path.resolve(templatePath, "**", "*"),
   );
-  logger.debug(`template path: ${templatePath}`)
+  logger.debug(`template path: ${templatePath}`);
   const templateFiles = globSync(templatePathPattern, {
     dot: true,
   }).filter((file) => isNecessaryFile(manifest, file));
   for (const file of templateFiles) {
-    await processTemplateFile(
-      file,
-      templatePath,
-      outputDirectory,
-      manifest,
-      enablePluginUploader,
-    );
+    await processTemplateFile(file, templatePath, outputDirectory, manifest);
   }
 
   fs.writeFileSync(

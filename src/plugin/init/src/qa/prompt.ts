@@ -87,10 +87,3 @@ export const promptForSupportMobile = async (m: BoundMessage) => {
     message: m("Q_MobileSupport"),
   });
 };
-
-export const promptForEnablePluginUploader = async (m: BoundMessage) => {
-  return confirm({
-    default: true,
-    message: m("Q_EnablePluginUploader"),
-  });
-};

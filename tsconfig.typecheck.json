@@ -8,6 +8,7 @@
     "src/**/*",
     "features/**/*",
     "package.json",
-    "e2e-credentials-schema.json"
+    "e2e-credentials-schema.json",
+    "assets/templates"
   ]
 }

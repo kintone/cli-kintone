@@ -47,7 +47,7 @@ export type TestPattern = {
     };
     validation?: {
       stdout?: string;
-    }
+    };
   };
 };
 

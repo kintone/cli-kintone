@@ -4,7 +4,6 @@ import type { Lang } from "./lang";
 import type { BoundMessage } from "./messages";
 import {
   promptForDescription,
-  promptForEnablePluginUploader,
   promptForHomepage,
   promptForName,
   promptForOptionalDescription,
@@ -33,7 +32,6 @@ export type Answers = {
     es?: string;
   };
   supportMobile: boolean;
-  enablePluginUploader: boolean;
   [key: string]: unknown;
 };
 
@@ -72,7 +70,6 @@ export const runPrompt = async (
   const esHomepage = supportEs ? await promptForHomepage(m, "Es") : undefined;
 
   const supportMobile = await promptForSupportMobile(m);
-  const enablePluginUploader = await promptForEnablePluginUploader(m);
 
   const result = {
     name: {
@@ -88,7 +85,6 @@ export const runPrompt = async (
       es: esDescription,
     },
     supportMobile: supportMobile,
-    enablePluginUploader: enablePluginUploader,
   } as Answers;
   if (enHomepage) {
     result.homepage_url = {

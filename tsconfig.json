@@ -77,5 +77,4 @@
     "path": "./tsconfig.typecheck.json"
     }
   ],
-  "exclude": ["src/**/templates/**"]
 }

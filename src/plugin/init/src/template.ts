@@ -20,7 +20,7 @@ export const isValidTemplateType = (templateType: string) => {
  * Return a template type corresponding to the manifest
  * @param manifest
  */
-export const getTemplateType = (manifest: Manifest): TemplateType => {
+export const getTemplateType = (_manifest: Manifest): TemplateType => {
   // We don't have any other template types
   return "javascript";
 };
@@ -31,7 +31,7 @@ export const getTemplateType = (manifest: Manifest): TemplateType => {
  * @param file
  */
 export const isNecessaryFile = (manifest: Manifest, file: string): boolean => {
-  const excludedFiles = ["with-plugin-uploader.json", "webpack.entry.json"];
+  const excludedFiles = ["webpack.entry.json"];
   const isExcludedFile = excludedFiles.some(
     (excludeFile) => path.basename(file) === excludeFile,
   );
@@ -56,14 +56,12 @@ export const isNecessaryFile = (manifest: Manifest, file: string): boolean => {
  * @param srcDir
  * @param destDir
  * @param manifest
- * @param enablePluginUploader
  */
 export const processTemplateFile = async (
   filePath: string,
   srcDir: string,
   destDir: string,
   manifest: Manifest,
-  enablePluginUploader: boolean,
 ): Promise<void> => {
   const destFilePath = path.join(destDir, path.relative(srcDir, filePath));
 
@@ -78,7 +76,6 @@ export const processTemplateFile = async (
       destPath,
       _.template(src)(
         Object.assign({}, manifest, {
-          enablePluginUploader,
           // It's a function to remove whitespaces for pacakge.json's name field
           normalizePackageName: (name: string) => name.replace(/\s/g, "-"),
         }),
@@ -89,32 +86,6 @@ export const processTemplateFile = async (
       fs.readFileSync(filePath, "utf-8"),
     );
     packageJson.name = manifest.name.en.replace(/\s/g, "-");
-    if (enablePluginUploader) {
-      const withPluginUploaderJson: WithPluginUploaderJson = JSON.parse(
-        fs.readFileSync(
-          path.join(srcDir, "with-plugin-uploader.json"),
-          "utf-8",
-        ),
-      );
-      if (withPluginUploaderJson.scripts) {
-        packageJson.scripts = {
-          ...packageJson.scripts,
-          ...withPluginUploaderJson.scripts,
-        };
-      }
-      if (withPluginUploaderJson.dependencies) {
-        packageJson.dependencies = {
-          ...packageJson.dependencies,
-          ...withPluginUploaderJson.dependencies,
-        };
-      }
-      if (withPluginUploaderJson.devDependencies) {
-        packageJson.devDependencies = {
-          ...packageJson.devDependencies,
-          ...withPluginUploaderJson.devDependencies,
-        };
-      }
-    }
     const sortedPackageJson = sortPackageJson(
       JSON.stringify(packageJson, null, 2),
     );
@@ -158,12 +129,6 @@ export const processTemplateFile = async (
 type PackageJson = {
   name?: string;
   version?: string;
-  scripts?: { [key: string]: string };
-  dependencies?: { [key: string]: string };
-  devDependencies?: { [key: string]: string };
-};
-
-type WithPluginUploaderJson = {
   scripts?: { [key: string]: string };
   dependencies?: { [key: string]: string };
   devDependencies?: { [key: string]: string };

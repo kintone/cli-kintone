@@ -14,18 +14,28 @@ const assetsRootPath = path.resolve(__dirname, "..", "assets");
  */
 const assetMap: Record<string, string | undefined> = {
   plugin_project: path.resolve(assetsRootPath, "plugin_project"),
-  "plugin.zip": path.resolve(assetsRootPath, "plugin.zip"),
+  "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip": path.resolve(
+    assetsRootPath,
+    "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip",
+  ),
+  "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v2.zip": path.resolve(
+    assetsRootPath,
+    "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v2.zip",
+  ),
 };
 
-Given("An asset {string} exists", async function (assetName: string) {
-  const srcPath = assetMap[assetName];
-  if (!srcPath) {
-    throw new Error(`Unknown asset key: ${assetName}`);
-  }
+Given(
+  "An asset with key {string} is available as {string}",
+  async function (assetKey: string, destName: string) {
+    const srcPath = assetMap[assetKey];
+    if (!srcPath) {
+      throw new Error(`Unknown asset key: ${assetKey}`);
+    }
 
-  const destPath = path.resolve(this.workingDir, assetName);
-  await copyAsset(srcPath, destPath);
-});
+    const destPath = path.resolve(this.workingDir, destName);
+    await copyAsset(srcPath, destPath);
+  },
+);
 
 const copyAsset = async (srcPath: string, destPath: string) => {
   const stats = await fs.promises.stat(srcPath);

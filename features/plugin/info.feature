@@ -3,7 +3,7 @@
 Feature: plugin info
 
   Scenario: Show plugin info in plain text
-    Given An asset "plugin.zip" exists
+    Given An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin.zip"
     When I run the command with args "plugin info --input ./plugin.zip"
     Then I should get the exit code is zero
     And The output message should match with the pattern:
@@ -16,7 +16,7 @@ Feature: plugin info
       """
 
   Scenario: Show plugin info in json
-    Given An asset "plugin.zip" exists
+    Given An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin.zip"
     When I run the command with args "plugin info --input ./plugin.zip --format json"
     Then I should get the exit code is zero
     And The output message should match with the pattern:

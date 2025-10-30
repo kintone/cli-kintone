@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.3](https://github.com/kintone/cli-kintone/compare/v1.14.2...v1.14.3) (2025-10-29)
+
+
+### Miscellaneous Chores
+
+* bump minimum Node.js version to v20 ([#1184](https://github.com/kintone/cli-kintone/issues/1184)) ([866358c](https://github.com/kintone/cli-kintone/commit/866358cebb2d9810121b7d08ac046a45ebdf2f5f))
+
 ## [1.14.2](https://github.com/kintone/cli-kintone/compare/v1.14.1...v1.14.2) (2025-08-06)
 
 

@@ -14,6 +14,7 @@ const assetsRootPath = path.resolve(__dirname, "..", "assets");
  */
 const assetMap: Record<string, string | undefined> = {
   plugin_project: path.resolve(assetsRootPath, "plugin_project"),
+  "plugin.zip": path.resolve(assetsRootPath, "plugin.zip"),
 };
 
 Given("An asset {string} exists", async function (assetName: string) {

@@ -1,5 +1,5 @@
 {
-  "name": "kintone-plugin-template-minimum",
+  "name": "kintone-plugin-template-javascript",
   "version": "0.1.0",
   "scripts": {
     "start": "npm run develop",

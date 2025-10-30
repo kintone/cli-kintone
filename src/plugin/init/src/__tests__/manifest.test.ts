@@ -5,7 +5,7 @@ import createBaseManifest from "./helpers/baseManifest";
 
 describe("manifest", () => {
   describe("buildManifest", () => {
-    const templateType = "minimum";
+    const templateType = "javascript";
     it("should include basic settings", () => {
       const baseManifest = createBaseManifest();
       // @ts-ignore We can fix this using conditional types

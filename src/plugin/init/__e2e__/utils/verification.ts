@@ -2,16 +2,16 @@ import fs from "fs";
 import path from "path";
 import assert from "assert";
 
-export type PluginTemplate = "minimum" | "modern";
+export type PluginTemplate = "javascript" | "typescript";
 
 export const readPluginManifestJson = (
   pluginDir: string,
-  template: PluginTemplate = "minimum",
+  template: PluginTemplate = "javascript",
 ) => {
   try {
     const manifestJsonPath = path.resolve(
       pluginDir,
-      template === "modern" ? "plugin" : "src",
+      template === "typescript" ? "plugin" : "src",
       "manifest.json",
     );
 

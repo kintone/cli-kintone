@@ -18,15 +18,15 @@ describe("generator", function () {
   afterEach(() => {
     rimraf.sync(outputDir);
   });
-  describe("minimum template", () => {
-    it("should be able to create a plugin project based on the minimum template", async () => {
+  describe("javascript template", () => {
+    it("should be able to create a plugin project based on the javascript template", async () => {
       const manifest = JSON.parse(
         fs.readFileSync(
           path.resolve(__dirname, "fixtures", "manifest.json"),
           "utf8",
         ),
       );
-      await generatePlugin(outputDir, manifest, "ja", true, "minimum");
+      await generatePlugin(outputDir, manifest, "ja", true, "javascript");
 
       // test that `npm run lint` doesn't fail
       const lintResult = spawnSync("npm", ["run", "lint"], {
@@ -65,7 +65,7 @@ describe("generator", function () {
             "..",
             "..",
             "templates",
-            "minimum",
+            "javascript",
             "src",
             "js",
             "desktop.js",
@@ -83,15 +83,15 @@ describe("generator", function () {
       assert(packageJson.scripts && packageJson.scripts.upload);
     });
   });
-  describe("modern template", () => {
-    it("should be able to create a plugin project based on the modern template", async () => {
+  describe("typescript template", () => {
+    it("should be able to create a plugin project based on the typescript template", async () => {
       const manifest = JSON.parse(
         fs.readFileSync(
           path.resolve(__dirname, "fixtures", "manifest.json"),
           "utf8",
         ),
       );
-      await generatePlugin(outputDir, manifest, "ja", false, "modern");
+      await generatePlugin(outputDir, manifest, "ja", false, "typescript");
 
       // test that `npm run lint` doesn't fail
       const lintResult = spawnSync("npm", ["run", "lint"], {

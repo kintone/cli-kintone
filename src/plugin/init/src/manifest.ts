@@ -3,7 +3,7 @@
 import type { Answers } from "./qa";
 import type { TemplateType } from "./template";
 
-const minimumManifest = {
+const javascriptManifest = {
   $schema:
     "https://raw.githubusercontent.com/kintone/js-sdk/%40kintone/plugin-manifest-validator%4010.2.0/packages/plugin-manifest-validator/manifest-schema.json",
   manifest_version: 1,
@@ -11,18 +11,18 @@ const minimumManifest = {
   type: "APP",
   desktop: {
     js: ["js/desktop.js"],
-    css: ["css/51-modern-default.css", "css/desktop.css"],
+    css: ["css/51-typescript-default.css", "css/desktop.css"],
   },
   icon: "image/icon.png",
   config: {
     html: "html/config.html",
     js: ["js/config.js"],
-    css: ["css/51-modern-default.css", "css/config.css"],
+    css: ["css/51-typescript-default.css", "css/config.css"],
     required_params: ["message"],
   },
 };
 
-const modernManifest = {
+const typescriptManifest = {
   $schema:
     "https://raw.githubusercontent.com/kintone/js-sdk/%40kintone/plugin-manifest-validator%4010.2.0/packages/plugin-manifest-validator/manifest-schema.json",
   manifest_version: 1,
@@ -36,7 +36,7 @@ const modernManifest = {
   config: {
     html: "html/config.html",
     js: ["js/config.js"],
-    css: ["css/51-modern-default.css", "css/config.css"],
+    css: ["css/51-typescript-default.css", "css/config.css"],
     required_params: ["message"],
   },
 };
@@ -115,7 +115,7 @@ export const buildManifest = (
   templateType: TemplateType,
 ): Manifest => {
   let manifest = {
-    ...(templateType === "modern" ? modernManifest : minimumManifest),
+    ...(templateType === "typescript" ? typescriptManifest : javascriptManifest),
     ...answer2Manifest(answers),
   };
   if (answers.supportMobile) {

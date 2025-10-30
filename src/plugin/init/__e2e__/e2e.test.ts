@@ -23,8 +23,8 @@ import {
   pluginNameContain65Chars,
   pluginDescriptionContain201Chars,
   createKintonePluginCommand,
-  minimumTemplate,
-  modernTemplate,
+  javascriptTemplate,
+  typescriptTemplate,
 } from "./fixtures";
 
 export type TestPattern = {
@@ -65,8 +65,8 @@ describe("create-plugin", function () {
     allOptions,
     languageEN,
     languageJA,
-    minimumTemplate,
-    modernTemplate,
+    javascriptTemplate,
+    typescriptTemplate,
     emptyOutputDir,
     existOutputDir,
     forbiddenCharacters,

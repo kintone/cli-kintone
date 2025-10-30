@@ -10,5 +10,5 @@ export { pattern as forbiddenCharacters } from "./forbiddenCharacters";
 export { pattern as pluginNameContain65Chars } from "./pluginNameContain65Chars";
 export { pattern as pluginDescriptionContain201Chars } from "./pluginDescriptionContain201Chars";
 export { pattern as createKintonePluginCommand } from "./createKintonePluginCommand";
-export { pattern as minimumTemplate } from "./minimumTemplate";
-export { pattern as modernTemplate } from "./modernTemplate";
+export { pattern as javascriptTemplate } from "./javascriptTemplate";
+export { pattern as typescriptTemplate } from "./typescriptTemplate";

@@ -7,24 +7,24 @@ import {
 import { getBoundMessage } from "../../src/messages";
 
 const m = getBoundMessage("en");
-const template = "minimum";
+const template = "typescript";
 
 export const pattern: TestPattern = {
   description:
-    "#JsSdkTest-7 Should able to create a plugin with minimum template",
+    "#JsSdkTest-8 Should able to create a plugin with typescript template",
   input: {
     command: CREATE_PLUGIN_COMMAND,
-    outputDir: "test7",
+    outputDir: "test8",
     commandArgument: `--template ${template}`,
     template,
     questionsInput: [
       {
         question: m("Q_NameEn"),
-        answer: "test7-name",
+        answer: "test8-name",
       },
       {
         question: m("Q_DescriptionEn"),
-        answer: "test7-description",
+        answer: "test8-description",
       },
       {
         question: m("Q_SupportJa"),
@@ -55,11 +55,11 @@ export const pattern: TestPattern = {
   expected: {
     success: {
       manifestJson: {
-        name: { en: "test7-name" },
-        description: { en: "test7-description" },
+        name: { en: "test8-name" },
+        description: { en: "test8-description" },
         desktop: {
           js: ["js/desktop.js"],
-          css: ["css/51-modern-default.css", "css/desktop.css"],
+          css: ["css/desktop.css"],
         },
       },
     },

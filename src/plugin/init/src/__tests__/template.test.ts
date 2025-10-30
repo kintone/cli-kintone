@@ -11,8 +11,8 @@ import os from "os";
 
 describe("template", () => {
   describe("getTemplateType", () => {
-    it("should return be minimum", () => {
-      assert.strictEqual(getTemplateType(createBaseManifest()), "minimum");
+    it("should return be javascript", () => {
+      assert.strictEqual(getTemplateType(createBaseManifest()), "javascript");
     });
   });
   describe("isNecessaryFile", () => {
@@ -39,10 +39,10 @@ describe("template", () => {
 
     const patterns: Array<{ template: string; enablePluginUploader: boolean }> =
       [
-        { template: "minimum", enablePluginUploader: false },
-        { template: "minimum", enablePluginUploader: true },
-        { template: "modern", enablePluginUploader: false },
-        { template: "modern", enablePluginUploader: true },
+        { template: "javascript", enablePluginUploader: false },
+        { template: "javascript", enablePluginUploader: true },
+        { template: "typescript", enablePluginUploader: false },
+        { template: "typescript", enablePluginUploader: true },
       ];
 
     it.each(patterns)(
@@ -92,7 +92,7 @@ describe("template", () => {
         );
 
         const templateFile =
-          template === "modern"
+          template === "typescript"
             ? path.resolve(srcDir, "plugin", "html", "config.html.tmpl")
             : path.resolve(srcDir, "src", "html", "config.html.tmpl");
 
@@ -105,7 +105,7 @@ describe("template", () => {
         );
 
         const destFile =
-          template === "modern"
+          template === "typescript"
             ? path.resolve(destDir, "plugin", "html", "config.html")
             : path.resolve(destDir, "src", "html", "config.html");
         assert(await fs.stat(destFile));
@@ -136,8 +136,8 @@ describe("template", () => {
       },
     );
 
-    it("should convert webpack.config.js correctly with modern template", async () => {
-      const srcDir = path.resolve(__dirname, "..", "..", "templates", "modern");
+    it("should convert webpack.config.js correctly with typescript template", async () => {
+      const srcDir = path.resolve(__dirname, "..", "..", "templates", "typescript");
 
       await processTemplateFile(
         path.resolve(srcDir, "webpack.config.template.js"),

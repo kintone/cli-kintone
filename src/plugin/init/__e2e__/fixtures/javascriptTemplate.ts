@@ -7,24 +7,24 @@ import {
 import { getBoundMessage } from "../../src/messages";
 
 const m = getBoundMessage("en");
-const template = "modern";
+const template = "javascript";
 
 export const pattern: TestPattern = {
   description:
-    "#JsSdkTest-8 Should able to create a plugin with modern template",
+    "#JsSdkTest-7 Should able to create a plugin with javascript template",
   input: {
     command: CREATE_PLUGIN_COMMAND,
-    outputDir: "test8",
+    outputDir: "test7",
     commandArgument: `--template ${template}`,
     template,
     questionsInput: [
       {
         question: m("Q_NameEn"),
-        answer: "test8-name",
+        answer: "test7-name",
       },
       {
         question: m("Q_DescriptionEn"),
-        answer: "test8-description",
+        answer: "test7-description",
       },
       {
         question: m("Q_SupportJa"),
@@ -55,11 +55,11 @@ export const pattern: TestPattern = {
   expected: {
     success: {
       manifestJson: {
-        name: { en: "test8-name" },
-        description: { en: "test8-description" },
+        name: { en: "test7-name" },
+        description: { en: "test7-description" },
         desktop: {
           js: ["js/desktop.js"],
-          css: ["css/desktop.css"],
+          css: ["css/51-typescript-default.css", "css/desktop.css"],
         },
       },
     },

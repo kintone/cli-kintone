@@ -5,7 +5,7 @@
   "type": "APP",
   "desktop": {
     "js": ["js/desktop.js"],
-    "css": ["css/51-modern-default.css", "css/desktop.css"]
+    "css": ["css/51-typescript-default.css", "css/desktop.css"]
   },
   "icon": "image/icon.png",
   "name": {
@@ -20,7 +20,7 @@
   "config": {
     "html": "html/config.html",
     "js": ["js/config.js"],
-    "css": ["css/51-modern-default.css", "css/config.css"],
+    "css": ["css/51-typescript-default.css", "css/config.css"],
     "required_params": []
   }
 }

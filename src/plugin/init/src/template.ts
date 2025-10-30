@@ -9,8 +9,8 @@ import { format } from "prettier/standalone";
 import * as prettierPluginTypescript from "prettier/plugins/typescript";
 import * as prettierPluginEstree from "prettier/plugins/estree";
 
-export const SUPPORT_TEMPLATE_TYPE = ["minimum", "modern"];
-export type TemplateType = "minimum" | "modern";
+export const SUPPORT_TEMPLATE_TYPE = ["javascript", "typescript"];
+export type TemplateType = "javascript" | "typescript";
 
 export const isValidTemplateType = (templateType: string) => {
   return SUPPORT_TEMPLATE_TYPE.indexOf(templateType) !== -1;
@@ -22,7 +22,7 @@ export const isValidTemplateType = (templateType: string) => {
  */
 export const getTemplateType = (manifest: Manifest): TemplateType => {
   // We don't have any other template types
-  return "minimum";
+  return "javascript";
 };
 
 /**

@@ -23,7 +23,7 @@ const builder = (args: yargs.Argv) =>
     .option("template", {
       describe: "A template for a generated plug-in",
       type: "string",
-      default: "minimum",
+      default: "javascript",
       choices: SUPPORT_TEMPLATE_TYPE,
       requiresArg: true,
     });

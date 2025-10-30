@@ -81,7 +81,7 @@ const buildProject = async (
   fs.writeFileSync(
     path.resolve(
       outputDirectory,
-      templateType === "modern" ? "plugin" : "src",
+      templateType === "typescript" ? "plugin" : "src",
       "manifest.json",
     ),
     JSON.stringify(manifest, null, 2),

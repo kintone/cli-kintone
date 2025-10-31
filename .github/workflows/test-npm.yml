@@ -40,12 +40,6 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          package-manager-cache: false
-        # Update npm to version >=11.6.1 to avoid the ECOMPROMISED error.
-        # ref. https://github.com/npm/cli/pull/8577
-      - run: npm -v
-      - run: npm install -g npm@latest
-      - run: npm -v
       - uses: actions/download-artifact@v6
         with:
           name: kintone-cli.tgz
@@ -68,9 +62,11 @@ jobs:
         # Update npm to version >=11.6.1 to avoid the ECOMPROMISED error.
         # ref. https://github.com/npm/cli/pull/8577
       - run: npm -v
+      - run: npx -v
       - run: npm install -g npm@latest
       - run: npm -v
+      - run: npx -v
       - uses: actions/download-artifact@v6
         with:
           name: kintone-cli.tgz
-      - run: npx kintone-cli.tgz --version
+      - run: npx --yes kintone-cli.tgz --version

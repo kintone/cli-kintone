@@ -20,7 +20,6 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
-  @serial(app_for_import)
   Scenario: User does not have privilege to add records
     Given The CSV file "CliKintoneTest-20.csv" with content as below:
       | Text  | Number |
@@ -67,7 +66,6 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
-  @serial(app_for_draft_token)
   Scenario: API token is a draft
     Given The CSV file "CliKintoneTest-24.csv" with content as below:
       | Text  | Number |
@@ -78,7 +76,6 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
-  @serial(app_for_import)
   Scenario: A duplicate API token for the same app
     Given The CSV file "CliKintoneTest-25.csv" with content as below:
       | Text  | Number |
@@ -109,7 +106,6 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
-  @serial(app_for_import)
   Scenario: Valid and invalid API tokens
     Given The CSV file "CliKintoneTest-27.csv" with content as below:
       | Text  | Number |
@@ -120,7 +116,6 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
-  @serial(app_for_import)
   Scenario: API token does not have privilege to add records
     Given The CSV file "CliKintoneTest-28.csv" with content as below:
       | Text  | Number |
@@ -216,7 +211,6 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
-  @serial(app_for_import_attachments)
   Scenario: Specified attachment file does not exist
     Given The CSV file "CliKintoneTest-34.csv" with content as below:
       | Text  | Number | Attachment         |
@@ -245,7 +239,6 @@ Feature: record import
       | RecordIndex | AttachmentFieldCode | File      | Content |
       | 0           | Attachment          | file1.txt | 123     |
 
-  @serial(app_for_import_attachments)
   Scenario: Specified attachment directory does not exist
     Given The CSV file "CliKintoneTest-36.csv" with content as below:
       | Text  | Number | Attachment        |
@@ -344,7 +337,6 @@ Feature: record import
       | RecordIndex | AttachmentFieldCode | File     | Content                          |
       | 0           | Attachment          | file.txt | G3Gef76wJ5u1mPuh14QhwgeLd5eC0OHU |
 
-  @serial(app_for_import)
   Scenario: File path is not specified
     Given Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
@@ -352,7 +344,6 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Missing required argument: file-path"
 
-  @serial(app_for_import)
   Scenario: Unsupported file type
     Given Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
@@ -360,7 +351,6 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Unexpected file type: txt is unacceptable."
 
-  @serial(app_for_import)
   Scenario: Specified CSV does not exist
     Given Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
@@ -713,7 +703,6 @@ Feature: record import
       | * | Jenny  | 30       | \d+   | Jenny        | 400            |
       | * |        |          | \d+   | Michael      | 500            |
 
-  @serial(app_for_import_required_field)
   Scenario: Record data with required field empty
     Given The CSV file "CliKintoneTest-77.csv" with content as below:
       | Text  | Number |

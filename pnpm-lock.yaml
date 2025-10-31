@@ -96,8 +96,8 @@ importers:
         specifier: ^2.10.3
         version: 2.10.3
       '@types/yazl':
-        specifier: ^2.4.6
-        version: 2.4.6
+        specifier: ^3.3.0
+        version: 3.3.0
       '@vercel/ncc':
         specifier: ^0.38.4
         version: 0.38.4
@@ -2707,8 +2707,8 @@ packages:
   '@types/yauzl@2.10.3':
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
 
-  '@types/yazl@2.4.6':
-    resolution: {integrity: sha512-/ifFjQtcKaoZOjl5NNCQRR0fAKafB3Foxd7J/WvFPTMea46zekapcR30uzkwIkKAAuq5T6d0dkwz754RFH27hg==}
+  '@types/yazl@3.3.0':
+    resolution: {integrity: sha512-mFL6lGkk2N5u5nIxpNV/K5LW3qVSbxhJrMxYGOOxZndWxMgCamr/iCsq/1t9kd8pEwhuNP91LC5qZm/qS9pOEw==}
 
   '@typescript-eslint/eslint-plugin@8.44.1':
     resolution: {integrity: sha512-molgphGqOBT7t4YKCSkbasmu1tb1MgrZ2szGzHbclF7PNmOkSTQVHy+2jXOSnxvR3+Xe1yySHFZoqMpz3TfQsw==}
@@ -12231,7 +12231,7 @@ snapshots:
     dependencies:
       '@types/node': 18.19.130
 
-  '@types/yazl@2.4.6':
+  '@types/yazl@3.3.0':
     dependencies:
       '@types/node': 18.19.130
 

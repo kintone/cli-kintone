@@ -4,7 +4,7 @@ const config = {
     formatOptions: { snippetInterface: "synchronous" },
     requireModule: ["ts-node/register"],
     require: ["features/supports/**/*.ts", "features/step_definitions/**/*.ts"],
-    parallel: 5,
+    parallel: 10,
   },
 };
 module.exports = config;

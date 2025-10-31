@@ -2,7 +2,6 @@
 @export
 Feature: record export
 
-  @serial(app_for_export)
   Scenario: User does not have privilege to view records
     Given Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load username and password of the app "app_for_export" with exact permissions "add" as env vars: "USERNAME" and "PASSWORD"
@@ -64,7 +63,6 @@ Feature: record export
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
-  @serial(app_for_draft_token)
   Scenario: API token is a draft
     Given Load app ID of the app "app_for_draft_token" as env var: "APP_ID"
     And Load app token of the app "app_for_draft_token" with exact permissions "view" as env var: "DRAFT_API_TOKEN"
@@ -72,7 +70,6 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
-  @serial(app_for_export)
   Scenario: API token for different app
     Given Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "add" as env var: "NON_RELEVANT_API_TOKEN"
@@ -80,7 +77,6 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 
-  @serial(app_for_export)
   Scenario: A duplicate API token for the same app
     Given Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "add" as env var: "API_TOKEN_1"
@@ -108,7 +104,6 @@ Feature: record export
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
-  @serial(app_for_export)
   Scenario: Valid and invalid API tokens
     Given Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN_1"
@@ -381,7 +376,6 @@ Feature: record export
       | \d+           | 20     |
       | \d+           | 30     |
 
-  @serial(app_for_export)
   Scenario: Specified field does not exist
     Given Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"
@@ -389,7 +383,6 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: The specified field \"Non_Existent_Field_Code\" does not exist on the app"
 
-  @serial(app_for_export_table)
   Scenario: Specify a field in a table
     Given Load app ID of the app "app_for_export_table" as env var: "APP_ID"
     And Load app token of the app "app_for_export_table" with exact permissions "view" as env var: "API_TOKEN"
@@ -434,7 +427,6 @@ Feature: record export
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
-  @serial(app_in_guest_space)
   Scenario: Incorrect guest space ID
     Given Load app ID of the app "app_in_guest_space" as env var: "APP_ID"
     And Load app token of the app "app_in_guest_space" with exact permissions "view" as env var: "API_TOKEN"
@@ -470,7 +462,6 @@ Feature: record export
       | Record_number | Text | Number |
       | \d+           | 作成日時 | 10     |
 
-  @serial(app_for_export)
   Scenario: Unsupported encoding
     Given Load app ID of the app "app_for_export" as env var: "APP_ID"
     And Load app token of the app "app_for_export" with exact permissions "view" as env var: "API_TOKEN"

@@ -1,14 +1,8 @@
 {
   "pkg": {
-    "assets": [
-      "assets/**/*"
-    ],
+    "assets": ["assets/**/*"],
     "outputPath": "bin",
-    "targets": [
-      "linux",
-      "macos",
-      "win"
-    ]
+    "targets": ["linux", "macos", "win"]
   },
   "name": "cli-kintone"
 }

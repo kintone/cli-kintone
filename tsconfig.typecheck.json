@@ -8,7 +8,7 @@
     "src/**/*",
     "features/**/*",
     "package.json",
-    "e2e-credentials-schema.json",
-    "assets/templates"
-  ]
+    "e2e-credentials-schema.json"
+  ],
+  "exclude": ["assets/**/*"]
 }

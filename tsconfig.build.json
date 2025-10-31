@@ -6,9 +6,5 @@
     "noEmit": false
   },
   "include": ["src/**/*", "package.json"],
-  "exclude": [
-    "src/**/__tests__/*",
-    "src/**/*.test.ts",
-    "src/**/__e2e__/*",
-  ]
+  "exclude": ["src/**/__tests__/*", "src/**/*.test.ts", "src/**/__e2e__/*"]
 }

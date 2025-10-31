@@ -2,7 +2,9 @@
   "name": "kintone-plugin-template-typescript",
   "version": "0.1.0",
   "scripts": {
-    "start": "npm run develop",
+    "prestart": "npm run build",
+    "start": "node scripts/npm-start.js",
+    "upload": "cli-kintone plugin upload --input dist/plugin.zip --watch",
     "develop": "npm run build -- --watch",
     "build": "cross-env NODE_ENV=development webpack",
     "build:prod": "cross-env NODE_ENV=production webpack",
@@ -10,8 +12,8 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "core-js": "^3.40.0",
-    "@kintone/rest-api-client": "^5.5.2"
+    "@kintone/rest-api-client": "^5.5.2",
+    "core-js": "^3.40.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",
@@ -19,6 +21,7 @@
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
     "@cybozu/eslint-config": "^24.0.0",
+    "@kintone/cli": "^1.14.3",
     "@kintone/dts-gen": "^8.1.3",
     "@kintone/webpack-plugin-kintone-plugin": "^8.0.11",
     "ajv": "^8.17.1",

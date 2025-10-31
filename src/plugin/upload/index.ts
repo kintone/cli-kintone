@@ -65,7 +65,7 @@ export const upload = async (
       default: false,
     });
     if (!answers) {
-      logger.info("Plugin installation cancelled by user.");
+      logger.info("Plugin installation is cancelled by the user.");
       return;
     }
   }
@@ -103,5 +103,5 @@ export const upload = async (
     });
   }
 
-  logger.info("Plugin installed successfully.");
+  logger.info("Plugin is installed successfully.");
 };

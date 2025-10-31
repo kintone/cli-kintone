@@ -17,6 +17,8 @@ const builder = (args: yargs.Argv) =>
     .options(commonOptions)
     // NOTE: This command only supports password authn.
     .hide("api-token")
+    // NOTE: This command works regardless of guest space usage.
+    .hide("guest-space-id")
     .option("input", {
       alias: "i",
       describe: "The input plugin zip",

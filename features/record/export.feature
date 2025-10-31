@@ -416,7 +416,7 @@ Feature: record export
       | * | \d+   | Jenny | 30     |
 
   @serial(app_in_guest_space)
-  Scenario: App in a guest space
+  Scenario: App in a guest space (record export)
     Given The app "app_in_guest_space" has no records
     And The app "app_in_guest_space" has some records as below:
       | Text  | Number |

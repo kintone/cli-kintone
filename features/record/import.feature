@@ -590,24 +590,24 @@ Feature: record import
       | * |        |          | \d+   | Jenny        | 400            |
       | * |        |          | \d+   | Michael      | 500            |
 
-#  @serial(app_in_guest_space)
-#  Scenario: App in a guest space
-#    Given The app "app_in_guest_space" has no records
-#    And The CSV file "CliKintoneTest-60.csv" with content as below:
-#      | Text  | Number |
-#      | Alice | 10     |
-#      | Bob   | 20     |
-#      | Jenny | 30     |
-#    And Load app ID of the app "app_in_guest_space" as env var: "APP_ID"
-#    And Load app token of the app "app_in_guest_space" with exact permissions "add" as env var: "API_TOKEN"
-#    And Load guest space ID of the app "app_in_guest_space" as env var: "GUEST_SPACE_ID"
-#    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --guest-space-id $GUEST_SPACE_ID --file-path CliKintoneTest-60.csv"
-#    Then I should get the exit code is zero
-#    And The app "app_in_guest_space" should have records as below:
-#      | Text  | Number |
-#      | Alice | 10     |
-#      | Bob   | 20     |
-#      | Jenny | 30     |
+  @serial(app_in_guest_space)
+  Scenario: App in a guest space (record import)
+    Given The app "app_in_guest_space" has no records
+    And The CSV file "CliKintoneTest-60.csv" with content as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+    And Load app ID of the app "app_in_guest_space" as env var: "APP_ID"
+    And Load app token of the app "app_in_guest_space" with exact permissions "add" as env var: "API_TOKEN"
+    And Load guest space ID of the app "app_in_guest_space" as env var: "GUEST_SPACE_ID"
+    When I run the command with args "record import --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --guest-space-id $GUEST_SPACE_ID --file-path CliKintoneTest-60.csv"
+    Then I should get the exit code is zero
+    And The app "app_in_guest_space" should have records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
 
   @serial(app_in_guest_space)
   Scenario: Incorrect guest space

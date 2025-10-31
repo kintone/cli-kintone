@@ -265,7 +265,7 @@ Feature: record delete
     And The app "app_for_delete" should have no records
 
   @serial(app_in_guest_space)
-  Scenario: App in a guest space
+  Scenario: App in a guest space (record delete)
     Given The app "app_in_guest_space" has no records
     And The app "app_in_guest_space" has some records as below:
       | Text  | Number |

@@ -23,7 +23,7 @@ jobs:
       - run: pnpm build
       - run: pnpm pack
       - run: mv kintone-cli-*.tgz kintone-cli.tgz
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: kintone-cli.tgz
           path: kintone-cli.tgz

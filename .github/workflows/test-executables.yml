@@ -25,7 +25,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:executables
       - run: jq -r '.version' ./package.json > bin/EXPECTED_VERSION
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: executables
           path: bin/*

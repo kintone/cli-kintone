@@ -15,6 +15,7 @@ const outputFormats: OutputFormat[] = ["plain", "json"];
 const builder = (args: yargs.Argv) =>
   args
     .option("input", {
+      alias: "i",
       describe: "The input plugin zip",
       type: "string",
       demandOption: true,

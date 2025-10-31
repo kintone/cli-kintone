@@ -18,8 +18,8 @@
     "update-credits": "ts-node scripts/update-credits.ts"
   },
   "dependencies": {
-    "@docusaurus/core": "3.4.0",
-    "@docusaurus/preset-classic": "3.4.0",
+    "@docusaurus/core": "3.9.1",
+    "@docusaurus/preset-classic": "3.9.1",
     "@docusaurus/theme-common": "^3.9.1",
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.1.1",
@@ -31,10 +31,10 @@
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "^3.9.1",
-    "@docusaurus/module-type-aliases": "3.4.0",
+    "@docusaurus/module-type-aliases": "3.9.1",
     "@docusaurus/plugin-content-docs": "^3.9.1",
-    "@docusaurus/tsconfig": "3.4.0",
-    "@docusaurus/types": "3.4.0",
+    "@docusaurus/tsconfig": "3.9.1",
+    "@docusaurus/types": "3.9.1",
     "@eslint/eslintrc": "^3.3.1",
     "@octokit/rest": "^20.1.2",
     "@types/node": "^18.19.130",

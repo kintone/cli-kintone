@@ -39,7 +39,8 @@ const serialResourceRule: ParallelAssignmentValidator = (
   );
 
   // Debugging parallel execution
-  // console.log(serialResourcesInQuestion, serialResourcesInProgress, conflict);
+  console.log("pickleInQuestion", pickleInQuestion.name);
+  console.log(serialResourcesInQuestion, serialResourcesInProgress, conflict);
 
   // Deny execution when a resource conflict is found
   return !conflict;

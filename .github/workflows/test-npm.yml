@@ -40,6 +40,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
+          package-manager-cache: false
         # Update npm to version >=11.6.1 to avoid the ECOMPROMISED error.
         # ref. https://github.com/npm/cli/pull/8577
       - run: npm install -g npm@latest
@@ -61,6 +62,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
+          package-manager-cache: false
         # Update npm to version >=11.6.1 to avoid the ECOMPROMISED error.
         # ref. https://github.com/npm/cli/pull/8577
       - run: npm install -g npm@latest

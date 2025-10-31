@@ -1,12 +1,10 @@
 "use strict";
 
-import * as fs from "fs";
 import { globSync } from "glob";
 import * as path from "path";
 import { installDependencies } from "./deps";
 import type { Lang } from "./lang";
 import type { Manifest } from "./manifest";
-import { generatePrivateKey } from "./privateKey";
 import type { TemplateType } from "./template";
 import {
   getTemplateDir,
@@ -14,6 +12,8 @@ import {
   processTemplateFile,
 } from "./template";
 import { logger } from "../../../utils/log";
+import { PrivateKey } from "../../core";
+import { mkdir, writeFile } from "fs/promises";
 
 /**
  * Create a plugin project based on passed manifest and install dependencies
@@ -45,7 +45,7 @@ const buildProject = async (
   manifest: Manifest,
   templateType: TemplateType,
 ): Promise<void> => {
-  fs.mkdirSync(outputDirectory);
+  await mkdir(outputDirectory);
 
   const templatePath = path.join(getTemplateDir(), templateType);
   const templatePathPattern = path.normalize(
@@ -59,11 +59,9 @@ const buildProject = async (
     await processTemplateFile(file, templatePath, outputDirectory, manifest);
   }
 
-  fs.writeFileSync(
-    path.resolve(outputDirectory, "private.ppk"),
-    generatePrivateKey(),
-  );
-  fs.writeFileSync(
+  await generatePrivateKey(outputDirectory);
+
+  await writeFile(
     path.resolve(
       outputDirectory,
       templateType === "typescript" ? "plugin" : "src",
@@ -71,4 +69,14 @@ const buildProject = async (
     ),
     JSON.stringify(manifest, null, 2),
   );
+};
+
+const generatePrivateKey = async (outputDirectory: string) => {
+  const privateKey = PrivateKey.generateKey();
+  const id = privateKey.uuid();
+  const outputFilePath = path.resolve(outputDirectory, "private.ppk");
+  logger.debug(`plugin id: ${id}`);
+  logger.debug(`output private key: ${outputFilePath}`);
+
+  await writeFile(outputFilePath, privateKey.exportPrivateKey(), "utf8");
 };

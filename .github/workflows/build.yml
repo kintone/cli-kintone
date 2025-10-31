@@ -29,7 +29,7 @@ jobs:
         run: pnpm install --frozen-lockfile
       - run: pnpm build:all
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           path: artifacts/*
 

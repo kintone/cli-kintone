@@ -2,7 +2,7 @@
 @plugin-upload
 Feature: plugin upload
 
-  Scenario: Uploading plugin.zip
+  Scenario: Upload plugin.zip
     Given The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" is not installed
     And An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin.zip"
     And Load username and password of user "kintone_admin" as env vars: "USERNAME" and "PASSWORD"
@@ -10,7 +10,7 @@ Feature: plugin upload
     Then I should get the exit code is zero
     And The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" should be installed
 
-  Scenario: The newer plugin version replaces the older one when uploaded afterwards
+  Scenario: Update plugin
     Given The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" is not installed
     And An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin_v1.zip"
     And An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v2.zip" is available as "plugin_v2.zip"

@@ -19,7 +19,10 @@ This feature is under early development.
 ## Example
 
 ```shell
-cli-kintone plugin upload --input ./plugin.zip
+cli-kintone plugin upload --input ./plugin.zip \
+  --base-url https://${yourDomain} \
+  --username ${yourUsername} \
+  --password ${yourPassword}
 ```
 
 ## Options

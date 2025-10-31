@@ -264,20 +264,20 @@ Feature: record delete
     Then I should get the exit code is zero
     And The app "app_for_delete" should have no records
 
-#  @serial(app_in_guest_space)
-#  Scenario: App in a guest space
-#    Given The app "app_in_guest_space" has no records
-#    And The app "app_in_guest_space" has some records as below:
-#      | Text  | Number |
-#      | Alice | 10     |
-#      | Bob   | 20     |
-#      | Jenny | 30     |
-#    And Load app ID of the app "app_in_guest_space" as env var: "APP_ID"
-#    And Load app token of the app "app_in_guest_space" with exact permissions "view,delete" as env var: "API_TOKEN"
-#    And Load guest space ID of the app "app_in_guest_space" as env var: "GUEST_SPACE_ID"
-#    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --guest-space-id $GUEST_SPACE_ID"
-#    Then I should get the exit code is zero
-#    And The app "app_in_guest_space" should have no records
+  @serial(app_in_guest_space)
+  Scenario: App in a guest space
+    Given The app "app_in_guest_space" has no records
+    And The app "app_in_guest_space" has some records as below:
+      | Text  | Number |
+      | Alice | 10     |
+      | Bob   | 20     |
+      | Jenny | 30     |
+    And Load app ID of the app "app_in_guest_space" as env var: "APP_ID"
+    And Load app token of the app "app_in_guest_space" with exact permissions "view,delete" as env var: "API_TOKEN"
+    And Load guest space ID of the app "app_in_guest_space" as env var: "GUEST_SPACE_ID"
+    When I run the command with args "record delete --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --api-token $API_TOKEN --yes --guest-space-id $GUEST_SPACE_ID"
+    Then I should get the exit code is zero
+    And The app "app_in_guest_space" should have no records
 
   @serial(app_in_guest_space)
   Scenario: Incorrect guest space ID

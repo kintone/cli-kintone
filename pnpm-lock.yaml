@@ -128,9 +128,6 @@ importers:
       eslint:
         specifier: ^9.37.0
         version: 9.37.0(jiti@1.21.7)
-      glob:
-        specifier: ^11.0.3
-        version: 11.0.3
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))

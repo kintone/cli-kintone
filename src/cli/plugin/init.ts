@@ -4,8 +4,8 @@ import type { CommandModule } from "yargs";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
 import { setStability } from "../stability";
-import type { TemplateType } from "../../plugin/init/src/template";
-import { SUPPORT_TEMPLATE_TYPE } from "../../plugin/init/src/template";
+import type { TemplateType } from "../../plugin/init/utils/template";
+import { SUPPORT_TEMPLATE_TYPE } from "../../plugin/init/utils/template";
 import { run } from "../../plugin/init";
 
 const command = "init";

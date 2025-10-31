@@ -1,5 +1,5 @@
-import { init } from "./src";
-import type { TemplateType } from "./src/template";
+import { initPlugin } from "./usecases/init";
+import type { TemplateType } from "./utils/template";
 
 type Options = {
   name: string;
@@ -7,5 +7,5 @@ type Options = {
 };
 
 export const run: (argv: Options) => Promise<void> = async (argv) => {
-  init(argv.name, "en", argv.template);
+  initPlugin(argv.name, "en", argv.template);
 };

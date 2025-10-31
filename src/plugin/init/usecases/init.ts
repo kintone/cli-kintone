@@ -3,13 +3,13 @@
 import chalk = require("chalk");
 import * as fs from "fs";
 import { rimraf } from "rimraf";
-import { generatePlugin } from "./generator";
-import type { Lang } from "./lang";
-import type { Manifest } from "./manifest";
-import { buildManifest } from "./manifest";
-import { getBoundMessage, getMessage } from "./messages";
-import type { TemplateType } from "./template";
-import { runPrompt } from "./qa";
+import { generatePlugin } from "../utils/generator";
+import type { Lang } from "../utils/lang";
+import type { Manifest } from "../utils/manifest";
+import { buildManifest } from "../utils/manifest";
+import { getBoundMessage, getMessage } from "../utils/messages";
+import type { TemplateType } from "../utils/template";
+import { runPrompt } from "../utils/qa";
 import { logger } from "../../../utils/log";
 
 /**
@@ -64,7 +64,7 @@ ${m("developerSite")}
  * @param lang
  * @param templateType
  */
-export const init = (
+export const initPlugin = (
   outputDir: string,
   lang: Lang,
   templateType: TemplateType,

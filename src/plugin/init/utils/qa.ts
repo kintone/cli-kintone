@@ -10,7 +10,7 @@ import {
   promptForOptionalName,
   promptForSupportLang,
   promptForSupportMobile,
-} from "./qa/prompt";
+} from "../utils/qa/prompt";
 
 export type Answers = {
   name: {

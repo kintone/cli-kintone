@@ -2,6 +2,7 @@
 @import
 Feature: record import
 
+  @serial(app_for_import)
   Scenario: API token authorization
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-23.csv" with content as below:
@@ -19,6 +20,7 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_import)
   Scenario: User does not have privilege to add records
     Given The CSV file "CliKintoneTest-20.csv" with content as below:
       | Text  | Number |
@@ -29,6 +31,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed."
 
+  @serial(app_in_space_for_import)
   Scenario: App in a space
     Given The app "app_in_space_for_import" has no records
     And The CSV file "CliKintoneTest-21.csv" with content as below:
@@ -46,6 +49,7 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_import)
   Scenario: Invalid API token and valid login information
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-22.csv" with content as below:
@@ -63,6 +67,7 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_draft_token)
   Scenario: API token is a draft
     Given The CSV file "CliKintoneTest-24.csv" with content as below:
       | Text  | Number |
@@ -73,6 +78,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
+  @serial(app_for_import)
   Scenario: A duplicate API token for the same app
     Given The CSV file "CliKintoneTest-25.csv" with content as below:
       | Text  | Number |
@@ -84,6 +90,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_DA03] You cannot specify a duplicate API token for the same app."
 
+  @serial(app_for_import)
   Scenario: API tokens for different apps
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-26.csv" with content as below:
@@ -102,6 +109,7 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_import)
   Scenario: Valid and invalid API tokens
     Given The CSV file "CliKintoneTest-27.csv" with content as below:
       | Text  | Number |
@@ -112,6 +120,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
+  @serial(app_for_import)
   Scenario: API token does not have privilege to add records
     Given The CSV file "CliKintoneTest-28.csv" with content as below:
       | Text  | Number |
@@ -122,6 +131,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 
+  @serial(app_for_import)
   Scenario: API token does not have privilege to view and edit records
     Given The app "app_for_import" has some records as below:
       | Text  | Number |
@@ -135,6 +145,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 
+  @serial(app_for_import)
   Scenario: Login authorization
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-30.csv" with content as below:
@@ -152,6 +163,7 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_import)
   Scenario: Login authorization - short username option
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-31.csv" with content as below:
@@ -169,6 +181,7 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_import)
   Scenario: Login authorization - short password option
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-32.csv" with content as below:
@@ -186,6 +199,7 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_import)
   Scenario: Specify attachments directory nevertheless app does not have an attachment field
     Given The CSV file "CliKintoneTest-33.csv" with content as below:
       | Text  | Number |
@@ -202,6 +216,7 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_import_attachments)
   Scenario: Specified attachment file does not exist
     Given The CSV file "CliKintoneTest-34.csv" with content as below:
       | Text  | Number | Attachment         |
@@ -212,6 +227,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non_exist_file.txt'"
 
+  @serial(app_for_import_attachments)
   Scenario: Record with an attachment file
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
@@ -229,6 +245,7 @@ Feature: record import
       | RecordIndex | AttachmentFieldCode | File      | Content |
       | 0           | Attachment          | file1.txt | 123     |
 
+  @serial(app_for_import_attachments)
   Scenario: Specified attachment directory does not exist
     Given The CSV file "CliKintoneTest-36.csv" with content as below:
       | Text  | Number | Attachment        |
@@ -239,6 +256,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory, open '(.*)non-exist-dir-c1aceeba-f3e0-45ab-8231-7729d4bc03a0[\/\\]+no_exist_file.txt'"
 
+  @serial(app_for_import_attachments)
   Scenario: Multiple attachments on a field
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
@@ -258,6 +276,7 @@ Feature: record import
       | 0           | Attachment          | file1.txt | 123     |
       | 0           | Attachment          | file2.txt | abc     |
 
+  @serial(app_for_import_attachments)
   Scenario: Attachments on multiple fields
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
@@ -281,6 +300,7 @@ Feature: record import
       | 0           | Attachment_0        | file3.txt | abc     |
       | 0           | Attachment_0        | file4.txt | xyz     |
 
+  @serial(app_for_import_attachments)
   Scenario: Attachments on multiple records
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
@@ -306,6 +326,7 @@ Feature: record import
       | 1           | Attachment          | file3.txt | abc     |
       | 1           | Attachment          | file4.txt | xyz     |
 
+  @serial(app_for_import_attachments)
   Scenario: Record with .txt file attachment
     Given The app "app_for_import_attachments" has no records
     And I have a file "attachments/file.txt" with content: "G3Gef76wJ5u1mPuh14QhwgeLd5eC0OHU"
@@ -323,6 +344,7 @@ Feature: record import
       | RecordIndex | AttachmentFieldCode | File     | Content                          |
       | 0           | Attachment          | file.txt | G3Gef76wJ5u1mPuh14QhwgeLd5eC0OHU |
 
+  @serial(app_for_import)
   Scenario: File path is not specified
     Given Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
@@ -330,6 +352,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Missing required argument: file-path"
 
+  @serial(app_for_import)
   Scenario: Unsupported file type
     Given Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
@@ -337,6 +360,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Unexpected file type: txt is unacceptable."
 
+  @serial(app_for_import)
   Scenario: Specified CSV does not exist
     Given Load app ID of the app "app_for_import" as env var: "APP_ID"
     And Load app token of the app "app_for_import" with exact permissions "add" as env var: "API_TOKEN"
@@ -344,6 +368,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: ENOENT: no such file or directory"
 
+  @serial(app_for_upsert)
   Scenario: Upsert by record number
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
@@ -367,6 +392,7 @@ Feature: record import
       | $RECORD_NUMBERS[1] | Rose  | 40     |
       | \d+                | Jenny | 50     |
 
+  @serial(app_for_upsert)
   Scenario: Upsert by text field
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
@@ -390,6 +416,7 @@ Feature: record import
       | $RECORD_NUMBERS[1] | Bob   | 40     |
       | \d+                | Jenny | 50     |
 
+  @serial(app_for_upsert)
   Scenario: Update-key field is not set to unique (text)
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
@@ -404,6 +431,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Error: update key field should set to unique"
 
+  @serial(app_for_upsert)
   Scenario: Update by number field
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
@@ -427,6 +455,7 @@ Feature: record import
       | $RECORD_NUMBERS[1] | Rose  | 20     |
       | \d+                | Jenny | 30     |
 
+  @serial(app_for_upsert)
   Scenario: Update-key field is not set to unique (number)
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
@@ -441,6 +470,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Error: update key field should set to unique"
 
+  @serial(app_for_upsert)
   Scenario: Specified update-key field is not supported
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
@@ -455,6 +485,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Error: unsupported field type for update key"
 
+  @serial(app_for_upsert)
   Scenario: API token does not have privilege to edit records
     Given The app "app_for_upsert" has no records
     And The app "app_for_upsert" has some records as below:
@@ -471,6 +502,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403\] \[GAIA_NO01\] Using this API token, you cannot run the specified API."
 
+  @serial(app_for_import)
   Scenario: Specify a field
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-51.csv" with content as below:
@@ -488,6 +520,7 @@ Feature: record import
       | Bob   |        |
       | Jenny |        |
 
+  @serial(app_for_import)
   Scenario: Specify multiple fields
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-52.csv" with content as below:
@@ -505,6 +538,7 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_import)
   Scenario: Specified field does not exist
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-53.csv" with content as below:
@@ -518,6 +552,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: The specified field \"Non_Existent_Field_Code\" does not exist on the app"
 
+  @serial(app_for_import_table)
   Scenario: Specify a field in a table
     Given The app "app_for_import_table" has no records
     And The CSV file "CliKintoneTest-54.csv" with content as below:
@@ -533,6 +568,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: The field in a Table cannot be specified to the fields option \(\"Text\"\)"
 
+  @serial(app_for_import_table)
   Scenario: Specify a table
     Given The app "app_for_import_table" has no records
     And The CSV file "CliKintoneTest-55.csv" with content as below:
@@ -554,7 +590,8 @@ Feature: record import
       | * |        |          | \d+   | Jenny        | 400            |
       | * |        |          | \d+   | Michael      | 500            |
 
-  Scenario: App in a guest space
+  @serial(app_in_guest_space)
+  Scenario: App in a guest space (record import)
     Given The app "app_in_guest_space" has no records
     And The CSV file "CliKintoneTest-60.csv" with content as below:
       | Text  | Number |
@@ -572,6 +609,7 @@ Feature: record import
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_in_guest_space)
   Scenario: Incorrect guest space
     Given The app "app_in_guest_space" has no records
     And The CSV file "CliKintoneTest-61.csv" with content as below:
@@ -585,6 +623,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed."
 
+  @serial(app_for_import)
   Scenario: Utf8 encoded file
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-62.csv" with "utf8" encoded content as below:
@@ -598,6 +637,7 @@ Feature: record import
       | Text   | Number |
       | レコード番号 | 10     |
 
+  @serial(app_for_import)
   Scenario: Sjis encoded file
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-63.csv" with "sjis" encoded content as below:
@@ -611,6 +651,7 @@ Feature: record import
       | Text | Number |
       | 作成日時 | 10     |
 
+  @serial(app_for_import)
   Scenario: Unsupported encoding
     Given The app "app_for_import" has no records
     And The CSV file "CliKintoneTest-64.csv" with content as below:
@@ -624,6 +665,7 @@ Feature: record import
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Argument: encoding, Given: \"unsupported_character_code\", Choices: \"utf8\", \"sjis\""
 
+  @serial(app_for_upsert)
   Scenario: Remove attachments by upserting
     Given The app "app_for_upsert" has no records
     And I have a file "attachments/file1.txt" with content: "123"
@@ -649,6 +691,7 @@ Feature: record import
       | $RECORD_NUMBERS[1] | Rose  | 40     |            |
       | \d+                | Jenny | 50     |            |
 
+  @serial(app_for_import_table)
   Scenario: Record data with table fields
     Given The app "app_for_import_table" has no records
     And The CSV file "CliKintoneTest-75.csv" with content as below:
@@ -670,6 +713,7 @@ Feature: record import
       | * | Jenny  | 30       | \d+   | Jenny        | 400            |
       | * |        |          | \d+   | Michael      | 500            |
 
+  @serial(app_for_import_required_field)
   Scenario: Record data with required field empty
     Given The CSV file "CliKintoneTest-77.csv" with content as below:
       | Text  | Number |

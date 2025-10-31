@@ -20,6 +20,7 @@ BeforeAll(async function () {
 });
 
 Before(function () {
+  console.log("start");
   this.init({ workingDir: rootDir, credentials });
 });
 
@@ -33,6 +34,7 @@ After(async function (scenario) {
   if (scenario.result?.status === Status.FAILED) {
     failedScenarioCount++;
   }
+  console.log("end");
 });
 
 AfterAll(function () {

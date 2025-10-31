@@ -43,7 +43,9 @@ jobs:
           package-manager-cache: false
         # Update npm to version >=11.6.1 to avoid the ECOMPROMISED error.
         # ref. https://github.com/npm/cli/pull/8577
+      - run: npm -v
       - run: npm install -g npm@latest
+      - run: npm -v
       - uses: actions/download-artifact@v6
         with:
           name: kintone-cli.tgz
@@ -65,7 +67,9 @@ jobs:
           package-manager-cache: false
         # Update npm to version >=11.6.1 to avoid the ECOMPROMISED error.
         # ref. https://github.com/npm/cli/pull/8577
+      - run: npm -v
       - run: npm install -g npm@latest
+      - run: npm -v
       - uses: actions/download-artifact@v6
         with:
           name: kintone-cli.tgz

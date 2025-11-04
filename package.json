@@ -117,7 +117,6 @@
     "lodash": "^4.17.21",
     "iconv-lite": "^0.7.0",
     "node-rsa": "^1.1.1",
-    "sort-package-json": "^3.4.0",
     "yargs": "^17.7.2",
     "yauzl": "^3.2.0",
     "yazl": "^3.3.1"

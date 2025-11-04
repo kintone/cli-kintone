@@ -1,7 +1,7 @@
 import assert from "assert";
 import { buildManifest } from "../manifest";
 
-import createBaseManifest from "./helpers/baseManifest";
+import createBaseManifest from "./fixtures/baseManifest";
 
 describe("manifest", () => {
   describe("buildManifest", () => {

@@ -4,10 +4,11 @@ import {
   getTemplateType,
   processTemplateFile,
 } from "../template";
-import createBaseManifest from "./helpers/baseManifest";
+import createBaseManifest from "./fixtures/baseManifest";
 import { promises as fs } from "fs";
 import path from "path";
 import os from "os";
+import * as templateModule from "../template";
 
 describe("template", () => {
   describe("getTemplateType", () => {
@@ -34,6 +35,24 @@ describe("template", () => {
       destDir = await fs.mkdtemp(
         path.join(os.tmpdir(), "kintone-create-plugin-"),
       );
+      jest
+        .spyOn(templateModule, "getTemplateDir")
+        .mockReturnValue(
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "..",
+            "..",
+            "..",
+            "assets",
+            "templates",
+          ),
+        );
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
     });
 
     const patterns: Array<{ template: string }> = [
@@ -50,6 +69,10 @@ describe("template", () => {
           __dirname,
           "..",
           "..",
+          "..",
+          "..",
+          "..",
+          "assets",
           "templates",
           template,
         );
@@ -79,6 +102,10 @@ describe("template", () => {
           __dirname,
           "..",
           "..",
+          "..",
+          "..",
+          "..",
+          "assets",
           "templates",
           template,
         );
@@ -104,6 +131,10 @@ describe("template", () => {
           __dirname,
           "..",
           "..",
+          "..",
+          "..",
+          "..",
+          "assets",
           "templates",
           template,
         );
@@ -121,6 +152,10 @@ describe("template", () => {
         __dirname,
         "..",
         "..",
+        "..",
+        "..",
+        "..",
+        "assets",
         "templates",
         "typescript",
       );

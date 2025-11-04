@@ -10,15 +10,21 @@ jobs:
     name: Yamory
     runs-on: ubuntu-latest
     steps:
-      - uses: Kesin11/actions-timeline@3046833d9aacfd7745c5264b7f3af851c3e2a619 # v2
+      - uses: Kesin11/actions-timeline@54d513e0b5ff1158f1cf8321108d666a5a6c1fca # v2
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
 
       - uses: actions/setup-node@v6
         with:
-          node-version: "18"
+          node-version: "24"
+          cache: "pnpm"
+
+        # To avoid setup-node cache failure.
+        # ref. https://github.com/actions/setup-node/issues/1137
+      - name: create pnpm cache directory
+        run: mkdir -vp $(pnpm store path --silent)
 
       - name: download and validate Yamory script
         working-directory: /tmp

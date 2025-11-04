@@ -18,9 +18,9 @@
     "update-credits": "ts-node scripts/update-credits.ts"
   },
   "dependencies": {
-    "@docusaurus/core": "3.4.0",
-    "@docusaurus/preset-classic": "3.4.0",
-    "@docusaurus/theme-common": "^3.9.1",
+    "@docusaurus/core": "3.9.2",
+    "@docusaurus/preset-classic": "3.9.2",
+    "@docusaurus/theme-common": "^3.9.2",
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.1.1",
     "docusaurus-plugin-sass": "^0.2.6",
@@ -30,14 +30,14 @@
     "sass": "^1.93.2"
   },
   "devDependencies": {
-    "@docusaurus/eslint-plugin": "^3.9.1",
-    "@docusaurus/module-type-aliases": "3.4.0",
-    "@docusaurus/plugin-content-docs": "^3.9.1",
-    "@docusaurus/tsconfig": "3.4.0",
-    "@docusaurus/types": "3.4.0",
+    "@docusaurus/eslint-plugin": "^3.9.2",
+    "@docusaurus/module-type-aliases": "3.9.2",
+    "@docusaurus/plugin-content-docs": "^3.9.2",
+    "@docusaurus/tsconfig": "3.9.2",
+    "@docusaurus/types": "3.9.2",
     "@eslint/eslintrc": "^3.3.1",
-    "@octokit/rest": "^20.1.2",
-    "@types/node": "^18.19.129",
+    "@octokit/rest": "^22.0.0",
+    "@types/node": "^18.19.130",
     "ts-node": "^10.9.2",
     "typescript": "~5.9.3"
   },

@@ -12,18 +12,18 @@ jobs:
     name: Prepare npm package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
       - uses: actions/setup-node@v6
         with:
-          node-version: "18"
+          node-version: "24"
           cache: "pnpm"
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm pack
       - run: mv kintone-cli-*.tgz kintone-cli.tgz
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: kintone-cli.tgz
           path: kintone-cli.tgz
@@ -34,13 +34,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [22.x, 20.x, 18.x]
+        node-version: [20, 22, 24]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           name: kintone-cli.tgz
       - run: npm install -g kintone-cli.tgz
@@ -52,13 +52,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [22.x, 20.x, 18.x]
+        node-version: [20, 22, 24]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           name: kintone-cli.tgz
       - run: npx kintone-cli.tgz --version

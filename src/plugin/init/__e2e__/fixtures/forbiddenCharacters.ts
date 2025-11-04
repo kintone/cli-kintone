@@ -4,7 +4,7 @@ import {
   CREATE_PLUGIN_COMMAND,
   DEFAULT_ANSWER,
 } from "../utils/constants";
-import { getBoundMessage } from "../../src/messages";
+import { getBoundMessage } from "../../utils/messages";
 
 const m = getBoundMessage("en");
 let outputDir: string;

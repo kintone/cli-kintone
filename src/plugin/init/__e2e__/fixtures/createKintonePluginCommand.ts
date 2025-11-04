@@ -1,6 +1,6 @@
 import type { TestPattern } from "../e2e.test";
 import { ANSWER_YES, CREATE_KINTONE_PLUGIN_COMMAND } from "../utils/constants";
-import { getBoundMessage } from "../../src/messages";
+import { getBoundMessage } from "../../utils/messages";
 
 const m = getBoundMessage("en");
 

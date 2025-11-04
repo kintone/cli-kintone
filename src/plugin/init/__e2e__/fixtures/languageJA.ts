@@ -4,7 +4,7 @@ import {
   ANSWER_YES,
   CREATE_PLUGIN_COMMAND,
 } from "../utils/constants";
-import { getBoundMessage } from "../../src/messages";
+import { getBoundMessage } from "../../utils/messages";
 
 const lang = "ja";
 const m = getBoundMessage(lang);

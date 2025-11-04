@@ -1,7 +1,7 @@
 import type { TestPattern } from "../e2e.test";
 import { CREATE_PLUGIN_COMMAND } from "../utils/constants";
 import { generateRandomString } from "../utils/helper";
-import { getBoundMessage } from "../../src/messages";
+import { getBoundMessage } from "../../utils/messages";
 
 const m = getBoundMessage("en");
 

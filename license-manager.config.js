@@ -76,6 +76,10 @@ const OVERRIDE_LICENSES_TEXT = {
     licensePageUrl:
       "https://raw.githubusercontent.com/SBoudrias/Inquirer.js/main/LICENSE",
   },
+  eastasianwidth: {
+    licensePageUrl:
+      "https://raw.githubusercontent.com/komagata/eastasianwidth/master/MIT-LICENSE.txt",
+  },
 };
 
 module.exports = config;

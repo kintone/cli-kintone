@@ -83,6 +83,13 @@ export const processTemplateFile = async (
         }),
       ),
     );
+  } else if (path.resolve(filePath) === path.resolve(srcDir, "package.json")) {
+    const packageJson: PackageJson = JSON.parse(
+      fs.readFileSync(filePath, "utf-8"),
+    );
+    packageJson.name = manifest.name.en.replace(/\s/g, "-");
+    const sortedPackageJson = JSON.stringify(packageJson, null, 2);
+    fs.writeFileSync(destFilePath, sortedPackageJson);
   } else if (
     path.resolve(filePath) ===
     path.resolve(srcDir, "webpack.config.template.js")
@@ -117,6 +124,14 @@ export const processTemplateFile = async (
     // fs.copyFileSync(filePath, destFilePath);
     fs.writeFileSync(destFilePath, fs.readFileSync(filePath));
   }
+};
+
+type PackageJson = {
+  name?: string;
+  version?: string;
+  scripts?: { [key: string]: string };
+  dependencies?: { [key: string]: string };
+  devDependencies?: { [key: string]: string };
 };
 
 type WebpackEntryJson = {

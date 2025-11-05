@@ -1,5 +1,5 @@
 {
-  "name": "<%= normalizePackageName(name.en) %>",
+  "name": "kintone-plugin-template-typescript",
   "version": "0.1.0",
   "scripts": {
     "prestart": "npm run build",

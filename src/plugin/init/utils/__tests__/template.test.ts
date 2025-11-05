@@ -78,7 +78,7 @@ describe("template", () => {
         );
 
         await processTemplateFile(
-          path.resolve(srcDir, "package.json.tmpl"),
+          path.resolve(srcDir, "package.json"),
           srcDir,
           destDir,
           manifest,

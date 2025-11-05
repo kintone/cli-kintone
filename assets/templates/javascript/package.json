@@ -1,5 +1,5 @@
 {
-  "name": "<%= normalizePackageName(name.en) %>",
+  "name": "kintone-plugin-template-javascript",
   "version": "0.1.0",
   "scripts": {
     "start": "node scripts/npm-start.js",

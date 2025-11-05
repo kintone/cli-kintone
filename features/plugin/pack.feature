@@ -2,13 +2,13 @@
 @plugin-pack
 Feature: plugin pack
 
-  Scenario: Packages a plugin successfully
+  Scenario: Pack a plugin
     Given An asset with key "plugin_project" is available as "src"
     When I run the command with args "plugin pack --input ./src/manifest.json --private-key ./src/private.ppk"
     Then I should get the exit code is zero
     And I have a file at "plugin.zip"
 
-  Scenario: Fails when private key is missing
+  Scenario: Private key is not specified
     Given An asset with key "plugin_project" is available as "src"
     When I run the command with args "plugin pack --input ./src/manifest.json"
     Then I should get the exit code is non-zero

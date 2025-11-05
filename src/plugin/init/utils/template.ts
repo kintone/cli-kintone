@@ -78,7 +78,7 @@ export const processTemplateFile = async (
       destPath,
       _.template(src)(
         Object.assign({}, manifest, {
-          // It's a function to remove whitespaces for pacakge.json's name field
+          // It's a function to remove whitespaces for package.json's name field
           normalizePackageName: (name: string) => name.replace(/\s/g, "-"),
         }),
       ),

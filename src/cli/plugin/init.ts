@@ -10,7 +10,7 @@ import { run } from "../../plugin/init";
 
 const command = "init";
 
-const describe = "Initialoze plugin project";
+const describe = "Initialize plugin project";
 
 const builder = (args: yargs.Argv) =>
   args

@@ -28,7 +28,7 @@ export const generatePlugin = async (
   lang: Lang,
   templateType: TemplateType,
 ): Promise<void> => {
-  // copy and build a project into the output diretory
+  // copy and build a project into the output directory
   await buildProject(outputDirectory, manifest, templateType);
   // npm install
   installDependencies(outputDirectory, lang);

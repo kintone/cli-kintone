@@ -23,3 +23,5 @@ website/build
 website/pnpm-lock.yaml
 website/CHANGELOG.md
 website/contributors.json
+
+assets

@@ -1,0 +1,173 @@
+import assert from "assert";
+import {
+  isNecessaryFile,
+  getTemplateType,
+  processTemplateFile,
+} from "../template";
+import createBaseManifest from "./fixtures/baseManifest";
+import { promises as fs } from "fs";
+import path from "path";
+import os from "os";
+import * as templateModule from "../template";
+
+describe("template", () => {
+  describe("getTemplateType", () => {
+    it("should return be javascript", () => {
+      assert.strictEqual(getTemplateType(createBaseManifest()), "javascript");
+    });
+  });
+  describe("isNecessaryFile", () => {
+    it("should returns a boolean that shows whether the file should include or not", () => {
+      const manifest = createBaseManifest();
+      assert(!isNecessaryFile(manifest, "webpack.entry.json"));
+      assert(!isNecessaryFile(manifest, "js/mobile.js"));
+      assert(!isNecessaryFile(manifest, "js/config.js"));
+      assert(isNecessaryFile(manifest, "js/other.js"));
+      assert(isNecessaryFile({ ...manifest, mobile: {} }, "js/mobile.js"));
+      assert(isNecessaryFile({ ...manifest, config: {} }, "js/config.js"));
+    });
+  });
+  describe("processTemplateFile", () => {
+    let destDir: string;
+    const manifest = createBaseManifest();
+
+    beforeEach(async () => {
+      destDir = await fs.mkdtemp(
+        path.join(os.tmpdir(), "kintone-create-plugin-"),
+      );
+      jest
+        .spyOn(templateModule, "getTemplateDir")
+        .mockReturnValue(
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "..",
+            "..",
+            "..",
+            "assets",
+            "templates",
+          ),
+        );
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    const patterns: Array<{ template: string }> = [
+      { template: "javascript" },
+      { template: "javascript" },
+      { template: "typescript" },
+      { template: "typescript" },
+    ];
+
+    it.each(patterns)(
+      "should convert package.json correctly (template: $template)",
+      async ({ template }) => {
+        const srcDir = path.resolve(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "..",
+          "assets",
+          "templates",
+          template,
+        );
+
+        await processTemplateFile(
+          path.resolve(srcDir, "package.json"),
+          srcDir,
+          destDir,
+          manifest,
+        );
+
+        const packageJson = JSON.parse(
+          await fs.readFile(path.resolve(destDir, "package.json"), "utf8"),
+        );
+
+        assert(packageJson.name);
+        assert(packageJson.version);
+        assert(packageJson.scripts);
+        assert(packageJson.devDependencies);
+      },
+    );
+
+    it.each(patterns)(
+      "should convert template file correctly (template: $template)",
+      async ({ template }) => {
+        const srcDir = path.resolve(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "..",
+          "assets",
+          "templates",
+          template,
+        );
+
+        const templateFile =
+          template === "typescript"
+            ? path.resolve(srcDir, "plugin", "html", "config.html.tmpl")
+            : path.resolve(srcDir, "src", "html", "config.html.tmpl");
+
+        await processTemplateFile(templateFile, srcDir, destDir, manifest);
+
+        const destFile =
+          template === "typescript"
+            ? path.resolve(destDir, "plugin", "html", "config.html")
+            : path.resolve(destDir, "src", "html", "config.html");
+        assert(await fs.stat(destFile));
+      },
+    );
+    it.each(patterns)(
+      "should copy normal file correctly (template: $template)",
+      async ({ template }) => {
+        const srcDir = path.resolve(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "..",
+          "assets",
+          "templates",
+          template,
+        );
+
+        const templateFile = path.resolve(srcDir, ".gitignore");
+
+        await processTemplateFile(templateFile, srcDir, destDir, manifest);
+
+        assert(await fs.stat(path.resolve(destDir, ".gitignore")));
+      },
+    );
+
+    it("should convert webpack.config.js correctly with typescript template", async () => {
+      const srcDir = path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "..",
+        "..",
+        "assets",
+        "templates",
+        "typescript",
+      );
+
+      await processTemplateFile(
+        path.resolve(srcDir, "webpack.config.template.js"),
+        srcDir,
+        destDir,
+        manifest,
+      );
+      const destFile = path.resolve(destDir, "webpack.config.js");
+      assert(await fs.stat(destFile));
+    });
+  });
+});

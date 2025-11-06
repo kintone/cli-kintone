@@ -14,9 +14,9 @@ jobs:
     # ref. https://github.com/yao-pkg/pkg/issues/183
     runs-on: macos-latest
     steps:
-      - uses: Kesin11/actions-timeline@3046833d9aacfd7745c5264b7f3af851c3e2a619 # v2
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: Kesin11/actions-timeline@54d513e0b5ff1158f1cf8321108d666a5a6c1fca # v2
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
       - uses: actions/setup-node@v6
         with:
           node-version: "24"
@@ -25,7 +25,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:executables
       - run: jq -r '.version' ./package.json > bin/EXPECTED_VERSION
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: executables
           path: bin/*
@@ -41,7 +41,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: executables
       - run: chmod +x ./cli-kintone-*

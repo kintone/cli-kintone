@@ -15,8 +15,8 @@ describe("File Generator functions", () => {
       const filePath = path.join(tempDir, "/tmp/test.png");
       await generateFile(filePath, {});
 
-      const actual = fs.stat(filePath);
-      expect(actual).toBeTruthy();
+      const stats = await fs.stat(filePath);
+      expect(stats.isFile()).toBeTruthy();
     });
 
     it("should generate file correctly with baseDir", async () => {
@@ -24,8 +24,8 @@ describe("File Generator functions", () => {
       const baseDir = path.join(tempDir, "./tmp");
       await generateFile(filePath, { baseDir });
 
-      const actual = fs.stat(`${baseDir}/${filePath}`);
-      expect(actual).toBeTruthy();
+      const stats = await fs.stat(`${baseDir}/${filePath}`);
+      expect(stats.isFile()).toBeTruthy();
     });
 
     afterEach(() => {

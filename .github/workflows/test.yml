@@ -19,9 +19,9 @@ jobs:
 
     steps:
       - run: git config --global core.autocrlf false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
 
       - uses: actions/setup-node@v6
         with:
@@ -38,7 +38,7 @@ jobs:
       - name: Upload allure results
         id: upload-allure-results
         if: ${{ env.platform == 'ubuntu' && !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: allure_results_unit_${{ env.platform }}_node${{ matrix.node-version }}
           path: allure-results
@@ -75,8 +75,8 @@ jobs:
         node-version: [24]
         os: ${{ fromJSON(needs.get-running-os-for-test-e2e.outputs.os) }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
@@ -98,7 +98,7 @@ jobs:
       - name: Upload allure results
         id: upload-allure-results
         if: ${{ env.platform == 'ubuntu' && !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: allure_results_e2e_${{ env.platform }}
           path: allure-results
@@ -119,4 +119,4 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
-      - uses: Kesin11/actions-timeline@3046833d9aacfd7745c5264b7f3af851c3e2a619 # v2
+      - uses: Kesin11/actions-timeline@54d513e0b5ff1158f1cf8321108d666a5a6c1fca # v2

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/kintone/js-sdk/%40kintone/plugin-manifest-validator%4010.2.0/packages/plugin-manifest-validator/manifest-schema.json",
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "desktop": {
+    "js": ["js/desktop.js"],
+    "css": ["css/51-modern-default.css", "css/desktop.css"]
+  },
+  "icon": "image/icon.png",
+  "config": {
+    "html": "html/config.html",
+    "js": ["js/config.js"],
+    "css": ["css/51-modern-default.css", "css/config.css"],
+    "required_params": ["message"]
+  },
+  "name": {
+    "en": "hello-kintone",
+    "ja": "hello-kintone-ja",
+    "zh": "hello-kintone-zh",
+    "es": "hello-kintone-es"
+  },
+  "description": {
+    "en": "Description of hello-kintone in English.",
+    "ja": "Description of hello-kintone in Japanese",
+    "zh": "Description of hello-kintone in Chinese",
+    "es": "Description of hello-kintone in Espanol"
+  },
+  "homepage_url": {
+    "en": "https://example.com/en/",
+    "ja": "https://example.com/ja/",
+    "zh": "https://example.com/zh/",
+    "es": "https://example.com/es/"
+  },
+  "mobile": {
+    "js": ["js/mobile.js"],
+    "css": ["css/mobile.css"]
+  }
+}

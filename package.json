@@ -80,7 +80,7 @@
     "@types/node": "^18.19.130",
     "@types/node-rsa": "^1.1.4",
     "@types/rollup-plugin-auto-external": "^2.0.5",
-    "@types/yargs": "^17.0.33",
+    "@types/yargs": "^17.0.34",
     "@types/yauzl": "^2.10.3",
     "@types/yazl": "^3.3.0",
     "@vercel/ncc": "^0.38.4",

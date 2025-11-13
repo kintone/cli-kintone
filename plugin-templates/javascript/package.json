@@ -6,8 +6,8 @@
     "upload": "cli-kintone plugin upload --input dist/plugin.zip --watch",
     "develop": "npm run build -- --watch",
     "keygen": "cli-kintone plugin keygen --output private.ppk",
-    "build": "cli-kintone plugin pack --private-key private.ppk --output dist/plugin.zip --input src/manifest.json",
-    "lint": "eslint src"
+    "build": "cli-kintone plugin pack --private-key private.ppk --output dist/plugin.zip --input manifest.json",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@cybozu/eslint-config": "^24.0.0",

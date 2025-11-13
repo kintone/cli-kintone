@@ -6,6 +6,7 @@
     "start": "node scripts/npm-start.js",
     "upload": "cli-kintone plugin upload --input dist/plugin.zip --watch",
     "develop": "npm run build -- --watch",
+    "keygen": "cli-kintone plugin keygen --output private.ppk",
     "build": "cross-env NODE_ENV=development webpack",
     "build:prod": "cross-env NODE_ENV=production webpack",
     "dts-gen": "kintone-dts-gen",

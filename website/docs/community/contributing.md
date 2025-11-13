@@ -138,6 +138,12 @@ pnpm test:e2e
 Unfortunately, an actual kintone environment with API access is required to run E2E tests.
 Therefore, we recommend to run on CI.
 
+##### Parallel execution
+
+E2E tests are executed in parallel by default.
+
+In some case, you may want to run tests sequentially.
+
 ### Documentation website
 
 The documentation website (this website!) must be updated in the same PR.

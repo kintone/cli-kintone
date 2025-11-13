@@ -1,5 +1,3 @@
-"use strict";
-
 import type { Lang } from "./lang";
 
 type LangMap = { [lang in Lang]: string };

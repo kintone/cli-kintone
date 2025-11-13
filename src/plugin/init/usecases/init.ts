@@ -1,16 +1,13 @@
-"use strict";
-
 import chalk = require("chalk");
 import * as fs from "fs";
 import { rimraf } from "rimraf";
-import { generatePlugin } from "../utils/generator";
 import type { Lang } from "../utils/lang";
-import type { Manifest } from "../utils/manifest";
-import { buildManifest } from "../utils/manifest";
 import { getBoundMessage, getMessage } from "../utils/messages";
-import type { TemplateType } from "../utils/template";
+import { setupTemplate } from "../utils/template";
 import { runPrompt } from "../utils/qa";
 import { logger } from "../../../utils/log";
+import path = require("path");
+import { installDependencies } from "../utils/deps";
 
 /**
  * Verify whether the output directory is valid
@@ -26,14 +23,14 @@ const verifyOutputDirectory = (outputDirectory: string, lang: Lang): void => {
 };
 
 const getSuccessCreatedPluginMessage = (
-  manifest: Manifest,
+  packageName: string,
   outputDir: string,
   lang: Lang,
 ) => {
   const m = getBoundMessage(lang);
   return `
 
-Success! Created ${manifest.name.en} at ${outputDir}
+Success! Created ${packageName} at ${outputDir}
 
 ${chalk.cyan("npm start")}
 
@@ -62,12 +59,12 @@ ${m("developerSite")}
  * Run create-kintone-plugin script
  * @param outputDir
  * @param lang
- * @param templateType
+ * @param templateName
  */
 export const initPlugin = (
   outputDir: string,
   lang: Lang,
-  templateType: TemplateType,
+  templateName: string,
 ) => {
   const m = getBoundMessage(lang);
   verifyOutputDirectory(outputDir, lang);
@@ -78,14 +75,20 @@ export const initPlugin = (
   `);
 
   runPrompt(m, outputDir, lang)
-    .then(async (answers): Promise<Manifest> => {
-      const manifest = buildManifest(answers, templateType);
-      logger.debug(`manifest built: type = ${templateType}`);
-      await generatePlugin(outputDir, manifest, lang, templateType);
-      return manifest;
+    .then(async (answers): Promise<string> => {
+      const packageName = path.basename(outputDir);
+      logger.debug(`manifest built: type = ${templateName}`);
+      setupTemplate({
+        outputDir,
+        templateName,
+        packageName,
+        answers,
+      });
+      installDependencies(outputDir, lang);
+      return packageName;
     })
-    .then((manifest) => {
-      logger.info(getSuccessCreatedPluginMessage(manifest, outputDir, lang));
+    .then((packageName) => {
+      logger.info(getSuccessCreatedPluginMessage(packageName, outputDir, lang));
     })
     .catch((error: Error) => {
       rimraf(outputDir, { glob: true })

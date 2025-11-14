@@ -3,6 +3,68 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.3](https://github.com/kintone/cli-kintone/compare/v1.15.0...v1.14.3) (2025-11-06)
+
+
+### Features
+
+* add plugin upload command (Experimental) ([#1193](https://github.com/kintone/cli-kintone/issues/1193)) ([9de6f6f](https://github.com/kintone/cli-kintone/commit/9de6f6f4cd0b9fff3fe45d3981178a2a945698f4))
+* add use-server-side-upsert option ([#967](https://github.com/kintone/cli-kintone/issues/967)) ([e645b7b](https://github.com/kintone/cli-kintone/commit/e645b7b75afbee891c4179e7475f6c54b499e97a))
+* publish cli-kintone to npm registry ([#877](https://github.com/kintone/cli-kintone/issues/877)) ([3c5e365](https://github.com/kintone/cli-kintone/commit/3c5e3654497333130691855b846afd845b051ccc))
+* retry API request on 5xx errors ([#1013](https://github.com/kintone/cli-kintone/issues/1013)) ([f3d19ae](https://github.com/kintone/cli-kintone/commit/f3d19ae207c7711ee4b5e26486754507ee0c9fa6))
+* Support three new locales ([#996](https://github.com/kintone/cli-kintone/issues/996)) ([709bc6c](https://github.com/kintone/cli-kintone/commit/709bc6cc11c0627b76a2f55d27cf2e9d3ecacb33))
+* support trace log level ([#787](https://github.com/kintone/cli-kintone/issues/787)) ([5878c89](https://github.com/kintone/cli-kintone/commit/5878c896d8665d39ad3c11d994052aae0fafa5e4))
+* **website:** setup algolia docsearch ([#973](https://github.com/kintone/cli-kintone/issues/973)) ([b8ce7d3](https://github.com/kintone/cli-kintone/commit/b8ce7d3d82c3bc3754b632faaa1badd2c14e3e87))
+
+
+### Bug Fixes
+
+* adjustment server-side-upsert ([#1134](https://github.com/kintone/cli-kintone/issues/1134)) ([f50e99b](https://github.com/kintone/cli-kintone/commit/f50e99b557c3f790032e1807317e35df23475e7c))
+* **deps:** update dependency @kintone/rest-api-client to ^5.0.6 ([#656](https://github.com/kintone/cli-kintone/issues/656)) ([56cd488](https://github.com/kintone/cli-kintone/commit/56cd488ac8b2bbc2d8f797d345caa9e7ca39478e))
+* **deps:** update dependency @kintone/rest-api-client to ^5.0.7 ([#660](https://github.com/kintone/cli-kintone/issues/660)) ([b479566](https://github.com/kintone/cli-kintone/commit/b47956622b32081627f3a1a31c8f695f2805b797))
+* **deps:** update dependency @kintone/rest-api-client to ^5.0.8 ([#666](https://github.com/kintone/cli-kintone/issues/666)) ([9cf4af5](https://github.com/kintone/cli-kintone/commit/9cf4af5944cf057a6ed15776fdfbf4e865143c57))
+* **deps:** update dependency @kintone/rest-api-client to ^5.4.0 ([#696](https://github.com/kintone/cli-kintone/issues/696)) ([0092f48](https://github.com/kintone/cli-kintone/commit/0092f481a9a9a4a49617c8b130cbebd0fdf7d907))
+* **deps:** update dependency @kintone/rest-api-client to ^5.5.0 ([#711](https://github.com/kintone/cli-kintone/issues/711)) ([6ce828c](https://github.com/kintone/cli-kintone/commit/6ce828c6b8cd7b01efe9a510b3d8d7a299759bf7))
+* **deps:** update dependency @kintone/rest-api-client to ^5.5.1 ([#741](https://github.com/kintone/cli-kintone/issues/741)) ([f5cb201](https://github.com/kintone/cli-kintone/commit/f5cb201a5851ea634a7d5a6826b1265b3f8fbcbb))
+* **deps:** update dependency @kintone/rest-api-client to ^5.5.2 ([#777](https://github.com/kintone/cli-kintone/issues/777)) ([eb51e27](https://github.com/kintone/cli-kintone/commit/eb51e2705c7aa2eb80c7741a0f6d9b04a3b49399))
+* **deps:** update dependency @mdx-js/react to ^3.0.1 ([#778](https://github.com/kintone/cli-kintone/issues/778)) ([10ec6f8](https://github.com/kintone/cli-kintone/commit/10ec6f8f7bb2005ec29670226789ef7c7c040b0a))
+* **deps:** update dependency chalk to v4.1.2 ([#737](https://github.com/kintone/cli-kintone/issues/737)) ([4b990fc](https://github.com/kintone/cli-kintone/commit/4b990fc5bf31c4ac76eddad336874f83518a6ab9))
+* **deps:** update dependency clsx to ^2.0.1 ([#779](https://github.com/kintone/cli-kintone/issues/779)) ([37b872c](https://github.com/kintone/cli-kintone/commit/37b872c1f5fc8fc1e1c103846f0ada7b51738bd6))
+* **deps:** update dependency clsx to ^2.1.1 ([#780](https://github.com/kintone/cli-kintone/issues/780)) ([f8cc39a](https://github.com/kintone/cli-kintone/commit/f8cc39ad5056224a13f346a4b1719a9ad36c4fbe))
+* **deps:** update dependency https-proxy-agent to ^7.0.3 ([#678](https://github.com/kintone/cli-kintone/issues/678)) ([f86d5d2](https://github.com/kintone/cli-kintone/commit/f86d5d23780c792066417b1862ef84d3eb8fe05a))
+* **deps:** update dependency https-proxy-agent to ^7.0.4 ([#687](https://github.com/kintone/cli-kintone/issues/687)) ([f731551](https://github.com/kintone/cli-kintone/commit/f7315513bfeab915e2c95be667217711b4c58e2a))
+* **deps:** update dependency https-proxy-agent to ^7.0.5 ([#805](https://github.com/kintone/cli-kintone/issues/805)) ([ce0a464](https://github.com/kintone/cli-kintone/commit/ce0a464c8f701f33dac2ea46e3b8d8f67698c20c))
+* **deps:** update dependency prism-react-renderer to ^2.3.1 ([#781](https://github.com/kintone/cli-kintone/issues/781)) ([d489d90](https://github.com/kintone/cli-kintone/commit/d489d909fbd11d68ac83d4e50f82f58c4c6dc020))
+* **deps:** update dependency sass to ^1.77.6 ([#800](https://github.com/kintone/cli-kintone/issues/800)) ([c4bee55](https://github.com/kintone/cli-kintone/commit/c4bee5554bc9589ddf3c87a3dd44c3459e3efb97))
+* **deps:** update dependency sass to ^1.77.7 ([#814](https://github.com/kintone/cli-kintone/issues/814)) ([04a720f](https://github.com/kintone/cli-kintone/commit/04a720f5f4b7f38239f1be0f4e2062823c1cf96a))
+* **deps:** update dependency sass to ^1.77.8 ([#816](https://github.com/kintone/cli-kintone/issues/816)) ([f189abd](https://github.com/kintone/cli-kintone/commit/f189abd4dd6450fd978d7181d2e6ebafc196f16a))
+* **deps:** update react monorepo to ^18.3.1 (patch) ([#782](https://github.com/kintone/cli-kintone/issues/782)) ([4aa2f38](https://github.com/kintone/cli-kintone/commit/4aa2f38aef94a4fe81a34e8a0b5821d2a44bd229))
+* Fixed so that empty strings are not quoted. ([#949](https://github.com/kintone/cli-kintone/issues/949)) ([c5785a5](https://github.com/kintone/cli-kintone/commit/c5785a5c0a6afce2e4cc1e2dc4a250571805453e))
+* obsolete experimental-use-server-side-upsert option ([#1125](https://github.com/kintone/cli-kintone/issues/1125)) ([4fb2770](https://github.com/kintone/cli-kintone/commit/4fb27702f6c3f6624c49febc8ea2ead89d1f6994))
+* remove `preinstall` ([#910](https://github.com/kintone/cli-kintone/issues/910)) ([28318f2](https://github.com/kintone/cli-kintone/commit/28318f2af5f33a757826680fc5b51057afbbd592))
+* update interface of `plugin pack` ([#1197](https://github.com/kintone/cli-kintone/issues/1197)) ([9734e19](https://github.com/kintone/cli-kintone/commit/9734e19062c8d1991d49f7b901994739d21b66db))
+* update rest-api-client ([#1063](https://github.com/kintone/cli-kintone/issues/1063)) ([#1068](https://github.com/kintone/cli-kintone/issues/1068)) ([ae68509](https://github.com/kintone/cli-kintone/commit/ae68509bc9e22b048fa54f48d7b78206db12026d))
+
+
+### Documentation
+
+* add release blog for v1.14.2 ([#1137](https://github.com/kintone/cli-kintone/issues/1137)) ([6bff613](https://github.com/kintone/cli-kintone/commit/6bff6136cf13984094759e52de1b21f9c90ee8d0))
+* add test report link ([#1026](https://github.com/kintone/cli-kintone/issues/1026)) ([9a752ff](https://github.com/kintone/cli-kintone/commit/9a752ff61a1135d8c6ea6ac43a66a4fc01764f1c))
+* apply GTM to doc website ([#802](https://github.com/kintone/cli-kintone/issues/802)) ([d00fff1](https://github.com/kintone/cli-kintone/commit/d00fff15a5aeef62bae72d5b442bfa27ae539954))
+* configure documentation website framework ([#757](https://github.com/kintone/cli-kintone/issues/757)) ([57c4007](https://github.com/kintone/cli-kintone/commit/57c4007cf9edd33a619fbde827175de4f837e8d2))
+* define the Stability Index ([#890](https://github.com/kintone/cli-kintone/issues/890)) ([a13b97e](https://github.com/kintone/cli-kintone/commit/a13b97e3263bf8d6cb183408cb9781d8e476bdb7))
+* fix broken links ([#907](https://github.com/kintone/cli-kintone/issues/907)) ([4d889aa](https://github.com/kintone/cli-kintone/commit/4d889aa0a71cd976ec618348942b86d60d4d887a))
+* fix grammatical error ([#958](https://github.com/kintone/cli-kintone/issues/958)) ([001fd24](https://github.com/kintone/cli-kintone/commit/001fd2485793b57f9d3d0d689a8ad1b5e791189b))
+* launch doc website ([#788](https://github.com/kintone/cli-kintone/issues/788)) ([8b12b7b](https://github.com/kintone/cli-kintone/commit/8b12b7ba6642642066e9ee59301279351503b466))
+* remove  `experimental-use-server-side-upsert` option ([#1136](https://github.com/kintone/cli-kintone/issues/1136)) ([85ee8f2](https://github.com/kintone/cli-kintone/commit/85ee8f2f54b70d774c3c6584a2c09e776ee23450))
+
+
+### Miscellaneous Chores
+
+* bump minimum Node.js version to v20 ([#1184](https://github.com/kintone/cli-kintone/issues/1184)) ([866358c](https://github.com/kintone/cli-kintone/commit/866358cebb2d9810121b7d08ac046a45ebdf2f5f))
+* expose plugin commands ([#948](https://github.com/kintone/cli-kintone/issues/948)) ([92fb24b](https://github.com/kintone/cli-kintone/commit/92fb24b6636380a098cc39478b6967c6a9c6e24c))
+* plugin pack command for 2 ([#916](https://github.com/kintone/cli-kintone/issues/916)) ([268817c](https://github.com/kintone/cli-kintone/commit/268817c33a3f13743cc7df708794b228e9c7bd43))
+
 ## [1.15.0](https://github.com/kintone/cli-kintone/compare/v1.14.3...v1.15.0) (2025-11-06)
 
 

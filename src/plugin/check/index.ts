@@ -9,10 +9,32 @@ import {
 
 import path from "path";
 import { logger } from "../../utils/log";
+import type { Linter } from "eslint";
 import { ESLint } from "eslint";
-import eslintJs from "@eslint/js";
+import noCybozuData from "./rules/no-cybozu-data";
+import noKintoneInternalSelector from "./rules/no-kintone-internal-selector";
 
-export const check = async (inputFilePath: string) => {
+const eslintConfig: Linter.Config[] = [
+  {
+    // https://eslint.org/docs/latest/use/configure/plugins#configure-a-virtual-plugin
+    plugins: {
+      local: {
+        rules: {
+          "no-cybozu-data": noCybozuData,
+          "no-kintone-internal-selector": noKintoneInternalSelector,
+        },
+      },
+    },
+    rules: {
+      "local/no-cybozu-data": "error",
+      "local/no-kintone-internal-selector": "error",
+    },
+  },
+];
+
+export type OutputFormat = "plain" | "json";
+
+export const check = async (inputFilePath: string, format: OutputFormat) => {
   let manifest: ManifestInterface;
   let driver: DriverInterface;
 
@@ -37,43 +59,93 @@ export const check = async (inputFilePath: string) => {
 
   const eslint = new ESLint({
     overrideConfigFile: true,
-    overrideConfig: [eslintJs.configs.all],
+    overrideConfig: eslintConfig,
   });
+
+  const allResults: AllResult = {
+    errorCount: 0,
+    warningCount: 0,
+    filesChecked: 0,
+    filesSkipped: 0,
+    files: [],
+  };
 
   for (const source of manifest.sourceList()) {
     if (path.extname(source) !== ".js") {
-      logger.info(`Skip ${source}`);
+      allResults.filesSkipped++;
+      logger.debug(`Skip ${source}`);
       continue;
     }
 
-    logger.info(`Checking ${source}`);
+    logger.debug(`Checking ${source}`);
+    allResults.filesChecked++;
     const sourceFile = await driver.readFile(source);
-    // console.log(sourceFile.toString());
     const results = await eslint.lintText(sourceFile.toString(), {
       filePath: source,
     });
+
+    const fileResult: FileResult = {
+      filePath: source,
+      messages: [],
+      errorCount: 0,
+      warningCount: 0,
+    };
     for (const result of results) {
-      console.log(
-        `Error: ${result.errorCount}, Warning: ${result.warningCount}`,
-      );
-      for (const message of result.messages) {
-        console.log(
-          `  Line ${message.line} ${message.severity === 1 ? "Warning" : "Error"}: ${message.message}`,
-        );
-      }
+      fileResult.errorCount += result.errorCount;
+      fileResult.warningCount += result.warningCount;
+
+      fileResult.messages.push(...result.messages);
     }
+    allResults.errorCount += fileResult.errorCount;
+    allResults.warningCount += fileResult.warningCount;
+    allResults.files.push(fileResult);
   }
 
-  // TODO: Support multiple output formats
-  // switch (format) {
-  //   case "plain":
-  //     console.log("id:", info.id);
-  //     console.log("name:", info.name);
-  //     console.log("version:", info.version);
-  //     console.log("description:", info.description ?? "(not set)");
-  //     console.log("homepage:", info.homepage ?? "(not set)");
-  //     break;
-  //   case "json":
-  //     console.log(JSON.stringify(info, null, 2));
-  // }
+  console.log(formatResult(allResults, format));
+};
+
+type AllResult = {
+  errorCount: number;
+  warningCount: number;
+  filesChecked: number;
+  filesSkipped: number;
+  files: FileResult[];
+};
+
+type FileResult = {
+  filePath: string;
+  messages: ESLint.LintResult["messages"];
+  errorCount: number;
+  warningCount: number;
+};
+
+const formatResult = (allResults: AllResult, format: OutputFormat) => {
+  switch (format) {
+    case "plain": {
+      let output = "";
+      for (const fileResult of allResults.files) {
+        if (fileResult.errorCount > 0 || fileResult.warningCount > 0) {
+          output += `\n`;
+          output += `${fileResult.filePath}\n`;
+          for (const message of fileResult.messages) {
+            const line = `${`${message.line}:${message.column}`.padEnd(7)}`;
+            const severity = (
+              message.severity === 1 ? "warning" : "error"
+            ).padEnd(6);
+            output += `  ${line} ${severity}  ${message.message}\n`;
+          }
+        }
+      }
+
+      output += `\n`;
+      output += `Files checked: ${allResults.filesChecked}\n`;
+      output += `Problems: ${allResults.errorCount + allResults.warningCount} (Errors: ${allResults.errorCount}, Warnings: ${allResults.warningCount})\n`;
+
+      return output;
+    }
+    case "json":
+      return JSON.stringify(allResults, null, 2);
+    default:
+      throw new Error(`Unsupported format: ${format}`);
+  }
 };

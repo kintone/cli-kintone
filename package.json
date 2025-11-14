@@ -76,6 +76,7 @@
     "@cybozu/eslint-config": "^24.3.0",
     "@cybozu/license-manager": "^1.4.0",
     "@octokit/rest": "^22.0.0",
+    "@types/estree": "^1.0.8",
     "@types/jest": "^29.5.14",
     "@types/node": "^18.19.130",
     "@types/node-rsa": "^1.1.4",
@@ -105,7 +106,6 @@
     "zx": "^8.8.5"
   },
   "dependencies": {
-    "@eslint/js": "^9.39.1",
     "@inquirer/prompts": "^7.8.6",
     "@kintone/plugin-manifest-validator": "^11.0.0",
     "@kintone/rest-api-client": "^6.0.0",

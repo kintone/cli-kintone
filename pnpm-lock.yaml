@@ -13,9 +13,6 @@ importers:
 
   .:
     dependencies:
-      '@eslint/js':
-        specifier: ^9.39.1
-        version: 9.39.1
       '@inquirer/prompts':
         specifier: ^7.8.6
         version: 7.8.6(@types/node@18.19.130)
@@ -83,6 +80,9 @@ importers:
       '@octokit/rest':
         specifier: ^22.0.0
         version: 22.0.0
+      '@types/estree':
+        specifier: ^1.0.8
+        version: 1.0.8
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14

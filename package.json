@@ -105,6 +105,7 @@
     "zx": "^8.8.5"
   },
   "dependencies": {
+    "@eslint/js": "^9.39.1",
     "@inquirer/prompts": "^7.8.6",
     "@kintone/plugin-manifest-validator": "^11.0.0",
     "@kintone/rest-api-client": "^6.0.0",
@@ -112,6 +113,7 @@
     "chokidar": "^4.0.3",
     "csv-parse": "^5.6.0",
     "csv-stringify": "6.5.2",
+    "eslint": "^9.38.0",
     "https-proxy-agent": "^7.0.6",
     "iconv-lite": "^0.7.0",
     "node-rsa": "^1.1.1",

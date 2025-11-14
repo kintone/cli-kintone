@@ -1,4 +1,5 @@
 import { LocalFSDriver } from "../../../core/driver";
+import { logger } from "../../../../utils/log";
 
 // NOTE: this object has only fields for update
 export type ManifestJsonObjectForUpdate = {
@@ -35,12 +36,15 @@ export const updateManifestsForAnswers = async (opts: {
   manifestPath: string;
   answers: ManifestJsonObjectForUpdate;
 }) => {
+  logger.debug(`reading manifest: ${opts.manifestPath}`);
   const driver = new LocalFSDriver();
   const manifestJson = await driver.readFile(opts.manifestPath, "utf-8");
   const manifest = JSON.parse(manifestJson);
   const newManifest = { ...manifest, ...opts.answers };
+  logger.debug(`writing updated manifest: ${opts.manifestPath}`);
   await driver.writeFile(
     opts.manifestPath,
     JSON.stringify(newManifest, null, 2),
   );
+  logger.debug("manifest updated");
 };

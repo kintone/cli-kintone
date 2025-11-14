@@ -19,6 +19,8 @@ export const isDefaultTemplateExists = async (
       name,
     )}?ref=${DEFAULT_TEMPLATE_BRANCH}`;
 
+    logger.debug(`checking template existence: ${name}`);
+    logger.debug(`fetching HEAD: ${url}`);
     // eslint-disable-next-line n/no-unsupported-features/node-builtins
     const res = await fetch(url, {
       method: "HEAD",
@@ -26,9 +28,11 @@ export const isDefaultTemplateExists = async (
         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
       }),
     });
-    logger.debug(`fetch HEAD: ${url}`);
-    return res.status === 200;
-  } catch {
+    const exists = res.status === 200;
+    logger.debug(`template ${name} ${exists ? "exists" : "does not exist"}`);
+    return exists;
+  } catch (error) {
+    logger.debug(`error checking template: ${error}`);
     return false;
   }
 };
@@ -38,11 +42,13 @@ export const downloadAndExtractTemplate = async (opts: {
   outputDir: string;
 }) => {
   const url = `https://codeload.github.com/${DEFAULT_TEMPLATE_REPO}/tar.gz/${DEFAULT_TEMPLATE_BRANCH}`;
+
+  logger.debug(`downloading template tarball: ${url}`);
   // eslint-disable-next-line n/no-unsupported-features/node-builtins
   const res = await fetch(url);
+  logger.debug("tarball download started");
 
-  logger.debug(`download template tar: ${url}`);
-
+  logger.debug(`extracting template: ${opts.outputDir}`);
   await pipeline(
     // eslint-disable-next-line n/no-unsupported-features/node-builtins
     Readable.fromWeb(res.body as ReadableStream),
@@ -58,7 +64,5 @@ export const downloadAndExtractTemplate = async (opts: {
     }),
   );
 
-  logger.debug(
-    `template tar extracted: path = ${opts.outputDir}, templateName = ${opts.templateName}`,
-  );
+  logger.debug(`template extracted: ${opts.outputDir} (${opts.templateName})`);
 };

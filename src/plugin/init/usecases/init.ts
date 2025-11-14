@@ -77,13 +77,15 @@ export const initPlugin = (
   runPrompt(m, outputDir, lang)
     .then(async (answers): Promise<string> => {
       const packageName = path.basename(outputDir);
-      logger.debug(`manifest built: type = ${templateName}`);
+      logger.info(m("settingUpTemplate"));
+      logger.debug(`templateName: ${templateName}`);
       await setupTemplate({
         outputDir,
         templateName,
         packageName,
         answers,
       });
+      logger.info(m("templateSetupCompleted"));
       installDependencies(outputDir, lang);
       return packageName;
     })

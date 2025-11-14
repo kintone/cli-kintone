@@ -6,6 +6,8 @@ import {
 import type { ManifestJsonObjectForUpdate } from "./template/manifest";
 import { updateManifestsForAnswers } from "./template/manifest";
 import { updatePackageJson } from "./template/pacakge-json";
+import { logger } from "../../../utils/log";
+import { mkdir } from "fs/promises";
 
 // NOTE: this object has only fields for editting
 export type ManifestJsonObjectForTemplate = {
@@ -44,22 +46,30 @@ export const setupTemplate = async (opts: {
   outputDir: string;
   answers: ManifestJsonObjectForUpdate;
 }) => {
+  logger.debug(`verifying template exists: ${opts.templateName}`);
   if (!(await isDefaultTemplateExists(opts.templateName))) {
     throw new Error("template not found");
   }
-
+  logger.debug(`template verified: ${opts.templateName}`);
+  await mkdir(opts.outputDir, { recursive: true });
+  logger.debug(`downloading template: ${opts.templateName}`);
   await downloadAndExtractTemplate({
     templateName: opts.templateName,
     outputDir: opts.outputDir,
   });
+  logger.debug(`template downloaded: ${opts.templateName}`);
 
+  logger.debug("updating manifest.json");
   await updateManifestsForAnswers({
     manifestPath: path.join(opts.outputDir, "manifest.json"),
     answers: opts.answers,
   });
+  logger.debug("manifest.json updated");
 
+  logger.debug(`updating package.json: ${opts.packageName}`);
   await updatePackageJson({
     packageJsonPath: path.join(opts.outputDir, "package.json"),
     packageName: opts.packageName,
   });
+  logger.debug("package.json updated");
 };

@@ -1,173 +1,192 @@
 import assert from "assert";
-import {
-  isNecessaryFile,
-  getTemplateType,
-  processTemplateFile,
-} from "../template";
-import createBaseManifest from "./fixtures/baseManifest";
-import { promises as fs } from "fs";
-import path from "path";
-import os from "os";
-import * as templateModule from "../template";
+import { mkdtemp, writeFile, readFile } from "fs/promises";
+import { tmpdir } from "os";
+import { join } from "path";
+import { rimraf } from "rimraf";
+import { setupTemplate } from "../template";
+import type { ManifestJsonObjectForUpdate } from "../template/manifest";
+
+// GitHub関連の関数をモック
+jest.mock("../template/github");
 
 describe("template", () => {
-  describe("getTemplateType", () => {
-    it("should return be javascript", () => {
-      assert.strictEqual(getTemplateType(createBaseManifest()), "javascript");
-    });
-  });
-  describe("isNecessaryFile", () => {
-    it("should returns a boolean that shows whether the file should include or not", () => {
-      const manifest = createBaseManifest();
-      assert(!isNecessaryFile(manifest, "webpack.entry.json"));
-      assert(!isNecessaryFile(manifest, "js/mobile.js"));
-      assert(!isNecessaryFile(manifest, "js/config.js"));
-      assert(isNecessaryFile(manifest, "js/other.js"));
-      assert(isNecessaryFile({ ...manifest, mobile: {} }, "js/mobile.js"));
-      assert(isNecessaryFile({ ...manifest, config: {} }, "js/config.js"));
-    });
-  });
-  describe("processTemplateFile", () => {
-    let destDir: string;
-    const manifest = createBaseManifest();
+  describe("setupTemplate", () => {
+    let tempDir: string;
 
     beforeEach(async () => {
-      destDir = await fs.mkdtemp(
-        path.join(os.tmpdir(), "kintone-create-plugin-"),
-      );
-      jest
-        .spyOn(templateModule, "getTemplateDir")
-        .mockReturnValue(
-          path.join(
-            __dirname,
-            "..",
-            "..",
-            "..",
-            "..",
-            "..",
-            "assets",
-            "templates",
-          ),
-        );
+      // 一時ディレクトリを作成
+      tempDir = await mkdtemp(join(tmpdir(), "plugin-init-test-"));
+      jest.clearAllMocks();
     });
 
-    afterEach(() => {
-      jest.restoreAllMocks();
+    afterEach(async () => {
+      // クリーンアップ
+      await rimraf(tempDir);
     });
 
-    const patterns: Array<{ template: string }> = [
-      { template: "javascript" },
-      { template: "javascript" },
-      { template: "typescript" },
-      { template: "typescript" },
-    ];
+    it("存在しないテンプレート名でエラーをスローする", async () => {
+      // isDefaultTemplateExistsがfalseを返すようモック
+      const { isDefaultTemplateExists } = require("../template/github");
+      isDefaultTemplateExists.mockResolvedValue(false);
 
-    it.each(patterns)(
-      "should convert package.json correctly (template: $template)",
-      async ({ template }) => {
-        const srcDir = path.resolve(
-          __dirname,
-          "..",
-          "..",
-          "..",
-          "..",
-          "..",
-          "assets",
-          "templates",
-          template,
-        );
+      const answers: ManifestJsonObjectForUpdate = {
+        name: { en: "Test" },
+        description: { en: "Test" },
+      };
 
-        await processTemplateFile(
-          path.resolve(srcDir, "package.json"),
-          srcDir,
-          destDir,
-          manifest,
-        );
+      await assert.rejects(
+        async () => {
+          await setupTemplate({
+            templateName: "non-existent",
+            outputDir: tempDir,
+            packageName: "test-plugin",
+            answers,
+          });
+        },
+        {
+          message: "template not found",
+        },
+      );
+    });
 
-        const packageJson = JSON.parse(
-          await fs.readFile(path.resolve(destDir, "package.json"), "utf8"),
-        );
+    it("JavaScriptテンプレートで完全なセットアップが完了する", async () => {
+      const {
+        isDefaultTemplateExists,
+        downloadAndExtractTemplate,
+      } = require("../template/github");
 
-        assert(packageJson.name);
-        assert(packageJson.version);
-        assert(packageJson.scripts);
-        assert(packageJson.devDependencies);
-      },
-    );
+      // isDefaultTemplateExistsがtrueを返す
+      isDefaultTemplateExists.mockResolvedValue(true);
 
-    it.each(patterns)(
-      "should convert template file correctly (template: $template)",
-      async ({ template }) => {
-        const srcDir = path.resolve(
-          __dirname,
-          "..",
-          "..",
-          "..",
-          "..",
-          "..",
-          "assets",
-          "templates",
-          template,
-        );
+      // downloadAndExtractTemplateが成功し、ダミーファイルを作成
+      downloadAndExtractTemplate.mockImplementation(
+        async ({ outputDir }: { outputDir: string }) => {
+          // ダミーのmanifest.jsonを作成
+          await writeFile(
+            join(outputDir, "manifest.json"),
+            JSON.stringify(
+              {
+                manifest_version: 1,
+                version: 1,
+                type: "APP",
+                name: { en: "Original" },
+                desktop: { js: ["js/desktop.js"] },
+                icon: "image/icon.png",
+              },
+              null,
+              2,
+            ),
+          );
 
-        const templateFile =
-          template === "typescript"
-            ? path.resolve(srcDir, "plugin", "html", "config.html.tmpl")
-            : path.resolve(srcDir, "src", "html", "config.html.tmpl");
-
-        await processTemplateFile(templateFile, srcDir, destDir, manifest);
-
-        const destFile =
-          template === "typescript"
-            ? path.resolve(destDir, "plugin", "html", "config.html")
-            : path.resolve(destDir, "src", "html", "config.html");
-        assert(await fs.stat(destFile));
-      },
-    );
-    it.each(patterns)(
-      "should copy normal file correctly (template: $template)",
-      async ({ template }) => {
-        const srcDir = path.resolve(
-          __dirname,
-          "..",
-          "..",
-          "..",
-          "..",
-          "..",
-          "assets",
-          "templates",
-          template,
-        );
-
-        const templateFile = path.resolve(srcDir, ".gitignore");
-
-        await processTemplateFile(templateFile, srcDir, destDir, manifest);
-
-        assert(await fs.stat(path.resolve(destDir, ".gitignore")));
-      },
-    );
-
-    it("should convert webpack.config.js correctly with typescript template", async () => {
-      const srcDir = path.resolve(
-        __dirname,
-        "..",
-        "..",
-        "..",
-        "..",
-        "..",
-        "assets",
-        "templates",
-        "typescript",
+          // ダミーのpackage.jsonを作成
+          await writeFile(
+            join(outputDir, "package.json"),
+            JSON.stringify(
+              {
+                name: "original-name",
+                version: "1.0.0",
+              },
+              null,
+              2,
+            ),
+          );
+        },
       );
 
-      await processTemplateFile(
-        path.resolve(srcDir, "webpack.config.template.js"),
-        srcDir,
-        destDir,
-        manifest,
+      const answers: ManifestJsonObjectForUpdate = {
+        name: { en: "My Plugin" },
+        description: { en: "Test plugin" },
+      };
+
+      await setupTemplate({
+        templateName: "javascript",
+        outputDir: tempDir,
+        packageName: "my-plugin",
+        answers,
+      });
+
+      // manifest.jsonが更新されていることを確認
+      const manifest = JSON.parse(
+        await readFile(join(tempDir, "manifest.json"), "utf-8"),
       );
-      const destFile = path.resolve(destDir, "webpack.config.js");
-      assert(await fs.stat(destFile));
+      assert.strictEqual(manifest.name.en, "My Plugin");
+      assert.strictEqual(manifest.description.en, "Test plugin");
+
+      // package.jsonが更新されていることを確認
+      const packageJson = JSON.parse(
+        await readFile(join(tempDir, "package.json"), "utf-8"),
+      );
+      assert.strictEqual(packageJson.name, "my-plugin");
+
+      // 呼び出し順序を確認
+      expect(isDefaultTemplateExists).toHaveBeenCalledWith("javascript");
+      expect(downloadAndExtractTemplate).toHaveBeenCalledWith({
+        templateName: "javascript",
+        outputDir: tempDir,
+      });
+    });
+
+    it("TypeScriptテンプレートで完全なセットアップが完了する", async () => {
+      const {
+        isDefaultTemplateExists,
+        downloadAndExtractTemplate,
+      } = require("../template/github");
+
+      isDefaultTemplateExists.mockResolvedValue(true);
+
+      downloadAndExtractTemplate.mockImplementation(
+        async ({ outputDir }: { outputDir: string }) => {
+          await writeFile(
+            join(outputDir, "manifest.json"),
+            JSON.stringify(
+              {
+                manifest_version: 1,
+                version: 1,
+                type: "APP",
+                name: { en: "Original" },
+                desktop: { js: ["js/desktop.js"] },
+                icon: "image/icon.png",
+              },
+              null,
+              2,
+            ),
+          );
+
+          await writeFile(
+            join(outputDir, "package.json"),
+            JSON.stringify(
+              {
+                name: "original-name",
+                version: "1.0.0",
+              },
+              null,
+              2,
+            ),
+          );
+        },
+      );
+
+      const answers: ManifestJsonObjectForUpdate = {
+        name: { en: "TS Plugin" },
+        description: { en: "TypeScript plugin" },
+      };
+
+      await setupTemplate({
+        templateName: "typescript",
+        outputDir: tempDir,
+        packageName: "ts-plugin",
+        answers,
+      });
+
+      const manifest = JSON.parse(
+        await readFile(join(tempDir, "manifest.json"), "utf-8"),
+      );
+      assert.strictEqual(manifest.name.en, "TS Plugin");
+
+      const packageJson = JSON.parse(
+        await readFile(join(tempDir, "package.json"), "utf-8"),
+      );
+      assert.strictEqual(packageJson.name, "ts-plugin");
     });
   });
 });

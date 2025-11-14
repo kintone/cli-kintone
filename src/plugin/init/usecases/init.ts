@@ -78,7 +78,7 @@ export const initPlugin = (
     .then(async (answers): Promise<string> => {
       const packageName = path.basename(outputDir);
       logger.debug(`manifest built: type = ${templateName}`);
-      setupTemplate({
+      await setupTemplate({
         outputDir,
         templateName,
         packageName,

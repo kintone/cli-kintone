@@ -53,12 +53,12 @@ export const setupTemplate = async (opts: {
     outputDir: opts.outputDir,
   });
 
-  updateManifestsForAnswers({
+  await updateManifestsForAnswers({
     manifestPath: path.join(opts.outputDir, "manifest.json"),
     answers: opts.answers,
   });
 
-  updatePackageJson({
+  await updatePackageJson({
     packageJsonPath: path.join(opts.outputDir, "package.json"),
     packageName: opts.packageName,
   });

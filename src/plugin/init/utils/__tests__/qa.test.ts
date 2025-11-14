@@ -52,7 +52,7 @@ describe("qa", () => {
           "ja",
         );
         assert.notEqual(result1.name.ja, undefined);
-        assert.notEqual(result1.description.ja, undefined);
+        assert.notEqual(result1.description?.ja, undefined);
         assert.notEqual(result1.homepage_url, undefined);
         assert.notEqual(result1.homepage_url?.ja, undefined);
       });
@@ -70,7 +70,7 @@ describe("qa", () => {
           "en",
         );
         assert.equal(result2.name.ja, undefined);
-        assert.equal(result2.description.ja, undefined);
+        assert.equal(result2.description?.ja, undefined);
       });
       it("should be set zh parameters in supportZh is true", async () => {
         jest
@@ -86,7 +86,7 @@ describe("qa", () => {
           "ja",
         );
         assert.notEqual(result1.name.zh, undefined);
-        assert.notEqual(result1.description.zh, undefined);
+        assert.notEqual(result1.description?.zh, undefined);
         assert.notEqual(result1.homepage_url, undefined);
         assert.notEqual(result1.homepage_url?.zh, undefined);
       });
@@ -104,7 +104,7 @@ describe("qa", () => {
           "en",
         );
         assert.equal(result2.name.zh, undefined);
-        assert.equal(result2.description.zh, undefined);
+        assert.equal(result2.description?.zh, undefined);
       });
       it("should be set es parameters in supportEs is true", async () => {
         jest
@@ -120,7 +120,7 @@ describe("qa", () => {
           "ja",
         );
         assert.notEqual(result1.name.es, undefined);
-        assert.notEqual(result1.description.es, undefined);
+        assert.notEqual(result1.description?.es, undefined);
         assert.notEqual(result1.homepage_url, undefined);
         assert.notEqual(result1.homepage_url?.es, undefined);
       });
@@ -138,7 +138,7 @@ describe("qa", () => {
           "en",
         );
         assert.equal(result2.name.es, undefined);
-        assert.equal(result2.description.es, undefined);
+        assert.equal(result2.description?.es, undefined);
       });
     });
   });

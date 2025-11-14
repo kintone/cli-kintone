@@ -1,4 +1,5 @@
 import { Readable } from "stream";
+import { pipeline } from "stream/promises";
 import { x } from "tar";
 import { logger } from "../../../../utils/log";
 
@@ -42,8 +43,9 @@ export const downloadAndExtractTemplate = async (opts: {
 
   logger.debug(`download template tar: ${url}`);
 
-  // eslint-disable-next-line n/no-unsupported-features/node-builtins
-  Readable.fromWeb(res.body as ReadableStream).pipe(
+  await pipeline(
+    // eslint-disable-next-line n/no-unsupported-features/node-builtins
+    Readable.fromWeb(res.body as ReadableStream),
     x({
       cwd: opts.outputDir,
       strip:
@@ -55,6 +57,7 @@ export const downloadAndExtractTemplate = async (opts: {
         ),
     }),
   );
+
   logger.debug(
     `template tar extracted: path = ${opts.outputDir}, templateName = ${opts.templateName}`,
   );

@@ -39,5 +39,8 @@ export const updateManifestsForAnswers = async (opts: {
   const manifestJson = await driver.readFile(opts.manifestPath, "utf-8");
   const manifest = JSON.parse(manifestJson);
   const newManifest = { ...manifest, ...opts.answers };
-  driver.writeFile(opts.manifestPath, JSON.stringify(newManifest, null, 2));
+  await driver.writeFile(
+    opts.manifestPath,
+    JSON.stringify(newManifest, null, 2),
+  );
 };

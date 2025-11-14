@@ -7,7 +7,7 @@ import type { ManifestJsonObjectForUpdate } from "./template/manifest";
 import { updateManifestsForAnswers } from "./template/manifest";
 import { updatePackageJson } from "./template/pacakge-json";
 import { logger } from "../../../utils/log";
-import { mkdir } from "fs/promises";
+import { mkdir, stat } from "fs/promises";
 
 // NOTE: this object has only fields for editting
 export type ManifestJsonObjectForTemplate = {
@@ -40,19 +40,40 @@ export type ManifestJsonObjectForTemplate = {
   };
 };
 
+const checkDirectoryExists = async (dirPath: string): Promise<boolean> => {
+  try {
+    await stat(dirPath);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 export const setupTemplate = async (opts: {
   packageName: string;
   templateName: string;
   outputDir: string;
   answers: ManifestJsonObjectForUpdate;
 }) => {
+  // Verify template exists
   logger.debug(`verifying template exists: ${opts.templateName}`);
   if (!(await isDefaultTemplateExists(opts.templateName))) {
     throw new Error("template not found");
   }
   logger.debug(`template verified: ${opts.templateName}`);
+
+  // Verify output directory does not exist
+  logger.debug(`verifying output directory: ${opts.outputDir}`);
+  const directoryExists = await checkDirectoryExists(opts.outputDir);
+  if (directoryExists) {
+    throw new Error("output directory already exists");
+  }
+  logger.debug("output directory is available");
+
+  // Create output directory
   await mkdir(opts.outputDir, { recursive: true });
   logger.debug(`downloading template: ${opts.templateName}`);
+
   await downloadAndExtractTemplate({
     templateName: opts.templateName,
     outputDir: opts.outputDir,

@@ -34,11 +34,13 @@ describe("template", () => {
         description: { en: "Test" },
       };
 
+      const pluginDir = join(tempDir, "test-plugin");
+
       await assert.rejects(
         async () => {
           await setupTemplate({
             templateName: "non-existent",
-            outputDir: tempDir,
+            outputDir: pluginDir,
             packageName: "test-plugin",
             answers,
           });
@@ -57,6 +59,8 @@ describe("template", () => {
 
       // isDefaultTemplateExistsがtrueを返す
       isDefaultTemplateExists.mockResolvedValue(true);
+
+      const pluginDir = join(tempDir, "my-plugin");
 
       // downloadAndExtractTemplateが成功し、ダミーファイルを作成
       downloadAndExtractTemplate.mockImplementation(
@@ -100,21 +104,21 @@ describe("template", () => {
 
       await setupTemplate({
         templateName: "javascript",
-        outputDir: tempDir,
+        outputDir: pluginDir,
         packageName: "my-plugin",
         answers,
       });
 
       // manifest.jsonが更新されていることを確認
       const manifest = JSON.parse(
-        await readFile(join(tempDir, "manifest.json"), "utf-8"),
+        await readFile(join(pluginDir, "manifest.json"), "utf-8"),
       );
       assert.strictEqual(manifest.name.en, "My Plugin");
       assert.strictEqual(manifest.description.en, "Test plugin");
 
       // package.jsonが更新されていることを確認
       const packageJson = JSON.parse(
-        await readFile(join(tempDir, "package.json"), "utf-8"),
+        await readFile(join(pluginDir, "package.json"), "utf-8"),
       );
       assert.strictEqual(packageJson.name, "my-plugin");
 
@@ -122,7 +126,7 @@ describe("template", () => {
       expect(isDefaultTemplateExists).toHaveBeenCalledWith("javascript");
       expect(downloadAndExtractTemplate).toHaveBeenCalledWith({
         templateName: "javascript",
-        outputDir: tempDir,
+        outputDir: pluginDir,
       });
     });
 
@@ -133,6 +137,8 @@ describe("template", () => {
       } = require("../template/github");
 
       isDefaultTemplateExists.mockResolvedValue(true);
+
+      const pluginDir = join(tempDir, "ts-plugin");
 
       downloadAndExtractTemplate.mockImplementation(
         async ({ outputDir }: { outputDir: string }) => {
@@ -173,18 +179,18 @@ describe("template", () => {
 
       await setupTemplate({
         templateName: "typescript",
-        outputDir: tempDir,
+        outputDir: pluginDir,
         packageName: "ts-plugin",
         answers,
       });
 
       const manifest = JSON.parse(
-        await readFile(join(tempDir, "manifest.json"), "utf-8"),
+        await readFile(join(pluginDir, "manifest.json"), "utf-8"),
       );
       assert.strictEqual(manifest.name.en, "TS Plugin");
 
       const packageJson = JSON.parse(
-        await readFile(join(tempDir, "package.json"), "utf-8"),
+        await readFile(join(pluginDir, "package.json"), "utf-8"),
       );
       assert.strictEqual(packageJson.name, "ts-plugin");
     });

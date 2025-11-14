@@ -1,5 +1,4 @@
 import chalk = require("chalk");
-import * as fs from "fs";
 import { rimraf } from "rimraf";
 import type { Lang } from "../utils/lang";
 import { getBoundMessage, getMessage } from "../utils/messages";
@@ -8,19 +7,6 @@ import { runPrompt } from "../utils/qa";
 import { logger } from "../../../utils/log";
 import path = require("path");
 import { installDependencies } from "../utils/deps";
-
-/**
- * Verify whether the output directory is valid
- * @param outputDirectory
- * @param lang
- */
-const verifyOutputDirectory = (outputDirectory: string, lang: Lang): void => {
-  if (fs.existsSync(outputDirectory)) {
-    throw new Error(
-      `${outputDirectory} ${getMessage(lang, "Error_alreadyExists")}`,
-    );
-  }
-};
 
 const getSuccessCreatedPluginMessage = (
   packageName: string,
@@ -67,7 +53,6 @@ export const initPlugin = (
   templateName: string,
 ) => {
   const m = getBoundMessage(lang);
-  verifyOutputDirectory(outputDir, lang);
   logger.info(`
 
   ${m("introduction")}
@@ -95,7 +80,13 @@ export const initPlugin = (
     .catch((error: Error) => {
       rimraf(outputDir, { glob: true })
         .then(() => {
-          logger.error(m("Error_cannotCreatePlugin") + error.message);
+          if (error.message === "output directory already exists") {
+            logger.error(
+              `${outputDir} ${getMessage(lang, "Error_alreadyExists")}`,
+            );
+          } else {
+            logger.error(m("Error_cannotCreatePlugin") + error.message);
+          }
         })
         .finally(() => {
           // eslint-disable-next-line n/no-process-exit

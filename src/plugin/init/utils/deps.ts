@@ -1,5 +1,3 @@
-"use strict";
-
 import { spawnSync } from "child_process";
 import type { Lang } from "./lang";
 import { getMessage } from "./messages";
@@ -15,6 +13,7 @@ export const installDependencies = (
   lang: Lang,
 ): void => {
   logger.info(getMessage(lang, "installDependencies"));
+  logger.debug(`outputDirectory: ${outputDirectory}`);
 
   const result = spawnSync("npm", ["install"], {
     cwd: outputDirectory,
@@ -23,6 +22,8 @@ export const installDependencies = (
     shell: true,
   });
   if (result.status !== 0) {
+    logger.debug("dependency installation failed");
     throw new Error("Installing dependencies were failed");
   }
+  logger.info(getMessage(lang, "dependenciesInstalled"));
 };

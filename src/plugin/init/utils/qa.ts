@@ -1,5 +1,3 @@
-"use strict";
-
 import type { Lang } from "./lang";
 import type { BoundMessage } from "./messages";
 import {
@@ -9,7 +7,6 @@ import {
   promptForOptionalDescription,
   promptForOptionalName,
   promptForSupportLang,
-  promptForSupportMobile,
 } from "../utils/qa/prompt";
 
 export type Answers = {
@@ -19,7 +16,7 @@ export type Answers = {
     zh?: string;
     es?: string;
   };
-  description: {
+  description?: {
     ja?: string;
     en: string;
     zh?: string;
@@ -27,12 +24,10 @@ export type Answers = {
   };
   homepage_url?: {
     ja?: string;
-    en?: string;
+    en: string;
     zh?: string;
     es?: string;
   };
-  supportMobile: boolean;
-  [key: string]: unknown;
 };
 
 export const getDefaultName = (outputDir: string) =>
@@ -69,9 +64,7 @@ export const runPrompt = async (
   const zhHomepage = supportZh ? await promptForHomepage(m, "Zh") : undefined;
   const esHomepage = supportEs ? await promptForHomepage(m, "Es") : undefined;
 
-  const supportMobile = await promptForSupportMobile(m);
-
-  const result = {
+  const result: Answers = {
     name: {
       en: enName,
       ja: jaName,
@@ -84,8 +77,7 @@ export const runPrompt = async (
       zh: zhDescription,
       es: esDescription,
     },
-    supportMobile: supportMobile,
-  } as Answers;
+  };
   if (enHomepage) {
     result.homepage_url = {
       en: enHomepage,

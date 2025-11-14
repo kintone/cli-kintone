@@ -15,6 +15,8 @@ import eslintJs from "@eslint/js";
 export const check = async (inputFilePath: string) => {
   let manifest: ManifestInterface;
   let driver: DriverInterface;
+
+  // TODO: Better file type detection
   switch (path.extname(inputFilePath)) {
     case ".json": {
       manifest = await ManifestFactory.loadJsonFile(inputFilePath);
@@ -62,6 +64,7 @@ export const check = async (inputFilePath: string) => {
     }
   }
 
+  // TODO: Support multiple output formats
   // switch (format) {
   //   case "plain":
   //     console.log("id:", info.id);

@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: "24"
           cache: "npm"
-          cache-dependency-path: "plugin-templates/*/package-lock.json"
+          cache-dependency-path: "plugin-templates/${{ matrix.template }}/package-lock.json"
 
       - name: Validate manifest.json
         run: |

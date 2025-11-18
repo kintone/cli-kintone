@@ -47,7 +47,7 @@ ${m("developerSite")}
  * @param lang
  * @param templateName
  */
-export const initPlugin = (
+export const initPlugin = async (
   outputDir: string,
   lang: Lang,
   templateName: string,
@@ -59,38 +59,36 @@ export const initPlugin = (
 
   `);
 
-  runPrompt(m, outputDir, lang)
-    .then(async (answers): Promise<string> => {
-      const packageName = path.basename(outputDir);
-      logger.info(m("settingUpTemplate"));
-      logger.debug(`templateName: ${templateName}`);
-      await setupTemplate({
-        outputDir,
-        templateName,
-        packageName,
-        answers,
-      });
-      logger.info(m("templateSetupCompleted"));
-      installDependencies(outputDir, lang);
-      return packageName;
-    })
-    .then((packageName) => {
-      logger.info(getSuccessCreatedPluginMessage(packageName, outputDir, lang));
-    })
-    .catch((error: Error) => {
-      rimraf(outputDir, { glob: true })
-        .then(() => {
-          if (error.message === "output directory already exists") {
-            logger.error(
-              `${outputDir} ${getMessage(lang, "Error_alreadyExists")}`,
-            );
-          } else {
-            logger.error(m("Error_cannotCreatePlugin") + error.message);
-          }
-        })
-        .finally(() => {
-          // eslint-disable-next-line n/no-process-exit
-          process.exit(1);
-        });
+  try {
+    const answers = await runPrompt(m, outputDir, lang);
+    const packageName = path.basename(outputDir);
+    logger.info(m("settingUpTemplate"));
+    logger.debug(`templateName: ${templateName}`);
+    await setupTemplate({
+      outputDir,
+      templateName,
+      packageName,
+      answers,
     });
+    logger.info(m("templateSetupCompleted"));
+    installDependencies(outputDir, lang);
+    logger.info(getSuccessCreatedPluginMessage(packageName, outputDir, lang));
+  } catch (error) {
+    try {
+      await rimraf(outputDir, { glob: true });
+      if (
+        error instanceof Error &&
+        error.message === "output directory already exists"
+      ) {
+        logger.error(`${outputDir} ${getMessage(lang, "Error_alreadyExists")}`);
+      } else if (error instanceof Error) {
+        logger.error(m("Error_cannotCreatePlugin") + error.message);
+      } else {
+        logger.error(m("Error_cannotCreatePlugin") + String(error));
+      }
+    } finally {
+      // eslint-disable-next-line n/no-process-exit
+      process.exit(1);
+    }
+  }
 };

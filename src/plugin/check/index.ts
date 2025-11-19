@@ -29,6 +29,7 @@ const eslintConfig: Linter.Config[] = [
       "local/no-cybozu-data": "error",
       "local/no-kintone-internal-selector": "error",
     },
+    linterOptions: { reportUnusedDisableDirectives: false },
   },
 ];
 
@@ -80,9 +81,11 @@ export const check = async (inputFilePath: string, format: OutputFormat) => {
     logger.debug(`Checking ${source}`);
     allResults.filesChecked++;
     const sourceFile = await driver.readFile(source);
-    const results = await eslint.lintText(sourceFile.toString(), {
-      filePath: source,
-    });
+    const results = normalizeResults(
+      await eslint.lintText(sourceFile.toString(), {
+        filePath: source,
+      }),
+    );
 
     const fileResult: FileResult = {
       filePath: source,
@@ -102,6 +105,49 @@ export const check = async (inputFilePath: string, format: OutputFormat) => {
   }
 
   console.log(formatResult(allResults, format));
+};
+
+const normalizeResults = (results: ESLint.LintResult[]) => {
+  const newResults: ESLint.LintResult[] = [];
+  for (const result of results) {
+    let errorCount = 0;
+    let warningCount = 0;
+    let fixableErrorCount = 0;
+    let fixableWarningCount = 0;
+    let fatalErrorCount = 0;
+
+    const messages: ESLint.LintResult["messages"] = [];
+    for (const m of result.messages) {
+      if (m.message.match(/Definition for rule '.+' was not found./)) {
+        continue;
+      }
+      messages.push(m);
+      if (m.severity === 1) {
+        warningCount++;
+        if (m.fix !== undefined) {
+          fixableWarningCount++;
+        }
+      } else if (m.severity === 2) {
+        errorCount++;
+        if (m.fix !== undefined) {
+          fixableErrorCount++;
+        }
+        if (m.fatal) {
+          fatalErrorCount++;
+        }
+      }
+    }
+    newResults.push({
+      ...result,
+      errorCount,
+      fatalErrorCount,
+      warningCount,
+      fixableErrorCount,
+      fixableWarningCount,
+      messages: messages,
+    });
+  }
+  return newResults;
 };
 
 type AllResult = {
@@ -132,7 +178,7 @@ const formatResult = (allResults: AllResult, format: OutputFormat) => {
             const severity = (
               message.severity === 1 ? "warning" : "error"
             ).padEnd(6);
-            output += `  ${line} ${severity}  ${message.message}\n`;
+            output += `  ${line} ${severity}  ${message.message}  (${message.ruleId})\n`;
           }
         }
       }

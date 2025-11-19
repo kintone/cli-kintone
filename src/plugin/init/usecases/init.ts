@@ -1,11 +1,11 @@
-import chalk = require("chalk");
+import chalk from "chalk";
 import type { Lang } from "../utils/lang";
 import { getBoundMessage, getMessage } from "../utils/messages";
 import { setupTemplate } from "../utils/template";
 import { runPrompt } from "../utils/qa";
 import { logger } from "../../../utils/log";
-import path = require("path");
-import fs = require("fs");
+import path from "path";
+import fs from "fs";
 import { installDependencies } from "../utils/deps";
 
 const getSuccessCreatedPluginMessage = (

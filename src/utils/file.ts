@@ -57,3 +57,16 @@ export const extractFileFormat: (filepath: string) => string = (filepath) => {
   // TODO this cannot detect file format without extensions
   return path.extname(filepath).split(".").pop() || "";
 };
+
+/**
+ * Check if the given path is a directory.
+ * Wrapping fs.stat() to reduce error handling code.
+ * @param dirPath
+ */
+export const isDirectory = async (dirPath: string): Promise<boolean> => {
+  try {
+    return (await fs.promises.stat(dirPath)).isDirectory();
+  } catch (_) {
+    return false;
+  }
+};

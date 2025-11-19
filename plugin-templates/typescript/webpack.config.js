@@ -7,9 +7,13 @@ const isProduction = process.env.NODE_ENV === "production";
 module.exports = {
   mode: isProduction ? "production" : "development",
   devtool: isProduction ? false : "inline-cheap-module-source-map",
-  entry: "%%placeholder_webpack_entry%%",
+  entry: {
+    config: "./src/config.ts",
+    desktop: "./src/desktop.ts",
+    mobile: "./src/mobile.ts",
+  },
   output: {
-    path: path.resolve(__dirname, "plugin", "js"),
+    path: path.resolve(__dirname, "lib"),
     filename: "[name].js",
   },
   resolve: {
@@ -40,7 +44,7 @@ module.exports = {
   },
   plugins: [
     new KintonePlugin({
-      manifestJSONPath: "./plugin/manifest.json",
+      manifestJSONPath: "./manifest.json",
       privateKeyPath: "./private.ppk",
       pluginZipPath: "./dist/plugin.zip",
     }),

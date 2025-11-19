@@ -19,7 +19,8 @@ const builder = (args: yargs.Argv) =>
       requiresArg: true,
     })
     .option("template", {
-      describe: "A template for a generated plug-in",
+      describe:
+        "A template for a generated plug-in. See https://github.com/kintone/cli-kintone/tree/main/plugin-templates for available templates",
       type: "string",
       default: "javascript",
       requiresArg: true,

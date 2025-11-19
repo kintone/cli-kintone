@@ -7,7 +7,8 @@ import type { ManifestJsonObjectForUpdate } from "./template/manifest";
 import { updateManifestsForAnswers } from "./template/manifest";
 import { updatePackageJson } from "./template/pacakge-json";
 import { logger } from "../../../utils/log";
-import { mkdir, stat } from "fs/promises";
+import { mkdir } from "fs/promises";
+import { isDirectory } from "../../../utils/file";
 
 // NOTE: this object has only fields for editting
 export type ManifestJsonObjectForTemplate = {
@@ -40,15 +41,6 @@ export type ManifestJsonObjectForTemplate = {
   };
 };
 
-const checkDirectoryExists = async (dirPath: string): Promise<boolean> => {
-  try {
-    await stat(dirPath);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
 export const setupTemplate = async (opts: {
   packageName: string;
   templateName: string;
@@ -64,7 +56,7 @@ export const setupTemplate = async (opts: {
 
   // Verify output directory does not exist
   logger.debug(`verifying output directory: ${opts.outputDir}`);
-  const directoryExists = await checkDirectoryExists(opts.outputDir);
+  const directoryExists = await isDirectory(opts.outputDir);
   if (directoryExists) {
     throw new Error("output directory already exists");
   }

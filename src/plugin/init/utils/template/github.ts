@@ -11,6 +11,26 @@ const DEFAULT_TEMPLATE_BASE_PATH = "plugin-templates" as const;
 const DEFAULT_TEMPLATE_REPO =
   `${DEFAULT_TEMPLATE_REPO_USER}/${DEFAULT_TEMPLATE_REPO_NAME}` as const;
 
+/**
+ * Common function to call GitHub API
+ * Automatically adds authentication header if GITHUB_TOKEN environment variable is set
+ */
+const fetchGitHubAPI = async (url: string, options?: RequestInit) => {
+  // eslint-disable-next-line n/no-unsupported-features/node-builtins
+  const headers = new Headers(options?.headers);
+
+  // Add authentication header if GITHUB_TOKEN is set
+  if (process.env.GITHUB_TOKEN) {
+    headers.set("Authorization", `Bearer ${process.env.GITHUB_TOKEN}`);
+  }
+
+  // eslint-disable-next-line n/no-unsupported-features/node-builtins
+  return fetch(url, {
+    ...options,
+    headers,
+  });
+};
+
 export const isDefaultTemplateExists = async (
   name: string,
 ): Promise<boolean> => {
@@ -21,12 +41,8 @@ export const isDefaultTemplateExists = async (
 
     logger.debug(`checking template existence: ${name}`);
     logger.debug(`fetching HEAD: ${url}`);
-    // eslint-disable-next-line n/no-unsupported-features/node-builtins
-    const res = await fetch(url, {
+    const res = await fetchGitHubAPI(url, {
       method: "HEAD",
-      ...(process.env.GITHUB_TOKEN && {
-        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-      }),
     });
     const exists = res.status === 200;
     logger.debug(`template ${name} ${exists ? "exists" : "does not exist"}`);
@@ -41,11 +57,10 @@ export const downloadAndExtractTemplate = async (opts: {
   templateName: string;
   outputDir: string;
 }) => {
-  const url = `https://codeload.github.com/${DEFAULT_TEMPLATE_REPO}/tar.gz/${DEFAULT_TEMPLATE_BRANCH}`;
+  const url = `https://api.github.com/repos/${DEFAULT_TEMPLATE_REPO}/tarball/${DEFAULT_TEMPLATE_BRANCH}`;
 
   logger.debug(`downloading template tarball: ${url}`);
-  // eslint-disable-next-line n/no-unsupported-features/node-builtins
-  const res = await fetch(url);
+  const res = await fetchGitHubAPI(url);
   logger.debug("tarball download started");
 
   logger.debug(`extracting template: ${opts.outputDir}`);

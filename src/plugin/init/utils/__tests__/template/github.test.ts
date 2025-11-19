@@ -62,12 +62,11 @@ describe("template/github", () => {
 
       await isDefaultTemplateExists("javascript");
 
-      expect(global.fetch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          Authorization: "Bearer test-token",
-        }),
-      );
+      const calls = (global.fetch as jest.Mock).mock.calls;
+      const lastCall = calls[calls.length - 1];
+      const headers = lastCall[1].headers as Headers;
+
+      expect(headers.get("Authorization")).toBe("Bearer test-token");
 
       delete process.env.GITHUB_TOKEN;
     });

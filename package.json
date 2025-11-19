@@ -1,6 +1,6 @@
 {
   "name": "@kintone/cli",
-  "version": "1.15.0",
+  "version": "1.14.3",
   "publishConfig": {
     "access": "public"
   },

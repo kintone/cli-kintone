@@ -1,9 +1,8 @@
 /* eslint-disable n/no-unsupported-features/node-builtins */
 import assert from "assert";
-import { mkdtemp, access } from "fs/promises";
+import { mkdtemp, access, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
-import { rimraf } from "rimraf";
 import {
   isDefaultTemplateExists,
   downloadAndExtractTemplate,
@@ -86,7 +85,7 @@ describe("template/github", () => {
 
     afterEach(async () => {
       // 一時ディレクトリを削除
-      await rimraf(tempDir);
+      await rm(tempDir, { recursive: true, force: true });
       jest.restoreAllMocks();
     });
 

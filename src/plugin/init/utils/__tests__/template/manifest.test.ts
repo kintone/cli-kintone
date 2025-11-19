@@ -1,8 +1,7 @@
 import assert from "assert";
-import { mkdtemp, writeFile, readFile } from "fs/promises";
+import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
-import { rimraf } from "rimraf";
 import { updateManifestsForAnswers } from "../../template/manifest";
 import type { ManifestJsonObjectForUpdate } from "../../template/manifest";
 
@@ -35,7 +34,7 @@ describe("template/manifest", () => {
 
     afterEach(async () => {
       // クリーンアップ
-      await rimraf(tempDir);
+      await rm(tempDir, { recursive: true, force: true });
     });
 
     it("name, description, homepage_urlを正しく更新する", async () => {

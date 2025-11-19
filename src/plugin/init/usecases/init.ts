@@ -1,11 +1,11 @@
 import chalk = require("chalk");
-import { rimraf } from "rimraf";
 import type { Lang } from "../utils/lang";
 import { getBoundMessage, getMessage } from "../utils/messages";
 import { setupTemplate } from "../utils/template";
 import { runPrompt } from "../utils/qa";
 import { logger } from "../../../utils/log";
 import path = require("path");
+import fs = require("fs");
 import { installDependencies } from "../utils/deps";
 
 const getSuccessCreatedPluginMessage = (
@@ -75,7 +75,7 @@ export const initPlugin = async (
     logger.info(getSuccessCreatedPluginMessage(packageName, outputDir, lang));
   } catch (error) {
     try {
-      await rimraf(outputDir, { glob: true });
+      await fs.promises.rm(outputDir, { recursive: true, force: true });
       if (
         error instanceof Error &&
         error.message === "output directory already exists"

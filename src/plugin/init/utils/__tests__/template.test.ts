@@ -1,8 +1,7 @@
 import assert from "assert";
-import { mkdtemp, writeFile, readFile } from "fs/promises";
+import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
-import { rimraf } from "rimraf";
 import { setupTemplate } from "../template";
 import type { ManifestJsonObjectForUpdate } from "../template/manifest";
 
@@ -21,7 +20,7 @@ describe("template", () => {
 
     afterEach(async () => {
       // クリーンアップ
-      await rimraf(tempDir);
+      await rm(tempDir, { recursive: true, force: true });
     });
 
     it("存在しないテンプレート名でエラーをスローする", async () => {

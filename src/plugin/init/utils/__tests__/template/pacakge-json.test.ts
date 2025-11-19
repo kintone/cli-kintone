@@ -1,8 +1,7 @@
 import assert from "assert";
-import { mkdtemp, writeFile, readFile } from "fs/promises";
+import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
-import { rimraf } from "rimraf";
 import { updatePackageJson } from "../../template/pacakge-json";
 
 describe("template/package-json", () => {
@@ -38,7 +37,7 @@ describe("template/package-json", () => {
 
     afterEach(async () => {
       // クリーンアップ
-      await rimraf(tempDir);
+      await rm(tempDir, { recursive: true, force: true });
     });
 
     it("package.jsonのnameフィールドを更新する", async () => {

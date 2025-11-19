@@ -1,5 +1,6 @@
 import { logger } from "../../../../utils/log";
 import type { TemplateSource } from "./downloader";
+import { fetchGitHubAPI } from "../../../core/utils/fetcher";
 
 const DEFAULT_TEMPLATE_REPO_USER = "kintone" as const;
 const DEFAULT_TEMPLATE_REPO_NAME = "cli-kintone" as const;
@@ -8,26 +9,6 @@ const DEFAULT_TEMPLATE_BASE_PATH = "plugin-templates" as const;
 
 const DEFAULT_TEMPLATE_REPO =
   `${DEFAULT_TEMPLATE_REPO_USER}/${DEFAULT_TEMPLATE_REPO_NAME}` as const;
-
-/**
- * Common function to call GitHub API
- * Automatically adds authentication header if GITHUB_TOKEN environment variable is set
- */
-export const fetchGitHubAPI = async (url: string, options?: RequestInit) => {
-  // eslint-disable-next-line n/no-unsupported-features/node-builtins
-  const headers = new Headers(options?.headers);
-
-  // Add authentication header if GITHUB_TOKEN is set
-  if (process.env.GITHUB_TOKEN) {
-    headers.set("Authorization", `Bearer ${process.env.GITHUB_TOKEN}`);
-  }
-
-  // eslint-disable-next-line n/no-unsupported-features/node-builtins
-  return fetch(url, {
-    ...options,
-    headers,
-  });
-};
 
 /**
  * Resolve template name from GitHub's default template repository

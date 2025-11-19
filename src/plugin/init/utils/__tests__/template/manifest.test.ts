@@ -3,7 +3,7 @@ import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
 import { updateManifestsForAnswers } from "../../template/manifest";
-import type { ManifestJsonObjectForUpdate } from "../../template/manifest";
+import type { ManifestPatch } from "../../template/manifest";
 
 describe("template/manifest", () => {
   describe("updateManifestsForAnswers", () => {
@@ -38,7 +38,7 @@ describe("template/manifest", () => {
     });
 
     it("name, description, homepage_urlを正しく更新する", async () => {
-      const answers: ManifestJsonObjectForUpdate = {
+      const answers: ManifestPatch = {
         name: {
           en: "New Plugin Name",
           ja: "新しいプラグイン名",
@@ -68,7 +68,7 @@ describe("template/manifest", () => {
     });
 
     it("既存のmanifest.jsonフィールドを保持する", async () => {
-      const answers: ManifestJsonObjectForUpdate = {
+      const answers: ManifestPatch = {
         name: {
           en: "New Name",
         },
@@ -93,7 +93,7 @@ describe("template/manifest", () => {
     });
 
     it("多言語フィールド(ja, zh, es, etc)を正しく設定する", async () => {
-      const answers: ManifestJsonObjectForUpdate = {
+      const answers: ManifestPatch = {
         name: {
           en: "Plugin",
           ja: "プラグイン",
@@ -116,7 +116,7 @@ describe("template/manifest", () => {
     });
 
     it("フォーマットされたJSON(インデント2)で書き込む", async () => {
-      const answers: ManifestJsonObjectForUpdate = {
+      const answers: ManifestPatch = {
         name: {
           en: "Test",
         },
@@ -142,7 +142,7 @@ describe("template/manifest", () => {
       // 不正なJSONを書き込む
       await writeFile(manifestPath, "{ invalid json }");
 
-      const answers: ManifestJsonObjectForUpdate = {
+      const answers: ManifestPatch = {
         name: {
           en: "Test",
         },
@@ -159,7 +159,7 @@ describe("template/manifest", () => {
     it("存在しないファイルパスでエラーをスローする", async () => {
       const nonExistentPath = join(tempDir, "non-existent.json");
 
-      const answers: ManifestJsonObjectForUpdate = {
+      const answers: ManifestPatch = {
         name: {
           en: "Test",
         },

@@ -2,7 +2,7 @@ import { LocalFSDriver } from "../../../core/driver";
 import { logger } from "../../../../utils/log";
 
 // NOTE: this object has only fields for update
-export type ManifestJsonObjectForUpdate = {
+export type ManifestPatch = {
   name: {
     ja?: string;
     en: string;
@@ -34,7 +34,7 @@ export type ManifestJsonObjectForUpdate = {
 
 export const updateManifestsForAnswers = async (opts: {
   manifestPath: string;
-  answers: ManifestJsonObjectForUpdate;
+  answers: ManifestPatch;
 }) => {
   logger.debug(`reading manifest: ${opts.manifestPath}`);
   const driver = new LocalFSDriver();

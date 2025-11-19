@@ -3,49 +3,21 @@ import {
   downloadAndExtractTemplate,
   isDefaultTemplateExists,
 } from "./template/github";
-import type { ManifestJsonObjectForUpdate } from "./template/manifest";
+import type { ManifestPatch } from "./template/manifest";
 import { updateManifestsForAnswers } from "./template/manifest";
-import { updatePackageJson } from "./template/pacakge-json";
+import {
+  updatePackageJson,
+  type PackageJsonPatch,
+} from "./template/pacakge-json";
 import { logger } from "../../../utils/log";
 import { mkdir } from "fs/promises";
 import { isDirectory } from "../../../utils/file";
 
-// NOTE: this object has only fields for editting
-export type ManifestJsonObjectForTemplate = {
-  name: {
-    ja?: string;
-    en: string;
-    zh?: string;
-    "zh-TW"?: string;
-    es?: string;
-    "pt-BR"?: string;
-    th?: string;
-  };
-  description?: {
-    ja?: string;
-    en: string;
-    zh?: string;
-    "zh-TW"?: string;
-    es?: string;
-    "pt-BR"?: string;
-    th?: string;
-  };
-  homepage_url?: {
-    ja: string;
-    en: string;
-    zh: string;
-    "zh-TW"?: string;
-    es?: string;
-    "pt-BR"?: string;
-    th?: string;
-  };
-};
-
 export const setupTemplate = async (opts: {
-  packageName: string;
   templateName: string;
   outputDir: string;
-  answers: ManifestJsonObjectForUpdate;
+  manifestPatch: ManifestPatch;
+  packageJsonPatch: PackageJsonPatch;
 }) => {
   // Verify template exists
   logger.debug(`verifying template exists: ${opts.templateName}`);
@@ -75,14 +47,14 @@ export const setupTemplate = async (opts: {
   logger.debug("updating manifest.json");
   await updateManifestsForAnswers({
     manifestPath: path.join(opts.outputDir, "manifest.json"),
-    answers: opts.answers,
+    answers: opts.manifestPatch,
   });
   logger.debug("manifest.json updated");
 
-  logger.debug(`updating package.json: ${opts.packageName}`);
+  logger.debug(`updating package.json: ${opts.packageJsonPatch.name}`);
   await updatePackageJson({
     packageJsonPath: path.join(opts.outputDir, "package.json"),
-    packageName: opts.packageName,
+    patch: opts.packageJsonPatch,
   });
   logger.debug("package.json updated");
 };

@@ -43,7 +43,7 @@ describe("template/package-json", () => {
     it("package.jsonのnameフィールドを更新する", async () => {
       await updatePackageJson({
         packageJsonPath,
-        packageName: "my-awesome-plugin",
+        patch: { name: "my-awesome-plugin" },
       });
 
       const updatedPackageJson = JSON.parse(
@@ -56,7 +56,7 @@ describe("template/package-json", () => {
     it("既存のpackage.jsonフィールドを保持する", async () => {
       await updatePackageJson({
         packageJsonPath,
-        packageName: "new-name",
+        patch: { name: "new-name" },
       });
 
       const updatedPackageJson = JSON.parse(
@@ -80,7 +80,7 @@ describe("template/package-json", () => {
     it("フォーマットされたJSON(インデント2)で書き込む", async () => {
       await updatePackageJson({
         packageJsonPath,
-        packageName: "test-plugin",
+        patch: { name: "test-plugin" },
       });
 
       const fileContent = await readFile(packageJsonPath, "utf-8");
@@ -101,7 +101,7 @@ describe("template/package-json", () => {
       await assert.rejects(async () => {
         await updatePackageJson({
           packageJsonPath,
-          packageName: "test-plugin",
+          patch: { name: "test-plugin" },
         });
       });
     });
@@ -112,7 +112,7 @@ describe("template/package-json", () => {
       await assert.rejects(async () => {
         await updatePackageJson({
           packageJsonPath: nonExistentPath,
-          packageName: "test-plugin",
+          patch: { name: "test-plugin" },
         });
       });
     });

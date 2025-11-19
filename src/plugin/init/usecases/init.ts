@@ -67,8 +67,14 @@ export const initPlugin = async (
     await setupTemplate({
       outputDir,
       templateName,
-      packageName,
-      answers,
+      manifestPatch: {
+        name: answers.name,
+        description: answers.description,
+        homepage_url: answers.homepage_url,
+      },
+      packageJsonPatch: {
+        name: packageName,
+      },
     });
     logger.info(m("templateSetupCompleted"));
     installDependencies(outputDir, lang);

@@ -3,7 +3,6 @@ import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
 import { setupTemplate } from "../template";
-import type { ManifestJsonObjectForUpdate } from "../template/manifest";
 
 // GitHub関連の関数をモック
 jest.mock("../template/github");
@@ -28,11 +27,6 @@ describe("template", () => {
       const { isDefaultTemplateExists } = require("../template/github");
       isDefaultTemplateExists.mockResolvedValue(false);
 
-      const answers: ManifestJsonObjectForUpdate = {
-        name: { en: "Test" },
-        description: { en: "Test" },
-      };
-
       const pluginDir = join(tempDir, "test-plugin");
 
       await assert.rejects(
@@ -40,8 +34,11 @@ describe("template", () => {
           await setupTemplate({
             templateName: "non-existent",
             outputDir: pluginDir,
-            packageName: "test-plugin",
-            answers,
+            manifestPatch: {
+              name: { en: "Test" },
+              description: { en: "Test" },
+            },
+            packageJsonPatch: { name: "test-plugin" },
           });
         },
         {
@@ -96,16 +93,14 @@ describe("template", () => {
         },
       );
 
-      const answers: ManifestJsonObjectForUpdate = {
-        name: { en: "My Plugin" },
-        description: { en: "Test plugin" },
-      };
-
       await setupTemplate({
         templateName: "javascript",
         outputDir: pluginDir,
-        packageName: "my-plugin",
-        answers,
+        manifestPatch: {
+          name: { en: "My Plugin" },
+          description: { en: "Test plugin" },
+        },
+        packageJsonPatch: { name: "my-plugin" },
       });
 
       // manifest.jsonが更新されていることを確認
@@ -171,16 +166,14 @@ describe("template", () => {
         },
       );
 
-      const answers: ManifestJsonObjectForUpdate = {
-        name: { en: "TS Plugin" },
-        description: { en: "TypeScript plugin" },
-      };
-
       await setupTemplate({
         templateName: "typescript",
         outputDir: pluginDir,
-        packageName: "ts-plugin",
-        answers,
+        manifestPatch: {
+          name: { en: "TS Plugin" },
+          description: { en: "TypeScript plugin" },
+        },
+        packageJsonPatch: { name: "ts-plugin" },
       });
 
       const manifest = JSON.parse(

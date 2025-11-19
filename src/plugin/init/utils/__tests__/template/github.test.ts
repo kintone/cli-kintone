@@ -1,21 +1,17 @@
 /* eslint-disable n/no-unsupported-features/node-builtins */
 import assert from "assert";
-import { mkdtemp, access, rm } from "fs/promises";
-import { tmpdir } from "os";
-import { join } from "path";
 import {
-  isDefaultTemplateExists,
-  downloadAndExtractTemplate,
+  isGitHubTemplateExists,
+  resolveGitHubTemplateSource,
 } from "../../template/github";
 import {
   mockFetchSuccess,
   mockFetchNotFound,
   mockFetchError,
-  mockFetchWithTarball,
 } from "../helpers/mockFetch";
 
 describe("template/github", () => {
-  describe("isDefaultTemplateExists", () => {
+  describe("isGitHubTemplateExists", () => {
     beforeEach(() => {
       // fetch APIをモック
       global.fetch = jest.fn();
@@ -28,7 +24,7 @@ describe("template/github", () => {
     it("存在するテンプレート名でtrueを返す", async () => {
       mockFetchSuccess();
 
-      const result = await isDefaultTemplateExists("javascript");
+      const result = await isGitHubTemplateExists("javascript");
 
       assert.strictEqual(result, true);
       assert(global.fetch);
@@ -43,7 +39,7 @@ describe("template/github", () => {
     it("存在しないテンプレート名でfalseを返す", async () => {
       mockFetchNotFound();
 
-      const result = await isDefaultTemplateExists("non-existent");
+      const result = await isGitHubTemplateExists("non-existent");
 
       assert.strictEqual(result, false);
     });
@@ -51,7 +47,7 @@ describe("template/github", () => {
     it("GitHub APIエラー時にfalseを返す", async () => {
       mockFetchError();
 
-      const result = await isDefaultTemplateExists("javascript");
+      const result = await isGitHubTemplateExists("javascript");
 
       assert.strictEqual(result, false);
     });
@@ -60,7 +56,7 @@ describe("template/github", () => {
       process.env.GITHUB_TOKEN = "test-token";
       mockFetchSuccess();
 
-      await isDefaultTemplateExists("javascript");
+      await isGitHubTemplateExists("javascript");
 
       const calls = (global.fetch as jest.Mock).mock.calls;
       const lastCall = calls[calls.length - 1];
@@ -72,106 +68,67 @@ describe("template/github", () => {
     });
   });
 
-  describe("downloadAndExtractTemplate", () => {
-    let tempDir: string;
-
-    beforeEach(async () => {
-      // 一時ディレクトリを作成
-      tempDir = await mkdtemp(join(tmpdir(), "plugin-init-test-"));
-      // fetch APIをモック
+  describe("resolveGitHubTemplateSource", () => {
+    beforeEach(() => {
       global.fetch = jest.fn();
     });
 
-    afterEach(async () => {
-      // 一時ディレクトリを削除
-      await rm(tempDir, { recursive: true, force: true });
+    afterEach(() => {
       jest.restoreAllMocks();
     });
 
-    it("JavaScriptテンプレートを正しくダウンロード・展開する", async () => {
-      await mockFetchWithTarball("javascript");
+    it("存在するJavaScriptテンプレート名から正しいTemplateSourceを生成する", async () => {
+      mockFetchSuccess();
 
-      await downloadAndExtractTemplate({
-        templateName: "javascript",
-        outputDir: tempDir,
-      });
+      const source = await resolveGitHubTemplateSource("javascript");
 
-      // 期待されるファイルが展開されていることを確認
-      const manifestExists = await access(join(tempDir, "manifest.json"))
-        .then(() => true)
-        .catch(() => false);
-      const packageJsonExists = await access(join(tempDir, "package.json"))
-        .then(() => true)
-        .catch(() => false);
-      const cssExists = await access(join(tempDir, "css"))
-        .then(() => true)
-        .catch(() => false);
-      const jsExists = await access(join(tempDir, "js"))
-        .then(() => true)
-        .catch(() => false);
-      const htmlExists = await access(join(tempDir, "html"))
-        .then(() => true)
-        .catch(() => false);
-      const imageExists = await access(join(tempDir, "image"))
-        .then(() => true)
-        .catch(() => false);
-
-      assert(manifestExists, "manifest.json should exist");
-      assert(packageJsonExists, "package.json should exist");
-      assert(cssExists, "css directory should exist");
-      assert(jsExists, "js directory should exist");
-      assert(htmlExists, "html directory should exist");
-      assert(imageExists, "image directory should exist");
+      assert.strictEqual(
+        source.tarballUrl,
+        "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
+      );
+      assert.strictEqual(
+        source.pathInTar,
+        "cli-kintone-main/plugin-templates/javascript",
+      );
     });
 
-    it("TypeScriptテンプレートを正しくダウンロード・展開する", async () => {
-      await mockFetchWithTarball("typescript");
+    it("存在するTypeScriptテンプレート名から正しいTemplateSourceを生成する", async () => {
+      mockFetchSuccess();
 
-      await downloadAndExtractTemplate({
-        templateName: "typescript",
-        outputDir: tempDir,
-      });
+      const source = await resolveGitHubTemplateSource("typescript");
 
-      // 期待されるファイルが展開されていることを確認
-      const manifestExists = await access(join(tempDir, "manifest.json"))
-        .then(() => true)
-        .catch(() => false);
-      const packageJsonExists = await access(join(tempDir, "package.json"))
-        .then(() => true)
-        .catch(() => false);
-      const cssExists = await access(join(tempDir, "css"))
-        .then(() => true)
-        .catch(() => false);
-      const srcExists = await access(join(tempDir, "src"))
-        .then(() => true)
-        .catch(() => false);
-      const htmlExists = await access(join(tempDir, "html"))
-        .then(() => true)
-        .catch(() => false);
-      const imageExists = await access(join(tempDir, "image"))
-        .then(() => true)
-        .catch(() => false);
-
-      assert(manifestExists, "manifest.json should exist");
-      assert(packageJsonExists, "package.json should exist");
-      assert(cssExists, "css directory should exist");
-      assert(srcExists, "src directory should exist");
-      assert(htmlExists, "html directory should exist");
-      assert(imageExists, "image directory should exist");
+      assert.strictEqual(
+        source.tarballUrl,
+        "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
+      );
+      assert.strictEqual(
+        source.pathInTar,
+        "cli-kintone-main/plugin-templates/typescript",
+      );
     });
 
-    it("ダウンロード失敗時にエラーをスローする", async () => {
+    it("存在しないテンプレート名でエラーをスローする", async () => {
+      mockFetchNotFound();
+
+      await assert.rejects(
+        async () => {
+          await resolveGitHubTemplateSource("non-existent");
+        },
+        {
+          message: 'GitHub template "non-existent" not found',
+        },
+      );
+    });
+
+    it("GitHub APIエラー時にエラーをスローする", async () => {
       mockFetchError();
 
       await assert.rejects(
         async () => {
-          await downloadAndExtractTemplate({
-            templateName: "javascript",
-            outputDir: tempDir,
-          });
+          await resolveGitHubTemplateSource("javascript");
         },
         {
-          message: "Network error",
+          message: 'GitHub template "javascript" not found',
         },
       );
     });

@@ -6,6 +6,7 @@ import { setupTemplate } from "../template";
 
 // GitHub関連の関数をモック
 jest.mock("../template/github");
+jest.mock("../template/downloader");
 
 describe("template", () => {
   describe("setupTemplate", () => {
@@ -23,9 +24,11 @@ describe("template", () => {
     });
 
     it("存在しないテンプレート名でエラーをスローする", async () => {
-      // isDefaultTemplateExistsがfalseを返すようモック
-      const { isDefaultTemplateExists } = require("../template/github");
-      isDefaultTemplateExists.mockResolvedValue(false);
+      // resolveGitHubTemplateSourceがエラーをスローするようモック
+      const { resolveGitHubTemplateSource } = require("../template/github");
+      resolveGitHubTemplateSource.mockRejectedValue(
+        new Error('GitHub template "non-existent" not found'),
+      );
 
       const pluginDir = join(tempDir, "test-plugin");
 
@@ -42,24 +45,26 @@ describe("template", () => {
           });
         },
         {
-          message: "template not found",
+          message: 'GitHub template "non-existent" not found',
         },
       );
     });
 
     it("JavaScriptテンプレートで完全なセットアップが完了する", async () => {
-      const {
-        isDefaultTemplateExists,
-        downloadAndExtractTemplate,
-      } = require("../template/github");
+      const { resolveGitHubTemplateSource } = require("../template/github");
+      const { downloadAndExtractFromUrl } = require("../template/downloader");
 
-      // isDefaultTemplateExistsがtrueを返す
-      isDefaultTemplateExists.mockResolvedValue(true);
+      // resolveGitHubTemplateSourceが正しいソースを返す
+      resolveGitHubTemplateSource.mockResolvedValue({
+        tarballUrl:
+          "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
+        pathInTar: "cli-kintone-main/plugin-templates/javascript",
+      });
 
       const pluginDir = join(tempDir, "my-plugin");
 
-      // downloadAndExtractTemplateが成功し、ダミーファイルを作成
-      downloadAndExtractTemplate.mockImplementation(
+      // downloadAndExtractFromUrlが成功し、ダミーファイルを作成
+      downloadAndExtractFromUrl.mockImplementation(
         async ({ outputDir }: { outputDir: string }) => {
           // ダミーのmanifest.jsonを作成
           await writeFile(
@@ -117,24 +122,30 @@ describe("template", () => {
       assert.strictEqual(packageJson.name, "my-plugin");
 
       // 呼び出し順序を確認
-      expect(isDefaultTemplateExists).toHaveBeenCalledWith("javascript");
-      expect(downloadAndExtractTemplate).toHaveBeenCalledWith({
-        templateName: "javascript",
+      expect(resolveGitHubTemplateSource).toHaveBeenCalledWith("javascript");
+      expect(downloadAndExtractFromUrl).toHaveBeenCalledWith({
+        source: {
+          tarballUrl:
+            "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
+          pathInTar: "cli-kintone-main/plugin-templates/javascript",
+        },
         outputDir: pluginDir,
       });
     });
 
     it("TypeScriptテンプレートで完全なセットアップが完了する", async () => {
-      const {
-        isDefaultTemplateExists,
-        downloadAndExtractTemplate,
-      } = require("../template/github");
+      const { resolveGitHubTemplateSource } = require("../template/github");
+      const { downloadAndExtractFromUrl } = require("../template/downloader");
 
-      isDefaultTemplateExists.mockResolvedValue(true);
+      resolveGitHubTemplateSource.mockResolvedValue({
+        tarballUrl:
+          "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
+        pathInTar: "cli-kintone-main/plugin-templates/typescript",
+      });
 
       const pluginDir = join(tempDir, "ts-plugin");
 
-      downloadAndExtractTemplate.mockImplementation(
+      downloadAndExtractFromUrl.mockImplementation(
         async ({ outputDir }: { outputDir: string }) => {
           await writeFile(
             join(outputDir, "manifest.json"),

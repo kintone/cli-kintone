@@ -5,21 +5,21 @@
   "type": "APP",
   "desktop": {
     "js": [
-      "js/desktop.js"
+      "lib/desktop.js"
     ],
     "css": [
-      "css/desktop.css"
+      "plugin/css/desktop.css"
     ]
   },
-  "icon": "image/icon.png",
+  "icon": "plugin/image/icon.png",
   "config": {
-    "html": "html/config.html",
+    "html": "plugin/html/config.html",
     "js": [
-      "js/config.js"
+      "lib/config.js"
     ],
     "css": [
-      "css/51-modern-default.css",
-      "css/config.css"
+      "plugin/css/51-modern-default.css",
+      "plugin/css/config.css"
     ],
     "required_params": [
       "message"
@@ -33,10 +33,10 @@
   },
   "mobile": {
     "js": [
-      "js/mobile.js"
+      "lib/mobile.js"
     ],
     "css": [
-      "css/mobile.css"
+      "plugin/css/mobile.css"
     ]
   }
 }

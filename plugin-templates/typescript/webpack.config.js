@@ -13,7 +13,7 @@ module.exports = {
     mobile: "./src/mobile.ts",
   },
   output: {
-    path: path.resolve(__dirname, "js"),
+    path: path.resolve(__dirname, "lib"),
     filename: "[name].js",
   },
   resolve: {

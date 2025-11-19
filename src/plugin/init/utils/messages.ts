@@ -110,11 +110,11 @@ const messages = {
   },
   installDependencies: {
     en: "Starting to install dependencies...",
-    ja: "依存ライブラリのインストールを開始します...",
+    ja: "依存パッケージのインストールを開始します...",
   },
   dependenciesInstalled: {
     en: "Dependencies installed successfully",
-    ja: "依存ライブラリのインストールが完了しました",
+    ja: "依存パッケージのインストールが完了しました",
   },
   introduction: {
     en: `

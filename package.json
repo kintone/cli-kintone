@@ -72,7 +72,7 @@
     "@babel/core": "^7.28.5",
     "@babel/preset-env": "^7.28.5",
     "@babel/preset-typescript": "^7.28.5",
-    "@cucumber/cucumber": "^11.3.0",
+    "@cucumber/cucumber": "^12.2.0",
     "@cybozu/eslint-config": "^24.3.0",
     "@cybozu/license-manager": "^1.4.0",
     "@octokit/rest": "^22.0.1",

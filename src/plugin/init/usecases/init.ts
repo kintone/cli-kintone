@@ -81,7 +81,7 @@ export const initPlugin = async (
     logger.info(getSuccessCreatedPluginMessage(packageName, outputDir, lang));
   } catch (error) {
     try {
-      await fs.promises.rm(outputDir, { recursive: true, force: true });
+      // await fs.promises.rm(outputDir, { recursive: true, force: true });
       if (
         error instanceof Error &&
         error.message === "output directory already exists"

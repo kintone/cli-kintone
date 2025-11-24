@@ -3,6 +3,7 @@ import { pipeline } from "stream/promises";
 import { x } from "tar";
 import { logger } from "../../../../utils/log";
 import { fetchGitHubAPI } from "../../../core/utils/fetcher";
+import { Writable, Transform } from "node:stream";
 
 /**
  * Template source information
@@ -26,13 +27,22 @@ export const downloadAndExtractFromUrl = async (opts: {
   const res = await fetchGitHubAPI(opts.source.tarballUrl);
   logger.debug("tarball download started");
 
+  if (!res.ok) {
+    throw new Error(
+      `Failed to download template tarball: ${res.status} ${res.statusText}`,
+    );
+  }
+  if (res.body === null) {
+    throw new Error("Failed to download template tarball: body is null");
+  }
+
   logger.debug(`extracting template: ${opts.outputDir}`);
   await pipeline(
     // eslint-disable-next-line n/no-unsupported-features/node-builtins
     Readable.fromWeb(res.body as ReadableStream),
     x({
       cwd: opts.outputDir,
-      strip: opts.source.pathInTar.split("/").length,
+      strip: opts.source.pathInTar.split("/").length + 1,
       filter: (p) => p.includes(`${opts.source.pathInTar}/`),
     }),
   );

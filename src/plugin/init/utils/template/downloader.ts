@@ -27,13 +27,14 @@ export const downloadAndExtractFromUrl = async (opts: {
   logger.debug("tarball download started");
 
   logger.debug(`extracting template: ${opts.outputDir}`);
+  const pathRegExp = new RegExp(`${opts.source.pathInTar}/.*`);
   await pipeline(
     // eslint-disable-next-line n/no-unsupported-features/node-builtins
     Readable.fromWeb(res.body as ReadableStream),
     x({
       cwd: opts.outputDir,
-      strip: opts.source.pathInTar.split("/").length,
-      filter: (p) => p.includes(`${opts.source.pathInTar}/`),
+      strip: opts.source.pathInTar.split("/").length + 1,
+      filter: (p) => pathRegExp.test(p),
     }),
   );
 

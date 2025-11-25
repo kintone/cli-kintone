@@ -1,36 +1,11 @@
 import { LocalFSDriver } from "../../../core/driver";
+import type { ManifestV1JsonObject } from "../../../core/manifest/v1";
 import { logger } from "../../../../utils/log";
+import type { DeepPartial } from "../../../../utils/types";
 
-// NOTE: this object has only fields for update
-export type ManifestPatch = {
-  name: {
-    ja?: string;
-    en: string;
-    zh?: string;
-    "zh-TW"?: string;
-    es?: string;
-    "pt-BR"?: string;
-    th?: string;
-  };
-  description?: {
-    ja?: string;
-    en: string;
-    zh?: string;
-    "zh-TW"?: string;
-    es?: string;
-    "pt-BR"?: string;
-    th?: string;
-  };
-  homepage_url?: {
-    ja?: string;
-    en: string;
-    zh?: string;
-    "zh-TW"?: string;
-    es?: string;
-    "pt-BR"?: string;
-    th?: string;
-  };
-};
+export type ManifestPatch = DeepPartial<
+  Pick<ManifestV1JsonObject, "name" | "description" | "homepage_url">
+>;
 
 export const updateManifestsForAnswers = async (opts: {
   manifestPath: string;

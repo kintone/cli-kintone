@@ -4,7 +4,7 @@ import { fetchGitHubAPI } from "../../../core/utils/fetcher";
 
 const DEFAULT_TEMPLATE_REPO_USER = "kintone" as const;
 const DEFAULT_TEMPLATE_REPO_NAME = "cli-kintone" as const;
-const DEFAULT_TEMPLATE_BRANCH = "feat/plugin-template-downloader" as const;
+const DEFAULT_TEMPLATE_BRANCH = "main" as const;
 const DEFAULT_TEMPLATE_BASE_PATH = "plugin-templates" as const;
 
 const DEFAULT_TEMPLATE_REPO =
@@ -27,7 +27,8 @@ export const resolveGitHubTemplateSource = async (
 
   return {
     tarballUrl: `https://api.github.com/repos/${DEFAULT_TEMPLATE_REPO}/tarball/${DEFAULT_TEMPLATE_BRANCH}`,
-    pathInTar: `${DEFAULT_TEMPLATE_BASE_PATH}/${templateName}`,
+    // GitHubのtarballはリポジトリ名-ブランチ名/のプレフィックスが付く
+    pathInTar: `${DEFAULT_TEMPLATE_REPO_NAME}-${DEFAULT_TEMPLATE_BRANCH}/${DEFAULT_TEMPLATE_BASE_PATH}/${templateName}`,
   };
 };
 

@@ -33,7 +33,8 @@ export const downloadAndExtractFromUrl = async (opts: {
     Readable.fromWeb(res.body as ReadableStream),
     x({
       cwd: opts.outputDir,
-      strip: opts.source.pathInTar.split("/").length + 1,
+      // pathInTar (e.g., "cli-kintone-main/plugin-templates/javascript") のセグメント数だけstripする
+      strip: opts.source.pathInTar.split("/").length,
       filter: (p) => pathRegExp.test(p),
     }),
   );

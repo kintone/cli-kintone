@@ -82,32 +82,33 @@ describe("template/downloader", () => {
         outputDir: tempDir,
       });
 
-      // 期待されるファイルが展開されていることを確認
+      // Verify expected files are extracted
+      // TypeScript template has different structure from JavaScript: css/html/image are under plugin/ directory
       const manifestExists = await access(join(tempDir, "manifest.json"))
         .then(() => true)
         .catch(() => false);
       const packageJsonExists = await access(join(tempDir, "package.json"))
         .then(() => true)
         .catch(() => false);
-      const cssExists = await access(join(tempDir, "css"))
-        .then(() => true)
-        .catch(() => false);
       const srcExists = await access(join(tempDir, "src"))
         .then(() => true)
         .catch(() => false);
-      const htmlExists = await access(join(tempDir, "html"))
+      const pluginCssExists = await access(join(tempDir, "plugin", "css"))
         .then(() => true)
         .catch(() => false);
-      const imageExists = await access(join(tempDir, "image"))
+      const pluginHtmlExists = await access(join(tempDir, "plugin", "html"))
+        .then(() => true)
+        .catch(() => false);
+      const pluginImageExists = await access(join(tempDir, "plugin", "image"))
         .then(() => true)
         .catch(() => false);
 
       assert(manifestExists, "manifest.json should exist");
       assert(packageJsonExists, "package.json should exist");
-      assert(cssExists, "css directory should exist");
       assert(srcExists, "src directory should exist");
-      assert(htmlExists, "html directory should exist");
-      assert(imageExists, "image directory should exist");
+      assert(pluginCssExists, "plugin/css directory should exist");
+      assert(pluginHtmlExists, "plugin/html directory should exist");
+      assert(pluginImageExists, "plugin/image directory should exist");
     });
 
     it("ダウンロード失敗時にエラーをスローする", async () => {

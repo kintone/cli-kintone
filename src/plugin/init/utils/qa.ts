@@ -6,10 +6,12 @@ import {
   promptForName,
   promptForOptionalDescription,
   promptForOptionalName,
+  promptForProjectName,
   promptForSupportLang,
 } from "../utils/qa/prompt";
 
 export type Answers = {
+  projectName: string;
   name: {
     ja?: string;
     en: string;
@@ -30,15 +32,23 @@ export type Answers = {
   };
 };
 
+export const DEFAULT_PROJECT_NAME = "kintone-plugin";
+
 export const getDefaultName = (outputDir: string) =>
   outputDir.replace(/.*\//, "");
 
 export const runPrompt = async (
   m: BoundMessage,
-  outputDir: string,
+  outputDir: string | undefined,
   lang: Lang,
 ): Promise<Answers> => {
-  const enName = await promptForName(m, "En", getDefaultName(outputDir));
+  // プロジェクト名の質問（outputDirが未指定の場合のみ）
+  const projectName =
+    outputDir === undefined
+      ? await promptForProjectName(m, DEFAULT_PROJECT_NAME)
+      : getDefaultName(outputDir);
+
+  const enName = await promptForName(m, "En", projectName);
   const enDescription = await promptForDescription(m, "En", enName);
 
   const supportJa = await promptForSupportLang(m, "Ja", lang === "ja");
@@ -65,6 +75,7 @@ export const runPrompt = async (
   const esHomepage = supportEs ? await promptForHomepage(m, "Es") : undefined;
 
   const result: Answers = {
+    projectName: projectName,
     name: {
       en: enName,
       ja: jaName,

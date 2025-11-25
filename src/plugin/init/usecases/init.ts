@@ -42,33 +42,38 @@ ${m("developerSite")}
       `;
 };
 
+type InitPluginOptions = {
+  /** project name passed by CLI argument (undefined if not specified) */
+  name?: string;
+  lang: Lang;
+  template: string;
+};
+
 /**
  * Run create-kintone-plugin script
- * @param outputDir
- * @param lang
- * @param templateName
  */
-export const initPlugin = async (
-  outputDir: string,
-  lang: Lang,
-  templateName: string,
-) => {
-  const m = getBoundMessage(lang);
+export const initPlugin = async (options: InitPluginOptions) => {
+  const m = getBoundMessage(options.lang);
   logger.info(`
 
   ${m("introduction")}
 
   `);
 
-  const answers = await runPrompt(m, outputDir, lang);
+  const answers = await runPrompt(m, options.name, options.lang);
+
+  // outputDirを決定: CLI引数があればそれを使用、なければQAで入力されたプロジェクト名を使用
+  const outputDir = options.name ?? `./${answers.projectName}`;
   const packageName = path.basename(outputDir);
   logger.info(m("settingUpTemplate"));
-  logger.debug(`templateName: ${templateName}`);
+  logger.debug(`template: ${options.template}`);
 
   // Verify output directory does not exist
   const directoryExists = await isDirectory(outputDir);
   if (directoryExists) {
-    logger.error(`${outputDir} ${getMessage(lang, "Error_alreadyExists")}`);
+    logger.error(
+      `${outputDir} ${getMessage(options.lang, "Error_alreadyExists")}`,
+    );
     // eslint-disable-next-line n/no-process-exit
     process.exit(1);
   }
@@ -76,7 +81,7 @@ export const initPlugin = async (
   try {
     await setupTemplate({
       outputDir,
-      templateName,
+      templateName: options.template,
       manifestPatch: {
         name: answers.name,
         description: answers.description,
@@ -87,8 +92,10 @@ export const initPlugin = async (
       },
     });
     logger.info(m("templateSetupCompleted"));
-    installDependencies(outputDir, lang);
-    logger.info(getSuccessCreatedPluginMessage(packageName, outputDir, lang));
+    installDependencies(outputDir, options.lang);
+    logger.info(
+      getSuccessCreatedPluginMessage(packageName, outputDir, options.lang),
+    );
   } catch (error) {
     try {
       await fs.promises.rm(outputDir, { recursive: true, force: true });

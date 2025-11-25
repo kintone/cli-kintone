@@ -50,7 +50,7 @@ export const promptForDescription = async (
   });
 };
 
-export const promptForOptionalName = async (
+const promptForOptionalName = async (
   m: BoundMessage,
   supportLang: SupportLang,
   defaultAnswer: string,
@@ -63,7 +63,7 @@ export const promptForOptionalName = async (
   });
 };
 
-export const promptForOptionalDescription = async (
+const promptForOptionalDescription = async (
   m: BoundMessage,
   supportLang: SupportLang,
   defaultAnswer: string,
@@ -78,7 +78,7 @@ export const promptForOptionalDescription = async (
   });
 };
 
-export const promptForSupportLang = async (
+const promptForSupportLang = async (
   m: BoundMessage,
   supportLang: Exclude<SupportLang, "En">,
   defaultAnswer: boolean = false,
@@ -95,13 +95,6 @@ export const promptForHomepage = async (
 ) => {
   return input({
     message: m(`Q_WebsiteUrl${supportLang}`),
-  });
-};
-
-export const promptForSupportMobile = async (m: BoundMessage) => {
-  return confirm({
-    default: true,
-    message: m("Q_MobileSupport"),
   });
 };
 

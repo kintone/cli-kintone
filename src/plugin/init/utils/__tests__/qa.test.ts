@@ -1,5 +1,6 @@
 import assert from "assert";
 import * as prompt from "../qa/prompt";
+import type { OptionalLangAnswers, SupportLang } from "../qa/prompt";
 import { validateForDescription, validateForName } from "../qa/validator";
 import { getDefaultName, runPrompt } from "../qa";
 import type { BoundMessage } from "../messages";
@@ -30,20 +31,20 @@ describe("qa", () => {
       beforeEach(() => {
         jest.spyOn(prompt, "promptForName").mockResolvedValue("pass");
         jest.spyOn(prompt, "promptForDescription").mockResolvedValue("pass");
-        jest.spyOn(prompt, "promptForOptionalName").mockResolvedValue("pass");
-        jest
-          .spyOn(prompt, "promptForOptionalDescription")
-          .mockResolvedValue("pass");
         jest.spyOn(prompt, "promptForHomepage").mockResolvedValue("pass");
-        jest.spyOn(prompt, "promptForSupportLang").mockResolvedValue(true);
-        jest.spyOn(prompt, "promptForSupportMobile").mockResolvedValue(true);
       });
       it("should be set ja parameters in supportJa is true", async () => {
         jest
-          .spyOn(prompt, "promptForSupportLang")
+          .spyOn(prompt, "promptForOptionalLang")
           .mockImplementation(
-            async (m: BoundMessage, supportLang: prompt.SupportLang) => {
-              return supportLang === "Ja";
+            async (
+              _m: BoundMessage,
+              supportLang: Exclude<SupportLang, "En">,
+            ): Promise<OptionalLangAnswers> => {
+              if (supportLang === "Ja") {
+                return { name: "pass", description: "pass", homepage: "pass" };
+              }
+              return {};
             },
           );
         const result1 = await runPrompt(getBoundMessage("ja"), "foo/bar/dist");
@@ -54,10 +55,16 @@ describe("qa", () => {
       });
       it("should not be set ja parameters in supportJa is false", async () => {
         jest
-          .spyOn(prompt, "promptForSupportLang")
+          .spyOn(prompt, "promptForOptionalLang")
           .mockImplementation(
-            async (m: BoundMessage, supportLang: prompt.SupportLang) => {
-              return !(supportLang === "Ja");
+            async (
+              _m: BoundMessage,
+              supportLang: Exclude<SupportLang, "En">,
+            ): Promise<OptionalLangAnswers> => {
+              if (supportLang === "Ja") {
+                return {};
+              }
+              return { name: "pass", description: "pass", homepage: "pass" };
             },
           );
         const result2 = await runPrompt(getBoundMessage("en"), "foo/bar/dist");
@@ -66,10 +73,16 @@ describe("qa", () => {
       });
       it("should be set zh parameters in supportZh is true", async () => {
         jest
-          .spyOn(prompt, "promptForSupportLang")
+          .spyOn(prompt, "promptForOptionalLang")
           .mockImplementation(
-            async (m: BoundMessage, supportLang: prompt.SupportLang) => {
-              return supportLang === "Zh";
+            async (
+              _m: BoundMessage,
+              supportLang: Exclude<SupportLang, "En">,
+            ): Promise<OptionalLangAnswers> => {
+              if (supportLang === "Zh") {
+                return { name: "pass", description: "pass", homepage: "pass" };
+              }
+              return {};
             },
           );
         const result1 = await runPrompt(getBoundMessage("ja"), "foo/bar/dist");
@@ -80,10 +93,16 @@ describe("qa", () => {
       });
       it("should not be set zh parameters in supportZh is false", async () => {
         jest
-          .spyOn(prompt, "promptForSupportLang")
+          .spyOn(prompt, "promptForOptionalLang")
           .mockImplementation(
-            async (m: BoundMessage, supportLang: prompt.SupportLang) => {
-              return !(supportLang === "Zh");
+            async (
+              _m: BoundMessage,
+              supportLang: Exclude<SupportLang, "En">,
+            ): Promise<OptionalLangAnswers> => {
+              if (supportLang === "Zh") {
+                return {};
+              }
+              return { name: "pass", description: "pass", homepage: "pass" };
             },
           );
         const result2 = await runPrompt(getBoundMessage("en"), "foo/bar/dist");
@@ -92,10 +111,16 @@ describe("qa", () => {
       });
       it("should be set es parameters in supportEs is true", async () => {
         jest
-          .spyOn(prompt, "promptForSupportLang")
+          .spyOn(prompt, "promptForOptionalLang")
           .mockImplementation(
-            async (m: BoundMessage, supportLang: prompt.SupportLang) => {
-              return supportLang === "Es";
+            async (
+              _m: BoundMessage,
+              supportLang: Exclude<SupportLang, "En">,
+            ): Promise<OptionalLangAnswers> => {
+              if (supportLang === "Es") {
+                return { name: "pass", description: "pass", homepage: "pass" };
+              }
+              return {};
             },
           );
         const result1 = await runPrompt(getBoundMessage("ja"), "foo/bar/dist");
@@ -106,10 +131,16 @@ describe("qa", () => {
       });
       it("should not be set es parameters in supportEs is false", async () => {
         jest
-          .spyOn(prompt, "promptForSupportLang")
+          .spyOn(prompt, "promptForOptionalLang")
           .mockImplementation(
-            async (m: BoundMessage, supportLang: prompt.SupportLang) => {
-              return !(supportLang === "Es");
+            async (
+              _m: BoundMessage,
+              supportLang: Exclude<SupportLang, "En">,
+            ): Promise<OptionalLangAnswers> => {
+              if (supportLang === "Es") {
+                return {};
+              }
+              return { name: "pass", description: "pass", homepage: "pass" };
             },
           );
         const result2 = await runPrompt(getBoundMessage("en"), "foo/bar/dist");

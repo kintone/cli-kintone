@@ -4,6 +4,14 @@ type LangMap = { [lang in Lang]: string };
 type MessageMap = { [key in keyof typeof messages]: LangMap };
 
 const messages = {
+  Q_ProjectName: {
+    en: "Input your project name (target directory)",
+    ja: "プロジェクト名（出力先ディレクトリ）を入力してください",
+  },
+  Q_ProjectNameError: {
+    en: "Project name must be at least 1 character",
+    ja: "プロジェクト名は1文字以上で入力してください",
+  },
   Q_NameEn: {
     en: "Input your plug-in name in English [1-64chars]",
     ja: "プラグインの英語名を入力してください [1-64文字]",

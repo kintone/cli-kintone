@@ -1,7 +1,7 @@
 import { initPlugin } from "./usecases/init";
 
 type Options = {
-  name: string;
+  name: string | undefined;
   template: string;
 };
 

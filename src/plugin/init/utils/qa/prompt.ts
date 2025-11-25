@@ -5,9 +5,22 @@ import {
   validateForName,
   validateForOptionalDescription,
   validateForOptionalName,
+  validateForProjectName,
 } from "./validator";
 
 export type SupportLang = "En" | "Ja" | "Zh" | "Es";
+
+export const promptForProjectName = async (
+  m: BoundMessage,
+  defaultAnswer: string,
+) => {
+  return input({
+    message: m("Q_ProjectName"),
+    default: defaultAnswer,
+    validate: (value) =>
+      validateForProjectName(value) ? true : m("Q_ProjectNameError"),
+  });
+};
 
 export const promptForName = async (
   m: BoundMessage,

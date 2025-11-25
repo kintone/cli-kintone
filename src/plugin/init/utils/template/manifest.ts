@@ -7,15 +7,15 @@ export type ManifestPatch = DeepPartial<
   Pick<ManifestV1JsonObject, "name" | "description" | "homepage_url">
 >;
 
-export const updateManifestsForAnswers = async (opts: {
+export const updateManifests = async (opts: {
   manifestPath: string;
-  answers: ManifestPatch;
+  patch: ManifestPatch;
 }) => {
   logger.debug(`reading manifest: ${opts.manifestPath}`);
   const driver = new LocalFSDriver();
   const manifestJson = await driver.readFile(opts.manifestPath, "utf-8");
   const manifest = JSON.parse(manifestJson);
-  const newManifest = { ...manifest, ...opts.answers };
+  const newManifest = { ...manifest, ...opts.patch };
   logger.debug(`writing updated manifest: ${opts.manifestPath}`);
   await driver.writeFile(
     opts.manifestPath,

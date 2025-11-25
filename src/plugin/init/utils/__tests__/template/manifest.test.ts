@@ -2,11 +2,11 @@ import assert from "assert";
 import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
-import { updateManifestsForAnswers } from "../../template/manifest";
+import { updateManifests } from "../../template/manifest";
 import type { ManifestPatch } from "../../template/manifest";
 
 describe("template/manifest", () => {
-  describe("updateManifestsForAnswers", () => {
+  describe("updateManifests", () => {
     let tempDir: string;
     let manifestPath: string;
 
@@ -38,7 +38,7 @@ describe("template/manifest", () => {
     });
 
     it("name, description, homepage_urlを正しく更新する", async () => {
-      const answers: ManifestPatch = {
+      const patch: ManifestPatch = {
         name: {
           en: "New Plugin Name",
           ja: "新しいプラグイン名",
@@ -51,9 +51,9 @@ describe("template/manifest", () => {
         },
       };
 
-      await updateManifestsForAnswers({
+      await updateManifests({
         manifestPath,
-        answers,
+        patch,
       });
 
       const updatedManifest = JSON.parse(await readFile(manifestPath, "utf-8"));
@@ -68,15 +68,15 @@ describe("template/manifest", () => {
     });
 
     it("既存のmanifest.jsonフィールドを保持する", async () => {
-      const answers: ManifestPatch = {
+      const patch: ManifestPatch = {
         name: {
           en: "New Name",
         },
       };
 
-      await updateManifestsForAnswers({
+      await updateManifests({
         manifestPath,
-        answers,
+        patch,
       });
 
       const updatedManifest = JSON.parse(await readFile(manifestPath, "utf-8"));
@@ -93,7 +93,7 @@ describe("template/manifest", () => {
     });
 
     it("多言語フィールド(ja, zh, es, etc)を正しく設定する", async () => {
-      const answers: ManifestPatch = {
+      const patch: ManifestPatch = {
         name: {
           en: "Plugin",
           ja: "プラグイン",
@@ -102,9 +102,9 @@ describe("template/manifest", () => {
         },
       };
 
-      await updateManifestsForAnswers({
+      await updateManifests({
         manifestPath,
-        answers,
+        patch,
       });
 
       const updatedManifest = JSON.parse(await readFile(manifestPath, "utf-8"));
@@ -116,15 +116,15 @@ describe("template/manifest", () => {
     });
 
     it("フォーマットされたJSON(インデント2)で書き込む", async () => {
-      const answers: ManifestPatch = {
+      const patch: ManifestPatch = {
         name: {
           en: "Test",
         },
       };
 
-      await updateManifestsForAnswers({
+      await updateManifests({
         manifestPath,
-        answers,
+        patch,
       });
 
       const fileContent = await readFile(manifestPath, "utf-8");
@@ -142,16 +142,16 @@ describe("template/manifest", () => {
       // 不正なJSONを書き込む
       await writeFile(manifestPath, "{ invalid json }");
 
-      const answers: ManifestPatch = {
+      const patch: ManifestPatch = {
         name: {
           en: "Test",
         },
       };
 
       await assert.rejects(async () => {
-        await updateManifestsForAnswers({
+        await updateManifests({
           manifestPath,
-          answers,
+          patch,
         });
       });
     });
@@ -159,16 +159,16 @@ describe("template/manifest", () => {
     it("存在しないファイルパスでエラーをスローする", async () => {
       const nonExistentPath = join(tempDir, "non-existent.json");
 
-      const answers: ManifestPatch = {
+      const patch: ManifestPatch = {
         name: {
           en: "Test",
         },
       };
 
       await assert.rejects(async () => {
-        await updateManifestsForAnswers({
+        await updateManifests({
           manifestPath: nonExistentPath,
-          answers,
+          patch,
         });
       });
     });

@@ -2,7 +2,7 @@ import path from "path";
 import { resolveGitHubTemplateSource } from "./template/github";
 import { downloadAndExtractFromUrl } from "./template/downloader";
 import type { ManifestPatch } from "./template/manifest";
-import { updateManifestsForAnswers } from "./template/manifest";
+import { updateManifests } from "./template/manifest";
 import {
   updatePackageJson,
   type PackageJsonPatch,
@@ -30,9 +30,9 @@ export const setupTemplate = async (opts: {
   });
   logger.debug(`template downloaded: ${opts.templateName}`);
 
-  await updateManifestsForAnswers({
+  await updateManifests({
     manifestPath: path.join(opts.outputDir, "manifest.json"),
-    answers: opts.manifestPatch,
+    patch: opts.manifestPatch,
   });
 
   await updatePackageJson({

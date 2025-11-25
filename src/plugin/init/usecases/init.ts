@@ -7,6 +7,7 @@ import { logger } from "../../../utils/log";
 import path from "path";
 import fs from "fs";
 import { installDependencies } from "../utils/deps";
+import { isDirectory } from "../../../utils/file";
 
 const getSuccessCreatedPluginMessage = (
   packageName: string,
@@ -59,11 +60,20 @@ export const initPlugin = async (
 
   `);
 
+  const answers = await runPrompt(m, outputDir, lang);
+  const packageName = path.basename(outputDir);
+  logger.info(m("settingUpTemplate"));
+  logger.debug(`templateName: ${templateName}`);
+
+  // Verify output directory does not exist
+  const directoryExists = await isDirectory(outputDir);
+  if (directoryExists) {
+    logger.error(`${outputDir} ${getMessage(lang, "Error_alreadyExists")}`);
+    // eslint-disable-next-line n/no-process-exit
+    process.exit(1);
+  }
+
   try {
-    const answers = await runPrompt(m, outputDir, lang);
-    const packageName = path.basename(outputDir);
-    logger.info(m("settingUpTemplate"));
-    logger.debug(`templateName: ${templateName}`);
     await setupTemplate({
       outputDir,
       templateName,
@@ -82,12 +92,7 @@ export const initPlugin = async (
   } catch (error) {
     try {
       await fs.promises.rm(outputDir, { recursive: true, force: true });
-      if (
-        error instanceof Error &&
-        error.message === "output directory already exists"
-      ) {
-        logger.error(`${outputDir} ${getMessage(lang, "Error_alreadyExists")}`);
-      } else if (error instanceof Error) {
+      if (error instanceof Error) {
         logger.error(m("Error_cannotCreatePlugin") + error.message);
       } else {
         logger.error(m("Error_cannotCreatePlugin") + String(error));

@@ -27,8 +27,7 @@ export const resolveGitHubTemplateSource = async (
 
   return {
     tarballUrl: `https://api.github.com/repos/${DEFAULT_TEMPLATE_REPO}/tarball/${DEFAULT_TEMPLATE_BRANCH}`,
-    // GitHubのtarballはリポジトリ名-ブランチ名/のプレフィックスが付く
-    pathInTar: `${DEFAULT_TEMPLATE_REPO_NAME}-${DEFAULT_TEMPLATE_BRANCH}/${DEFAULT_TEMPLATE_BASE_PATH}/${templateName}`,
+    pathInTar: `${DEFAULT_TEMPLATE_BASE_PATH}/${templateName}`,
   };
 };
 

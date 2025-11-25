@@ -86,10 +86,7 @@ describe("template/github", () => {
         source.tarballUrl,
         "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
       );
-      assert.strictEqual(
-        source.pathInTar,
-        "cli-kintone-main/plugin-templates/javascript",
-      );
+      assert.strictEqual(source.pathInTar, "plugin-templates/javascript");
     });
 
     it("存在するTypeScriptテンプレート名から正しいTemplateSourceを生成する", async () => {
@@ -101,10 +98,7 @@ describe("template/github", () => {
         source.tarballUrl,
         "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
       );
-      assert.strictEqual(
-        source.pathInTar,
-        "cli-kintone-main/plugin-templates/typescript",
-      );
+      assert.strictEqual(source.pathInTar, "plugin-templates/typescript");
     });
 
     it("存在しないテンプレート名でエラーをスローする", async () => {

@@ -32,7 +32,7 @@ describe("template/downloader", () => {
       const source: TemplateSource = {
         tarballUrl:
           "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
-        pathInTar: "cli-kintone-main/plugin-templates/javascript",
+        pathInTar: "plugin-templates/javascript",
       };
 
       await downloadAndExtractFromUrl({
@@ -74,7 +74,7 @@ describe("template/downloader", () => {
       const source: TemplateSource = {
         tarballUrl:
           "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
-        pathInTar: "cli-kintone-main/plugin-templates/typescript",
+        pathInTar: "plugin-templates/typescript",
       };
 
       await downloadAndExtractFromUrl({
@@ -117,7 +117,7 @@ describe("template/downloader", () => {
       const source: TemplateSource = {
         tarballUrl:
           "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
-        pathInTar: "cli-kintone-main/plugin-templates/javascript",
+        pathInTar: "plugin-templates/javascript",
       };
 
       await assert.rejects(
@@ -140,7 +140,7 @@ describe("template/downloader", () => {
       const source: TemplateSource = {
         tarballUrl:
           "https://api.github.com/repos/kintone/cli-kintone/tarball/main",
-        pathInTar: "cli-kintone-main/plugin-templates/javascript",
+        pathInTar: "plugin-templates/javascript",
       };
 
       await downloadAndExtractFromUrl({

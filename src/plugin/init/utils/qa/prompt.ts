@@ -53,9 +53,11 @@ export const promptForDescription = async (
 export const promptForOptionalName = async (
   m: BoundMessage,
   supportLang: SupportLang,
+  defaultAnswer: string,
 ) => {
   return input({
     message: m(`Q_Name${supportLang}`),
+    default: defaultAnswer,
     validate: (value) =>
       validateForOptionalName(value) ? true : m(`Q_Name${supportLang}Error`),
   });
@@ -64,9 +66,11 @@ export const promptForOptionalName = async (
 export const promptForOptionalDescription = async (
   m: BoundMessage,
   supportLang: SupportLang,
+  defaultAnswer: string,
 ) => {
   return input({
     message: m(`Q_Description${supportLang}`),
+    default: defaultAnswer,
     validate: (value) =>
       validateForOptionalDescription(value)
         ? true
@@ -99,4 +103,30 @@ export const promptForSupportMobile = async (m: BoundMessage) => {
     default: true,
     message: m("Q_MobileSupport"),
   });
+};
+
+export type OptionalLangAnswers = {
+  name?: string;
+  description?: string;
+  homepage?: string;
+};
+
+export const promptForOptionalLang = async (
+  m: BoundMessage,
+  supportLang: Exclude<SupportLang, "En">,
+  defaultName: string,
+  defaultDescription: string,
+): Promise<OptionalLangAnswers> => {
+  const support = await promptForSupportLang(m, supportLang);
+  if (!support) {
+    return {};
+  }
+  const name = await promptForOptionalName(m, supportLang, defaultName);
+  const description = await promptForOptionalDescription(
+    m,
+    supportLang,
+    defaultDescription,
+  );
+  const homepage = await promptForHomepage(m, supportLang);
+  return { name, description, homepage };
 };

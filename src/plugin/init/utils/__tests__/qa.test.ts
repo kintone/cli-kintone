@@ -46,11 +46,7 @@ describe("qa", () => {
               return supportLang === "Ja";
             },
           );
-        const result1 = await runPrompt(
-          getBoundMessage("ja"),
-          "foo/bar/dist",
-          "ja",
-        );
+        const result1 = await runPrompt(getBoundMessage("ja"), "foo/bar/dist");
         assert.notEqual(result1.name.ja, undefined);
         assert.notEqual(result1.description?.ja, undefined);
         assert.notEqual(result1.homepage_url, undefined);
@@ -64,11 +60,7 @@ describe("qa", () => {
               return !(supportLang === "Ja");
             },
           );
-        const result2 = await runPrompt(
-          getBoundMessage("en"),
-          "foo/bar/dist",
-          "en",
-        );
+        const result2 = await runPrompt(getBoundMessage("en"), "foo/bar/dist");
         assert.equal(result2.name.ja, undefined);
         assert.equal(result2.description?.ja, undefined);
       });
@@ -80,11 +72,7 @@ describe("qa", () => {
               return supportLang === "Zh";
             },
           );
-        const result1 = await runPrompt(
-          getBoundMessage("ja"),
-          "foo/bar/dist",
-          "ja",
-        );
+        const result1 = await runPrompt(getBoundMessage("ja"), "foo/bar/dist");
         assert.notEqual(result1.name.zh, undefined);
         assert.notEqual(result1.description?.zh, undefined);
         assert.notEqual(result1.homepage_url, undefined);
@@ -98,11 +86,7 @@ describe("qa", () => {
               return !(supportLang === "Zh");
             },
           );
-        const result2 = await runPrompt(
-          getBoundMessage("en"),
-          "foo/bar/dist",
-          "en",
-        );
+        const result2 = await runPrompt(getBoundMessage("en"), "foo/bar/dist");
         assert.equal(result2.name.zh, undefined);
         assert.equal(result2.description?.zh, undefined);
       });
@@ -114,11 +98,7 @@ describe("qa", () => {
               return supportLang === "Es";
             },
           );
-        const result1 = await runPrompt(
-          getBoundMessage("ja"),
-          "foo/bar/dist",
-          "ja",
-        );
+        const result1 = await runPrompt(getBoundMessage("ja"), "foo/bar/dist");
         assert.notEqual(result1.name.es, undefined);
         assert.notEqual(result1.description?.es, undefined);
         assert.notEqual(result1.homepage_url, undefined);
@@ -132,11 +112,7 @@ describe("qa", () => {
               return !(supportLang === "Es");
             },
           );
-        const result2 = await runPrompt(
-          getBoundMessage("en"),
-          "foo/bar/dist",
-          "en",
-        );
+        const result2 = await runPrompt(getBoundMessage("en"), "foo/bar/dist");
         assert.equal(result2.name.es, undefined);
         assert.equal(result2.description?.es, undefined);
       });

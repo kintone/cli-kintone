@@ -60,7 +60,7 @@ export const initPlugin = async (options: InitPluginOptions) => {
 
   `);
 
-  const answers = await runPrompt(m, options.name, options.lang);
+  const answers = await runPrompt(m, options.name);
 
   // outputDirを決定: CLI引数があればそれを使用、なければQAで入力されたプロジェクト名を使用
   const outputDir = options.name ?? `./${answers.projectName}`;

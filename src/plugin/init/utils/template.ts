@@ -30,17 +30,13 @@ export const setupTemplate = async (opts: {
   });
   logger.debug(`template downloaded: ${opts.templateName}`);
 
-  logger.debug("updating manifest.json");
   await updateManifestsForAnswers({
     manifestPath: path.join(opts.outputDir, "manifest.json"),
     answers: opts.manifestPatch,
   });
-  logger.debug("manifest.json updated");
 
-  logger.debug(`updating package.json: ${opts.packageJsonPatch.name}`);
   await updatePackageJson({
     packageJsonPath: path.join(opts.outputDir, "package.json"),
     patch: opts.packageJsonPatch,
   });
-  logger.debug("package.json updated");
 };

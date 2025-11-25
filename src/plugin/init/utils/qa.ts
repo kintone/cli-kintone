@@ -36,14 +36,16 @@ export const getDefaultName = (outputDir: string) =>
 
 export const runPrompt = async (
   m: BoundMessage,
-  outputDir: string | undefined,
+  inputName: string | undefined,
 ): Promise<Answers> => {
   const projectName =
-    outputDir === undefined
-      ? await promptForProjectName(m, DEFAULT_PROJECT_NAME)
-      : getDefaultName(outputDir);
+    inputName === undefined
+      ? await promptForProjectName(m, `./${DEFAULT_PROJECT_NAME}`)
+      : inputName;
 
-  const enName = await promptForName(m, "En", projectName);
+  const defaultName = getDefaultName(projectName);
+
+  const enName = await promptForName(m, "En", defaultName);
   const enDescription = await promptForDescription(m, "En", enName);
   const enHomepage = await promptForHomepage(m, "En");
 

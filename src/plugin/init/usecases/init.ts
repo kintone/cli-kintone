@@ -62,17 +62,15 @@ export const initPlugin = async (options: InitPluginOptions) => {
 
   const answers = await runPrompt(m, options.name);
 
-  // outputDirを決定: CLI引数があればそれを使用、なければQAで入力されたプロジェクト名を使用
-  const outputDir = options.name ?? `./${answers.projectName}`;
-  const packageName = path.basename(outputDir);
+  const packageName = path.basename(answers.projectName);
   logger.info(m("settingUpTemplate"));
   logger.debug(`template: ${options.template}`);
 
   // Verify output directory does not exist
-  const directoryExists = await isDirectory(outputDir);
+  const directoryExists = await isDirectory(answers.projectName);
   if (directoryExists) {
     logger.error(
-      `${outputDir} ${getMessage(options.lang, "Error_alreadyExists")}`,
+      `${answers.projectName} ${getMessage(options.lang, "Error_alreadyExists")}`,
     );
     // eslint-disable-next-line n/no-process-exit
     process.exit(1);
@@ -80,7 +78,7 @@ export const initPlugin = async (options: InitPluginOptions) => {
 
   try {
     await setupTemplate({
-      outputDir,
+      outputDir: answers.projectName,
       templateName: options.template,
       manifestPatch: {
         name: answers.name,
@@ -92,13 +90,20 @@ export const initPlugin = async (options: InitPluginOptions) => {
       },
     });
     logger.info(m("templateSetupCompleted"));
-    installDependencies(outputDir, options.lang);
+    installDependencies(answers.projectName, options.lang);
     logger.info(
-      getSuccessCreatedPluginMessage(packageName, outputDir, options.lang),
+      getSuccessCreatedPluginMessage(
+        packageName,
+        answers.projectName,
+        options.lang,
+      ),
     );
   } catch (error) {
     try {
-      await fs.promises.rm(outputDir, { recursive: true, force: true });
+      await fs.promises.rm(answers.projectName, {
+        recursive: true,
+        force: true,
+      });
       if (error instanceof Error) {
         logger.error(m("Error_cannotCreatePlugin") + error.message);
       } else {

@@ -1,5 +1,6 @@
 import type { BoundMessage } from "./messages";
 import { promptForLang, promptForProjectName } from "../utils/qa/prompt";
+import path from "path";
 
 export type Answers = {
   projectName: string;
@@ -25,9 +26,6 @@ export type Answers = {
 
 export const DEFAULT_PROJECT_NAME = "kintone-plugin";
 
-export const getDefaultName = (outputDir: string) =>
-  outputDir.replace(/.*\//, "");
-
 export const runPrompt = async (
   m: BoundMessage,
   inputName: string | undefined,
@@ -37,7 +35,7 @@ export const runPrompt = async (
       ? await promptForProjectName(m, `./${DEFAULT_PROJECT_NAME}`)
       : inputName;
 
-  const defaultName = getDefaultName(projectName);
+  const defaultName = path.basename(projectName);
 
   const en = await promptForLang(m, {
     supportLang: "En",

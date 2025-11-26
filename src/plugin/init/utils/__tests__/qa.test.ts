@@ -2,7 +2,7 @@ import assert from "assert";
 import * as prompt from "../qa/prompt";
 import type { LangAnswers, SupportLang } from "../qa/prompt";
 import { validateForDescription, validateForName } from "../qa/validator";
-import { getDefaultName, runPrompt } from "../qa";
+import { runPrompt } from "../qa";
 import { getBoundMessage } from "../messages";
 
 const MOCK_ANSWERS: LangAnswers = {
@@ -35,11 +35,6 @@ describe("qa", () => {
       assert(validateForDescription("a".repeat(200)));
       assert(!validateForDescription(""));
       assert(!validateForDescription("a".repeat(201)));
-    });
-  });
-  describe("getDefaultName", () => {
-    it("should be set the default value of name.en based on the passed directory", () => {
-      assert.equal(getDefaultName("foo/bar/dist"), "dist");
     });
   });
   describe("runPrompt", () => {

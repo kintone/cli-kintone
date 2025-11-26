@@ -59,6 +59,19 @@ export const extractFileFormat: (filepath: string) => string = (filepath) => {
 };
 
 /**
+ * Check if the given path is a file.
+ * Wrapping fs.stat() to reduce error handling code.
+ * @param filePath
+ */
+export const isFile = async (filePath: string): Promise<boolean> => {
+  try {
+    return (await fs.promises.stat(filePath)).isFile();
+  } catch (_) {
+    return false;
+  }
+};
+
+/**
  * Check if the given path is a directory.
  * Wrapping fs.stat() to reduce error handling code.
  * @param dirPath

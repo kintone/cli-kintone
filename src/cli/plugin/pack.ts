@@ -1,6 +1,6 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { run } from "../../plugin/packer/";
+import { pack } from "../../plugin/packer/";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
 import { setStability } from "../stability";
@@ -12,26 +12,29 @@ const describe = "Packaging plugin project to a zip file";
 const builder = (args: yargs.Argv) =>
   args
     .option("input", {
-      describe: "The input plugin project directory",
+      alias: "i",
+      describe: "The input plugin manifest file path.",
       type: "string",
       demandOption: true,
       requiresArg: true,
     })
     .option("output", {
+      alias: "o",
       describe:
-        "The destination path of generated plugin file\nDefault to plugin.zip on current directory",
+        'The destination file path to generate plugin zip file.\nDefault to "./plugin.zip".',
       type: "string",
       default: "plugin.zip",
       requiresArg: true,
     })
     .option("private-key", {
       describe:
-        "The path of private key file\nIf omitted, new private key will be generated.",
+        'The path of private key file.\nTo generate private key, use "plugin keygen" command.',
       type: "string",
+      demandOption: true,
       requiresArg: true,
     })
     .option("watch", {
-      describe: "run in watch mode",
+      describe: "Run in watch mode",
       type: "boolean",
     });
 
@@ -41,15 +44,16 @@ type Args = yargs.Arguments<
 
 const handler = async (args: Args) => {
   try {
-    const flags = {
-      ppk: args["private-key"],
+    const params = {
+      input: args.input,
       output: args.output,
+      ppkFilePath: args["private-key"],
       watch: args.watch,
     };
     if (process.env.NODE_ENV === "test") {
-      console.log(JSON.stringify({ pluginDir: args.input, flags: flags }));
+      console.log(JSON.stringify(params));
     } else {
-      await run(args.input, flags);
+      await pack(params);
     }
   } catch (error) {
     logger.error(new RunError(error));

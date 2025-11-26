@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.0](https://github.com/kintone/cli-kintone/compare/v1.14.3...v1.15.0) (2025-11-06)
+
+
+### Features
+
+* add plugin upload command (Experimental) ([#1193](https://github.com/kintone/cli-kintone/issues/1193)) ([9de6f6f](https://github.com/kintone/cli-kintone/commit/9de6f6f4cd0b9fff3fe45d3981178a2a945698f4))
+
+
+### Bug Fixes
+
+* update interface of `plugin pack` ([#1197](https://github.com/kintone/cli-kintone/issues/1197)) ([9734e19](https://github.com/kintone/cli-kintone/commit/9734e19062c8d1991d49f7b901994739d21b66db))
+
 ## [1.14.3](https://github.com/kintone/cli-kintone/compare/v1.14.2...v1.14.3) (2025-10-29)
 
 

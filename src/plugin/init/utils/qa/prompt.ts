@@ -98,28 +98,38 @@ export const promptForHomepage = async (
   });
 };
 
-export type OptionalLangAnswers = {
-  name?: string;
-  description?: string;
+export type LangAnswers = {
+  name: string;
+  description: string;
   homepage?: string;
 };
 
-export const promptForOptionalLang = async (
+export const promptForLang = async <R extends boolean = false>(
   m: BoundMessage,
-  supportLang: Exclude<SupportLang, "En">,
-  defaultName: string,
-  defaultDescription: string,
-): Promise<OptionalLangAnswers> => {
-  const support = await promptForSupportLang(m, supportLang);
-  if (!support) {
-    return {};
+  options: {
+    required?: R;
+    supportLang: SupportLang;
+    defaultName: string;
+    defaultDescription?: string;
+  },
+): Promise<R extends true ? LangAnswers : Partial<LangAnswers>> => {
+  // NOTE: lang en is always required
+  if (!options.required && options.supportLang !== "En") {
+    const support = await promptForSupportLang(m, options.supportLang);
+    if (!support) {
+      return {} as R extends true ? LangAnswers : Partial<LangAnswers>;
+    }
   }
-  const name = await promptForOptionalName(m, supportLang, defaultName);
+  const name = await promptForOptionalName(
+    m,
+    options.supportLang,
+    options.defaultName,
+  );
   const description = await promptForOptionalDescription(
     m,
-    supportLang,
-    defaultDescription,
+    options.supportLang,
+    options.defaultDescription || name,
   );
-  const homepage = await promptForHomepage(m, supportLang);
+  const homepage = await promptForHomepage(m, options.supportLang);
   return { name, description, homepage };
 };

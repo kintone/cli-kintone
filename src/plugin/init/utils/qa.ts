@@ -1,11 +1,5 @@
 import type { BoundMessage } from "./messages";
-import {
-  promptForDescription,
-  promptForHomepage,
-  promptForName,
-  promptForOptionalLang,
-  promptForProjectName,
-} from "../utils/qa/prompt";
+import { promptForLang, promptForProjectName } from "../utils/qa/prompt";
 
 export type Answers = {
   projectName: string;
@@ -45,32 +39,45 @@ export const runPrompt = async (
 
   const defaultName = getDefaultName(projectName);
 
-  const enName = await promptForName(m, "En", defaultName);
-  const enDescription = await promptForDescription(m, "En", enName);
-  const enHomepage = await promptForHomepage(m, "En");
-
-  const ja = await promptForOptionalLang(m, "Ja", enName, enDescription);
-  const zh = await promptForOptionalLang(m, "Zh", enName, enDescription);
-  const es = await promptForOptionalLang(m, "Es", enName, enDescription);
+  const en = await promptForLang(m, {
+    supportLang: "En",
+    required: true,
+    defaultName: defaultName,
+  });
+  const ja = await promptForLang(m, {
+    supportLang: "Ja",
+    defaultName: en.name,
+    defaultDescription: en.description,
+  });
+  const zh = await promptForLang(m, {
+    supportLang: "Zh",
+    defaultName: en.name,
+    defaultDescription: en.description,
+  });
+  const es = await promptForLang(m, {
+    supportLang: "Es",
+    defaultName: en.name,
+    defaultDescription: en.description,
+  });
 
   const result: Answers = {
     projectName,
     name: {
-      en: enName,
+      en: en.name,
       ja: ja.name,
       zh: zh.name,
       es: es.name,
     },
     description: {
-      en: enDescription,
+      en: en.description,
       ja: ja.description,
       zh: zh.description,
       es: es.description,
     },
   };
-  if (enHomepage) {
+  if (en.homepage) {
     result.homepage_url = {
-      en: enHomepage,
+      en: en.homepage,
       ja: ja.homepage,
       zh: zh.homepage,
       es: es.homepage,

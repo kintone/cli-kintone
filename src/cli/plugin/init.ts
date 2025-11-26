@@ -13,9 +13,9 @@ const describe = "Initialize plugin project";
 const builder = (args: yargs.Argv) =>
   args
     .option("name", {
-      describe: "The name of your plugin",
+      describe:
+        "The name of your plugin (and the target directory). If omitted, you will be prompted to input interactively.",
       type: "string",
-      demandOption: true,
       requiresArg: true,
     })
     .option("template", {

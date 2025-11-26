@@ -1,15 +1,9 @@
-import type { Lang } from "./lang";
 import type { BoundMessage } from "./messages";
-import {
-  promptForDescription,
-  promptForHomepage,
-  promptForName,
-  promptForOptionalDescription,
-  promptForOptionalName,
-  promptForSupportLang,
-} from "../utils/qa/prompt";
+import { promptForLang, promptForProjectName } from "../utils/qa/prompt";
+import path from "path";
 
 export type Answers = {
+  projectName: string;
   name: {
     ja?: string;
     en: string;
@@ -30,60 +24,61 @@ export type Answers = {
   };
 };
 
-export const getDefaultName = (outputDir: string) =>
-  outputDir.replace(/.*\//, "");
+export const DEFAULT_PROJECT_NAME = "kintone-plugin";
 
 export const runPrompt = async (
   m: BoundMessage,
-  outputDir: string,
-  lang: Lang,
+  inputName: string | undefined,
 ): Promise<Answers> => {
-  const enName = await promptForName(m, "En", getDefaultName(outputDir));
-  const enDescription = await promptForDescription(m, "En", enName);
+  const projectName =
+    inputName === undefined
+      ? await promptForProjectName(m, `./${DEFAULT_PROJECT_NAME}`)
+      : inputName;
 
-  const supportJa = await promptForSupportLang(m, "Ja", lang === "ja");
-  const jaName = supportJa ? await promptForOptionalName(m, "Ja") : undefined;
-  const jaDescription = supportJa
-    ? await promptForOptionalDescription(m, "Ja")
-    : undefined;
+  const defaultName = path.basename(projectName);
 
-  const supportZh = await promptForSupportLang(m, "Zh");
-  const zhName = supportZh ? await promptForOptionalName(m, "Zh") : undefined;
-  const zhDescription = supportZh
-    ? await promptForOptionalDescription(m, "Zh")
-    : undefined;
-
-  const supportEs = await promptForSupportLang(m, "Es");
-  const esName = supportEs ? await promptForOptionalName(m, "Es") : undefined;
-  const esDescription = supportEs
-    ? await promptForOptionalDescription(m, "Es")
-    : undefined;
-
-  const enHomepage = await promptForHomepage(m, "En");
-  const jaHomepage = supportJa ? await promptForHomepage(m, "Ja") : undefined;
-  const zhHomepage = supportZh ? await promptForHomepage(m, "Zh") : undefined;
-  const esHomepage = supportEs ? await promptForHomepage(m, "Es") : undefined;
+  const en = await promptForLang(m, {
+    supportLang: "En",
+    required: true,
+    defaultName: defaultName,
+  });
+  const ja = await promptForLang(m, {
+    supportLang: "Ja",
+    defaultName: en.name,
+    defaultDescription: en.description,
+  });
+  const zh = await promptForLang(m, {
+    supportLang: "Zh",
+    defaultName: en.name,
+    defaultDescription: en.description,
+  });
+  const es = await promptForLang(m, {
+    supportLang: "Es",
+    defaultName: en.name,
+    defaultDescription: en.description,
+  });
 
   const result: Answers = {
+    projectName,
     name: {
-      en: enName,
-      ja: jaName,
-      zh: zhName,
-      es: esName,
+      en: en.name,
+      ja: ja.name,
+      zh: zh.name,
+      es: es.name,
     },
     description: {
-      en: enDescription,
-      ja: jaDescription,
-      zh: zhDescription,
-      es: esDescription,
+      en: en.description,
+      ja: ja.description,
+      zh: zh.description,
+      es: es.description,
     },
   };
-  if (enHomepage) {
+  if (en.homepage) {
     result.homepage_url = {
-      en: enHomepage,
-      ja: jaHomepage,
-      zh: zhHomepage,
-      es: esHomepage,
+      en: en.homepage,
+      ja: ja.homepage,
+      zh: zh.homepage,
+      es: es.homepage,
     };
   }
   return result;

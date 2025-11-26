@@ -5,9 +5,22 @@ import {
   validateForName,
   validateForOptionalDescription,
   validateForOptionalName,
+  validateForProjectName,
 } from "./validator";
 
 export type SupportLang = "En" | "Ja" | "Zh" | "Es";
+
+export const promptForProjectName = async (
+  m: BoundMessage,
+  defaultAnswer: string,
+) => {
+  return input({
+    message: m("Q_ProjectName"),
+    default: defaultAnswer,
+    validate: (value) =>
+      validateForProjectName(value) ? true : m("Q_ProjectNameError"),
+  });
+};
 
 export const promptForName = async (
   m: BoundMessage,
@@ -37,23 +50,27 @@ export const promptForDescription = async (
   });
 };
 
-export const promptForOptionalName = async (
+const promptForOptionalName = async (
   m: BoundMessage,
   supportLang: SupportLang,
+  defaultAnswer: string,
 ) => {
   return input({
     message: m(`Q_Name${supportLang}`),
+    default: defaultAnswer,
     validate: (value) =>
       validateForOptionalName(value) ? true : m(`Q_Name${supportLang}Error`),
   });
 };
 
-export const promptForOptionalDescription = async (
+const promptForOptionalDescription = async (
   m: BoundMessage,
   supportLang: SupportLang,
+  defaultAnswer: string,
 ) => {
   return input({
     message: m(`Q_Description${supportLang}`),
+    default: defaultAnswer,
     validate: (value) =>
       validateForOptionalDescription(value)
         ? true
@@ -61,7 +78,7 @@ export const promptForOptionalDescription = async (
   });
 };
 
-export const promptForSupportLang = async (
+const promptForSupportLang = async (
   m: BoundMessage,
   supportLang: Exclude<SupportLang, "En">,
   defaultAnswer: boolean = false,
@@ -81,9 +98,38 @@ export const promptForHomepage = async (
   });
 };
 
-export const promptForSupportMobile = async (m: BoundMessage) => {
-  return confirm({
-    default: true,
-    message: m("Q_MobileSupport"),
-  });
+export type LangAnswers = {
+  name: string;
+  description: string;
+  homepage?: string;
+};
+
+export const promptForLang = async <R extends boolean = false>(
+  m: BoundMessage,
+  options: {
+    required?: R;
+    supportLang: SupportLang;
+    defaultName: string;
+    defaultDescription?: string;
+  },
+): Promise<R extends true ? LangAnswers : Partial<LangAnswers>> => {
+  // NOTE: lang en is always required
+  if (!options.required && options.supportLang !== "En") {
+    const support = await promptForSupportLang(m, options.supportLang);
+    if (!support) {
+      return {} as R extends true ? LangAnswers : Partial<LangAnswers>;
+    }
+  }
+  const name = await promptForOptionalName(
+    m,
+    options.supportLang,
+    options.defaultName,
+  );
+  const description = await promptForOptionalDescription(
+    m,
+    options.supportLang,
+    options.defaultDescription || name,
+  );
+  const homepage = await promptForHomepage(m, options.supportLang);
+  return { name, description, homepage };
 };

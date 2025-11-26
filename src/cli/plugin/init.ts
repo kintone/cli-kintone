@@ -4,8 +4,6 @@ import type { CommandModule } from "yargs";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
 import { setStability } from "../stability";
-import type { TemplateType } from "../../plugin/init/utils/template";
-import { SUPPORT_TEMPLATE_TYPE } from "../../plugin/init/utils/template";
 import { run } from "../../plugin/init";
 
 const command = "init";
@@ -21,10 +19,10 @@ const builder = (args: yargs.Argv) =>
       requiresArg: true,
     })
     .option("template", {
-      describe: "A template for a generated plug-in",
+      describe:
+        "A template for a generated plug-in. See https://github.com/kintone/cli-kintone/tree/main/plugin-templates for available templates",
       type: "string",
       default: "javascript",
-      choices: SUPPORT_TEMPLATE_TYPE,
       requiresArg: true,
     });
 
@@ -36,7 +34,7 @@ const handler = async (args: Args) => {
   try {
     const flags = {
       name: args.name,
-      template: args.template as TemplateType,
+      template: args.template,
     };
     if (process.env.NODE_ENV === "test") {
       console.log(JSON.stringify({ flags: flags }));

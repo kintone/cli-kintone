@@ -1,5 +1,3 @@
-"use strict";
-
 import type { Lang } from "./lang";
 
 type LangMap = { [lang in Lang]: string };
@@ -102,9 +100,21 @@ const messages = {
     en: "Does your plug-in support mobile views?",
     ja: "モバイルページをサポートしますか？",
   },
+  settingUpTemplate: {
+    en: "Starting to set up template...",
+    ja: "テンプレートのセットアップを開始します...",
+  },
+  templateSetupCompleted: {
+    en: "Template set up successfully",
+    ja: "テンプレートのセットアップが完了しました",
+  },
   installDependencies: {
-    en: "Installing dependencies...",
-    ja: "依存ライブラリをインストールします",
+    en: "Starting to install dependencies...",
+    ja: "依存パッケージのインストールを開始します...",
+  },
+  dependenciesInstalled: {
+    en: "Dependencies installed successfully",
+    ja: "依存パッケージのインストールが完了しました",
   },
   introduction: {
     en: `

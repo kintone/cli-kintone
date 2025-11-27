@@ -138,6 +138,25 @@ pnpm test:e2e
 Unfortunately, an actual kintone environment with API access is required to run E2E tests.
 Therefore, we recommend to run on CI.
 
+##### Parallel execution
+
+E2E tests are executed in parallel by default to speed up test execution. The default configuration allows up to 10 tests to run concurrently.
+
+In some cases, you may want to run tests sequentially. For example, when multiple tests share the same resource (such as a specific kintone app), they should not run at the same time to avoid conflicts.
+
+To run a specific scenario sequentially, use the `@serial` tag with a resource identifier:
+
+```gherkin
+@serial(app_in_space_for_export)
+Scenario: App in a space
+  Given The app "app_in_space_for_export" has no records
+  ...
+```
+
+Scenarios with the same `@serial(resource)` tag will not run concurrently with each other. However, they can still run in parallel with scenarios that have different `@serial` tags or no `@serial` tag at all.
+
+For more details about parallel execution in Cucumber, see the [official documentation](https://github.com/cucumber/cucumber-js/blob/main/docs/parallel.md).
+
 ### Documentation website
 
 The documentation website (this website!) must be updated in the same PR.

@@ -2,7 +2,7 @@ import { Readable } from "stream";
 import { pipeline } from "stream/promises";
 import { x } from "tar";
 import { logger } from "../../../../utils/log";
-import { fetchGitHubAPI } from "../../../core/utils/fetcher";
+import { fetchGitHubAPI } from "../../../../utils/github";
 
 /**
  * Template source information

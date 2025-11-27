@@ -1,6 +1,6 @@
+import { fetchGitHubAPI } from "../../../../utils/github";
 import { logger } from "../../../../utils/log";
 import type { TemplateSource } from "./downloader";
-import { fetchGitHubAPI } from "../../../core/utils/fetcher";
 
 const DEFAULT_TEMPLATE_REPO_USER = "kintone" as const;
 const DEFAULT_TEMPLATE_REPO_NAME = "cli-kintone" as const;

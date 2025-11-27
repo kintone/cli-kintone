@@ -43,12 +43,6 @@ importers:
       node-rsa:
         specifier: ^1.1.1
         version: 1.1.1
-      prettier:
-        specifier: ^3.6.2
-        version: 3.6.2
-      rimraf:
-        specifier: ^6.0.1
-        version: 6.0.1
       tar:
         specifier: ^7.5.2
         version: 7.5.2
@@ -89,9 +83,6 @@ importers:
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
-      '@types/lodash':
-        specifier: ^4.17.20
-        version: 4.17.20
       '@types/node':
         specifier: ^18.19.130
         version: 18.19.130
@@ -155,6 +146,12 @@ importers:
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@18.19.130)(typescript@5.9.3)
@@ -2535,9 +2532,6 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
-
-  '@types/lodash@4.17.20':
-    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
 
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
@@ -11585,8 +11579,6 @@ snapshots:
       pretty-format: 29.7.0
 
   '@types/json-schema@7.0.15': {}
-
-  '@types/lodash@4.17.20': {}
 
   '@types/mdast@4.0.4':
     dependencies:

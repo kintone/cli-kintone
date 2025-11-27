@@ -16,6 +16,7 @@ export default [
       "website/build",
       // Auto generated file
       "website/contributors.json",
+      "plugin-templates",
     ],
   },
   ...presetsNodeTypescriptPrettier,

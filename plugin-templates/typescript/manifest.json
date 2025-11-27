@@ -1,0 +1,42 @@
+{
+  "$schema": "https://raw.githubusercontent.com/kintone/js-sdk/%40kintone/plugin-manifest-validator%4010.2.0/packages/plugin-manifest-validator/manifest-schema.json",
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "desktop": {
+    "js": [
+      "lib/desktop.js"
+    ],
+    "css": [
+      "plugin/css/desktop.css"
+    ]
+  },
+  "icon": "plugin/image/icon.png",
+  "config": {
+    "html": "plugin/html/config.html",
+    "js": [
+      "lib/config.js"
+    ],
+    "css": [
+      "plugin/css/51-modern-default.css",
+      "plugin/css/config.css"
+    ],
+    "required_params": [
+      "message"
+    ]
+  },
+  "name": {
+    "en": "kintone-plugin-template-typescript"
+  },
+  "description": {
+    "en": "kintone-plugin-template-typescript"
+  },
+  "mobile": {
+    "js": [
+      "lib/mobile.js"
+    ],
+    "css": [
+      "plugin/css/mobile.css"
+    ]
+  }
+}

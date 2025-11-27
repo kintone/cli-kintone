@@ -240,6 +240,14 @@ Then(
 );
 
 Then(
+  "The output message should match with the pattern:",
+  function (message: string) {
+    const reg = new RegExp(message);
+    assert.match(this.response.stdout.toString(), reg);
+  },
+);
+
+Then(
   "The output message should match with the data below:",
   async function (table) {
     const records = this.replacePlaceholdersInRawDataTables(table.raw());

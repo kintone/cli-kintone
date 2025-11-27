@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.0](https://github.com/kintone/cli-kintone/compare/v1.15.0...v1.16.0) (2025-11-27)
+
+
+### Features
+
+* add plugin init command (Experimental) ([#1201](https://github.com/kintone/cli-kintone/issues/1201)) ([fa6f918](https://github.com/kintone/cli-kintone/commit/fa6f9185a9992153791a0c3032ba540ae6c813e3))
+
 ## [1.15.0](https://github.com/kintone/cli-kintone/compare/v1.14.3...v1.15.0) (2025-11-06)
 
 

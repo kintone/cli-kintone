@@ -93,7 +93,7 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5
       '@types/yargs':
-        specifier: ^17.0.34
+        specifier: ^17.0.35
         version: 17.0.35
       '@types/yauzl':
         specifier: ^2.10.3

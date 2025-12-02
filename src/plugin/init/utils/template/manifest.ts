@@ -7,34 +7,8 @@ export type ManifestPatch = DeepPartial<
   Pick<ManifestV1JsonObject, "name" | "description" | "homepage_url">
 >;
 
-const isEmpty = (v: unknown): boolean =>
-  v === null || v === undefined || v === "";
-
-const isObject = (v: unknown): v is Record<string, unknown> =>
-  v !== null && typeof v === "object";
-
-const omitEmpty = (obj: Record<string, unknown>): Record<string, unknown> =>
-  Object.fromEntries(Object.entries(obj).filter(([, v]) => !isEmpty(v)));
-
-const applyPatch = (
-  base: Record<string, unknown>,
-  patch: ManifestPatch,
-): Record<string, unknown> =>
-  Object.entries(patch).reduce(
-    (acc, [key, value]) => {
-      if (isObject(value)) {
-        const merged = omitEmpty({
-          ...(isObject(acc[key]) ? acc[key] : {}),
-          ...value,
-        });
-        return Object.keys(merged).length > 0
-          ? { ...acc, [key]: merged }
-          : (delete acc[key], acc);
-      }
-      return isEmpty(value) ? (delete acc[key], acc) : { ...acc, [key]: value };
-    },
-    { ...base },
-  );
+const isEmptyObject = (v: unknown) =>
+  v !== null && typeof v === "object" && Object.keys(v).length === 0;
 
 export const updateManifests = async (opts: {
   manifestPath: string;
@@ -44,11 +18,15 @@ export const updateManifests = async (opts: {
   const driver = new LocalFSDriver();
   const manifestJson = await driver.readFile(opts.manifestPath, "utf-8");
   const manifest = JSON.parse(manifestJson);
-  const newManifest = applyPatch(manifest, opts.patch);
+  const newManifest = { ...manifest, ...opts.patch };
   logger.debug(`writing updated manifest: ${opts.manifestPath}`);
   await driver.writeFile(
     opts.manifestPath,
-    JSON.stringify(newManifest, null, 2),
+    JSON.stringify(
+      newManifest,
+      (_, v) => (isEmptyObject(v) ? undefined : v),
+      2,
+    ),
   );
   logger.debug("manifest updated");
 };

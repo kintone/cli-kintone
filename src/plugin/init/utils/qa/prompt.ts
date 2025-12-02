@@ -74,6 +74,9 @@ export type LangAnswers = {
   homepage?: string;
 };
 
+const emptyToUndefined = (v: string): string | undefined =>
+  v === "" ? undefined : v;
+
 export const promptForLang = async <R extends boolean = false>(
   m: BoundMessage,
   options: {
@@ -96,6 +99,10 @@ export const promptForLang = async <R extends boolean = false>(
     options.supportLang,
     options.defaultDescription || name,
   );
-  const homepage = await promptForHomepage(m, options.supportLang);
-  return { name, description, homepage };
+  const homepage = emptyToUndefined(
+    await promptForHomepage(m, options.supportLang),
+  );
+  return { name, description, homepage } as R extends true
+    ? LangAnswers
+    : Partial<LangAnswers>;
 };

@@ -9,5 +9,6 @@
     "features/**/*",
     "package.json",
     "e2e-credentials-schema.json"
-  ]
+  ],
+  "exclude": ["assets/**/*"]
 }

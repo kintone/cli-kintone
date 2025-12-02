@@ -76,6 +76,10 @@ const OVERRIDE_LICENSES_TEXT = {
     licensePageUrl:
       "https://raw.githubusercontent.com/SBoudrias/Inquirer.js/main/LICENSE",
   },
+  eastasianwidth: {
+    licensePageUrl:
+      "https://raw.githubusercontent.com/komagata/eastasianwidth/master/MIT-LICENSE.txt",
+  },
   imurmurhash: {
     // License text is written in README.md
     licenseText: "See https://github.com/jensyt/imurmurhash-js#license-mit",

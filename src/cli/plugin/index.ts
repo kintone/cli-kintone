@@ -6,6 +6,7 @@ import { infoCommand } from "./info";
 import { uploadCommand } from "./upload";
 import { checkCommand } from "./check";
 import { setStability } from "../stability";
+import { initCommand } from "./init";
 
 const command = "plugin";
 
@@ -17,6 +18,7 @@ const builder = (args: yargs.Argv) =>
     .command(keygenCommand)
     .command(packCommand)
     .command(uploadCommand)
+    .command(initCommand)
     .command(checkCommand)
     .demandCommand();
 

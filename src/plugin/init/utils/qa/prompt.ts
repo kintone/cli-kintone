@@ -3,8 +3,6 @@ import type { BoundMessage } from "../messages";
 import {
   validateForDescription,
   validateForName,
-  validateForOptionalDescription,
-  validateForOptionalName,
   validateForProjectName,
 } from "./validator";
 
@@ -45,34 +43,6 @@ export const promptForDescription = async (
     default: defaultAnswer,
     validate: (value) =>
       validateForDescription(value)
-        ? true
-        : m(`Q_Description${supportLang}Error`),
-  });
-};
-
-const promptForOptionalName = async (
-  m: BoundMessage,
-  supportLang: SupportLang,
-  defaultAnswer: string,
-) => {
-  return input({
-    message: m(`Q_Name${supportLang}`),
-    default: defaultAnswer,
-    validate: (value) =>
-      validateForOptionalName(value) ? true : m(`Q_Name${supportLang}Error`),
-  });
-};
-
-const promptForOptionalDescription = async (
-  m: BoundMessage,
-  supportLang: SupportLang,
-  defaultAnswer: string,
-) => {
-  return input({
-    message: m(`Q_Description${supportLang}`),
-    default: defaultAnswer,
-    validate: (value) =>
-      validateForOptionalDescription(value)
         ? true
         : m(`Q_Description${supportLang}Error`),
   });
@@ -120,20 +90,12 @@ export const promptForLang = async <R extends boolean = false>(
       return {} as R extends true ? LangAnswers : Partial<LangAnswers>;
     }
   }
-  const name = options.required
-    ? await promptForName(m, options.supportLang, options.defaultName)
-    : await promptForOptionalName(m, options.supportLang, options.defaultName);
-  const description = options.required
-    ? await promptForDescription(
-        m,
-        options.supportLang,
-        options.defaultDescription || name,
-      )
-    : await promptForOptionalDescription(
-        m,
-        options.supportLang,
-        options.defaultDescription || name,
-      );
+  const name = await promptForName(m, options.supportLang, options.defaultName);
+  const description = await promptForDescription(
+    m,
+    options.supportLang,
+    options.defaultDescription || name,
+  );
   const homepage = await promptForHomepage(m, options.supportLang);
   return { name, description, homepage };
 };

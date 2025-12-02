@@ -120,16 +120,20 @@ export const promptForLang = async <R extends boolean = false>(
       return {} as R extends true ? LangAnswers : Partial<LangAnswers>;
     }
   }
-  const name = await promptForOptionalName(
-    m,
-    options.supportLang,
-    options.defaultName,
-  );
-  const description = await promptForOptionalDescription(
-    m,
-    options.supportLang,
-    options.defaultDescription || name,
-  );
+  const name = options.required
+    ? await promptForName(m, options.supportLang, options.defaultName)
+    : await promptForOptionalName(m, options.supportLang, options.defaultName);
+  const description = options.required
+    ? await promptForDescription(
+        m,
+        options.supportLang,
+        options.defaultDescription || name,
+      )
+    : await promptForOptionalDescription(
+        m,
+        options.supportLang,
+        options.defaultDescription || name,
+      );
   const homepage = await promptForHomepage(m, options.supportLang);
   return { name, description, homepage };
 };

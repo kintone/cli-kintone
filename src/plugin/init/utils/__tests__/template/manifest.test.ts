@@ -172,5 +172,100 @@ describe("template/manifest", () => {
         });
       });
     });
+
+    it("空文字のプロパティは既存の値を削除する", async () => {
+      // 既存のmanifestにjaを追加
+      const initialManifest = {
+        manifest_version: 1,
+        version: 1,
+        type: "APP",
+        name: {
+          en: "Original Name",
+          ja: "元の名前",
+        },
+        icon: "image/icon.png",
+      };
+      await writeFile(manifestPath, JSON.stringify(initialManifest, null, 2));
+
+      const patch: ManifestPatch = {
+        name: {
+          en: "New Name",
+          ja: "",
+        },
+      };
+
+      await updateManifests({
+        manifestPath,
+        patch,
+      });
+
+      const updatedManifest = JSON.parse(await readFile(manifestPath, "utf-8"));
+
+      assert.strictEqual(updatedManifest.name.en, "New Name");
+      assert.strictEqual(updatedManifest.name.ja, undefined);
+    });
+
+    it("すべてのネストプロパティが空の場合、親プロパティも削除する", async () => {
+      const initialManifest = {
+        manifest_version: 1,
+        version: 1,
+        type: "APP",
+        name: {
+          en: "Name",
+        },
+        homepage_url: {
+          en: "https://example.com",
+        },
+        icon: "image/icon.png",
+      };
+      await writeFile(manifestPath, JSON.stringify(initialManifest, null, 2));
+
+      const patch: ManifestPatch = {
+        homepage_url: {
+          en: "",
+        },
+      };
+
+      await updateManifests({
+        manifestPath,
+        patch,
+      });
+
+      const updatedManifest = JSON.parse(await readFile(manifestPath, "utf-8"));
+
+      assert.strictEqual(updatedManifest.homepage_url, undefined);
+    });
+
+    it("既存の他言語プロパティを保持しつつ空文字で一部を削除する", async () => {
+      const initialManifest = {
+        manifest_version: 1,
+        version: 1,
+        type: "APP",
+        name: {
+          en: "Name",
+          ja: "名前",
+          zh: "名称",
+        },
+        icon: "image/icon.png",
+      };
+      await writeFile(manifestPath, JSON.stringify(initialManifest, null, 2));
+
+      const patch: ManifestPatch = {
+        name: {
+          ja: "",
+        },
+      };
+
+      await updateManifests({
+        manifestPath,
+        patch,
+      });
+
+      const updatedManifest = JSON.parse(await readFile(manifestPath, "utf-8"));
+
+      assert.strictEqual(updatedManifest.name.en, "Name");
+      assert.strictEqual(updatedManifest.name.ja, undefined);
+      assert.strictEqual(updatedManifest.name.zh, "名称");
+    });
   });
 });

@@ -156,5 +156,151 @@ tester.run("no-kintone-internal-selector", noKintoneInternalSelector, {
         },
       ],
     },
+    // kintone-*
+    {
+      code: `element.querySelector('.kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `element.querySelector('.foo > .kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `element.querySelectorAll('.kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `element.querySelectorAll('.foo.kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `element.getElementsByClassName('kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `element.getElementsByClassName('foo kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `$('.kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Possible use of internal kintone UI class name `kintone-foo`.",
+        },
+      ],
+    },
+    {
+      code: `$(document).on('click', '.kintone-foo', handler)`,
+      errors: [
+        {
+          message:
+            "Possible use of internal kintone UI class name `kintone-foo`.",
+        },
+      ],
+    },
+    // ocean-*
+    {
+      code: `element.querySelector('.kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `element.querySelector('.foo > .kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `element.querySelectorAll('.kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `element.querySelectorAll('.foo.kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `element.getElementsByClassName('kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `element.getElementsByClassName('foo kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Using internal kintone UI class name `kintone-foo` is not allowed.",
+        },
+      ],
+    },
+    {
+      code: `$('.kintone-foo')`,
+      errors: [
+        {
+          message:
+            "Possible use of internal kintone UI class name `kintone-foo`.",
+        },
+      ],
+    },
+    {
+      code: `$(document).on('click', '.kintone-foo', handler)`,
+      errors: [
+        {
+          message:
+            "Possible use of internal kintone UI class name `kintone-foo`.",
+        },
+      ],
+    },
   ],
 });

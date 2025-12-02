@@ -9,7 +9,7 @@ const rule: Rule.RuleModule = {
     type: "suggestion",
     docs: {
       description:
-        "Prevents the use of internal kintone UI class names (e.g., `gaia-argoui-`, `-gaia`)",
+        "Prevents the use of internal kintone UI class names (e.g., `gaia-argoui-`, `-gaia`, `ocean-`, and `kintone-`)",
     },
     messages: {
       "forbidden-classname":
@@ -64,6 +64,8 @@ const rule: Rule.RuleModule = {
 const FORBIDDEN_CLASSNAME_PATTERNS = [
   /gaia-argoui-[A-Za-z0-9_-]*/,
   /[A-Za-z0-9_-]*-gaia/,
+  /ocean-[A-Za-z0-9_-]*/,
+  /kintone-[A-Za-z0-9_-]*/,
 ];
 
 const reportForbiddenSelectorCall = (

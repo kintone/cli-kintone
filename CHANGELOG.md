@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.1](https://github.com/kintone/cli-kintone/compare/v1.16.0...v1.16.1) (2025-12-03)
+
+
+### Bug Fixes
+
+* plugin-init prompts required non-empty name and desc ([#1261](https://github.com/kintone/cli-kintone/issues/1261)) ([033139a](https://github.com/kintone/cli-kintone/commit/033139a80c82dc07520d404f9e6d27f32d52d90d))
+* run `keygen` on `plugin init` ([#1262](https://github.com/kintone/cli-kintone/issues/1262)) ([13b5870](https://github.com/kintone/cli-kintone/commit/13b5870f9535844e40ae0d47ad052bcc92f62df4))
+
 ## [1.16.0](https://github.com/kintone/cli-kintone/compare/v1.15.0...v1.16.0) (2025-11-27)
 
 

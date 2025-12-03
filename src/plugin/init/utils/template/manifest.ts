@@ -7,6 +7,9 @@ export type ManifestPatch = DeepPartial<
   Pick<ManifestV1JsonObject, "name" | "description" | "homepage_url">
 >;
 
+const isEmptyObject = (v: unknown) =>
+  v !== null && typeof v === "object" && Object.keys(v).length === 0;
+
 export const updateManifests = async (opts: {
   manifestPath: string;
   patch: ManifestPatch;
@@ -19,7 +22,11 @@ export const updateManifests = async (opts: {
   logger.debug(`writing updated manifest: ${opts.manifestPath}`);
   await driver.writeFile(
     opts.manifestPath,
-    JSON.stringify(newManifest, null, 2),
+    JSON.stringify(
+      newManifest,
+      (_, v) => (isEmptyObject(v) ? undefined : v),
+      2,
+    ),
   );
   logger.debug("manifest updated");
 };

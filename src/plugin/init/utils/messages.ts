@@ -124,6 +124,14 @@ const messages = {
     en: "Dependencies installed successfully",
     ja: "依存パッケージのインストールが完了しました",
   },
+  generatingPrivateKey: {
+    en: "Starting to generate private key...",
+    ja: "秘密鍵の生成を開始します...",
+  },
+  privateKeyGenerated: {
+    en: "Private key generated successfully",
+    ja: "秘密鍵の生成が完了しました",
+  },
   introduction: {
     en: `
 Please answer some questions to create your Kintone plug-in project :)

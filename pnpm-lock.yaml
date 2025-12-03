@@ -34,6 +34,9 @@ importers:
       csv-stringify:
         specifier: 6.5.2
         version: 6.5.2
+      eslint:
+        specifier: ^9.38.0
+        version: 9.39.1(jiti@1.21.7)
       https-proxy-agent:
         specifier: ^7.0.6
         version: 7.0.6
@@ -80,6 +83,9 @@ importers:
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
+      '@types/estree':
+        specifier: ^1.0.8
+        version: 1.0.8
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
@@ -128,9 +134,6 @@ importers:
       cross-env:
         specifier: ^10.1.0
         version: 10.1.0
-      eslint:
-        specifier: ^9.39.1
-        version: 9.39.1(jiti@1.21.7)
       glob:
         specifier: ^11.0.3
         version: 11.0.3

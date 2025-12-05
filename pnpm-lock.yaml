@@ -117,8 +117,8 @@ importers:
         specifier: ^2.15.1
         version: 2.15.1
       allure-jest:
-        specifier: ^3.4.2
-        version: 3.4.2(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))
+        specifier: ^3.4.3
+        version: 3.4.3(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))
       allure-js-commons:
         specifier: ^3.4.2
         version: 3.4.2
@@ -2986,8 +2986,8 @@ packages:
   allure-cucumberjs@2.15.1:
     resolution: {integrity: sha512-T6hWVZLmq29pfTePqEs5D+6qUsvPrGOwoEtHkIs8pPpdwQMbmn78+KR/s6uispIevA1r0SDZOrHGKiJSfJs+2g==}
 
-  allure-jest@3.4.2:
-    resolution: {integrity: sha512-0WBRFS/L7Ncds34b2j+VocwdTzEG1HzANo1R/Dt53Hgo7mzevv0rpHlzef85n2WPEzZCiQTWVANXbawhtGKHhA==}
+  allure-jest@3.4.3:
+    resolution: {integrity: sha512-d4l4X3q8lsbs/Ce9xG5S9i5Ggp0UZnjrKJnj2GJokXnsUKwM1UaXrIToaoDkJypDOM74iGF2DoF6cibfXZuptA==}
     peerDependencies:
       jest: '>=24.8.0'
       jest-circus: '>=24.8.0'
@@ -3013,6 +3013,14 @@ packages:
     resolution: {integrity: sha512-bWzqduvU/LzSTI4wJKzWbHWe64xluF30pDxFfSP+jlloQx9F1Vytdqrit5oAgNj+czzdA+Nocv3Dh6d4COCTvA==}
     peerDependencies:
       allure-playwright: 3.4.2
+    peerDependenciesMeta:
+      allure-playwright:
+        optional: true
+
+  allure-js-commons@3.4.3:
+    resolution: {integrity: sha512-2n2uUFVmI7OaKXfkUPq2AcD1ksPR/WXZ9IhmQlMylb8bNpPChn1QPA/W97+RDYawFgvfhnadzIrH9ZWTWKjiNg==}
+    peerDependencies:
+      allure-playwright: 3.4.3
     peerDependenciesMeta:
       allure-playwright:
         optional: true
@@ -12123,9 +12131,9 @@ snapshots:
       '@cucumber/messages': 22.0.0
       allure-js-commons: 2.15.1
 
-  allure-jest@3.4.2(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))):
+  allure-jest@3.4.3(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))):
     dependencies:
-      allure-js-commons: 3.4.2
+      allure-js-commons: 3.4.3
     optionalDependencies:
       jest: 29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))
       jest-circus: 29.7.0
@@ -12141,6 +12149,10 @@ snapshots:
       strip-ansi: 5.2.0
 
   allure-js-commons@3.4.2:
+    dependencies:
+      md5: 2.3.0
+
+  allure-js-commons@3.4.3:
     dependencies:
       md5: 2.3.0
 

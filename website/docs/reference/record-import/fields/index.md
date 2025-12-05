@@ -1,3 +1,8 @@
+---
+sidebar_label: Field specifications
+sidebar_key: record-import-field-specifications
+---
+
 # Field specifications
 
 Basically, the input should be the same as the `value` property of the [API request](https://kintone.dev/en/docs/kintone/overview/field-types/).

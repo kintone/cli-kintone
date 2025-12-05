@@ -1,0 +1,71 @@
+---
+sidebar_position: 600
+---
+
+# ロギング
+
+## 概要
+
+cli-kintoneは、ユーザーが進捗状況の確認、デバッグ、問題の報告に役立つさまざまなログをサポートしています。
+
+ユーザーはコマンドラインオプションでログ出力を制御できます。
+
+## コマンドラインオプション
+
+| オプション            | 説明                                           |
+| --------------------- | ---------------------------------------------- |
+| `--log-level <level>` | ログ設定レベルを指定されたレベルに変更します。 |
+| `--verbose`           | ログ設定レベルを`debug`に変更します            |
+
+## ログ形式
+
+```
+[(datetime)] (log level): (message)
+```
+
+- datetime: ISO8601形式の日時文字列。（`YYYY-MM-DDTHH:mm:ss.sssZ`）
+- log level: ログイベントレベル。詳細はログレベルを参照してください。
+- message: イベントを説明するメッセージ。
+
+カラーサポート付きのターミナルでは、ログレベルは色付きで表示されます。
+
+メッセージに改行が含まれている場合、各行はプレフィックス付きで表示されます。
+
+```shell
+# エラーメッセージに改行が含まれている場合：
+# "The first line\nThe second line\nThe third line"
+
+# メッセージは以下のように表示されます
+[2023-09-14T19:58:55.938Z] ERROR: The first line
+[2023-09-14T19:58:55.938Z] ERROR: The second line
+[2023-09-14T19:58:55.938Z] ERROR: The third line
+```
+
+## ログ出力先
+
+すべての種類のログは**stderr**に出力されます。
+
+理由：コマンドの出力はstdoutに出力されるため、進捗状況やエラーはstderrに出力する方が適切です。
+
+## ログレベル
+
+ログレベルには、**ログイベントレベル**と**ログ設定レベル**の2種類があります。
+
+- ログイベントレベル：ログを分類する方法。
+  - イベントメッセージをロガーに送信する際、各イベントにはログイベントレベルがあります。
+- ログ設定レベル：出力するログをフィルタリングする方法
+  - ロガーがログを出力する際、ロガーはログ設定レベルを使用してログをフィルタリングします。
+
+### ログイベントレベル
+
+import LogEventLevelTable from "@site/docs/reference/logging/LogEventLevelTable";
+
+<LogEventLevelTable />
+
+### ログ設定レベル
+
+デフォルトのログ設定レベルは`info`です。
+
+import LogConfigLevelTable from "@site/docs/reference/logging/LogConfigLevelTable";
+
+<LogConfigLevelTable />

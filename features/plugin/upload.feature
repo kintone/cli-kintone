@@ -2,6 +2,7 @@
 @plugin-upload
 Feature: plugin upload
 
+  @serial(plugin_chjjmgadianhfiopehkbjlfkfioglafk)
   Scenario: Upload plugin.zip
     Given The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" is not installed
     And An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin.zip"
@@ -10,6 +11,7 @@ Feature: plugin upload
     Then I should get the exit code is zero
     And The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" should be installed
 
+  @serial(plugin_chjjmgadianhfiopehkbjlfkfioglafk)
   Scenario: Update plugin
     Given The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" is not installed
     And An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin_v1.zip"
@@ -20,6 +22,7 @@ Feature: plugin upload
     Then I should get the exit code is zero
     And The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" and version "2" should be installed
 
+  @serial(plugin_chjjmgadianhfiopehkbjlfkfioglafk)
   Scenario: Continue uploading by pressing "Y"
     Given The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" is not installed
     And An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin.zip"
@@ -30,6 +33,7 @@ Feature: plugin upload
     Then I should get the exit code is zero
     And The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" should be installed
 
+  @serial(plugin_chjjmgadianhfiopehkbjlfkfioglafk)
   Scenario: Cancel uploading by pressing "N"
     Given The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" is not installed
     And An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin.zip"

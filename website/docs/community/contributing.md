@@ -155,6 +155,20 @@ Scenario: App in a space
 
 Scenarios with the same `@serial(resource)` tag will not run concurrently with each other. However, they can still run in parallel with scenarios that have different `@serial` tags or no `@serial` tag at all.
 
+**Examples of resource identifiers used in existing E2E tests:**
+
+| Resource Identifier          | Description                                                                                                      |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `app_for_export`             | General purpose app for testing record export functionality                                                      |
+| `app_for_import`             | General purpose app for testing record import functionality                                                      |
+| `app_for_export_attachments` | App with attachment fields for testing file download functionality                                               |
+| `app_for_export_table`       | App with table fields for testing table data export                                                              |
+| `app_in_space_for_export`    | App located in a kintone space for testing space-related features                                                |
+| `app_in_guest_space`         | App located in a guest space for testing guest space access                                                      |
+| `plugin_<plugin_id>`         | Plugin resource for testing plugin upload/update functionality (e.g., `plugin_chjjmgadianhfiopehkbjlfkfioglafk`) |
+
+Multiple test scenarios that operate on the same resource should use the same `@serial` tag to prevent race conditions during parallel test execution.
+
 For more details about parallel execution in Cucumber, see the [official documentation](https://github.com/cucumber/cucumber-js/blob/main/docs/parallel.md).
 
 ### Documentation website

@@ -9,6 +9,8 @@ Hi, there :wave:
 
 We are happy to announce cli-kintone documentation website.
 
+<!-- truncate -->
+
 This website aims to provide cli-kintone users with common usage and reference. There are four sections:
 
 - [User Guide](/guide): Comprehensive assistance from installation to common usage.

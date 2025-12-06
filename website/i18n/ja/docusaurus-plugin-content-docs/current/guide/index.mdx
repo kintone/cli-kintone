@@ -1,0 +1,164 @@
+---
+sidebar_position: 100
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# はじめに
+
+:::info
+日本語話者向けのより良いチュートリアルがあります。
+
+- [はじめようcli-kintone - cybozu developer network](https://cybozu.dev/ja/tutorials/hello-cli-kintone/)
+:::
+
+## cli-kintoneとは？
+
+cli-kintoneは、[Kintone](https://www.kintone.com/en-us/)のレコードをインポート・エクスポートするためのCLIツールです。バッチ処理によるレコード操作に適しています。
+
+- Kintoneレコードのバックアップ/リストア
+- KintoneとBIプラットフォーム間のデータ同期
+- 他システムからのデータ移行
+
+:::tip[発音]
+cli-kintoneは「クリ キントーン」と発音し、「キント」は「hint」と韻を踏んでいます。名前は日本の和菓子[栗きんとん](https://visitgifu.com/see-do/kurikinton/)に由来しています。
+:::
+
+## なぜcli-kintoneなのか？
+
+cli-kintoneは、エンジニアでない方の業務パフォーマンスを向上させます。
+
+Web GUI、CLI、APIの比較は以下の通りです：
+
+- Web GUI
+  - 学習コストが低い
+  - 操作が簡単
+  - 自動化が困難
+  - 主にエンドユーザー向け
+- CLI
+  - 学習コストは中程度
+  - 操作はある程度簡単
+  - シェルスクリプトで自動化が容易
+  - 主にIT担当者が使用
+- API
+  - 学習コストが高い
+  - 操作にはアプリケーション開発が必要
+  - 高度な自動化が可能
+  - 主にプラグイン開発者が使用
+
+**cli-kintoneを使用すれば、エンジニアでない方でも少しのシェルスクリプトスキルで日常的・定期的なタスクを自動化できます。**
+
+## cli-kintoneを試してみる
+
+このセクションでは、cli-kintoneのインストールとアプリケーションからのレコードエクスポートの手順を説明します。
+
+### 要件
+
+cli-kintoneを実行するには、APIアクセスが可能なKintoneサブスクリプションが必要です。
+
+### インストール
+
+<Tabs>
+    <TabItem value="binary" label="バイナリ" default>
+        1. [Releases](https://github.com/kintone/cli-kintone/releases)ページに移動します。
+        2. 最新のcli-kintone ZIPファイルをダウンロードして展開します。
+    </TabItem>
+    <TabItem value="npm" label="npm">
+        `npm install`コマンドを実行します：
+
+        ```shell
+        npm install @kintone/cli --global
+        ```
+    </TabItem>
+</Tabs>
+
+詳細は[インストール](./installation.md)ページをご覧ください。
+
+### 動作確認
+
+`--version`オプション付きでcli-kintoneを実行します。
+
+<Tabs>
+  <TabItem value="linux-macos" label="Linux/macOS" default>
+    ```shell
+    ./cli-kintone --version
+
+    # バージョンが表示されます
+    # 1.10.0
+    ```
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+    ```powershell
+    ./cli-kintone.exe --version
+
+    # バージョンが表示されます
+    # 1.10.0
+    ```
+  </TabItem>
+</Tabs>
+
+
+ダウンロードしたバージョンが表示されれば、準備完了です！
+
+### 設定
+
+cli-kintoneからKintoneにアクセスするには、認証情報を設定する必要があります。
+繰り返しを減らすため、環境変数を設定することをお勧めします。
+
+設定する環境変数は以下の通りです。
+
+|キー|説明|
+|-|-|
+|`KINTONE_BASE_URL`|アクセスしたいKintoneのベースURL。<br/>例：`https://example.cybozu.com`|
+|`KINTONE_API_TOKEN`|アクセスしたいアプリのAPIトークン|
+
+:::tip
+または、`KINTONE_USERNAME`と`KINTONE_PASSWORD`を設定してパスワード認証を使用することもできます。
+:::
+
+<Tabs>
+  <TabItem value="linux-macos" label="Linux/macOS" default>
+    ```shell
+    export KINTONE_BASE_URL='https://example.cybozu.com'
+    export KINTONE_API_TOKEN='YourAPIToken'
+    ```
+  </TabItem>
+  <TabItem value="windows-powershell" label="Windows (PowerShell)">
+    ```powershell
+    $Env:KINTONE_BASE_URL='https://example.cybozu.com'
+    $Env:KINTONE_API_TOKEN='YourAPIToken'
+    ```
+  </TabItem>
+  <TabItem value="windows-cmd" label="Windows (Cmd)">
+    ```powershell
+    set KINTONE_BASE_URL=https://example.cybozu.com
+    set KINTONE_API_TOKEN=YourAPIToken
+    ```
+  </TabItem>
+</Tabs>
+
+### レコードのエクスポート
+
+それでは始めましょう。`record export`コマンドを使用してKintoneアプリからレコードを取得します。
+
+<Tabs>
+  <TabItem value="linux-macos" label="Linux/macOS" default>
+    ```shell
+    ./cli-kintone --app 123
+
+    # エクスポートされたレコードがCSV形式で表示されます
+    ```
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+    ```powershell
+    ./cli-kintone.exe --app 123
+
+    # エクスポートされたレコードがCSV形式で表示されます
+    ```
+  </TabItem>
+</Tabs>
+
+## 次のステップ
+
+すべての機能を確認するには、[コマンド](/category/commands)セクションをご覧ください。

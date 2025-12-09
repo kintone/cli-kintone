@@ -556,5 +556,39 @@
   "theme.tags.tagsPageTitle": {
     "message": "タグ",
     "description": "The title of the tag list page"
+  },
+  "homepage.tagline": {
+    "message": "Kintone レコードをインポート・エクスポートするCLIツール",
+    "description": "The homepage tagline"
+  },
+  "homepage.getStarted": {
+    "message": "はじめる",
+    "description": "The get started button label"
+  },
+  "homepage.description": {
+    "message": "Kintone レコードをインポート・エクスポートするCLIツール",
+    "description": "The homepage meta description"
+  },
+  "homepage.features.easyToUse.title": {
+    "message": "使いやすい"
+  },
+  "homepage.features.easyToUse.description": {
+    "message": "cli-kintone はIT担当者やエンジニア以外の方でも使えるように設計されています。すぐに慣れることができます。"
+  },
+  "homepage.features.attachmentSupport.title": {
+    "message": "添付ファイルフィールド対応"
+  },
+  "homepage.features.attachmentSupport.description": {
+    "message": "cli-kintone は添付ファイルフィールドに対応しています。Kintone レコードと一緒にファイルをダウンロードまたはアップロードできます。"
+  },
+  "homepage.features.automation.title": {
+    "message": "自動化に最適"
+  },
+  "homepage.features.automation.description": {
+    "message": "cli-kintone はシェルスクリプトとの連携に優れています。定期的な作業や日常業務を自動化できます。"
+  },
+  "homepage.title": {
+    "message": "cli-kintone; Kintone レコードをインポート・エクスポートするCLIツール",
+    "description": "The homepage title"
   }
 }

@@ -89,9 +89,9 @@
 
 #### エラー
 
-| 原因                                                                                   | メッセージ                                                                 |
-| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| CSVファイルの`<row_id>`が重複している場合                                             | `[520] [GAIA_SI01] Raw ID (code: Table) in a table is duplicated.`        |
-| CSVファイルの`<row_id>`が文字列で、数値ではない場合                                   | `[400] [CB_IJ01] Invalid JSON string.`                                     |
+| 原因                                                                                                      | メッセージ                                                                 |
+| --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| CSVファイルの`<row_id>`が重複している場合                                                                 | `[520] [GAIA_SI01] Raw ID (code: Table) in a table is duplicated.`         |
+| CSVファイルの`<row_id>`が文字列で、数値ではない場合                                                       | `[400] [CB_IJ01] Invalid JSON string.`                                     |
 | `--fields` Tableオプションでimportコマンドを実行し、テーブル内のフィールドがCSVヘッダーに欠落している場合 | `Error: The specified field "<<missing_field>>" does not exist on the CSV` |
-| `--fields` Tableオプションでimportコマンドを実行し、行の`<row_id>`が空文字列の場合    | `Error: The specified field "Table" does not exist on the CSV`             |
+| `--fields` Tableオプションでimportコマンドを実行し、行の`<row_id>`が空文字列の場合                        | `Error: The specified field "Table" does not exist on the CSV`             |

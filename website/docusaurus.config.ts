@@ -35,6 +35,14 @@ const config: Config = {
   i18n: {
     defaultLocale: "en",
     locales: ["en", "ja"],
+    localeConfigs: {
+      en: {
+        label: "English",
+      },
+      ja: {
+        label: "日本語",
+      },
+    },
   },
 
   presets: [

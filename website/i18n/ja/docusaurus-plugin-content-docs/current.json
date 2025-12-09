@@ -25,7 +25,7 @@
   },
   "sidebar.referenceSidebar.category.record-export-field-specifications": {
     "message": "フィールドの仕様",
-    "description": "The label for category 'Field specifications' in sidebar 'referenceSidebar'"
+    "description": "The label for category 'フィールド仕様' in sidebar 'referenceSidebar'"
   },
   "sidebar.referenceSidebar.category.Importing records": {
     "message": "レコードのインポート",
@@ -33,7 +33,7 @@
   },
   "sidebar.referenceSidebar.category.record-import-field-specifications": {
     "message": "フィールドの仕様",
-    "description": "The label for category 'Field specifications' in sidebar 'referenceSidebar'"
+    "description": "The label for category 'フィールド仕様' in sidebar 'referenceSidebar'"
   },
   "sidebar.referenceSidebar.category.Deleting records": {
     "message": "レコードの削除",

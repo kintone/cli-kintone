@@ -16,7 +16,8 @@
     "typecheck": "tsc",
     "lint": "pnpm -w lint",
     "fix": "pnpm -w fix",
-    "update-credits": "ts-node scripts/update-credits.ts"
+    "update-credits": "ts-node scripts/update-credits.ts",
+    "update-translation-progress": "ts-node scripts/update-translation-progress.ts"
   },
   "dependencies": {
     "@docusaurus/core": "3.9.2",

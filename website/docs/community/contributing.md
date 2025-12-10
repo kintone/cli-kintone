@@ -183,6 +183,66 @@ To preview changes on local, run `doc:start` command:
 pnpm doc:start
 ```
 
+### Internationalization (i18n)
+
+The documentation website supports multiple languages. Currently, we support English (default) and Japanese.
+
+#### Translation workflow
+
+1. **Update English documentation** - Always update English docs first in `website/docs/`
+2. **Translate to Japanese** - Add translations in `website/i18n/ja/docusaurus-plugin-content-docs/current/`
+3. **Update translation progress** - Run the command to update the translation percentage in the language switcher:
+
+```shell
+cd website
+pnpm update-translation-progress
+```
+
+This command will:
+
+- Count English and Japanese documentation files
+- Calculate translation percentage
+- Update the language switcher label (e.g., "日本語 (28%)")
+
+4. **Preview both languages** - Test your changes in both languages:
+
+```shell
+# English version
+pnpm doc:start
+
+# Japanese version
+pnpm doc:start --locale ja
+```
+
+#### File structure
+
+```
+website/
+├── docs/                      # English documentation (source)
+│   ├── guide/
+│   ├── reference/
+│   └── community/
+├── i18n/ja/                   # Japanese translations
+│   └── docusaurus-plugin-content-docs/
+│       └── current/           # Translated docs
+│           ├── guide/
+│           ├── reference/
+│           └── community/
+```
+
+#### Translation guidelines
+
+- **Maintain structure** - Keep the same file structure and frontmatter
+- **Use `@site/` for imports** - In translated files, use `@site/` alias for React component imports:
+  ```javascript
+  import Component from "@site/src/components/Component";
+  ```
+- **Copy images** - Copy images to the same relative path in the i18n directory
+- **Keep `.md` extensions** - Use `.md` extension in internal links (e.g., `[link](./page.md)`)
+- **Update regularly** - Run `pnpm update-translation-progress` after adding translations
+
+For more details about Docusaurus i18n, see the [official documentation](https://docusaurus.io/docs/i18n/introduction).
+
 ### Linting
 
 Before commit your work, please run `lint` command:

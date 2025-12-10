@@ -18,33 +18,5 @@
   "sidebar.guideSidebar.category.File formats.link.generated-index.description": {
     "message": "cli-kintoneはインポート・エクスポートコマンドで以下の形式をサポートしています。",
     "description": "The generated-index page description for category 'File formats' in sidebar 'guideSidebar'"
-  },
-  "sidebar.referenceSidebar.category.Exporting records": {
-    "message": "レコードのエクスポート",
-    "description": "The label for category 'Exporting records' in sidebar 'referenceSidebar'"
-  },
-  "sidebar.referenceSidebar.category.record-export-field-specifications": {
-    "message": "フィールドの仕様",
-    "description": "The label for category 'フィールド仕様' in sidebar 'referenceSidebar'"
-  },
-  "sidebar.referenceSidebar.category.Importing records": {
-    "message": "レコードのインポート",
-    "description": "The label for category 'Importing records' in sidebar 'referenceSidebar'"
-  },
-  "sidebar.referenceSidebar.category.record-import-field-specifications": {
-    "message": "フィールドの仕様",
-    "description": "The label for category 'フィールド仕様' in sidebar 'referenceSidebar'"
-  },
-  "sidebar.referenceSidebar.category.Deleting records": {
-    "message": "レコードの削除",
-    "description": "The label for category 'Deleting records' in sidebar 'referenceSidebar'"
-  },
-  "sidebar.referenceSidebar.category.Errors handling": {
-    "message": "エラーハンドリング",
-    "description": "The label for category 'Errors handling' in sidebar 'referenceSidebar'"
-  },
-  "sidebar.referenceSidebar.category.Proxy": {
-    "message": "プロキシ",
-    "description": "The label for category 'Proxy' in sidebar 'referenceSidebar'"
   }
 }

@@ -1,3 +1,8 @@
+---
+sidebar_label: Field specifications
+sidebar_key: record-export-field-specifications
+---
+
 # Field specifications
 
 Basically, the output is the same as the `value` property of the [API response](https://kintone.dev/en/docs/kintone/overview/field-types/).

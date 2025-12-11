@@ -7,6 +7,7 @@ import { logger } from "../../../utils/log";
 import path from "path";
 import fs from "fs";
 import { installDependencies } from "../utils/deps";
+import { runKeygen } from "../utils/keygen";
 import { isDirectory } from "../../../utils/file";
 
 const getSuccessCreatedPluginMessage = (
@@ -91,6 +92,7 @@ export const initPlugin = async (options: InitPluginOptions) => {
     });
     logger.info(m("templateSetupCompleted"));
     installDependencies(answers.projectName, options.lang);
+    runKeygen(answers.projectName, options.lang);
     logger.info(
       getSuccessCreatedPluginMessage(
         packageName,

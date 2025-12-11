@@ -5,6 +5,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
+    "start:ja": "docusaurus start --locale ja",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -15,7 +16,8 @@
     "typecheck": "tsc",
     "lint": "pnpm -w lint",
     "fix": "pnpm -w fix",
-    "update-credits": "ts-node scripts/update-credits.ts"
+    "update-credits": "ts-node scripts/update-credits.ts",
+    "update-translation-progress": "ts-node scripts/update-translation-progress.ts"
   },
   "dependencies": {
     "@docusaurus/core": "3.9.2",
@@ -27,7 +29,7 @@
     "prism-react-renderer": "^2.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "sass": "^1.94.0"
+    "sass": "^1.94.2"
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "^3.9.2",
@@ -35,7 +37,7 @@
     "@docusaurus/plugin-content-docs": "^3.9.2",
     "@docusaurus/tsconfig": "3.9.2",
     "@docusaurus/types": "3.9.2",
-    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/eslintrc": "^3.3.3",
     "@octokit/rest": "^22.0.1",
     "@types/node": "^18.19.130",
     "ts-node": "^10.9.2",

@@ -2,6 +2,7 @@
 @delete
 Feature: record delete
 
+  @serial(app_for_delete)
   Scenario: API token does not have delete permission
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
@@ -13,6 +14,7 @@ Feature: record delete
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[GAIA_NO01] Using this API token, you cannot run the specified API."
 
+  @serial(app_in_space_for_delete)
   Scenario: App in a space
     Given The app "app_in_space_for_delete" has no records
     And The app "app_in_space_for_delete" has some records as below:
@@ -26,6 +28,7 @@ Feature: record delete
     Then I should get the exit code is zero
     And The app "app_in_space_for_delete" should have no records
 
+  @serial(app_for_delete)
   Scenario: API token and login information
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
@@ -40,6 +43,7 @@ Feature: record delete
     Then I should get the exit code is zero
     And The app "app_for_delete" should have no records
 
+  @serial(app_for_delete)
   Scenario: Delete all records
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
@@ -68,6 +72,7 @@ Feature: record delete
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_DA03] You cannot specify a duplicate API token for the same app."
 
+  @serial(app_for_delete)
   Scenario: API tokens for different apps
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And The app "app_for_delete" has no records
@@ -96,6 +101,7 @@ Feature: record delete
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: The delete command only supports API token authentication."
 
+  @serial(app_for_delete)
   Scenario: Specify records with a file
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
@@ -142,6 +148,7 @@ Feature: record delete
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: Unexpected file type: txt is unacceptable."
 
+  @serial(app_has_changed_record_number)
   Scenario: Specify record number with customized field code
     Given The app "app_has_changed_record_number" has no records
     And The app "app_has_changed_record_number" has some records as below:
@@ -165,6 +172,7 @@ Feature: record delete
       | $RECORD_NUMBERS[2]   | Jenny | 30     |
       | $RECORD_NUMBERS[3]   | Rose  | 40     |
 
+  @serial(app_for_delete)
   Scenario: Specified record does not exist
     Given The app "app_for_delete" has no records
     And The CSV file "CliKintoneTest-140.csv" with content as below:
@@ -176,6 +184,7 @@ Feature: record delete
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Not exists record number. ID: 0"
 
+  @serial(app_has_set_app_code)
   Scenario: Specify with app code and record number
     Given The app "app_has_set_app_code" has no records
     And The app "app_has_set_app_code" has some records as below:
@@ -199,6 +208,7 @@ Feature: record delete
       | MyApp-$RECORD_NUMBERS[2] | Jenny | 30     |
       | MyApp-$RECORD_NUMBERS[3] | Rose  | 40     |
 
+  @serial(app_has_set_app_code)
   Scenario: Specify without app code
     Given The app "app_has_set_app_code" has no records
     And The app "app_has_set_app_code" has some records as below:
@@ -222,6 +232,7 @@ Feature: record delete
       | MyApp-$RECORD_NUMBERS[2] | Jenny | 30     |
       | MyApp-$RECORD_NUMBERS[3] | Rose  | 40     |
 
+  @serial(app_has_set_app_code)
   Scenario: Specify with incorrect app code
     Given The CSV file "CliKintoneTest-143.csv" with content as below:
       | Record_number        |
@@ -232,6 +243,7 @@ Feature: record delete
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Invalid record number. ID: NonExistentAppCode-1"
 
+  @serial(app_for_delete)
   Scenario: Skip confirmation message
     Given The app "app_for_delete" has no records
     And The app "app_for_delete" has some records as below:
@@ -245,7 +257,8 @@ Feature: record delete
     Then I should get the exit code is zero
     And The app "app_for_delete" should have no records
 
-  Scenario: App in a guest space
+  @serial(app_in_guest_space)
+  Scenario: App in a guest space (record delete)
     Given The app "app_in_guest_space" has no records
     And The app "app_in_guest_space" has some records as below:
       | Text  | Number |
@@ -266,6 +279,7 @@ Feature: record delete
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed.."
 
+  @serial(app_for_delete_encoding)
   Scenario: Utf8 encoded file
     Given The app "app_for_delete_encoding" has no records
     And The app "app_for_delete_encoding" has some records as below:
@@ -289,6 +303,7 @@ Feature: record delete
       | $RECORD_NUMBERS[2] | Jenny    |
       | $RECORD_NUMBERS[3] | Rose     |
 
+  @serial(app_for_delete_encoding)
   Scenario: Sjis encoded file
     Given The app "app_for_delete_encoding" has no records
     And The app "app_for_delete_encoding" has some records as below:
@@ -342,6 +357,7 @@ Feature: record delete
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Argument: encoding, Given: \"unsupported_encoding\", Choices: \"utf8\", \"sjis\""
 
+  @serial(app_for_delete)
   Scenario: App does not have records
     Given The app "app_for_delete" has no records
     And Load app ID of the app "app_for_delete" as env var: "APP_ID"
@@ -350,6 +366,7 @@ Feature: record delete
     Then I should get the exit code is zero
     And The output error message should match with the pattern: "WARN: The specified app does not have any records."
 
+  @serial(app_for_delete)
   Scenario: Cancel the execution by pressing "N"
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And The app "app_for_delete" has no records
@@ -370,6 +387,7 @@ Feature: record delete
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_delete)
   Scenario: Proceed with the execution by pressing "Y"
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And The app "app_for_delete" has no records
@@ -385,6 +403,7 @@ Feature: record delete
     Then I should get the exit code is zero
     And The app "app_for_delete" should have no records
 
+  @serial(app_for_delete)
   Scenario: Unsupported character for confirmation message
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And The app "app_for_delete" has no records
@@ -405,6 +424,7 @@ Feature: record delete
       | Bob   | 20     |
       | Jenny | 30     |
 
+  @serial(app_for_delete)
   Scenario: Press Enter for confirmation message
     Given Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And The app "app_for_delete" has no records

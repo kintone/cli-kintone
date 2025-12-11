@@ -73,7 +73,7 @@ importers:
         version: 11.3.0
       '@cybozu/eslint-config':
         specifier: ^24.3.0
-        version: 24.3.0(@types/eslint@9.6.1)(@typescript-eslint/utils@8.44.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(prettier@3.6.2)(typescript@5.9.3)
+        version: 24.3.0(@types/eslint@9.6.1)(@typescript-eslint/utils@8.44.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(prettier@3.7.4)(typescript@5.9.3)
       '@cybozu/license-manager':
         specifier: ^1.4.1
         version: 1.4.1
@@ -117,11 +117,11 @@ importers:
         specifier: ^2.15.1
         version: 2.15.1
       allure-jest:
-        specifier: ^3.4.2
-        version: 3.4.2(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))
+        specifier: ^3.4.3
+        version: 3.4.3(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))
       allure-js-commons:
-        specifier: ^3.4.2
-        version: 3.4.2
+        specifier: ^3.4.3
+        version: 3.4.3
       babel-jest:
         specifier: ^29.7.0
         version: 29.7.0(@babel/core@7.28.5)
@@ -131,9 +131,6 @@ importers:
       eslint:
         specifier: ^9.39.1
         version: 9.39.1(jiti@1.21.7)
-      glob:
-        specifier: ^11.0.3
-        version: 11.0.3
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))
@@ -141,14 +138,14 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       npm:
-        specifier: ^11.6.2
-        version: 11.6.2
+        specifier: ^11.6.4
+        version: 11.6.4
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
       prettier:
-        specifier: ^3.6.2
-        version: 3.6.2
+        specifier: ^3.7.4
+        version: 3.7.4
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -192,7 +189,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       sass:
-        specifier: ^1.94.0
+        specifier: ^1.94.2
         version: 1.94.2
     devDependencies:
       '@docusaurus/eslint-plugin':
@@ -211,8 +208,8 @@ importers:
         specifier: 3.9.2
         version: 3.9.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@eslint/eslintrc':
-        specifier: ^3.3.1
-        version: 3.3.1
+        specifier: ^3.3.3
+        version: 3.3.3
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
@@ -1653,6 +1650,10 @@ packages:
     resolution: {integrity: sha512-gtF186CXhIl1p4pJNGZw8Yc6RlshoePRvE0X91oPGb3vZ8pM3qOS9W9NGPat9LziaBV7XrJWGylNQXkGcnM3IQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@eslint/eslintrc@3.3.3':
+    resolution: {integrity: sha512-Kr+LPIUVKz2qkx1HAMH8q1q6azbqBAsXJUxBl/ODDuVPX45Z9DfwB8tPjTi6nNZ8BuM3nbJxC5zCAg5elnBUTQ==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
   '@eslint/js@9.36.0':
     resolution: {integrity: sha512-uhCbYtYynH30iZErszX78U+nR3pJU3RHGQ57NXy5QupD4SBVwDeU8TNBy+MjMngc1UyIW9noKqsRqfjQTBU2dw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -2985,8 +2986,8 @@ packages:
   allure-cucumberjs@2.15.1:
     resolution: {integrity: sha512-T6hWVZLmq29pfTePqEs5D+6qUsvPrGOwoEtHkIs8pPpdwQMbmn78+KR/s6uispIevA1r0SDZOrHGKiJSfJs+2g==}
 
-  allure-jest@3.4.2:
-    resolution: {integrity: sha512-0WBRFS/L7Ncds34b2j+VocwdTzEG1HzANo1R/Dt53Hgo7mzevv0rpHlzef85n2WPEzZCiQTWVANXbawhtGKHhA==}
+  allure-jest@3.4.3:
+    resolution: {integrity: sha512-d4l4X3q8lsbs/Ce9xG5S9i5Ggp0UZnjrKJnj2GJokXnsUKwM1UaXrIToaoDkJypDOM74iGF2DoF6cibfXZuptA==}
     peerDependencies:
       jest: '>=24.8.0'
       jest-circus: '>=24.8.0'
@@ -3008,10 +3009,10 @@ packages:
   allure-js-commons@2.15.1:
     resolution: {integrity: sha512-5V/VINplbu0APnfSZOkYpKOzucO36Q2EtTD1kqjWjl7n6tj7Hh+IHCZsH3Vpk/LXRDfj9RuXugBBvwYKV5YMJw==}
 
-  allure-js-commons@3.4.2:
-    resolution: {integrity: sha512-bWzqduvU/LzSTI4wJKzWbHWe64xluF30pDxFfSP+jlloQx9F1Vytdqrit5oAgNj+czzdA+Nocv3Dh6d4COCTvA==}
+  allure-js-commons@3.4.3:
+    resolution: {integrity: sha512-2n2uUFVmI7OaKXfkUPq2AcD1ksPR/WXZ9IhmQlMylb8bNpPChn1QPA/W97+RDYawFgvfhnadzIrH9ZWTWKjiNg==}
     peerDependencies:
-      allure-playwright: 3.4.2
+      allure-playwright: 3.4.3
     peerDependenciesMeta:
       allure-playwright:
         optional: true
@@ -5356,6 +5357,10 @@ packages:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
 
+  js-yaml@4.1.1:
+    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
+    hasBin: true
+
   jsesc@3.1.0:
     resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
     engines: {node: '>=6'}
@@ -5965,8 +5970,8 @@ packages:
     resolution: {integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==}
     engines: {node: '>=8'}
 
-  npm@11.6.2:
-    resolution: {integrity: sha512-7iKzNfy8lWYs3zq4oFPa8EXZz5xt9gQNKJZau3B1ErLBb6bF7sBJ00x09485DOvRT2l5Gerbl3VlZNT57MxJVA==}
+  npm@11.6.4:
+    resolution: {integrity: sha512-ERjKtGoFpQrua/9bG0+h3xiv/4nVdGViCjUYA1AmlV24fFvfnSB7B7dIfZnySQ1FDLd0ZVrWPsLLp78dCtJdRQ==}
     engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
     bundledDependencies:
@@ -5975,6 +5980,7 @@ packages:
       - '@npmcli/config'
       - '@npmcli/fs'
       - '@npmcli/map-workspaces'
+      - '@npmcli/metavuln-calculator'
       - '@npmcli/package-json'
       - '@npmcli/promise-spawn'
       - '@npmcli/redact'
@@ -6713,8 +6719,8 @@ packages:
     resolution: {integrity: sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==}
     engines: {node: '>=6.0.0'}
 
-  prettier@3.6.2:
-    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
+  prettier@3.7.4:
+    resolution: {integrity: sha512-v6UNi1+3hSlVvv8fSaoUbggEM5VErKmmpGA7Pl3HF8V6uKY7rvClBOJlH6yNwQtfTueNkGVpOv/mtWL9L4bgRA==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -9710,7 +9716,7 @@ snapshots:
 
   '@cucumber/tag-expressions@6.1.2': {}
 
-  '@cybozu/eslint-config@24.3.0(@types/eslint@9.6.1)(@typescript-eslint/utils@8.44.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(prettier@3.6.2)(typescript@5.9.3)':
+  '@cybozu/eslint-config@24.3.0(@types/eslint@9.6.1)(@typescript-eslint/utils@8.44.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(prettier@3.7.4)(typescript@5.9.3)':
     dependencies:
       '@eslint/css': 0.10.0
       '@eslint/js': 9.36.0
@@ -9722,7 +9728,7 @@ snapshots:
       eslint-plugin-import-x: 4.16.1(@typescript-eslint/utils@8.44.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.1(jiti@1.21.7))
       eslint-plugin-n: 17.23.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
-      eslint-plugin-prettier: 5.5.4(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@1.21.7)))(eslint@9.39.1(jiti@1.21.7))(prettier@3.6.2)
+      eslint-plugin-prettier: 5.5.4(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@1.21.7)))(eslint@9.39.1(jiti@1.21.7))(prettier@3.7.4)
       eslint-plugin-react: 7.37.5(eslint@9.39.1(jiti@1.21.7))
       eslint-plugin-react-hooks: 5.2.0(eslint@9.39.1(jiti@1.21.7))
       globals: 16.4.0
@@ -10588,6 +10594,20 @@ snapshots:
       ignore: 5.3.2
       import-fresh: 3.3.1
       js-yaml: 4.1.0
+      minimatch: 3.1.2
+      strip-json-comments: 3.1.1
+    transitivePeerDependencies:
+      - supports-color
+
+  '@eslint/eslintrc@3.3.3':
+    dependencies:
+      ajv: 6.12.6
+      debug: 4.4.3(supports-color@8.1.1)
+      espree: 10.4.0
+      globals: 14.0.0
+      ignore: 5.3.2
+      import-fresh: 3.3.1
+      js-yaml: 4.1.1
       minimatch: 3.1.2
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
@@ -12103,9 +12123,9 @@ snapshots:
       '@cucumber/messages': 22.0.0
       allure-js-commons: 2.15.1
 
-  allure-jest@3.4.2(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))):
+  allure-jest@3.4.3(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))):
     dependencies:
-      allure-js-commons: 3.4.2
+      allure-js-commons: 3.4.3
     optionalDependencies:
       jest: 29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))
       jest-circus: 29.7.0
@@ -12120,7 +12140,7 @@ snapshots:
       properties: 1.2.1
       strip-ansi: 5.2.0
 
-  allure-js-commons@3.4.2:
+  allure-js-commons@3.4.3:
     dependencies:
       md5: 2.3.0
 
@@ -13453,10 +13473,10 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  eslint-plugin-prettier@5.5.4(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@1.21.7)))(eslint@9.39.1(jiti@1.21.7))(prettier@3.6.2):
+  eslint-plugin-prettier@5.5.4(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@1.21.7)))(eslint@9.39.1(jiti@1.21.7))(prettier@3.7.4):
     dependencies:
       eslint: 9.39.1(jiti@1.21.7)
-      prettier: 3.6.2
+      prettier: 3.7.4
       prettier-linter-helpers: 1.0.0
       synckit: 0.11.11
     optionalDependencies:
@@ -14942,6 +14962,10 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
+  js-yaml@4.1.1:
+    dependencies:
+      argparse: 2.0.1
+
   jsesc@3.1.0: {}
 
   json-buffer@3.0.1: {}
@@ -15789,7 +15813,7 @@ snapshots:
     dependencies:
       path-key: 3.1.1
 
-  npm@11.6.2: {}
+  npm@11.6.4: {}
 
   nprogress@0.2.0: {}
 
@@ -16524,7 +16548,7 @@ snapshots:
     dependencies:
       fast-diff: 1.3.0
 
-  prettier@3.6.2: {}
+  prettier@3.7.4: {}
 
   pretty-error@4.0.0:
     dependencies:

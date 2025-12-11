@@ -22,7 +22,7 @@
     "@babel/preset-react": "^7.28.5",
     "@babel/preset-typescript": "^7.28.5",
     "@cybozu/eslint-config": "^24.0.0",
-    "@kintone/cli": "^1.16.0",
+    "@kintone/cli": "^1.16.1",
     "@kintone/dts-gen": "^8.1.3",
     "@kintone/webpack-plugin-kintone-plugin": "^8.0.11",
     "ajv": "^8.17.1",
@@ -30,7 +30,7 @@
     "cross-env": "^7.0.3",
     "eslint": "^9.39.1",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.7.3",
+    "prettier": "^3.7.4",
     "typescript": "^5.9.3",
     "webpack": "^5.103.0",
     "webpack-cli": "^5.1.4"

@@ -34,7 +34,7 @@ sidebar_position: 400
 | `--username`、`-u`      | Kintoneユーザー名<br/>デフォルト：`KINTONE_USERNAME`                            |
 | `--password`、`-p`      | Kintoneパスワード<br/>デフォルト：`KINTONE_PASSWORD`                            |
 | `--api-token`           | アプリのAPIトークン<br/>デフォルト：`KINTONE_API_TOKEN`                         |
-| `--basic-auth-username` | KintoneベーシックSH認証ユーザー名<br/>デフォルト：`KINTONE_BASIC_AUTH_USERNAME` |
+| `--basic-auth-username` | Kintoneベーシック認証ユーザー名<br/>デフォルト：`KINTONE_BASIC_AUTH_USERNAME` |
 | `--basic-auth-password` | Kintoneベーシック認証パスワード<br/>デフォルト：`KINTONE_BASIC_AUTH_PASSWORD`   |
 | `--pfx-file-path`       | クライアント証明書ファイルのパス                                                |
 | `--pfx-file-password`   | クライアント証明書ファイルのパスワード                                          |

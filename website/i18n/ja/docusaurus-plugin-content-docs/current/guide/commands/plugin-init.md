@@ -15,8 +15,8 @@ sidebar_position: 1200
 ## 例
 
 ```shell
-cli-kintone plugin init \\
-  --name ${project_name} \\
+cli-kintone plugin init \
+  --name ${project_name} \
   --template ${template_name}
 ```
 

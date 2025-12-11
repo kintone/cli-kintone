@@ -15,8 +15,8 @@ This feature is under early development.
 ## Example
 
 ```shell
-cli-kintone plugin init \\
-  --name ${project_name} \\
+cli-kintone plugin init \
+  --name ${project_name} \
   --template ${template_name}
 ```
 

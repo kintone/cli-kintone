@@ -6,6 +6,7 @@ import { FlatCompat } from "@eslint/eslintrc";
 const docusaurusModuleAliases = [
   "@docusaurus/Link",
   "@docusaurus/useDocusaurusContext",
+  "@docusaurus/Translate",
   "@theme/Heading",
   "@theme/Layout",
   "@theme/ThemedImage",

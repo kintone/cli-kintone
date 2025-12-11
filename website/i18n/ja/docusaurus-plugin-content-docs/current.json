@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.guideSidebar.category.Commands": {
+    "message": "コマンド",
+    "description": "The label for category 'Commands' in sidebar 'guideSidebar'"
+  },
+  "sidebar.guideSidebar.category.Commands.link.generated-index.description": {
+    "message": "cli-kintoneで実行できるコマンド",
+    "description": "The generated-index page description for category 'Commands' in sidebar 'guideSidebar'"
+  },
+  "sidebar.guideSidebar.category.File formats": {
+    "message": "ファイル形式",
+    "description": "The label for category 'File formats' in sidebar 'guideSidebar'"
+  },
+  "sidebar.guideSidebar.category.File formats.link.generated-index.description": {
+    "message": "cli-kintoneはインポート・エクスポートコマンドで以下の形式をサポートしています。",
+    "description": "The generated-index page description for category 'File formats' in sidebar 'guideSidebar'"
+  }
+}

@@ -41,6 +41,7 @@
     "clean:artifacts": "rimraf bin artifacts dist",
     "clean:test": "rimraf allure-results allure-report",
     "doc:start": "pnpm --filter ./website start",
+    "doc:start:ja": "pnpm --filter ./website start:ja",
     "doc:build": "pnpm --filter ./website build",
     "doc:serve": "pnpm --filter ./website serve",
     "doc:update-credits": "pnpm --filter ./website update-credits",

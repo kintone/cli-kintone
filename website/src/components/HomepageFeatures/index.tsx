@@ -1,9 +1,10 @@
 import clsx from "clsx";
 import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
 import styles from "./styles.module.css";
 
 type FeatureItem = {
-  title: string;
+  title: JSX.Element;
   Svg: React.ComponentType<React.ComponentProps<"svg">>;
   description: JSX.Element;
 };
@@ -11,34 +12,44 @@ type FeatureItem = {
 // We use https://undraw.co/ illustrations.
 const FeatureList: FeatureItem[] = [
   {
-    title: "Easy to Use",
+    title: (
+      <Translate id="homepage.features.easyToUse.title">Easy to Use</Translate>
+    ),
     Svg: require("@site/static/img/undraw_well_done_re_3hpo.svg").default,
     description: (
-      <>
+      <Translate id="homepage.features.easyToUse.description">
         The cli-kintone was designed for IT personnel and non-engineers. You
         will get used to it quickly.
-      </>
+      </Translate>
     ),
   },
   {
-    title: "Attachment field support",
+    title: (
+      <Translate id="homepage.features.attachmentSupport.title">
+        Attachment field support
+      </Translate>
+    ),
     Svg: require("@site/static/img/undraw_add_files_re_v09g.svg").default,
     description: (
-      <>
+      <Translate id="homepage.features.attachmentSupport.description">
         The cli-kintone supports Attachment fields. You can download or upload
         files among with Kintone records.
-      </>
+      </Translate>
     ),
   },
   {
-    title: "Suitable for automation",
+    title: (
+      <Translate id="homepage.features.automation.title">
+        Suitable for automation
+      </Translate>
+    ),
     Svg: require("@site/static/img/undraw_software_engineer_re_tnjc.svg")
       .default,
     description: (
-      <>
+      <Translate id="homepage.features.automation.description">
         The cli-kintone works well with shell scripts. You can automate your
         routine and regular tasks.
-      </>
+      </Translate>
     ),
   },
 ];

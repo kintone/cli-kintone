@@ -6,7 +6,7 @@ sidebar_position: 200
 
 This page will help you install cli-kintone.
 
-## From npmjs.com
+## From npmjs.com {#from-npmjscom}
 
 If you have configured [Node.js](https://nodejs.org/) on your environment, you can use [npm](https://docs.npmjs.com/about-npm) to install cli-kintone.
 It is suitable for use in plugin/customization development or for CI.

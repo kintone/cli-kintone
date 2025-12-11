@@ -18,13 +18,13 @@ cli-kintoneは、これらのツールを単一のCLIに統合し、統一され
 
 ## ツールの比較
 
-| js-sdkツール | cli-kintoneコマンド | 説明 |
-| --- | --- | --- |
-| @kintone/create-plugin | [plugin init](../commands/plugin-init.md) | 新しいプラグインプロジェクトを初期化 |
-| @kintone/plugin-packer | [plugin pack](../commands/plugin-pack.md) | プラグインをzipファイルにパッケージ化 |
-| @kintone/plugin-uploader | [plugin upload](../commands/plugin-upload.md) | プラグインをKintoneにアップロード |
-| - | [plugin keygen](../commands/plugin-keygen.md) | プラグイン用の秘密鍵を生成 |
-| - | [plugin info](../commands/plugin-info.md) | プラグイン情報を表示 |
+| js-sdkツール             | cli-kintoneコマンド                           | 説明                                  |
+| ------------------------ | --------------------------------------------- | ------------------------------------- |
+| @kintone/create-plugin   | [plugin init](../commands/plugin-init.md)     | 新しいプラグインプロジェクトを初期化  |
+| @kintone/plugin-packer   | [plugin pack](../commands/plugin-pack.md)     | プラグインをzipファイルにパッケージ化 |
+| @kintone/plugin-uploader | [plugin upload](../commands/plugin-upload.md) | プラグインをKintoneにアップロード     |
+| -                        | [plugin keygen](../commands/plugin-keygen.md) | プラグイン用の秘密鍵を生成            |
+| -                        | [plugin info](../commands/plugin-info.md)     | プラグイン情報を表示                  |
 
 ## 移行手順
 
@@ -155,11 +155,11 @@ npm uninstall @kintone/create-plugin @kintone/plugin-packer @kintone/plugin-uplo
 
 一部のオプション名がツール間で異なります：
 
-| 機能 | js-sdk | cli-kintone |
-| --- | --- | --- |
-| 入力ディレクトリ/ファイル | 位置引数 | `--input`, `-i` |
-| 出力ファイル | `--out` | `--output`, `-o` |
-| 秘密鍵ファイル | `--ppk` | `--private-key` |
+| 機能                      | js-sdk   | cli-kintone      |
+| ------------------------- | -------- | ---------------- |
+| 入力ディレクトリ/ファイル | 位置引数 | `--input`, `-i`  |
+| 出力ファイル              | `--out`  | `--output`, `-o` |
+| 秘密鍵ファイル            | `--ppk`  | `--private-key`  |
 
 ### 追加機能
 

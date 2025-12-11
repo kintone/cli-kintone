@@ -18,13 +18,13 @@ cli-kintone consolidates these tools into a single CLI with unified plugin comma
 
 ## Tool Comparison
 
-| js-sdk Tool | cli-kintone Command | Description |
-| --- | --- | --- |
-| @kintone/create-plugin | [plugin init](../commands/plugin-init.md) | Initialize a new plugin project |
-| @kintone/plugin-packer | [plugin pack](../commands/plugin-pack.md) | Package plugin into zip file |
-| @kintone/plugin-uploader | [plugin upload](../commands/plugin-upload.md) | Upload plugin to Kintone |
-| - | [plugin keygen](../commands/plugin-keygen.md) | Generate private key for plugin |
-| - | [plugin info](../commands/plugin-info.md) | Display plugin information |
+| js-sdk Tool              | cli-kintone Command                           | Description                     |
+| ------------------------ | --------------------------------------------- | ------------------------------- |
+| @kintone/create-plugin   | [plugin init](../commands/plugin-init.md)     | Initialize a new plugin project |
+| @kintone/plugin-packer   | [plugin pack](../commands/plugin-pack.md)     | Package plugin into zip file    |
+| @kintone/plugin-uploader | [plugin upload](../commands/plugin-upload.md) | Upload plugin to Kintone        |
+| -                        | [plugin keygen](../commands/plugin-keygen.md) | Generate private key for plugin |
+| -                        | [plugin info](../commands/plugin-info.md)     | Display plugin information      |
 
 ## Migration Steps
 
@@ -155,11 +155,11 @@ npm uninstall @kintone/create-plugin @kintone/plugin-packer @kintone/plugin-uplo
 
 Some option names differ between the tools:
 
-| Feature | js-sdk | cli-kintone |
-| --- | --- | --- |
-| Input directory/file | Positional argument | `--input`, `-i` |
-| Output file | `--out` | `--output`, `-o` |
-| Private key file | `--ppk` | `--private-key` |
+| Feature              | js-sdk              | cli-kintone      |
+| -------------------- | ------------------- | ---------------- |
+| Input directory/file | Positional argument | `--input`, `-i`  |
+| Output file          | `--out`             | `--output`, `-o` |
+| Private key file     | `--ppk`             | `--private-key`  |
 
 ### Additional Features
 

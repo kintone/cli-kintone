@@ -6,7 +6,7 @@ sidebar_position: 200
 
 このページは、cli-kintoneのインストールをサポートします。
 
-## npmjs.comから
+## npmjs.comから {#from-npmjscom}
 
 環境に[Node.js](https://nodejs.org/)を設定している場合、[npm](https://docs.npmjs.com/about-npm)を使用してcli-kintoneをインストールできます。
 これは、プラグイン/カスタマイズ開発やCIでの使用に適しています。

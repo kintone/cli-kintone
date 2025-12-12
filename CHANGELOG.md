@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.2](https://github.com/kintone/cli-kintone/compare/v1.16.1...v1.16.2) (2025-12-12)
+
+
+### Documentation
+
+* add Japanese localization ([#1272](https://github.com/kintone/cli-kintone/issues/1272)) ([9cf78f3](https://github.com/kintone/cli-kintone/commit/9cf78f35aa6b77e2a0a85e02b872a0b2ccc9bf54))
+
 ## [1.16.1](https://github.com/kintone/cli-kintone/compare/v1.16.0...v1.16.1) (2025-12-03)
 
 

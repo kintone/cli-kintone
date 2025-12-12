@@ -111,8 +111,8 @@ importers:
         specifier: ^8.17.1
         version: 8.17.1
       allure-commandline:
-        specifier: ^2.34.1
-        version: 2.34.1
+        specifier: ^2.35.1
+        version: 2.36.0
       allure-cucumberjs:
         specifier: ^2.15.1
         version: 2.15.1
@@ -2979,8 +2979,8 @@ packages:
     resolution: {integrity: sha512-8VJKIzheeI9cjuVJhU1hYEVetOTe7LvA+CujAI7yqvYsPtZfVEvv1pg9AeFNtHBg/ZoSLGU5LPijhcY5l3Ea9g==}
     engines: {node: '>= 14.0.0'}
 
-  allure-commandline@2.34.1:
-    resolution: {integrity: sha512-l42csZ2bz7FdtJI1t5zA3IXtOZ0YJaP/+JMRC9gt6aBHRVUIu+6r+3F7KRyshQ79osLz9/MHlGqAjBPRqH0QFw==}
+  allure-commandline@2.36.0:
+    resolution: {integrity: sha512-ls/4fk2Psv2Tu2PbWFrQPmUnm3gmmO9MBan4MuPWwqdkJPEmln2KRwtvtWYr9Av+e5AnFK1fGXWVyxqJIPiPwA==}
     hasBin: true
 
   allure-cucumberjs@2.15.1:
@@ -12111,7 +12111,7 @@ snapshots:
       '@algolia/requester-fetch': 5.38.0
       '@algolia/requester-node-http': 5.38.0
 
-  allure-commandline@2.34.1: {}
+  allure-commandline@2.36.0: {}
 
   allure-cucumberjs@2.15.1:
     dependencies:

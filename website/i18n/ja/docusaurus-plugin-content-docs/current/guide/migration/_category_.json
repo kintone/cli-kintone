@@ -1,0 +1,9 @@
+{
+  "label": "マイグレーション",
+  "position": 550,
+  "link": {
+    "type": "generated-index",
+    "description": "旧バージョンや他のツールからの移行について。"
+  },
+  "collapsed": false
+}

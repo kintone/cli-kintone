@@ -111,7 +111,7 @@ importers:
         specifier: ^8.17.1
         version: 8.17.1
       allure-commandline:
-        specifier: ^2.35.1
+        specifier: ^2.36.0
         version: 2.36.0
       allure-cucumberjs:
         specifier: ^2.15.1

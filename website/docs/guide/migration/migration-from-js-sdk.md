@@ -1,5 +1,6 @@
 ---
 sidebar_position: 100
+unlisted: true
 ---
 
 # Migrate from js-sdk
@@ -15,6 +16,28 @@ kintone/js-sdk provides several npm packages for plugin development:
 - [@kintone/plugin-uploader](https://www.npmjs.com/package/@kintone/plugin-uploader) - Upload plugins to kintone
 
 cli-kintone consolidates these tools into a single CLI with unified plugin commands.
+
+## Why Migrate to cli-kintone?
+
+Migrating from kintone/js-sdk to [cli-kintone](https://github.com/kintone/cli-kintone) offers several benefits:
+
+### Consolidated Setup and Learning Costs
+
+With kintone/js-sdk, plugin development features were distributed across multiple npm packages (@kintone/create-plugin, @kintone/plugin-packer, @kintone/plugin-uploader). Each package required separate installation, and developers needed to learn different commands and options for each tool.
+
+cli-kintone consolidates all these capabilities into a single CLI. By installing just one tool, you can perform all operations from plugin creation to upload, significantly reducing the learning curve. Additionally, it adopts a consistent command structure and option naming under the unified `cli-kintone plugin` namespace.
+
+### Improved Interface and Behavior
+
+cli-kintone incorporates improvements based on feedback from kintone/js-sdk usage:
+
+- **Explicit Private Key Management**: Private key generation is separated into a dedicated `plugin keygen` command, making key management more explicit and clear
+- **Extended Watch Mode**: The `--watch` option is now supported in both `plugin pack` and `plugin upload` commands, improving the development experience
+- **Flexible Authentication**: In addition to password authentication, API token authentication is now supported
+- **Consistent Option Design**: All commands adopt unified option names (such as `--input`, `--output`), making them more intuitive to use
+- **Additional Features**: The `plugin info` command allows you to inspect plugin information without uploading
+
+Furthermore, cli-kintone is actively maintained with regular feature additions and bug fixes.
 
 ## Tool Comparison
 

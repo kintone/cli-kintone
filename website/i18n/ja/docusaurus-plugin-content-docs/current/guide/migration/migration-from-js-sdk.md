@@ -1,5 +1,6 @@
 ---
 sidebar_position: 100
+unlisted: true
 ---
 
 # js-sdkからの移行
@@ -15,6 +16,31 @@ kintone/js-sdkは、プラグイン開発のためにいくつかのnpmパッケ
 - [@kintone/plugin-uploader](https://www.npmjs.com/package/@kintone/plugin-uploader) - プラグインをkintoneにアップロード
 
 cli-kintoneは、これらのツールを単一のCLIに統合しています。
+
+## なぜcli-kintoneに移行するのか
+
+kintone/js-sdkから[cli-kintone](https://github.com/kintone/cli-kintone)への移行には、以下のようなメリットがあります：
+
+- 導入・学習コストの集約
+- インターフェースと動作の改善
+
+### 導入・学習コストの集約
+
+kintone/js-sdkでは、プラグイン開発に必要な機能が複数のnpmパッケージ（@kintone/create-plugin、@kintone/plugin-packer、@kintone/plugin-uploader）に分散していました。それぞれのパッケージを個別にインストールし、異なるコマンドとオプションを学習する必要がありました。
+
+cli-kintoneでは、これらすべての機能を1つのCLIに統合しています。単一のツールをインストールするだけで、プラグインの作成からアップロードまでのすべての操作が可能になり、学習コストが大幅に削減されます。また、`cli-kintone plugin`という統一された名前空間のもとで、一貫したコマンド構造とオプション名を採用しています。
+
+### インターフェースと動作の改善
+
+cli-kintoneでは、kintone/js-sdkの使用経験から得られたフィードバックをもとに、以下のような改善を行っています：
+
+- **明示的な秘密鍵生成**: 秘密鍵の生成を専用の`plugin keygen`コマンドに分離し、鍵の生成の挙動がより明確になりました
+- **一貫したオプション設計**: すべてのコマンドで統一されたオプション名（`--input`、`--output`など）を採用し、直感的に使えるようになりました
+- **追加機能**: `plugin info`コマンドにより、プラグイン情報を確認できるようになりました
+
+また、一部のコマンドでは従来のjs-sdkから内部動作の改善を行なっています：
+
+- plugin upload: kintone REST APIを利用するため、RPAで動作していた従来のplugin-uploaderに比べてアップロード時の動作が安定・高速化しています
 
 ## ツールの比較
 
@@ -150,11 +176,12 @@ npm uninstall @kintone/create-plugin @kintone/plugin-packer @kintone/plugin-uplo
 
 ### plugin init (@kintone/create-plugin との比較)
 
-| オプション       | js-sdk               | cli-kintone                          | 備考                                                    |
-| ---------------- | -------------------- | ------------------------------------ | ------------------------------------------------------- |
-| プラグイン名     | 対話形式で入力       | `--name <name>` または対話形式で入力 | cli-kintoneは非対話モードに対応                         |
-| テンプレート     | 対話形式で選択       | `--template <template>`              | `javascript`, `typescript`, `modern`, `minimum`から選択 |
-| 出力ディレクトリ | カレントディレクトリ | `--output <dir>`                     | デフォルトはカレントディレクトリ                        |
+| オプション                    | js-sdk                                                                               | cli-kintone                                                                                                          | 備考                           |
+| ----------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| プラグイン名                  | コマンドライン引数で入力                                                             | `--name <name>` オプションまたは対話形式で入力                                                                       | デフォルト値は`kintone-plugin` |
+| テンプレート                  | `minimum` または `modern`が選択可能<br/>デフォルト値は`minimum`                      | `javascript` または `typescript`が選択可能<br/>デフォルト値は`javascript`                                            |                                |
+| plugin-uploaderのインストール | インストールするかどうかを対話形式で確認<br/>デフォルト値は`No` (インストールしない) | デフォルトでcli-kintoneをインストールします。開発用スクリプトでは`plugin upload`コマンドを利用するように設定されます |                                |
+| `--lang`オプション            | コマンド実行中の表示言語を指定できます                                               | `--lang`オプションは廃止され、英語での表示のみになりました                                                           |                                |
 
 **実行例：**
 

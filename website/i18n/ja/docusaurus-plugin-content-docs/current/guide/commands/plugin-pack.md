@@ -16,8 +16,8 @@ sidebar_position: 1400
 
 ```shell
 cli-kintone plugin pack \
-  --input ./src \
-  --output ./dist \
+  --input ./src/manifest.json \
+  --output ./dist/plugin.zip \
   --private-key ./key.ppk
 ```
 

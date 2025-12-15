@@ -73,13 +73,13 @@ kintone-plugin-packer --ppk private.ppk --out plugin.zip src/
 **After (cli-kintone):**
 
 ```shell
-cli-kintone plugin pack --input ./src --output ./plugin.zip --private-key ./private.ppk
+cli-kintone plugin pack --input ./src/manifest.json --output ./plugin.zip --private-key ./private.ppk
 ```
 
 **Watch mode:**
 
 ```shell
-cli-kintone plugin pack --input ./src --output ./plugin.zip --private-key ./private.ppk --watch
+cli-kintone plugin pack --input ./src/manifest.json --output ./plugin.zip --private-key ./private.ppk --watch
 ```
 
 #### Uploading Plugin
@@ -131,8 +131,8 @@ If you have npm scripts using js-sdk tools, update them to use cli-kintone:
 ```json
 {
   "scripts": {
-    "start": "cli-kintone plugin pack --input ./src --private-key ./private.ppk --watch",
-    "build": "cli-kintone plugin pack --input ./src --private-key ./private.ppk",
+    "start": "cli-kintone plugin pack --input ./src/manifest.json --private-key ./private.ppk --watch",
+    "build": "cli-kintone plugin pack --input ./src/manifest.json --private-key ./private.ppk",
     "upload": "cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu.com --username admin --password password"
   }
 }
@@ -182,7 +182,7 @@ cli-kintone plugin init --name my-plugin --template javascript
 kintone-plugin-packer --ppk private.ppk --out plugin.zip src/
 
 # cli-kintone
-cli-kintone plugin pack --input ./src --output ./plugin.zip --private-key ./private.ppk
+cli-kintone plugin pack --input ./src/manifest.json --output ./plugin.zip --private-key ./private.ppk
 ```
 
 ### plugin upload (vs @kintone/plugin-uploader)

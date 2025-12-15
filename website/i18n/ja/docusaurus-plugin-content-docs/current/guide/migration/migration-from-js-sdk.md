@@ -182,7 +182,7 @@ cli-kintone plugin init --name my-plugin --template javascript
 kintone-plugin-packer --ppk private.ppk --out plugin.zip src/
 
 # cli-kintone
-cli-kintone plugin pack --input ./src --output ./plugin.zip --private-key ./private.ppk
+cli-kintone plugin pack --input ./src/manifest.json --output ./plugin.zip --private-key ./private.ppk
 ```
 
 ### plugin upload (@kintone/plugin-uploader との比較)

@@ -16,8 +16,8 @@ This feature is under early development.
 
 ```shell
 cli-kintone plugin pack \
-  --input ./src \
-  --output ./dist \
+  --input ./src/manifest.json \
+  --output ./dist/plugin.zip \
   --private-key ./key.ppk
 ```
 

@@ -4,27 +4,29 @@ sidebar_position: 100
 
 # Migrate from js-sdk
 
-This guide helps you migrate from the Kintone js-sdk plugin tools to cli-kintone plugin commands.
+This guide helps you migrate from the [kintone/js-sdk](https://github.com/kintone/js-sdk) plugin development tools to cli-kintone.
 
 ## Overview
 
-The Kintone js-sdk provides several npm packages for plugin development:
+kintone/js-sdk provides several npm packages for plugin development:
 
 - [@kintone/create-plugin](https://www.npmjs.com/package/@kintone/create-plugin) - Create plugin templates
 - [@kintone/plugin-packer](https://www.npmjs.com/package/@kintone/plugin-packer) - Package plugins into zip files
-- [@kintone/plugin-uploader](https://www.npmjs.com/package/@kintone/plugin-uploader) - Upload plugins to Kintone
+- [@kintone/plugin-uploader](https://www.npmjs.com/package/@kintone/plugin-uploader) - Upload plugins to kintone
 
 cli-kintone consolidates these tools into a single CLI with unified plugin commands.
 
 ## Tool Comparison
 
-| js-sdk Tool              | cli-kintone Command                           | Description                     |
-| ------------------------ | --------------------------------------------- | ------------------------------- |
-| @kintone/create-plugin   | [plugin init](../commands/plugin-init.md)     | Initialize a new plugin project |
-| @kintone/plugin-packer   | [plugin pack](../commands/plugin-pack.md)     | Package plugin into zip file    |
-| @kintone/plugin-uploader | [plugin upload](../commands/plugin-upload.md) | Upload plugin to Kintone        |
-| -                        | [plugin keygen](../commands/plugin-keygen.md) | Generate private key for plugin |
-| -                        | [plugin info](../commands/plugin-info.md)     | Display plugin information      |
+| js-sdk Tool              | cli-kintone Command                           | Description                                                                       |
+| ------------------------ | --------------------------------------------- | --------------------------------------------------------------------------------- |
+| @kintone/create-plugin   | [plugin init](../commands/plugin-init.md)     | Initialize a new plugin project                                                   |
+| @kintone/plugin-packer   | [plugin pack](../commands/plugin-pack.md)     | Package plugin into zip file<br/>※Private key generation moved to `plugin keygen` |
+| @kintone/plugin-uploader | [plugin upload](../commands/plugin-upload.md) | Upload plugin to kintone environment                                              |
+| -                        | [plugin keygen](../commands/plugin-keygen.md) | Generate private key for plugin                                                   |
+| -                        | [plugin info](../commands/plugin-info.md)     | Display plugin information                                                        |
+
+For detailed interface differences, see [Command-Specific Interface Differences](#command-specific-interface-differences) and [Key Differences](#key-differences).
 
 ## Migration Steps
 
@@ -144,6 +146,70 @@ Once you've migrated to cli-kintone, you can remove the js-sdk tools:
 npm uninstall @kintone/create-plugin @kintone/plugin-packer @kintone/plugin-uploader
 ```
 
+## Command-Specific Interface Differences
+
+### plugin init (vs @kintone/create-plugin)
+
+| Option           | js-sdk                | cli-kintone             | Notes                                                       |
+| ---------------- | --------------------- | ----------------------- | ----------------------------------------------------------- |
+| Plugin name      | Interactive prompt    | `--name <name>`         | cli-kintone supports non-interactive mode                   |
+| Template         | Interactive selection | `--template <template>` | Choose from `javascript`, `typescript`, `modern`, `minimum` |
+| Output directory | Current directory     | `--output <dir>`        | Defaults to current directory                               |
+
+**Examples:**
+
+```shell
+# js-sdk (interactive)
+npm init @kintone/plugin
+
+# cli-kintone (non-interactive)
+cli-kintone plugin init --name my-plugin --template javascript
+```
+
+### plugin pack (vs @kintone/plugin-packer)
+
+| Option          | js-sdk              | cli-kintone                  | Notes                           |
+| --------------- | ------------------- | ---------------------------- | ------------------------------- |
+| Input directory | Positional argument | `--input <dir>`, `-i`        | Required                        |
+| Output file     | `--out <file>`      | `--output <file>`, `-o`      | Defaults to `plugin.zip`        |
+| Private key     | `--ppk <file>`      | `--private-key <file>`, `-p` | Auto-generated if not specified |
+| Watch mode      | `--watch`           | `--watch`, `-w`              | Auto-repackage on file changes  |
+
+**Examples:**
+
+```shell
+# js-sdk
+kintone-plugin-packer --ppk private.ppk --out plugin.zip src/
+
+# cli-kintone
+cli-kintone plugin pack --input ./src --output ./plugin.zip --private-key ./private.ppk
+```
+
+### plugin upload (vs @kintone/plugin-uploader)
+
+| Option     | js-sdk              | cli-kintone            | Notes                              |
+| ---------- | ------------------- | ---------------------- | ---------------------------------- |
+| Input file | Positional argument | `--input <file>`, `-i` | Required                           |
+| Base URL   | `--base-url <url>`  | `--base-url <url>`     | kintone environment URL            |
+| Username   | `--username <user>` | `--username <user>`    | For authentication                 |
+| Password   | `--password <pass>` | `--password <pass>`    | For authentication                 |
+| API token  | Not supported       | `--api-token <token>`  | API token authentication support   |
+| Plugin ID  | Auto-detected       | `--plugin-id <id>`     | Specify for updates (omit for new) |
+| Watch mode | Not supported       | `--watch`, `-w`        | Auto-upload on file changes        |
+
+**Examples:**
+
+```shell
+# js-sdk
+kintone-plugin-uploader --base-url https://example.cybozu.com --username admin --password password plugin.zip
+
+# cli-kintone (password auth)
+cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu.com --username admin --password password
+
+# cli-kintone (API token auth)
+cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu.com --api-token your-api-token
+```
+
 ## Key Differences
 
 ### Command Structure
@@ -189,4 +255,4 @@ If you encounter issues during migration:
 - [@kintone/plugin-packer - npm](https://www.npmjs.com/package/@kintone/plugin-packer)
 - [@kintone/plugin-uploader - npm](https://www.npmjs.com/package/@kintone/plugin-uploader)
 - [@kintone/create-plugin - npm](https://www.npmjs.com/package/@kintone/create-plugin)
-- [Kintone js-sdk GitHub Repository](https://github.com/kintone/js-sdk)
+- [kintone/js-sdk GitHub Repository](https://github.com/kintone/js-sdk)

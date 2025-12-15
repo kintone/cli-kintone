@@ -4,27 +4,29 @@ sidebar_position: 100
 
 # js-sdkからの移行
 
-このガイドでは、Kintone js-sdkのプラグインツールからcli-kintoneのプラグインコマンドへ移行する方法を説明します。
+このガイドでは、[kintone/js-sdk](https://github.com/kintone/js-sdk)のプラグイン開発ツールからcli-kintoneへ移行する方法を説明します。
 
 ## 概要
 
-Kintone js-sdkは、プラグイン開発のためにいくつかのnpmパッケージを提供しています：
+kintone/js-sdkは、プラグイン開発のためにいくつかのnpmパッケージを提供しています：
 
 - [@kintone/create-plugin](https://www.npmjs.com/package/@kintone/create-plugin) - プラグインテンプレートの作成
 - [@kintone/plugin-packer](https://www.npmjs.com/package/@kintone/plugin-packer) - プラグインをzipファイルにパッケージ化
-- [@kintone/plugin-uploader](https://www.npmjs.com/package/@kintone/plugin-uploader) - プラグインをKintoneにアップロード
+- [@kintone/plugin-uploader](https://www.npmjs.com/package/@kintone/plugin-uploader) - プラグインをkintoneにアップロード
 
-cli-kintoneは、これらのツールを単一のCLIに統合し、統一されたプラグインコマンドを提供します。
+cli-kintoneは、これらのツールを単一のCLIに統合しています。
 
 ## ツールの比較
 
-| js-sdkツール             | cli-kintoneコマンド                           | 説明                                  |
-| ------------------------ | --------------------------------------------- | ------------------------------------- |
-| @kintone/create-plugin   | [plugin init](../commands/plugin-init.md)     | 新しいプラグインプロジェクトを初期化  |
-| @kintone/plugin-packer   | [plugin pack](../commands/plugin-pack.md)     | プラグインをzipファイルにパッケージ化 |
-| @kintone/plugin-uploader | [plugin upload](../commands/plugin-upload.md) | プラグインをKintoneにアップロード     |
-| -                        | [plugin keygen](../commands/plugin-keygen.md) | プラグイン用の秘密鍵を生成            |
-| -                        | [plugin info](../commands/plugin-info.md)     | プラグイン情報を表示                  |
+| js-sdkのツール           | cli-kintoneのコマンド                         | 説明                                                                                     |
+| ------------------------ | --------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| @kintone/create-plugin   | [plugin init](../commands/plugin-init.md)     | 新しいプラグインプロジェクトを初期化                                                     |
+| @kintone/plugin-packer   | [plugin pack](../commands/plugin-pack.md)     | プラグインをzipファイルにパッケージング<br/>※秘密鍵の生成は`plugin keygen`コマンドに分離 |
+| @kintone/plugin-uploader | [plugin upload](../commands/plugin-upload.md) | プラグインをkintone環境にアップロード                                                    |
+| -                        | [plugin keygen](../commands/plugin-keygen.md) | プラグイン用の秘密鍵を生成                                                               |
+| -                        | [plugin info](../commands/plugin-info.md)     | プラグイン情報を表示                                                                     |
+
+詳細なインターフェース差分については、[コマンドごとのインターフェース差分](#コマンドごとのインターフェース差分)および[主な違い](#主な違い)を参照してください。
 
 ## 移行手順
 
@@ -36,7 +38,7 @@ cli-kintoneは、これらのツールを単一のCLIに統合し、統一され
 npm install @kintone/cli --global
 ```
 
-### 2. ワークフローの更新
+### 2. 手順の更新
 
 #### 新しいプラグインの作成
 
@@ -54,7 +56,7 @@ cli-kintone plugin init --name my-plugin --template javascript
 
 #### 秘密鍵の生成
 
-js-sdkでは、秘密鍵は最初のビルド時に自動的に生成されます。cli-kintoneでは、明示的に生成できます：
+js-sdkのcreate-pluginでは、秘密鍵は最初のビルド時に自動的に生成されます。cli-kintoneでは、明示的に生成します：
 
 ```shell
 cli-kintone plugin keygen --output private.ppk
@@ -71,13 +73,13 @@ kintone-plugin-packer --ppk private.ppk --out plugin.zip src/
 **移行後（cli-kintone）：**
 
 ```shell
-cli-kintone plugin pack --input ./src --output ./plugin.zip --private-key ./private.ppk
+cli-kintone plugin pack --input ./src/manifest.json --output ./plugin.zip --private-key ./private.ppk
 ```
 
 **監視モード：**
 
 ```shell
-cli-kintone plugin pack --input ./src --output ./plugin.zip --private-key ./private.ppk --watch
+cli-kintone plugin pack --input ./src/manifest.json --output ./plugin.zip --private-key ./private.ppk --watch
 ```
 
 #### プラグインのアップロード
@@ -129,8 +131,8 @@ js-sdkツールを使用しているnpmスクリプトがある場合は、cli-k
 ```json
 {
   "scripts": {
-    "start": "cli-kintone plugin pack --input ./src --private-key ./private.ppk --watch",
-    "build": "cli-kintone plugin pack --input ./src --private-key ./private.ppk",
+    "start": "cli-kintone plugin pack --input ./src/manifest.json --private-key ./private.ppk --watch",
+    "build": "cli-kintone plugin pack --input ./src/manifest.json --private-key ./private.ppk",
     "upload": "cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu.com --username admin --password password"
   }
 }
@@ -142,6 +144,70 @@ cli-kintoneへの移行が完了したら、js-sdkツールを削除できます
 
 ```shell
 npm uninstall @kintone/create-plugin @kintone/plugin-packer @kintone/plugin-uploader
+```
+
+## コマンドごとのインターフェース差分
+
+### plugin init (@kintone/create-plugin との比較)
+
+| オプション       | js-sdk               | cli-kintone                          | 備考                                                    |
+| ---------------- | -------------------- | ------------------------------------ | ------------------------------------------------------- |
+| プラグイン名     | 対話形式で入力       | `--name <name>` または対話形式で入力 | cli-kintoneは非対話モードに対応                         |
+| テンプレート     | 対話形式で選択       | `--template <template>`              | `javascript`, `typescript`, `modern`, `minimum`から選択 |
+| 出力ディレクトリ | カレントディレクトリ | `--output <dir>`                     | デフォルトはカレントディレクトリ                        |
+
+**実行例：**
+
+```shell
+# js-sdk（対話形式）
+npm init @kintone/plugin
+
+# cli-kintone（非対話モード）
+cli-kintone plugin init --name my-plugin --template javascript
+```
+
+### plugin pack (@kintone/plugin-packer との比較)
+
+| オプション       | js-sdk           | cli-kintone                  | 備考                             |
+| ---------------- | ---------------- | ---------------------------- | -------------------------------- |
+| 入力ディレクトリ | 位置引数（末尾） | `--input <dir>`, `-i`        | 必須                             |
+| 出力ファイル     | `--out <file>`   | `--output <file>`, `-o`      | デフォルトは`plugin.zip`         |
+| 秘密鍵           | `--ppk <file>`   | `--private-key <file>`, `-p` | 未指定時は自動生成               |
+| 監視モード       | `--watch`        | `--watch`, `-w`              | ファイル変更時に自動再パッケージ |
+
+**実行例：**
+
+```shell
+# js-sdk
+kintone-plugin-packer --ppk private.ppk --out plugin.zip src/
+
+# cli-kintone
+cli-kintone plugin pack --input ./src --output ./plugin.zip --private-key ./private.ppk
+```
+
+### plugin upload (@kintone/plugin-uploader との比較)
+
+| オプション   | js-sdk              | cli-kintone            | 備考                             |
+| ------------ | ------------------- | ---------------------- | -------------------------------- |
+| 入力ファイル | 位置引数（末尾）    | `--input <file>`, `-i` | 必須                             |
+| ベースURL    | `--base-url <url>`  | `--base-url <url>`     | kintone環境のURL                 |
+| ユーザー名   | `--username <user>` | `--username <user>`    | 認証に使用                       |
+| パスワード   | `--password <pass>` | `--password <pass>`    | 認証に使用                       |
+| APIトークン  | 非対応              | `--api-token <token>`  | APIトークン認証に対応            |
+| プラグインID | 自動検出            | `--plugin-id <id>`     | 更新時に指定（省略時は新規作成） |
+| 監視モード   | 非対応              | `--watch`, `-w`        | ファイル変更時に自動アップロード |
+
+**実行例：**
+
+```shell
+# js-sdk
+kintone-plugin-uploader --base-url https://example.cybozu.com --username admin --password password plugin.zip
+
+# cli-kintone（パスワード認証）
+cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu.com --username admin --password password
+
+# cli-kintone（APIトークン認証）
+cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu.com --api-token your-api-token
 ```
 
 ## 主な違い
@@ -189,4 +255,4 @@ cli-kintoneは、js-sdkにはない機能を提供します：
 - [@kintone/plugin-packer - npm](https://www.npmjs.com/package/@kintone/plugin-packer)
 - [@kintone/plugin-uploader - npm](https://www.npmjs.com/package/@kintone/plugin-uploader)
 - [@kintone/create-plugin - npm](https://www.npmjs.com/package/@kintone/create-plugin)
-- [Kintone js-sdk GitHubリポジトリ](https://github.com/kintone/js-sdk)
+- [kintone/js-sdk GitHubリポジトリ](https://github.com/kintone/js-sdk)

@@ -90,7 +90,7 @@ npm install @kintone/cli --global
 **移行前（js-sdk）：**
 
 ```shell
-npm init @kintone/plugin
+kintone-create-plugin my-plugin --template javascript
 ```
 
 **移行後（cli-kintone）：**
@@ -112,7 +112,7 @@ cli-kintone plugin keygen --output private.ppk
 **移行前（js-sdk）：**
 
 ```shell
-kintone-plugin-packer --ppk private.ppk --out plugin.zip src/
+kintone-plugin-packer --ppk private.ppk --out plugin.zip ./src/
 ```
 
 **移行後（cli-kintone）：**
@@ -232,15 +232,10 @@ cli-kintone plugin pack --input ./src/manifest.json --output ./plugin.zip --priv
 
 ### plugin upload (@kintone/plugin-uploader との比較)
 
-| オプション   | js-sdk              | cli-kintone            | 備考                             |
-| ------------ | ------------------- | ---------------------- | -------------------------------- |
-| 入力ファイル | 位置引数（末尾）    | `--input <file>`, `-i` | 必須                             |
-| ベースURL    | `--base-url <url>`  | `--base-url <url>`     | kintone環境のURL                 |
-| ユーザー名   | `--username <user>` | `--username <user>`    | 認証に使用                       |
-| パスワード   | `--password <pass>` | `--password <pass>`    | 認証に使用                       |
-| APIトークン  | 非対応              | `--api-token <token>`  | APIトークン認証に対応            |
-| プラグインID | 自動検出            | `--plugin-id <id>`     | 更新時に指定（省略時は新規作成） |
-| 監視モード   | 非対応              | `--watch`, `-w`        | ファイル変更時に自動アップロード |
+| オプション     | js-sdk             | cli-kintone                                                                                                                               | 備考 |
+| -------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| 入力ファイル   | コマンドライン引数 | `--input <file>`, `-i`                                                                                                                    |      |
+| 確認プロンプト | なし               | アップロード直前に操作（追加・更新）の確認プロンプトが表示されます。プロンプト表示せずに実行するには`--yes`オプションを指定してください。 |      |
 
 **実行例：**
 
@@ -250,9 +245,6 @@ kintone-plugin-uploader --base-url https://example.cybozu.com --username admin -
 
 # cli-kintone（パスワード認証）
 cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu.com --username admin --password password
-
-# cli-kintone（APIトークン認証）
-cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu.com --api-token your-api-token
 ```
 
 ## お困りの場合

@@ -52,7 +52,7 @@ export class PluginZip extends ZipFileDriver implements PluginInterface {
     return contentsZip.manifest();
   }
 
-  private async contentsZip(): Promise<ContentsZip> {
+  public async contentsZip(): Promise<ContentsZip> {
     const buffer = await this.readFile("contents.zip");
     return ContentsZip.fromBuffer(buffer);
   }

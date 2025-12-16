@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1500
+unlisted: true
 ---
 
 # plugin check

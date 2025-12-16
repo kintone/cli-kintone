@@ -41,8 +41,8 @@ importers:
         specifier: ^7.0.6
         version: 7.0.6
       iconv-lite:
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.7.1
+        version: 0.7.1
       node-rsa:
         specifier: ^1.1.1
         version: 1.1.1
@@ -76,7 +76,7 @@ importers:
         version: 11.3.0
       '@cybozu/eslint-config':
         specifier: ^24.3.0
-        version: 24.3.0(@types/eslint@9.6.1)(@typescript-eslint/utils@8.44.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(prettier@3.6.2)(typescript@5.9.3)
+        version: 24.3.0(@types/eslint@9.6.1)(@typescript-eslint/utils@8.44.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(prettier@3.7.4)(typescript@5.9.3)
       '@cybozu/license-manager':
         specifier: ^1.4.1
         version: 1.4.1
@@ -111,32 +111,29 @@ importers:
         specifier: ^0.38.4
         version: 0.38.4
       '@yao-pkg/pkg':
-        specifier: ^6.10.1
-        version: 6.10.1
+        specifier: ^6.11.0
+        version: 6.11.0
       ajv:
         specifier: ^8.17.1
         version: 8.17.1
       allure-commandline:
-        specifier: ^2.34.1
-        version: 2.34.1
+        specifier: ^2.36.0
+        version: 2.36.0
       allure-cucumberjs:
         specifier: ^2.15.1
         version: 2.15.1
       allure-jest:
-        specifier: ^3.4.2
-        version: 3.4.2(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))
+        specifier: ^3.4.3
+        version: 3.4.3(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))
       allure-js-commons:
-        specifier: ^3.4.2
-        version: 3.4.2
+        specifier: ^3.4.3
+        version: 3.4.3
       babel-jest:
         specifier: ^29.7.0
         version: 29.7.0(@babel/core@7.28.5)
       cross-env:
         specifier: ^10.1.0
         version: 10.1.0
-      glob:
-        specifier: ^11.0.3
-        version: 11.0.3
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))
@@ -144,14 +141,14 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       npm:
-        specifier: ^11.6.2
-        version: 11.6.2
+        specifier: ^11.7.0
+        version: 11.7.0
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
       prettier:
-        specifier: ^3.6.2
-        version: 3.6.2
+        specifier: ^3.7.4
+        version: 3.7.4
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -184,7 +181,7 @@ importers:
         version: 2.1.1
       docusaurus-plugin-sass:
         specifier: ^0.2.6
-        version: 0.2.6(@docusaurus/core@3.9.2(@mdx-js/react@3.1.1(@types/react@19.1.13)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(sass@1.94.2)(webpack@5.101.3)
+        version: 0.2.6(@docusaurus/core@3.9.2(@mdx-js/react@3.1.1(@types/react@19.1.13)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(sass@1.96.0)(webpack@5.101.3)
       prism-react-renderer:
         specifier: ^2.4.1
         version: 2.4.1(react@18.3.1)
@@ -195,8 +192,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       sass:
-        specifier: ^1.94.0
-        version: 1.94.2
+        specifier: ^1.95.1
+        version: 1.96.0
     devDependencies:
       '@docusaurus/eslint-plugin':
         specifier: ^3.9.2
@@ -214,8 +211,8 @@ importers:
         specifier: 3.9.2
         version: 3.9.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@eslint/eslintrc':
-        specifier: ^3.3.1
-        version: 3.3.1
+        specifier: ^3.3.3
+        version: 3.3.3
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
@@ -1652,8 +1649,8 @@ packages:
     resolution: {integrity: sha512-pHoYRWS08oeU0qVez1pZCcbqHzoJnM5VMtrxH2nWDJ0ukq9DkwWV1BTY+PWK+eWBbndN9W0O9WjJTyAHsDoPOg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/eslintrc@3.3.1':
-    resolution: {integrity: sha512-gtF186CXhIl1p4pJNGZw8Yc6RlshoePRvE0X91oPGb3vZ8pM3qOS9W9NGPat9LziaBV7XrJWGylNQXkGcnM3IQ==}
+  '@eslint/eslintrc@3.3.3':
+    resolution: {integrity: sha512-Kr+LPIUVKz2qkx1HAMH8q1q6azbqBAsXJUxBl/ODDuVPX45Z9DfwB8tPjTi6nNZ8BuM3nbJxC5zCAg5elnBUTQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/js@9.36.0':
@@ -2891,12 +2888,12 @@ packages:
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
 
-  '@yao-pkg/pkg-fetch@3.5.30':
-    resolution: {integrity: sha512-OrXQlsR3vE/IvwXSk8R5ETYbcxAFtUPmLkeepbG+ArN82TvlIwcUJ65tEWxLG3Tl89VRbmOupuhkXfmuaO05+Q==}
+  '@yao-pkg/pkg-fetch@3.5.31':
+    resolution: {integrity: sha512-qBLFfCXJECsxMlvwamhdWR65LWI7Cnb40dmI+1NIr1Nfk8Ddc8luZIJsRRZER9UrY13X1NJZSRORsqIPYDsJbw==}
     hasBin: true
 
-  '@yao-pkg/pkg@6.10.1':
-    resolution: {integrity: sha512-M/eqDg0Iir2nmyZ06Q9ospIPv1Yk7K1du5iLiaYrfMogQcI6bqf82A026MVYngyLH8jZsquZvjNAbvgbW4Uwkw==}
+  '@yao-pkg/pkg@6.11.0':
+    resolution: {integrity: sha512-cofhWpH8ifhastwvbSe0Xnh1leq9oT0VmGbxa8fqH1hc4PtrO1dz6B3M5uQ4xTjOeGd9R9Gx8rT6bB2/ZERaTA==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -2981,15 +2978,15 @@ packages:
     resolution: {integrity: sha512-8VJKIzheeI9cjuVJhU1hYEVetOTe7LvA+CujAI7yqvYsPtZfVEvv1pg9AeFNtHBg/ZoSLGU5LPijhcY5l3Ea9g==}
     engines: {node: '>= 14.0.0'}
 
-  allure-commandline@2.34.1:
-    resolution: {integrity: sha512-l42csZ2bz7FdtJI1t5zA3IXtOZ0YJaP/+JMRC9gt6aBHRVUIu+6r+3F7KRyshQ79osLz9/MHlGqAjBPRqH0QFw==}
+  allure-commandline@2.36.0:
+    resolution: {integrity: sha512-ls/4fk2Psv2Tu2PbWFrQPmUnm3gmmO9MBan4MuPWwqdkJPEmln2KRwtvtWYr9Av+e5AnFK1fGXWVyxqJIPiPwA==}
     hasBin: true
 
   allure-cucumberjs@2.15.1:
     resolution: {integrity: sha512-T6hWVZLmq29pfTePqEs5D+6qUsvPrGOwoEtHkIs8pPpdwQMbmn78+KR/s6uispIevA1r0SDZOrHGKiJSfJs+2g==}
 
-  allure-jest@3.4.2:
-    resolution: {integrity: sha512-0WBRFS/L7Ncds34b2j+VocwdTzEG1HzANo1R/Dt53Hgo7mzevv0rpHlzef85n2WPEzZCiQTWVANXbawhtGKHhA==}
+  allure-jest@3.4.3:
+    resolution: {integrity: sha512-d4l4X3q8lsbs/Ce9xG5S9i5Ggp0UZnjrKJnj2GJokXnsUKwM1UaXrIToaoDkJypDOM74iGF2DoF6cibfXZuptA==}
     peerDependencies:
       jest: '>=24.8.0'
       jest-circus: '>=24.8.0'
@@ -3011,10 +3008,10 @@ packages:
   allure-js-commons@2.15.1:
     resolution: {integrity: sha512-5V/VINplbu0APnfSZOkYpKOzucO36Q2EtTD1kqjWjl7n6tj7Hh+IHCZsH3Vpk/LXRDfj9RuXugBBvwYKV5YMJw==}
 
-  allure-js-commons@3.4.2:
-    resolution: {integrity: sha512-bWzqduvU/LzSTI4wJKzWbHWe64xluF30pDxFfSP+jlloQx9F1Vytdqrit5oAgNj+czzdA+Nocv3Dh6d4COCTvA==}
+  allure-js-commons@3.4.3:
+    resolution: {integrity: sha512-2n2uUFVmI7OaKXfkUPq2AcD1ksPR/WXZ9IhmQlMylb8bNpPChn1QPA/W97+RDYawFgvfhnadzIrH9ZWTWKjiNg==}
     peerDependencies:
-      allure-playwright: 3.4.2
+      allure-playwright: 3.4.3
     peerDependenciesMeta:
       allure-playwright:
         optional: true
@@ -4845,8 +4842,8 @@ packages:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
 
-  iconv-lite@0.7.0:
-    resolution: {integrity: sha512-cf6L2Ds3h57VVmkZe+Pn+5APsT7FpqJtEhhieDCvrE2MK5Qk9MyffgQyuxQTm6BChfeZNtcOLHp9IcWRVcIcBQ==}
+  iconv-lite@0.7.1:
+    resolution: {integrity: sha512-2Tth85cXwGFHfvRgZWszZSvdo+0Xsqmw8k8ZwxScfcBneNUraK+dxRxRm24nszx80Y0TVio8kKLt5sLE7ZCLlw==}
     engines: {node: '>=0.10.0'}
 
   icss-utils@5.1.0:
@@ -5357,6 +5354,10 @@ packages:
 
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
+    hasBin: true
+
+  js-yaml@4.1.1:
+    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
     hasBin: true
 
   jsesc@3.1.0:
@@ -5968,8 +5969,8 @@ packages:
     resolution: {integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==}
     engines: {node: '>=8'}
 
-  npm@11.6.2:
-    resolution: {integrity: sha512-7iKzNfy8lWYs3zq4oFPa8EXZz5xt9gQNKJZau3B1ErLBb6bF7sBJ00x09485DOvRT2l5Gerbl3VlZNT57MxJVA==}
+  npm@11.7.0:
+    resolution: {integrity: sha512-wiCZpv/41bIobCoJ31NStIWKfAxxYyD1iYnWCtiyns8s5v3+l8y0HCP/sScuH6B5+GhIfda4HQKiqeGZwJWhFw==}
     engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
     bundledDependencies:
@@ -5978,6 +5979,7 @@ packages:
       - '@npmcli/config'
       - '@npmcli/fs'
       - '@npmcli/map-workspaces'
+      - '@npmcli/metavuln-calculator'
       - '@npmcli/package-json'
       - '@npmcli/promise-spawn'
       - '@npmcli/redact'
@@ -6716,8 +6718,8 @@ packages:
     resolution: {integrity: sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==}
     engines: {node: '>=6.0.0'}
 
-  prettier@3.6.2:
-    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
+  prettier@3.7.4:
+    resolution: {integrity: sha512-v6UNi1+3hSlVvv8fSaoUbggEM5VErKmmpGA7Pl3HF8V6uKY7rvClBOJlH6yNwQtfTueNkGVpOv/mtWL9L4bgRA==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -7135,8 +7137,8 @@ packages:
       webpack:
         optional: true
 
-  sass@1.94.2:
-    resolution: {integrity: sha512-N+7WK20/wOr7CzA2snJcUSSNTCzeCGUTFY3OgeQP3mZ1aj9NMQ0mSTXwlrnd89j33zzQJGqIN52GIOmYrfq46A==}
+  sass@1.96.0:
+    resolution: {integrity: sha512-8u4xqqUeugGNCYwr9ARNtQKTOj4KmYiJAVKXf2CTIivTCR51j96htbMKWDru8H5SaQWpyVgTfOF8Ylyf5pun1Q==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -8338,8 +8340,8 @@ snapshots:
 
   '@babel/generator@7.28.3':
     dependencies:
-      '@babel/parser': 7.28.4
-      '@babel/types': 7.28.4
+      '@babel/parser': 7.28.5
+      '@babel/types': 7.28.5
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
       jsesc: 3.1.0
@@ -8413,7 +8415,7 @@ snapshots:
   '@babel/helper-member-expression-to-functions@7.27.1':
     dependencies:
       '@babel/traverse': 7.28.4
-      '@babel/types': 7.28.4
+      '@babel/types': 7.28.5
     transitivePeerDependencies:
       - supports-color
 
@@ -8442,7 +8444,7 @@ snapshots:
 
   '@babel/helper-optimise-call-expression@7.27.1':
     dependencies:
-      '@babel/types': 7.28.4
+      '@babel/types': 7.28.5
 
   '@babel/helper-plugin-utils@7.27.1': {}
 
@@ -8483,7 +8485,7 @@ snapshots:
     dependencies:
       '@babel/template': 7.27.2
       '@babel/traverse': 7.28.4
-      '@babel/types': 7.28.4
+      '@babel/types': 7.28.5
     transitivePeerDependencies:
       - supports-color
 
@@ -8930,7 +8932,7 @@ snapshots:
       '@babel/helper-module-imports': 7.27.1
       '@babel/helper-plugin-utils': 7.27.1
       '@babel/plugin-syntax-jsx': 7.27.1(@babel/core@7.28.5)
-      '@babel/types': 7.28.4
+      '@babel/types': 7.28.5
     transitivePeerDependencies:
       - supports-color
 
@@ -9713,7 +9715,7 @@ snapshots:
 
   '@cucumber/tag-expressions@6.1.2': {}
 
-  '@cybozu/eslint-config@24.3.0(@types/eslint@9.6.1)(@typescript-eslint/utils@8.44.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(prettier@3.6.2)(typescript@5.9.3)':
+  '@cybozu/eslint-config@24.3.0(@types/eslint@9.6.1)(@typescript-eslint/utils@8.44.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(prettier@3.7.4)(typescript@5.9.3)':
     dependencies:
       '@eslint/css': 0.10.0
       '@eslint/js': 9.36.0
@@ -9725,7 +9727,7 @@ snapshots:
       eslint-plugin-import-x: 4.16.1(@typescript-eslint/utils@8.44.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.1(jiti@1.21.7))
       eslint-plugin-n: 17.23.1(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
-      eslint-plugin-prettier: 5.5.4(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@1.21.7)))(eslint@9.39.1(jiti@1.21.7))(prettier@3.6.2)
+      eslint-plugin-prettier: 5.5.4(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@1.21.7)))(eslint@9.39.1(jiti@1.21.7))(prettier@3.7.4)
       eslint-plugin-react: 7.37.5(eslint@9.39.1(jiti@1.21.7))
       eslint-plugin-react-hooks: 5.2.0(eslint@9.39.1(jiti@1.21.7))
       globals: 16.4.0
@@ -10582,7 +10584,7 @@ snapshots:
       '@eslint/css-tree': 3.6.5
       '@eslint/plugin-kit': 0.3.5
 
-  '@eslint/eslintrc@3.3.1':
+  '@eslint/eslintrc@3.3.3':
     dependencies:
       ajv: 6.12.6
       debug: 4.4.3(supports-color@8.1.1)
@@ -10590,7 +10592,7 @@ snapshots:
       globals: 14.0.0
       ignore: 5.3.2
       import-fresh: 3.3.1
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       minimatch: 3.1.2
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
@@ -10680,7 +10682,7 @@ snapshots:
   '@inquirer/external-editor@1.0.2(@types/node@18.19.130)':
     dependencies:
       chardet: 2.1.0
-      iconv-lite: 0.7.0
+      iconv-lite: 0.7.1
     optionalDependencies:
       '@types/node': 18.19.130
 
@@ -11396,7 +11398,7 @@ snapshots:
 
   '@svgr/hast-util-to-babel-ast@8.0.0':
     dependencies:
-      '@babel/types': 7.28.4
+      '@babel/types': 7.28.5
       entities: 4.5.0
 
   '@svgr/plugin-jsx@8.1.0(@svgr/core@8.1.0(typescript@5.9.3))':
@@ -11967,7 +11969,7 @@ snapshots:
 
   '@xtuc/long@4.2.2': {}
 
-  '@yao-pkg/pkg-fetch@3.5.30':
+  '@yao-pkg/pkg-fetch@3.5.31':
     dependencies:
       https-proxy-agent: 5.0.1
       node-fetch: 2.7.0
@@ -11983,12 +11985,12 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@yao-pkg/pkg@6.10.1':
+  '@yao-pkg/pkg@6.11.0':
     dependencies:
-      '@babel/generator': 7.28.3
-      '@babel/parser': 7.28.4
-      '@babel/types': 7.28.4
-      '@yao-pkg/pkg-fetch': 3.5.30
+      '@babel/generator': 7.28.5
+      '@babel/parser': 7.28.5
+      '@babel/types': 7.28.5
+      '@yao-pkg/pkg-fetch': 3.5.31
       into-stream: 6.0.0
       minimist: 1.2.8
       multistream: 4.1.0
@@ -12094,7 +12096,7 @@ snapshots:
       '@algolia/requester-fetch': 5.38.0
       '@algolia/requester-node-http': 5.38.0
 
-  allure-commandline@2.34.1: {}
+  allure-commandline@2.36.0: {}
 
   allure-cucumberjs@2.15.1:
     dependencies:
@@ -12106,9 +12108,9 @@ snapshots:
       '@cucumber/messages': 22.0.0
       allure-js-commons: 2.15.1
 
-  allure-jest@3.4.2(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))):
+  allure-jest@3.4.3(jest-circus@29.7.0)(jest-cli@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3)))(jest-environment-node@29.7.0)(jest@29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))):
     dependencies:
-      allure-js-commons: 3.4.2
+      allure-js-commons: 3.4.3
     optionalDependencies:
       jest: 29.7.0(@types/node@18.19.130)(ts-node@10.9.2(@types/node@18.19.130)(typescript@5.9.3))
       jest-circus: 29.7.0
@@ -12123,7 +12125,7 @@ snapshots:
       properties: 1.2.1
       strip-ansi: 5.2.0
 
-  allure-js-commons@3.4.2:
+  allure-js-commons@3.4.3:
     dependencies:
       md5: 2.3.0
 
@@ -13136,11 +13138,11 @@ snapshots:
     dependencies:
       esutils: 2.0.3
 
-  docusaurus-plugin-sass@0.2.6(@docusaurus/core@3.9.2(@mdx-js/react@3.1.1(@types/react@19.1.13)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(sass@1.94.2)(webpack@5.101.3):
+  docusaurus-plugin-sass@0.2.6(@docusaurus/core@3.9.2(@mdx-js/react@3.1.1(@types/react@19.1.13)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(sass@1.96.0)(webpack@5.101.3):
     dependencies:
       '@docusaurus/core': 3.9.2(@mdx-js/react@3.1.1(@types/react@19.1.13)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
-      sass: 1.94.2
-      sass-loader: 16.0.5(sass@1.94.2)(webpack@5.101.3)
+      sass: 1.96.0
+      sass-loader: 16.0.5(sass@1.96.0)(webpack@5.101.3)
     transitivePeerDependencies:
       - '@rspack/core'
       - node-sass
@@ -13456,10 +13458,10 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  eslint-plugin-prettier@5.5.4(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@1.21.7)))(eslint@9.39.1(jiti@1.21.7))(prettier@3.6.2):
+  eslint-plugin-prettier@5.5.4(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@1.21.7)))(eslint@9.39.1(jiti@1.21.7))(prettier@3.7.4):
     dependencies:
       eslint: 9.39.1(jiti@1.21.7)
-      prettier: 3.6.2
+      prettier: 3.7.4
       prettier-linter-helpers: 1.0.0
       synckit: 0.11.11
     optionalDependencies:
@@ -13513,7 +13515,7 @@ snapshots:
       '@eslint/config-array': 0.21.1
       '@eslint/config-helpers': 0.4.2
       '@eslint/core': 0.17.0
-      '@eslint/eslintrc': 3.3.1
+      '@eslint/eslintrc': 3.3.3
       '@eslint/js': 9.39.1
       '@eslint/plugin-kit': 0.4.1
       '@humanfs/node': 0.16.7
@@ -14282,7 +14284,7 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  iconv-lite@0.7.0:
+  iconv-lite@0.7.1:
     dependencies:
       safer-buffer: 2.1.2
 
@@ -14562,7 +14564,7 @@ snapshots:
   istanbul-lib-instrument@6.0.3:
     dependencies:
       '@babel/core': 7.28.5
-      '@babel/parser': 7.28.4
+      '@babel/parser': 7.28.5
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
       semver: 7.7.2
@@ -14942,6 +14944,10 @@ snapshots:
       esprima: 4.0.1
 
   js-yaml@4.1.0:
+    dependencies:
+      argparse: 2.0.1
+
+  js-yaml@4.1.1:
     dependencies:
       argparse: 2.0.1
 
@@ -15792,7 +15798,7 @@ snapshots:
     dependencies:
       path-key: 3.1.1
 
-  npm@11.6.2: {}
+  npm@11.7.0: {}
 
   nprogress@0.2.0: {}
 
@@ -16527,7 +16533,7 @@ snapshots:
     dependencies:
       fast-diff: 1.3.0
 
-  prettier@3.6.2: {}
+  prettier@3.7.4: {}
 
   pretty-error@4.0.0:
     dependencies:
@@ -17029,14 +17035,14 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass-loader@16.0.5(sass@1.94.2)(webpack@5.101.3):
+  sass-loader@16.0.5(sass@1.96.0)(webpack@5.101.3):
     dependencies:
       neo-async: 2.6.2
     optionalDependencies:
-      sass: 1.94.2
+      sass: 1.96.0
       webpack: 5.101.3
 
-  sass@1.94.2:
+  sass@1.96.0:
     dependencies:
       chokidar: 4.0.3
       immutable: 5.1.3

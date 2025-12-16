@@ -9,6 +9,7 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "ERROR: \[403] \[CB_NO02] No privilege to proceed."
 
+  @serial(app_in_space_for_export)
   Scenario: App in a space
     Given The app "app_in_space_for_export" has no records
     And The app "app_in_space_for_export" has some records as below:
@@ -26,6 +27,7 @@ Feature: record export
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
+  @serial(app_for_export)
   Scenario: Invalid API token and valid login information
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -43,6 +45,7 @@ Feature: record export
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
+  @serial(app_for_export)
   Scenario: Exported data is in CSV format
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -82,6 +85,7 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_DA03] You cannot specify a duplicate API token for the same app."
 
+  @serial(app_for_export)
   Scenario: API tokens for different apps
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -107,6 +111,7 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IA02] The specified API token does not match the API token generated via an app."
 
+  @serial(app_for_export)
   Scenario: Login authorization
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -124,6 +129,7 @@ Feature: record export
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
+  @serial(app_for_export)
   Scenario: Login authorization - short username option
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -141,6 +147,7 @@ Feature: record export
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
+  @serial(app_for_export)
   Scenario: Login authorization - short password option
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -158,6 +165,7 @@ Feature: record export
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
+  @serial(app_for_export_attachments)
   Scenario: Download attachments into an existing directory
     Given The app "app_for_export_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
@@ -178,6 +186,7 @@ Feature: record export
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
 
+  @serial(app_for_export_attachments)
   Scenario: Download attachments into a new directory
     Given The app "app_for_export_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
@@ -196,6 +205,7 @@ Feature: record export
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
 
+  @serial(app_for_export_attachments)
   Scenario: Multiple records have attachments
     Given The app "app_for_export_attachments" has no records
     And I have a file in "attachments/file1.txt"
@@ -218,6 +228,7 @@ Feature: record export
       | attachments/file1.txt  | exported-attachments/Attachment-$RECORD_NUMBERS[0]/file1.txt  |
       | attachments/image1.png | exported-attachments/Attachment-$RECORD_NUMBERS[1]/image1.png |
 
+  @serial(app_for_export_attachments)
   Scenario: Record has multiple attachments
     Given The app "app_for_export_attachments" has no records
     And I have a file in "attachments/file1.txt"
@@ -238,6 +249,7 @@ Feature: record export
       | attachments/file1.txt  | exported-attachments/Attachment-$RECORD_NUMBERS[0]/file1.txt  |
       | attachments/Image1.png | exported-attachments/Attachment-$RECORD_NUMBERS[0]/Image1.png |
 
+  @serial(app_for_export_attachments)
   Scenario: Record has a .txt file attachment
     Given The app "app_for_export_attachments" has no records
     And I have a file "attachments/file1.txt" with content: "123"
@@ -256,6 +268,7 @@ Feature: record export
       | FilePath                      | FileName  | Content |
       | Attachment-$RECORD_NUMBERS[0] | file1.txt | 123     |
 
+  @serial(app_for_export)
   Scenario: Valid condition query
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -272,6 +285,7 @@ Feature: record export
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
+  @serial(app_for_export)
   Scenario: Invalid condition query
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -283,6 +297,7 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IQ11] Specified field \(Unknown_Field\) not found."
 
+  @serial(app_for_export)
   Scenario: Condition query - short option
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -299,6 +314,7 @@ Feature: record export
       | \d+           | Bob   | 20     |
       | \d+           | Jenny | 30     |
 
+  @serial(app_for_export)
   Scenario: Valid ordering
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -316,6 +332,7 @@ Feature: record export
       | \d+           | Alice | 20     |
       | \d+           | Bob   | 10     |
 
+  @serial(app_for_export)
   Scenario: Invalid ordering with a non-existent field
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -327,6 +344,7 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[400] \[GAIA_IQ11] Specified field \(Unknown_Field\) not found."
 
+  @serial(app_for_export)
   Scenario: Specify a field
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -340,6 +358,7 @@ Feature: record export
     Then I should get the exit code is zero
     And The output message should match with the pattern: "\"Number\"\n\"10\"\n\"20\"\n\"30\""
 
+  @serial(app_for_export)
   Scenario: Specify multiple fields
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -371,6 +390,7 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Error: The field in a Table cannot be specified to the fields option \(\"Text\"\)"
 
+  @serial(app_for_export_table)
   Scenario: Specify a table
     Given The app "app_for_export_table" has no records
     And The app "app_for_export_table" has some records as below:
@@ -388,7 +408,8 @@ Feature: record export
       | * | \d+   | Bob   | 20     |
       | * | \d+   | Jenny | 30     |
 
-  Scenario: App in a guest space
+  @serial(app_in_guest_space)
+  Scenario: App in a guest space (record export)
     Given The app "app_in_guest_space" has no records
     And The app "app_in_guest_space" has some records as below:
       | Text  | Number |
@@ -413,6 +434,7 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "\[403] \[CB_NO02] No privilege to proceed"
 
+  @serial(app_for_export)
   Scenario: Encoding to utf8
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -426,6 +448,7 @@ Feature: record export
       | Record_number | Text   | Number |
       | \d+           | レコード番号 | 10     |
 
+  @serial(app_for_export)
   Scenario: Encoding to sjis
     Given The app "app_for_export" has no records
     And The app "app_for_export" has some records as below:
@@ -446,6 +469,7 @@ Feature: record export
     Then I should get the exit code is non-zero
     And The output error message should match with the pattern: "Argument: encoding, Given: \"unsupported_encoding\", Choices: \"utf8\", \"sjis\""
 
+  @serial(app_for_export_table)
   Scenario: App has a table
     Given Load app ID of the app "app_for_export_table" as env var: "APP_ID"
     And Load app token of the app "app_for_export_table" with exact permissions "view" as env var: "API_TOKEN"
@@ -467,6 +491,7 @@ Feature: record export
       | * | Jenny  | \d+   | Jenny_1       | 40             |
       |   | Jenny  | \d+   | Jenny_2       | 50             |
 
+  @serial(app_for_export_table)
   Scenario: App does not have records
     Given Load app ID of the app "app_for_export_table" as env var: "APP_ID"
     And Load app token of the app "app_for_export_table" with exact permissions "view" as env var: "API_TOKEN"

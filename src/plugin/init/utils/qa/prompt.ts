@@ -3,8 +3,6 @@ import type { BoundMessage } from "../messages";
 import {
   validateForDescription,
   validateForName,
-  validateForOptionalDescription,
-  validateForOptionalName,
   validateForProjectName,
 } from "./validator";
 
@@ -50,34 +48,6 @@ export const promptForDescription = async (
   });
 };
 
-const promptForOptionalName = async (
-  m: BoundMessage,
-  supportLang: SupportLang,
-  defaultAnswer: string,
-) => {
-  return input({
-    message: m(`Q_Name${supportLang}`),
-    default: defaultAnswer,
-    validate: (value) =>
-      validateForOptionalName(value) ? true : m(`Q_Name${supportLang}Error`),
-  });
-};
-
-const promptForOptionalDescription = async (
-  m: BoundMessage,
-  supportLang: SupportLang,
-  defaultAnswer: string,
-) => {
-  return input({
-    message: m(`Q_Description${supportLang}`),
-    default: defaultAnswer,
-    validate: (value) =>
-      validateForOptionalDescription(value)
-        ? true
-        : m(`Q_Description${supportLang}Error`),
-  });
-};
-
 const promptForSupportLang = async (
   m: BoundMessage,
   supportLang: Exclude<SupportLang, "En">,
@@ -104,6 +74,9 @@ export type LangAnswers = {
   homepage?: string;
 };
 
+const emptyToUndefined = (v: string): string | undefined =>
+  v === "" ? undefined : v;
+
 export const promptForLang = async <R extends boolean = false>(
   m: BoundMessage,
   options: {
@@ -120,16 +93,16 @@ export const promptForLang = async <R extends boolean = false>(
       return {} as R extends true ? LangAnswers : Partial<LangAnswers>;
     }
   }
-  const name = await promptForOptionalName(
-    m,
-    options.supportLang,
-    options.defaultName,
-  );
-  const description = await promptForOptionalDescription(
+  const name = await promptForName(m, options.supportLang, options.defaultName);
+  const description = await promptForDescription(
     m,
     options.supportLang,
     options.defaultDescription || name,
   );
-  const homepage = await promptForHomepage(m, options.supportLang);
-  return { name, description, homepage };
+  const homepage = emptyToUndefined(
+    await promptForHomepage(m, options.supportLang),
+  );
+  return { name, description, homepage } as R extends true
+    ? LangAnswers
+    : Partial<LangAnswers>;
 };

@@ -4,6 +4,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import Heading from "@theme/Heading";
+import Translate, { translate } from "@docusaurus/Translate";
 
 import styles from "./index.module.css";
 
@@ -15,10 +16,19 @@ const HomepageHeader = () => {
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className="hero__subtitle">
+          <Translate id="homepage.tagline" description="The homepage tagline">
+            The CLI tool for importing and exporting Kintone records.
+          </Translate>
+        </p>
         <div className={styles.buttons}>
           <Link className="button button--secondary button--lg" to="/guide">
-            Get Started!
+            <Translate
+              id="homepage.getStarted"
+              description="The get started button label"
+            >
+              Get Started!
+            </Translate>
           </Link>
         </div>
       </div>
@@ -27,11 +37,20 @@ const HomepageHeader = () => {
 };
 
 const Home = (): JSX.Element => {
-  const { siteConfig } = useDocusaurusContext();
+  // const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`${siteConfig.title}; ${siteConfig.tagline}`}
-      description="Description will go into a meta tag in <head />"
+      title={translate({
+        id: "homepage.title",
+        message:
+          "cli-kintone; The CLI tool for importing and exporting Kintone records.",
+        description: "The homepage title",
+      })}
+      description={translate({
+        id: "homepage.description",
+        message: "The CLI tool for importing and exporting Kintone records.",
+        description: "The homepage meta description",
+      })}
     >
       <HomepageHeader />
       <main>

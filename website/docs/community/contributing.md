@@ -138,6 +138,39 @@ pnpm test:e2e
 Unfortunately, an actual kintone environment with API access is required to run E2E tests.
 Therefore, we recommend to run on CI.
 
+##### Parallel execution
+
+E2E tests are executed in parallel by default to speed up test execution. The default configuration allows up to 10 tests to run concurrently.
+
+In some cases, you may want to run tests sequentially. For example, when multiple tests share the same resource (such as a specific kintone app), they should not run at the same time to avoid conflicts.
+
+To run a specific scenario sequentially, use the `@serial` tag with a resource identifier:
+
+```gherkin
+@serial(app_in_space_for_export)
+Scenario: App in a space
+  Given The app "app_in_space_for_export" has no records
+  ...
+```
+
+Scenarios with the same `@serial(resource)` tag will not run concurrently with each other. However, they can still run in parallel with scenarios that have different `@serial` tags or no `@serial` tag at all.
+
+**Examples of resource identifiers used in existing E2E tests:**
+
+| Resource Identifier          | Description                                                                                                      |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `app_for_export`             | General purpose app for testing record export functionality                                                      |
+| `app_for_import`             | General purpose app for testing record import functionality                                                      |
+| `app_for_export_attachments` | App with attachment fields for testing file download functionality                                               |
+| `app_for_export_table`       | App with table fields for testing table data export                                                              |
+| `app_in_space_for_export`    | App located in a kintone space for testing space-related features                                                |
+| `app_in_guest_space`         | App located in a guest space for testing guest space access                                                      |
+| `plugin_<plugin_id>`         | Plugin resource for testing plugin upload/update functionality (e.g., `plugin_chjjmgadianhfiopehkbjlfkfioglafk`) |
+
+Multiple test scenarios that operate on the same resource should use the same `@serial` tag to prevent race conditions during parallel test execution.
+
+For more details about parallel execution in Cucumber, see the [official documentation](https://github.com/cucumber/cucumber-js/blob/main/docs/parallel.md).
+
 ### Documentation website
 
 The documentation website (this website!) must be updated in the same PR.
@@ -149,6 +182,66 @@ To preview changes on local, run `doc:start` command:
 ```shell
 pnpm doc:start
 ```
+
+### Internationalization (i18n)
+
+The documentation website supports multiple languages. Currently, we support English (default) and Japanese.
+
+#### Translation workflow
+
+1. **Update English documentation** - Always update English docs first in `website/docs/`
+2. **Translate to Japanese** - Add translations in `website/i18n/ja/docusaurus-plugin-content-docs/current/`
+3. **Update translation progress** - Run the command to update the translation percentage in the language switcher:
+
+```shell
+cd website
+pnpm update-translation-progress
+```
+
+This command will:
+
+- Count English and Japanese documentation files
+- Calculate translation percentage
+- Update the language switcher label (e.g., "日本語 (28%)")
+
+4. **Preview both languages** - Test your changes in both languages:
+
+```shell
+# English version
+pnpm doc:start
+
+# Japanese version
+pnpm doc:start --locale ja
+```
+
+#### File structure
+
+```
+website/
+├── docs/                      # English documentation (source)
+│   ├── guide/
+│   ├── reference/
+│   └── community/
+├── i18n/ja/                   # Japanese translations
+│   └── docusaurus-plugin-content-docs/
+│       └── current/           # Translated docs
+│           ├── guide/
+│           ├── reference/
+│           └── community/
+```
+
+#### Translation guidelines
+
+- **Maintain structure** - Keep the same file structure and frontmatter
+- **Use `@site/` for imports** - In translated files, use `@site/` alias for React component imports:
+  ```javascript
+  import Component from "@site/src/components/Component";
+  ```
+- **Copy images** - Copy images to the same relative path in the i18n directory
+- **Keep `.md` extensions** - Use `.md` extension in internal links (e.g., `[link](./page.md)`)
+- **Update regularly** - Run `pnpm update-translation-progress` after adding translations
+
+For more details about Docusaurus i18n, see the [official documentation](https://docusaurus.io/docs/i18n/introduction).
 
 ### Linting
 

@@ -153,11 +153,13 @@ cli-kintone provides an additional command to view basic plugin information such
 
 ```shell
 cli-kintone plugin info --input ./plugin.zip --format json
-# id: pgcfbflalhmhegedmocldhknhpmfmpji
-# name: kintone-plugin
-# version: 1
-# description: kintone-plugin
-# homepage: (not set)
+# {
+#   "id": "pgcfbflalhmhegedmocldhknhpmfmpji",
+#   "name": "kintone-plugin",
+#   "version": 1,
+#   "description": "kintone-plugin",
+#   "homepage": null
+# }
 ```
 
 ### 3. Update package.json Scripts
@@ -221,7 +223,7 @@ cli-kintone plugin init --name my-plugin --template javascript
 
 | Option       | js-sdk                                                                     | cli-kintone                                                                                                             |
 | ------------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Input source | Command-line argument<br/>Specified the directory containing manifest.json | `--input <dir>`, `-i`<br/>Specifies the path to manifest.json itself                                                    |
+| Input source | Command-line argument<br/>Specifies the directory containing manifest.json | `--input <dir>`, `-i`<br/>Specifies the path to manifest.json itself                                                    |
 | Output file  | `--out <file>`                                                             | `--output <file>`, `-o`<br/>Default is `plugin.zip`                                                                     |
 | Private key  | `--ppk <file>`<br/>Auto-generated if not specified                         | `--private-key <file>`, `-p`<br/>Does not auto-generate; requires generation in advance using the plugin keygen command |
 

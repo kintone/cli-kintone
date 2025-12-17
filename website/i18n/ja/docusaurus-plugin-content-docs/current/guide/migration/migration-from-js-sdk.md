@@ -153,11 +153,13 @@ cli-kintoneは、プラグインのID、バージョン、名前などの基本�
 
 ```shell
 cli-kintone plugin info --input ./plugin.zip --format json
-# id: pgcfbflalhmhegedmocldhknhpmfmpji
-# name: kintone-plugin
-# version: 1
-# description: kintone-plugin
-# homepage: (not set)
+# {
+#   "id": "pgcfbflalhmhegedmocldhknhpmfmpji",
+#   "name": "kintone-plugin",
+#   "version": 1,
+#   "description": "kintone-plugin",
+#   "homepage": null
+# }
 ```
 
 ### 3. package.jsonスクリプトの更新

@@ -202,7 +202,9 @@ When(
 );
 
 When("I type {string}", function (userInput) {
-  this.childProcess.stdin.write(userInput);
+  // Replace escape sequences with actual characters
+  const processed = userInput.replace(/\\n/g, "\n").replace(/\\t/g, "\t");
+  this.childProcess.stdin.write(processed);
 });
 
 When("I press Enter", function () {
@@ -214,6 +216,52 @@ When("I press Enter", function () {
     });
   });
 });
+
+When("I close stdin and wait", function () {
+  return new Promise<void>((resolve) => {
+    // Use setImmediate to ensure all writes are flushed before closing stdin
+    setImmediate(() => {
+      this.childProcess.stdin.end();
+      this.childProcess.on("close", () => {
+        resolve();
+      });
+    });
+  });
+});
+
+When(
+  "I write inputs and wait without closing stdin {string}",
+  { timeout: 120000 }, // 120 seconds timeout for npm install
+  function (userInput: string) {
+    // Replace escape sequences with actual characters
+    const processed = userInput.replace(/\\n/g, "\n").replace(/\\t/g, "\t");
+    const inputs = processed
+      .split("\n")
+      .filter((_, i, arr) => i < arr.length - 1); // Remove last empty element
+
+    return new Promise<void>((resolve) => {
+      let index = 0;
+
+      const writeNext = () => {
+        if (index < inputs.length) {
+          this.childProcess.stdin.write(inputs[index] + "\n");
+          index++;
+          setTimeout(writeNext, 200); // 200ms delay between inputs
+        } else {
+          // All inputs written, now close stdin and wait for process to complete
+          setImmediate(() => {
+            this.childProcess.stdin.end();
+            this.childProcess.on("close", () => {
+              resolve();
+            });
+          });
+        }
+      };
+
+      writeNext();
+    });
+  },
+);
 
 Then("I should get the exit code is non-zero", function () {
   assert.notEqual(this.response.status, 0, this.response.stderr.toString());
@@ -244,6 +292,14 @@ Then(
   function (message: string) {
     const reg = new RegExp(message);
     assert.match(this.response.stdout.toString(), reg);
+  },
+);
+
+Then(
+  "The output message should not match with the pattern: {string}",
+  function (message: string) {
+    const reg = new RegExp(message);
+    assert.doesNotMatch(this.response.stdout.toString(), reg);
   },
 );
 

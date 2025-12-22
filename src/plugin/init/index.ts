@@ -6,7 +6,7 @@ type Options = {
 };
 
 export const run: (argv: Options) => Promise<void> = async (argv) => {
-  initPlugin({
+  await initPlugin({
     name: argv.name,
     lang: "en",
     template: argv.template,

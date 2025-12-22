@@ -39,7 +39,7 @@ const handler = async (args: Args) => {
     if (process.env.NODE_ENV === "test") {
       console.log(JSON.stringify({ flags: flags }));
     } else {
-      run(flags);
+      await run(flags);
     }
   } catch (error) {
     logger.error(new RunError(error));

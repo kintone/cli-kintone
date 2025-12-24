@@ -114,21 +114,21 @@ export class OurWorld extends World {
       },
     );
 
-    let stdout: Buffer;
-    let stderr: Buffer;
+    let stdout: Buffer = Buffer.from("");
+    let stderr: Buffer = Buffer.from("");
 
     this.childProcess.stdout.on("data", (data: Buffer) => {
-      stdout = data;
+      stdout = Buffer.concat([stdout, data]);
     });
 
     this.childProcess.stderr.on("data", (data: Buffer) => {
-      stderr = data;
+      stderr = Buffer.concat([stderr, data]);
     });
 
     this.childProcess.on("exit", (code: number) => {
       this.response = {
-        stdout: stdout ?? Buffer.from(""),
-        stderr: stderr ?? Buffer.from(""),
+        stdout: stdout,
+        stderr: stderr,
         status: code,
       };
     });
@@ -165,6 +165,17 @@ export class OurWorld extends World {
 
   public async isFileExists(filePath: string): Promise<boolean> {
     return (await stat(path.join(this.workingDir, filePath))).isFile();
+  }
+
+  public async isDirectoryExists(dirPath: string): Promise<boolean> {
+    return (await stat(path.join(this.workingDir, dirPath))).isDirectory();
+  }
+
+  public async generateDirectory(dirPath: string) {
+    const fs = await import("fs");
+    return fs.promises.mkdir(path.join(this.workingDir, dirPath), {
+      recursive: true,
+    });
   }
 
   public getAppCredentialByAppKey(appKey: string): AppCredential {

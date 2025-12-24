@@ -5,6 +5,7 @@ import { upload } from "../index";
 const fixturesDir = path.join(__dirname, "fixtures");
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
+import type * as KintoneRestAPIClientModule from "@kintone/rest-api-client";
 
 vi.mock("@kintone/rest-api-client");
 const KintoneRestAPIClientMock = KintoneRestAPIClient as MockedClass<
@@ -13,7 +14,7 @@ const KintoneRestAPIClientMock = KintoneRestAPIClient as MockedClass<
 
 // Helper to create an actual API client instance for mocking
 const createApiClientMock = async (baseUrl: string) => {
-  const mod = await vi.importActual<typeof import("@kintone/rest-api-client")>(
+  const mod = await vi.importActual<typeof KintoneRestAPIClientModule>(
     "@kintone/rest-api-client",
   );
   return new mod.KintoneRestAPIClient({

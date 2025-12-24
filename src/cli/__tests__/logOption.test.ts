@@ -12,10 +12,7 @@ describe("logHandler", () => {
 
   LOG_CONFIG_LEVELS.forEach((log) => {
     it(`should set "${log}" to the log config level when log-level argument is "${log}"`, () => {
-      const spyLogger = vi.spyOn(
-        StandardLogger.prototype,
-        "setLogConfigLevel",
-      );
+      const spyLogger = vi.spyOn(StandardLogger.prototype, "setLogConfigLevel");
 
       logHandler({ "log-level": log, verbose: false, $0: "", _: [""] });
       expect(spyLogger).toHaveBeenCalledTimes(1);

@@ -1,4 +1,5 @@
 /* eslint-disable n/no-unsupported-features/node-builtins */
+import { vi, type Mock } from "vitest";
 import assert from "assert";
 import {
   isGitHubTemplateExists,
@@ -14,11 +15,11 @@ describe("template/github", () => {
   describe("isGitHubTemplateExists", () => {
     beforeEach(() => {
       // fetch APIをモック
-      global.fetch = jest.fn();
+      global.fetch = vi.fn();
     });
 
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     it("存在するテンプレート名でtrueを返す", async () => {
@@ -58,7 +59,7 @@ describe("template/github", () => {
 
       await isGitHubTemplateExists("javascript");
 
-      const calls = (global.fetch as jest.Mock).mock.calls;
+      const calls = (global.fetch as Mock).mock.calls;
       const lastCall = calls[calls.length - 1];
       const headers = lastCall[1].headers as Headers;
 
@@ -70,11 +71,11 @@ describe("template/github", () => {
 
   describe("resolveGitHubTemplateSource", () => {
     beforeEach(() => {
-      global.fetch = jest.fn();
+      global.fetch = vi.fn();
     });
 
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     it("存在するJavaScriptテンプレート名から正しいTemplateSourceを生成する", async () => {

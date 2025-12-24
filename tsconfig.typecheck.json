@@ -2,7 +2,8 @@
   // tsconfig for type checking and syntax highlight
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "types": ["vitest/globals"]
   },
   "include": [
     "src/**/*",

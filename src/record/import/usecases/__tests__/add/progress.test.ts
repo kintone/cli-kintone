@@ -1,14 +1,15 @@
+import { vi } from "vitest";
 import type { Logger } from "../../../../../utils/log";
 
 import { ProgressLogger } from "../../add/progress";
 
 const mockLogger: Logger = {
-  info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn(),
-  debug: jest.fn(),
-  trace: jest.fn(),
-  fatal: jest.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
+  debug: vi.fn(),
+  trace: vi.fn(),
+  fatal: vi.fn(),
 };
 
 describe("ProgressLogger", () => {

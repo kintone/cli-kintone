@@ -1,3 +1,4 @@
+import { vi, type MockedClass } from "vitest";
 import path from "path";
 import { upload } from "../index";
 
@@ -5,12 +6,21 @@ const fixturesDir = path.join(__dirname, "fixtures");
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 
-jest.mock("@kintone/rest-api-client");
-const KintoneRestAPIClientMock = KintoneRestAPIClient as jest.MockedClass<
+vi.mock("@kintone/rest-api-client");
+const KintoneRestAPIClientMock = KintoneRestAPIClient as MockedClass<
   typeof KintoneRestAPIClient
 >;
-const OriginalKintoneRestAPIClient: typeof KintoneRestAPIClient =
-  jest.requireActual("@kintone/rest-api-client").KintoneRestAPIClient;
+
+// Helper to create an actual API client instance for mocking
+const createApiClientMock = async (baseUrl: string) => {
+  const mod = await vi.importActual<typeof import("@kintone/rest-api-client")>(
+    "@kintone/rest-api-client",
+  );
+  return new mod.KintoneRestAPIClient({
+    baseUrl,
+    auth: { username: "user", password: "pass" },
+  });
+};
 
 describe("plugin upload command", () => {
   it("should call installPlugin API when the plugin have not been installed on kintone", async () => {
@@ -18,24 +28,20 @@ describe("plugin upload command", () => {
     const pluginFilePath = path.join(fixturesDir, `${pluginId}.zip`);
     const dummyFileKey = "dummyFileKey";
 
-    const apiClientMock = new OriginalKintoneRestAPIClient({
-      baseUrl: "https://example.kintone.com",
-      auth: {
-        username: "user",
-        password: "pass",
-      },
-    });
-    KintoneRestAPIClientMock.mockImplementationOnce((_) => apiClientMock);
+    const apiClientMock = await createApiClientMock(
+      "https://example.kintone.com",
+    );
+    KintoneRestAPIClientMock.mockImplementationOnce(() => apiClientMock);
 
-    apiClientMock.file.uploadFile = jest
+    apiClientMock.file.uploadFile = vi
       .fn()
       .mockResolvedValue({ fileKey: dummyFileKey });
 
-    apiClientMock.plugin.getPlugins = jest.fn().mockResolvedValue({
+    apiClientMock.plugin.getPlugins = vi.fn().mockResolvedValue({
       plugins: [], // No installed
     });
-    apiClientMock.plugin.installPlugin = jest.fn();
-    apiClientMock.plugin.updatePlugin = jest.fn();
+    apiClientMock.plugin.installPlugin = vi.fn();
+    apiClientMock.plugin.updatePlugin = vi.fn();
 
     await upload({
       pluginFilePath: pluginFilePath,
@@ -61,20 +67,16 @@ describe("plugin upload command", () => {
     const pluginFilePath = path.join(fixturesDir, `${pluginId}.zip`);
     const dummyFileKey = "dummyFileKey";
 
-    const apiClientMock = new OriginalKintoneRestAPIClient({
-      baseUrl: "https://example.kintone.com",
-      auth: {
-        username: "user",
-        password: "pass",
-      },
-    });
-    KintoneRestAPIClientMock.mockImplementationOnce((_) => apiClientMock);
+    const apiClientMock = await createApiClientMock(
+      "https://example.kintone.com",
+    );
+    KintoneRestAPIClientMock.mockImplementationOnce(() => apiClientMock);
 
-    apiClientMock.file.uploadFile = jest
+    apiClientMock.file.uploadFile = vi
       .fn()
       .mockResolvedValue({ fileKey: dummyFileKey });
 
-    apiClientMock.plugin.getPlugins = jest.fn().mockResolvedValue({
+    apiClientMock.plugin.getPlugins = vi.fn().mockResolvedValue({
       plugins: [
         // Already installed
         {
@@ -85,8 +87,8 @@ describe("plugin upload command", () => {
         },
       ],
     });
-    apiClientMock.plugin.installPlugin = jest.fn();
-    apiClientMock.plugin.updatePlugin = jest.fn();
+    apiClientMock.plugin.installPlugin = vi.fn();
+    apiClientMock.plugin.updatePlugin = vi.fn();
 
     await upload({
       pluginFilePath: pluginFilePath,

@@ -2,7 +2,10 @@ import type { LocalRecord } from "../../../types/record";
 import type { CsvRow } from "../../../../../kintone/types";
 import type { RecordSchema } from "../../../types/schema";
 
-import stringify from "csv-stringify";
+import {
+  stringify,
+  type Stringifier as CsvStringifyStringifier,
+} from "csv-stringify";
 
 import { convertRecord, recordReader } from "./record";
 import { LINE_BREAK, SEPARATOR } from "./constants";
@@ -13,14 +16,14 @@ import type { Stringifier } from "../index";
 
 export class CsvStringifier implements Stringifier {
   private readonly recordTransformer: Transform;
-  private readonly csvStringifier: stringify.Stringifier;
+  private readonly csvStringifier: CsvStringifyStringifier;
   private readonly encoder: PassThrough;
 
   constructor(schema: RecordSchema, useLocalFilePath: boolean) {
     const recordTransform = new RecordsTransform(schema, useLocalFilePath);
 
     const headerFields = buildHeaderFields(schema);
-    const csvStringifier = stringify.stringify({
+    const csvStringifier = stringify({
       columns: headerFields,
       header: true,
       delimiter: SEPARATOR,

@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import type { RecordSchema } from "../../../types/schema";
 import type { LocalRecord } from "../../../types/record";
 
@@ -22,7 +23,7 @@ describe("addRecords", () => {
   });
 
   it("should not fail", () => {
-    apiClient.record.addAllRecords = jest.fn().mockResolvedValue([{}]);
+    apiClient.record.addAllRecords = vi.fn().mockResolvedValue([{}]);
     return expect(
       addRecords(
         apiClient,
@@ -35,7 +36,7 @@ describe("addRecords", () => {
   });
 
   it("should pass parameters to the apiClient correctly", async () => {
-    const addAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
+    const addAllRecordsMockFn = vi.fn().mockResolvedValue([{}]);
     apiClient.record.addAllRecords = addAllRecordsMockFn;
     const ATTACHMENTS_DIR = "";
     const APP_ID = "1";
@@ -79,7 +80,7 @@ describe("addRecords", () => {
   });
 
   it("should includes a Record Number field", async () => {
-    const addAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
+    const addAllRecordsMockFn = vi.fn().mockResolvedValue([{}]);
     apiClient.record.addAllRecords = addAllRecordsMockFn;
     const APP_ID = "1";
     const RECORDS: LocalRecord[] = [
@@ -147,12 +148,12 @@ describe("addRecords", () => {
   });
 
   it("should upload files correctly when attachmentsDir is given", async () => {
-    const uploadFileMockFn = jest
+    const uploadFileMockFn = vi
       .fn()
       .mockReturnValueOnce({ fileKey: "abcde" })
       .mockReturnValueOnce({ fileKey: "fghij" });
     apiClient.file.uploadFile = uploadFileMockFn;
-    const addAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
+    const addAllRecordsMockFn = vi.fn().mockResolvedValue([{}]);
     apiClient.record.addAllRecords = addAllRecordsMockFn;
 
     const ATTACHMENTS_DIR = "AttachmentsFolder";
@@ -192,12 +193,12 @@ describe("addRecords", () => {
   });
 
   it("should upload files correctly when attachmentsDir is given and with subtable", async () => {
-    const uploadFileMockFn = jest
+    const uploadFileMockFn = vi
       .fn()
       .mockReturnValueOnce({ fileKey: "abcde" })
       .mockReturnValueOnce({ fileKey: "fghij" });
     apiClient.file.uploadFile = uploadFileMockFn;
-    const addAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
+    const addAllRecordsMockFn = vi.fn().mockResolvedValue([{}]);
     apiClient.record.addAllRecords = addAllRecordsMockFn;
 
     const ATTACHMENTS_DIR = "AttachmentsFolder";

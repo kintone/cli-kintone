@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import type { LocalRecord } from "../../../types/record";
 import type { RecordSchema } from "../../../types/schema";
 
@@ -19,13 +20,15 @@ import { pattern as upsertByRecordNumberWithMixedRecordNumber } from "./fixtures
 import { pattern as upsertByRecordNumberWithInvalidRecordNumber } from "./fixtures/upsertByRecordNumberWithMixedRecordNumber";
 
 import { UpsertRecordsError } from "../../upsert/error";
-import type { LocalRecordRepository } from "../../interface";
+import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock";
 
 export type TestPattern = {
   description: string;
   input: {
-    records: LocalRecord[];
-    repository: LocalRecordRepository;
+    repository: {
+      source: LocalRecord[];
+      format: string;
+    };
     schema: RecordSchema;
     updateKey: string;
     options: {
@@ -79,9 +82,9 @@ describe("upsertRecords", () => {
   it.each(patterns)(
     "$description",
     async ({ input, recordsOnKintone, expected }) => {
-      const getAllRecordsMockFn = jest.fn().mockResolvedValue(recordsOnKintone);
+      const getAllRecordsMockFn = vi.fn().mockResolvedValue(recordsOnKintone);
       apiClient.record.getAllRecords = getAllRecordsMockFn;
-      const updateAllRecordsMockFn = jest.fn().mockResolvedValue({
+      const updateAllRecordsMockFn = vi.fn().mockResolvedValue({
         records: [
           {
             id: "1",
@@ -90,15 +93,20 @@ describe("upsertRecords", () => {
         ],
       });
       apiClient.record.updateAllRecords = updateAllRecordsMockFn;
-      apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "App" });
+      apiClient.app.getApp = vi.fn().mockResolvedValue({ code: "App" });
 
       const APP_ID = "1";
+      const createRepository = () =>
+        new LocalRecordRepositoryMock(
+          input.repository.source,
+          input.repository.format,
+        );
 
       if (expected.success !== undefined) {
         await upsertRecords(
           apiClient,
           APP_ID,
-          input.repository,
+          createRepository(),
           input.schema,
           input.updateKey,
           input.options,
@@ -108,23 +116,21 @@ describe("upsertRecords", () => {
         }
       }
       if (expected.failure !== undefined) {
+        const { cause } = expected.failure;
         await expect(
           upsertRecords(
             apiClient,
             APP_ID,
-            input.repository,
+            createRepository(),
             input.schema,
             input.updateKey,
             input.options,
           ),
-        ).rejects.toThrow(
-          new UpsertRecordsError(
-            expected.failure.cause,
-            input.records,
-            0,
-            input.schema,
-          ),
-        );
+        ).rejects.toSatisfy((error) => {
+          expect(error).toBeInstanceOf(UpsertRecordsError);
+          expect(error).toMatchObject({ cause });
+          return true;
+        });
       }
     },
   );

@@ -1,7 +1,8 @@
+import { vi } from "vitest";
 import { retry } from "../retry";
 
 // Mock setTimeout because we don't need to really wait.
-jest.mock("timers/promises", () => ({
+vi.mock("timers/promises", () => ({
   setTimeout: () => {
     /* noop */
   },

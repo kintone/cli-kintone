@@ -1,4 +1,5 @@
 /* eslint-disable n/no-unsupported-features/node-builtins */
+import { vi, type Mock } from "vitest";
 import assert from "assert";
 import { mkdtemp, access, rm } from "fs/promises";
 import { tmpdir } from "os";
@@ -17,13 +18,13 @@ describe("template/downloader", () => {
       // 一時ディレクトリを作成
       tempDir = await mkdtemp(join(tmpdir(), "plugin-init-test-"));
       // fetch APIをモック
-      global.fetch = jest.fn();
+      global.fetch = vi.fn();
     });
 
     afterEach(async () => {
       // 一時ディレクトリを削除
       await rm(tempDir, { recursive: true, force: true });
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     it("指定されたURLからテンプレートを正しくダウンロード・展開する（JavaScriptテンプレート）", async () => {
@@ -148,7 +149,7 @@ describe("template/downloader", () => {
         outputDir: tempDir,
       });
 
-      const calls = (global.fetch as jest.Mock).mock.calls;
+      const calls = (global.fetch as Mock).mock.calls;
       const lastCall = calls[calls.length - 1];
       const options = lastCall[1] as RequestInit | undefined;
       const headers = options?.headers as Headers | undefined;

@@ -1,4 +1,5 @@
 /* eslint-disable n/no-unsupported-features/node-builtins */
+import type { Mock } from "vitest";
 import { Readable } from "stream";
 import { join } from "path";
 import { c as createTar } from "tar";
@@ -29,23 +30,23 @@ export const mockFetchWithTarball = async (
   const nodeReadable = Readable.from(tarStream);
   const webStream = Readable.toWeb(nodeReadable);
 
-  (global.fetch as jest.Mock).mockResolvedValue({
+  (global.fetch as Mock).mockResolvedValue({
     body: webStream,
   });
 };
 
 export const mockFetchSuccess = () => {
-  (global.fetch as jest.Mock).mockResolvedValue({
+  (global.fetch as Mock).mockResolvedValue({
     status: 200,
   });
 };
 
 export const mockFetchNotFound = () => {
-  (global.fetch as jest.Mock).mockResolvedValue({
+  (global.fetch as Mock).mockResolvedValue({
     status: 404,
   });
 };
 
 export const mockFetchError = () => {
-  (global.fetch as jest.Mock).mockRejectedValue(new Error("Network error"));
+  (global.fetch as Mock).mockRejectedValue(new Error("Network error"));
 };

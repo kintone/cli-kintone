@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { validateRecordNumbers } from "../index";
 import { ValidatorError } from "../error";
 
@@ -38,8 +39,8 @@ describe("validateRecordNumbers", () => {
     withDuplicated,
     withMixedRecordNumber,
   ];
-  it.each(patterns)("$description", (pattern) => {
-    apiClient.record.getAllRecordsWithId = jest.fn().mockResolvedValue([
+  it.each(patterns)("$description", async (pattern) => {
+    apiClient.record.getAllRecordsWithId = vi.fn().mockResolvedValue([
       {
         $id: { value: "1" },
       },
@@ -52,14 +53,20 @@ describe("validateRecordNumbers", () => {
     ]);
 
     if (pattern.expected.failure !== undefined) {
-      return expect(
+      const { errorMessage } = pattern.expected.failure;
+      await expect(
         validateRecordNumbers(apiClient, "1", pattern.appCode, pattern.input),
-      ).rejects.toThrow(
-        new ValidatorError(pattern.expected.failure.errorMessage),
-      );
+      ).rejects.toSatisfy((error) => {
+        expect(error).toBeInstanceOf(ValidatorError);
+        expect(error).toMatchObject({
+          cause: expect.stringContaining(errorMessage),
+        });
+        return true;
+      });
+      return;
     }
 
-    return expect(
+    await expect(
       validateRecordNumbers(apiClient, "1", pattern.appCode, pattern.input),
     ).resolves.not.toThrow();
   });

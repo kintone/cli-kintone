@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { getAllRecords } from "../getAllRecords";
 import type { LocalRecord } from "../../../types/record";
@@ -38,7 +39,7 @@ describe("getAllRecords", () => {
     }));
     apiClient.record.getRecords = mockResponse.reduce(
       (acc, value) => acc.mockResolvedValueOnce(value),
-      jest.fn().mockResolvedValue(mockDefaultResponse),
+      vi.fn().mockResolvedValue(mockDefaultResponse),
     );
 
     const expected: LocalRecord[] = mockResponse
@@ -81,14 +82,14 @@ describe("getAllRecords", () => {
       next: true,
     }));
 
-    apiClient.record.createCursor = jest
+    apiClient.record.createCursor = vi
       .fn()
       .mockResolvedValue({ id: "1", totalCount: "" });
     apiClient.record.getRecordsByCursor = mockResponse.reduce(
       (acc, value) => acc.mockResolvedValueOnce(value),
-      jest.fn().mockResolvedValue(mockDefaultResponse),
+      vi.fn().mockResolvedValue(mockDefaultResponse),
     );
-    apiClient.record.deleteCursor = jest.fn().mockResolvedValue({});
+    apiClient.record.deleteCursor = vi.fn().mockResolvedValue({});
 
     const expected: LocalRecord[] = mockResponse
       .map((resp) => resp.records)

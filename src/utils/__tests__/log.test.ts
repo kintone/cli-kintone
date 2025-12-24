@@ -1,9 +1,10 @@
+import { vi } from "vitest";
 import type { LogConfigLevel, LogEventLevel, Printer } from "../log";
 import { StandardLogger } from "../log";
 
 describe("StandardLogger", () => {
   const mockDate = new Date(0);
-  const spy = jest.spyOn(global, "Date").mockImplementation(() => mockDate);
+  const spy = vi.spyOn(global, "Date").mockImplementation(() => mockDate);
   const patternTest = [
     ["TRACE", "trace"],
     ["DEBUG", "debug"],
@@ -20,7 +21,7 @@ describe("StandardLogger", () => {
 
       const options: { logConfigLevel: LogConfigLevel; printer: Printer } = {
         logConfigLevel: logLevel as LogConfigLevel,
-        printer: jest.fn(),
+        printer: vi.fn(),
       };
       const standardLogger = new StandardLogger(options);
       standardLogger[logLevel as LogEventLevel](message);
@@ -40,7 +41,7 @@ describe("StandardLogger", () => {
 
     const options: { logConfigLevel: LogConfigLevel; printer: Printer } = {
       logConfigLevel: "none",
-      printer: jest.fn(),
+      printer: vi.fn(),
     };
     const standardLogger = new StandardLogger(options);
     standardLogger.info(message);
@@ -54,7 +55,7 @@ describe("StandardLogger", () => {
 
     const options: { logConfigLevel: LogConfigLevel; printer: Printer } = {
       logConfigLevel: "info",
-      printer: jest.fn(),
+      printer: vi.fn(),
     };
     const standardLogger = new StandardLogger(options);
     standardLogger.info(`${firstLineMessage}\n${secondLineMessage}`);
@@ -71,10 +72,10 @@ describe("StandardLogger", () => {
   it("should display the correct log message corresponding to the log config level", () => {
     const message = "This is example message";
     const options: { logConfigLevel?: LogConfigLevel; printer: Printer } = {
-      printer: jest.fn(),
+      printer: vi.fn(),
     };
     const standardLogger = new StandardLogger(options);
-    const formatSpy = jest.spyOn(standardLogger as any, "format");
+    const formatSpy = vi.spyOn(standardLogger as any, "format");
     standardLogger.setLogConfigLevel("warn");
     standardLogger.trace(message);
     standardLogger.debug(message);

@@ -1,12 +1,22 @@
+import { vi, type Mock } from "vitest";
 import assert from "assert";
 import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
 import { setupTemplate } from "../template";
+import { resolveGitHubTemplateSource as _resolveGitHubTemplateSource } from "../template/github";
+import { downloadAndExtractFromUrl as _downloadAndExtractFromUrl } from "../template/downloader";
 
 // GitHub関連の関数をモック
-jest.mock("../template/github");
-jest.mock("../template/downloader");
+vi.mock("../template/github");
+vi.mock("../template/downloader");
+
+const resolveGitHubTemplateSource = _resolveGitHubTemplateSource as Mock<
+  typeof _resolveGitHubTemplateSource
+>;
+const downloadAndExtractFromUrl = _downloadAndExtractFromUrl as Mock<
+  typeof _downloadAndExtractFromUrl
+>;
 
 describe("template", () => {
   describe("setupTemplate", () => {
@@ -15,7 +25,7 @@ describe("template", () => {
     beforeEach(async () => {
       // 一時ディレクトリを作成
       tempDir = await mkdtemp(join(tmpdir(), "plugin-init-test-"));
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     afterEach(async () => {
@@ -25,7 +35,6 @@ describe("template", () => {
 
     it("存在しないテンプレート名でエラーをスローする", async () => {
       // resolveGitHubTemplateSourceがエラーをスローするようモック
-      const { resolveGitHubTemplateSource } = require("../template/github");
       resolveGitHubTemplateSource.mockRejectedValue(
         new Error('GitHub template "non-existent" not found'),
       );
@@ -51,9 +60,6 @@ describe("template", () => {
     });
 
     it("JavaScriptテンプレートで完全なセットアップが完了する", async () => {
-      const { resolveGitHubTemplateSource } = require("../template/github");
-      const { downloadAndExtractFromUrl } = require("../template/downloader");
-
       // resolveGitHubTemplateSourceが正しいソースを返す
       resolveGitHubTemplateSource.mockResolvedValue({
         tarballUrl:
@@ -134,9 +140,6 @@ describe("template", () => {
     });
 
     it("TypeScriptテンプレートで完全なセットアップが完了する", async () => {
-      const { resolveGitHubTemplateSource } = require("../template/github");
-      const { downloadAndExtractFromUrl } = require("../template/downloader");
-
       resolveGitHubTemplateSource.mockResolvedValue({
         tarballUrl:
           "https://api.github.com/repos/kintone/cli-kintone/tarball/main",

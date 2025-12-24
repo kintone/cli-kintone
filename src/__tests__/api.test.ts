@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { buildRestAPIClient } from "../kintone/client";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import * as https from "https";
@@ -7,14 +8,14 @@ import type { HttpsProxyAgentOptions } from "https-proxy-agent";
 const packageJson = require("../../package.json");
 const expectedUa = `${packageJson.name}@${packageJson.version}`;
 
-jest.mock("@kintone/rest-api-client");
+vi.mock("@kintone/rest-api-client");
 
-jest.mock("fs");
-jest.spyOn(fs, "readFileSync").mockReturnValue("dummy");
+vi.mock("fs");
+vi.spyOn(fs, "readFileSync").mockReturnValue("dummy");
 
-jest.mock("https", () => {
+vi.mock("https", () => {
   return {
-    Agent: jest
+    Agent: vi
       .fn()
       .mockImplementation(
         (opts?: { pfx?: Buffer | string; passphrase?: string }) => {
@@ -34,9 +35,9 @@ jest.mock("https", () => {
   };
 });
 
-jest.mock("https-proxy-agent", () => {
+vi.mock("https-proxy-agent", () => {
   return {
-    HttpsProxyAgent: jest
+    HttpsProxyAgent: vi
       .fn()
       .mockImplementation(
         (

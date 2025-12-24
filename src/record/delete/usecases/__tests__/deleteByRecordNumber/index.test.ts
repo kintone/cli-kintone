@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { deleteByRecordNumber } from "../../deleteByRecordNumber";
 
@@ -11,9 +12,9 @@ describe("deleteRecords", () => {
   });
 
   it("should not fail", () => {
-    apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "appcode" });
-    apiClient.record.deleteAllRecords = jest.fn().mockResolvedValue([{}]);
-    apiClient.record.getAllRecordsWithId = jest.fn().mockResolvedValue([
+    apiClient.app.getApp = vi.fn().mockResolvedValue({ code: "appcode" });
+    apiClient.record.deleteAllRecords = vi.fn().mockResolvedValue([{}]);
+    apiClient.record.getAllRecordsWithId = vi.fn().mockResolvedValue([
       {
         $id: { value: "1" },
       },
@@ -24,10 +25,10 @@ describe("deleteRecords", () => {
   });
 
   it("should pass parameters to the apiClient correctly", async () => {
-    const deleteAllRecordsMockFn = jest.fn().mockResolvedValue([{}]);
+    const deleteAllRecordsMockFn = vi.fn().mockResolvedValue([{}]);
     apiClient.record.deleteAllRecords = deleteAllRecordsMockFn;
-    apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "appcode" });
-    apiClient.record.getAllRecordsWithId = jest.fn().mockResolvedValue([
+    apiClient.app.getApp = vi.fn().mockResolvedValue({ code: "appcode" });
+    apiClient.record.getAllRecordsWithId = vi.fn().mockResolvedValue([
       {
         $id: { value: "1" },
       },
@@ -50,11 +51,15 @@ describe("deleteRecords", () => {
 
   it("should throw error when API response is error", () => {
     const error = new Error("Failed to delete records");
-    apiClient.app.getApp = jest.fn().mockResolvedValue({ code: "appcode" });
-    apiClient.record.deleteAllRecords = jest.fn().mockRejectedValueOnce(error);
-    apiClient.record.getAllRecordsWithId = jest.fn().mockResolvedValue([]);
+    apiClient.app.getApp = vi.fn().mockResolvedValue({ code: "appcode" });
+    apiClient.record.deleteAllRecords = vi.fn().mockRejectedValueOnce(error);
+    apiClient.record.getAllRecordsWithId = vi.fn().mockResolvedValue([
+      {
+        $id: { value: "1" },
+      },
+    ]);
     return expect(
       deleteByRecordNumber(apiClient, "1", [{ value: "appcode-1" }]),
-    ).rejects.toThrow(error);
+    ).rejects.toThrow(error.message);
   });
 });

@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import assert from "assert";
 import * as prompt from "../qa/prompt";
 import type { LangAnswers, SupportLang } from "../qa/prompt";
@@ -12,14 +13,12 @@ const MOCK_ANSWERS: LangAnswers = {
 };
 
 const mockPromptForLang = (supportedLangs: SupportLang[]) => {
-  jest
-    .spyOn(prompt, "promptForLang")
-    .mockImplementation(async (_m, options) => {
-      if (options.required || supportedLangs.includes(options.supportLang)) {
-        return MOCK_ANSWERS;
-      }
-      return {};
-    });
+  vi.spyOn(prompt, "promptForLang").mockImplementation(async (_m, options) => {
+    if (options.required || supportedLangs.includes(options.supportLang)) {
+      return MOCK_ANSWERS;
+    }
+    return {};
+  });
 };
 
 describe("qa", () => {

@@ -1,9 +1,10 @@
+import { vi } from "vitest";
 import { StandardLogger } from "../log";
 import { emitDeprecationWarning, emitExperimentalWarning } from "../stability";
 
 describe("stability", () => {
   const mockDate = new Date(0);
-  const spy = jest.spyOn(global, "Date").mockImplementation(() => mockDate);
+  const spy = vi.spyOn(global, "Date").mockImplementation(() => mockDate);
 
   afterAll(() => {
     spy.mockReset();
@@ -14,7 +15,7 @@ describe("stability", () => {
     it("should emit experimental warning message", () => {
       const message = "This feature is under development.";
 
-      const printer = jest.fn();
+      const printer = vi.fn();
       const logger = new StandardLogger({
         logConfigLevel: "info",
         printer: printer,
@@ -36,7 +37,7 @@ describe("stability", () => {
       const message =
         "This feature has been deprecated.\nUse alternative feature instead.";
 
-      const printer = jest.fn();
+      const printer = vi.fn();
       const logger = new StandardLogger({
         logConfigLevel: "info",
         printer: printer,

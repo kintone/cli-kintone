@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import type * as Fields from "../../../types/field";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
@@ -29,7 +30,7 @@ describe("getRecords", () => {
     });
   });
   it("should not be failed", () => {
-    const getAllRecordsMockFn = jest.fn(async function* () {
+    const getAllRecordsMockFn = vi.fn(async function* () {
       yield [
         {
           $id: { type: "__ID__", value: "1" },
@@ -58,7 +59,7 @@ describe("getRecords", () => {
     const expectedRecords = caseCanGetRecords.expected;
     const schema = caseCanGetRecords.schema;
     const repositoryMock = new LocalRecordRepositoryMock();
-    const getAllRecordsMockFn = jest.fn(async function* () {
+    const getAllRecordsMockFn = vi.fn(async function* () {
       yield records;
     });
     await getRecords(
@@ -80,10 +81,10 @@ describe("getRecords", () => {
 
     const testFileData = "test data";
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
-    const getAllRecordsMockFn = jest.fn(async function* () {
+    const getAllRecordsMockFn = vi.fn(async function* () {
       yield kintoneRecords;
     });
-    apiClient.file.downloadFile = jest.fn().mockResolvedValue(testFileData);
+    apiClient.file.downloadFile = vi.fn().mockResolvedValue(testFileData);
     await getRecords(
       apiClient,
       "1",
@@ -117,10 +118,10 @@ describe("getRecords", () => {
 
     const testFileData = "test data";
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
-    const getAllRecordsMockFn = jest.fn(async function* () {
+    const getAllRecordsMockFn = vi.fn(async function* () {
       yield kintoneRecords;
     });
-    apiClient.file.downloadFile = jest.fn().mockResolvedValue(testFileData);
+    apiClient.file.downloadFile = vi.fn().mockResolvedValue(testFileData);
     await getRecords(
       apiClient,
       "1",
@@ -160,10 +161,10 @@ describe("getRecords", () => {
 
       const testFileData = "test data";
       const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
-      const getAllRecordsMockFn = jest.fn(async function* () {
+      const getAllRecordsMockFn = vi.fn(async function* () {
         yield kintoneRecords;
       });
-      apiClient.file.downloadFile = jest.fn().mockResolvedValue(testFileData);
+      apiClient.file.downloadFile = vi.fn().mockResolvedValue(testFileData);
       await getRecords(
         apiClient,
         "1",
@@ -203,10 +204,10 @@ describe("getRecords", () => {
 
       const testFileData = "test data";
       const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "cli-kintone-"));
-      const getAllRecordsMockFn = jest.fn(async function* () {
+      const getAllRecordsMockFn = vi.fn(async function* () {
         yield kintoneRecords;
       });
-      apiClient.file.downloadFile = jest.fn().mockResolvedValue(testFileData);
+      apiClient.file.downloadFile = vi.fn().mockResolvedValue(testFileData);
       await getRecords(
         apiClient,
         "1",
@@ -240,7 +241,7 @@ describe("getRecords", () => {
 
     const error = new Error("error for test");
     // eslint-disable-next-line require-yield
-    const getAllRecordsMockFn = jest.fn(async function* () {
+    const getAllRecordsMockFn = vi.fn(async function* () {
       throw error;
     });
     return expect(
@@ -256,12 +257,12 @@ describe("getRecords", () => {
   });
 
   it("should show warning message if there is no records exist in the app or match the condition.", async () => {
-    jest.spyOn(console, "error").mockImplementation(() => {
+    vi.spyOn(console, "error").mockImplementation(() => {
       return true;
     });
-    const loggerWarnMock = jest.spyOn(logger, "warn");
+    const loggerWarnMock = vi.spyOn(logger, "warn");
     const repositoryMock = new LocalRecordRepositoryMock();
-    const getAllRecordsMockFn = jest.fn(async function* () {
+    const getAllRecordsMockFn = vi.fn(async function* () {
       yield [];
     });
 

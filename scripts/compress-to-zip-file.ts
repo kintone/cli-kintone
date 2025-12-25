@@ -5,7 +5,7 @@ import path from "path";
 import os from "os";
 import { rimraf } from "rimraf";
 import { fileURLToPath } from "url";
-import packageJson from "../package.json";
+import packageJson from "../package.json" with { type: "json" };
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(dirname, "../");

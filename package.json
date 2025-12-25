@@ -30,7 +30,7 @@
     "test:ci": "pnpm clean:test && vitest run --config vitest.config.ci.ts",
     "test:e2e": "cucumber-js",
     "test:e2e:dev": "pnpm test:e2e --fail-fast",
-    "test:e2e:ci": "pnpm clean:test && cucumber-js --format ./cucumber-reporter.ts:./allure-results/dummy.txt",
+    "test:e2e:ci": "pnpm clean:test && cucumber-js --format ./cucumber-reporter.js:./allure-results/dummy.txt",
     "lint": "run-p -l lint:*",
     "lint:eslint": "eslint ./ --max-warnings 0 --cache --cache-location ./node_modules/.cache/eslint/",
     "lint:prettier": "prettier --check '**/*.{json,md,yml,yaml}' --cache",

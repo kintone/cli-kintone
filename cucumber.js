@@ -1,7 +1,5 @@
 // https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md
-import type { IConfiguration } from "@cucumber/cucumber/api";
-
-const config: { default: Partial<IConfiguration> } = {
+const config = {
   default: {
     formatOptions: { snippetInterface: "synchronous" },
     requireModule: ["ts-node/register"],
@@ -9,5 +7,4 @@ const config: { default: Partial<IConfiguration> } = {
     parallel: 10,
   },
 };
-
-export default config;
+module.exports = config;

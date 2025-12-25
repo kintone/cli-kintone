@@ -23,7 +23,7 @@
     "package": "mkdirp ./bin && pkg --sea ./dist/index.js -o ./bin/cli-kintone -t linux-x64,macos-arm64,win-x64",
     "license:analyze": "license-manager analyze -c license-manager.config.js",
     "license:extract": "license-manager extract -c license-manager.config.js -w .",
-    "compress": "zx ./scripts/compress-to-zip-file.mjs",
+    "compress": "zx ./scripts/compress-to-zip-file.ts",
     "typecheck": "tsc --project tsconfig.typecheck.json --pretty --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

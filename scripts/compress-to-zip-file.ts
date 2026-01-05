@@ -43,7 +43,13 @@ try {
   process.exit(1);
 }
 
-const recipes = [
+interface Recipe {
+  type: string;
+  input: string;
+  output: string;
+}
+
+const recipes: Recipe[] = [
   {
     type: "linux",
     input: "cli-kintone-linux-x64",

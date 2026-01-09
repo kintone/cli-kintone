@@ -10,7 +10,7 @@ export interface Logger {
   fatal: (message: any) => void;
 }
 
-export const LOG_CONFIG_LEVELS = <const>[
+export const LOG_CONFIG_LEVELS = [
   "trace",
   "debug",
   "info",
@@ -18,7 +18,7 @@ export const LOG_CONFIG_LEVELS = <const>[
   "error",
   "fatal",
   "none",
-];
+] as const;
 
 export type LogConfigLevel = (typeof LOG_CONFIG_LEVELS)[number];
 

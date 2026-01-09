@@ -2,7 +2,7 @@ import { spawn, spawnSync } from "child_process";
 import path from "path";
 import { QueryBuilder } from "./queryBuilder";
 
-export const SUPPORTED_ENCODING = <const>["utf8", "sjis"];
+export const SUPPORTED_ENCODING = ["utf8", "sjis"] as const;
 export type SupportedEncoding = (typeof SUPPORTED_ENCODING)[number];
 
 export type ReplacementValue = string | string[] | number | number[] | boolean;

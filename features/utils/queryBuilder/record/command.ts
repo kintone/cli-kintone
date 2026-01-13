@@ -22,7 +22,7 @@ import {
 import type { Command, Subcommand } from "../index";
 
 export const RECORD = "record";
-export const SUPPORTED_COMMANDS = <const>[RECORD];
+export const SUPPORTED_COMMANDS = [RECORD] as const;
 
 export type CommandType = (typeof SUPPORTED_COMMANDS)[number];
 

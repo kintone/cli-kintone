@@ -68,7 +68,7 @@ type UserCredentialRecord = {
   };
 };
 
-export const TOKEN_PERMISSIONS = <const>["view", "add", "edit", "delete"];
+export const TOKEN_PERMISSIONS = ["view", "add", "edit", "delete"] as const;
 
 export type Permission = (typeof TOKEN_PERMISSIONS)[number];
 

@@ -1,11 +1,13 @@
 import assert from "assert";
 import * as fs from "fs";
 import { rimrafSync } from "rimraf";
-import type { ImportCustomizeManifest, ImportOption } from "../index";
-import { importCustomizeSetting } from "../index";
+import type { Option } from "../../core";
+import { exportCustomizeSetting } from "../index";
 import MockKintoneApiClient from "../../core/__tests__/MockKintoneApiClient";
-describe("import", () => {
+
+describe("export", () => {
   const testDestDir = "testDestDir";
+  const testOutputPath = `${testDestDir}/customize-manifest.json`;
   const filesToTestContent = [
     `${testDestDir}/desktop/js/bootstrap.min.js`,
     `${testDestDir}/desktop/js/a.js`,
@@ -18,11 +20,12 @@ describe("import", () => {
 
   const uploadFileBody = `(function() { console.log("hello"); })();`;
 
-  describe("runImport", () => {
+  describe("runExport", () => {
     let kintoneApiClient: MockKintoneApiClient;
-    let manifest: ImportCustomizeManifest;
     let status: { retryCount: number };
-    let options: ImportOption;
+    let options: Option;
+    const appId = "1";
+
     beforeEach(() => {
       kintoneApiClient = new MockKintoneApiClient(
         "kintone",
@@ -36,9 +39,6 @@ describe("import", () => {
           guestSpaceId: 0,
         },
       );
-      manifest = {
-        app: "1",
-      };
       status = {
         retryCount: 0,
       };
@@ -46,7 +46,6 @@ describe("import", () => {
         lang: "en",
         proxy: "",
         guestSpaceId: 0,
-        destDir: testDestDir,
       };
     });
 
@@ -55,8 +54,8 @@ describe("import", () => {
     });
 
     const assertManifestContent = (buffer: Buffer) => {
+      // New spec: manifest should not include app property
       const appCustomize = {
-        app: "1",
         scope: "ALL",
         desktop: {
           js: [
@@ -94,7 +93,7 @@ describe("import", () => {
       assert.strictEqual(uploadFileBody, content.toString());
     };
 
-    const assertImportUseCaseApiRequest = (
+    const assertExportUseCaseApiRequest = (
       mockKintoneApiClient: MockKintoneApiClient,
     ) => {
       const expected: any[] = [
@@ -179,7 +178,7 @@ describe("import", () => {
       assert.deepStrictEqual(mockKintoneApiClient.logs, expected);
     };
 
-    it("should success updating customize-manifest.json and downloading uploaded js/css files", () => {
+    it("should success updating customize-manifest.json and downloading uploaded js/css files", async () => {
       const getAppCustomizeResponse = JSON.parse(
         fs
           .readFileSync(
@@ -195,21 +194,20 @@ describe("import", () => {
         getAppCustomizeResponse,
       );
 
-      const execCommand = importCustomizeSetting(
+      await exportCustomizeSetting(
         kintoneApiClient,
-        manifest,
+        appId,
+        testOutputPath,
         status,
         options,
       );
 
-      return execCommand.then(() => {
-        assertImportUseCaseApiRequest(kintoneApiClient);
-        const manifestFile = `${testDestDir}/customize-manifest.json`;
-        assert.ok(fs.existsSync(manifestFile), `test ${manifestFile} exists`);
-        const contents = fs.readFileSync(manifestFile);
-        assertManifestContent(contents);
-        filesToTestContent.map(assertDownloadFile);
-      });
+      assertExportUseCaseApiRequest(kintoneApiClient);
+      const manifestFile = `${testDestDir}/customize-manifest.json`;
+      assert.ok(fs.existsSync(manifestFile), `test ${manifestFile} exists`);
+      const contents = fs.readFileSync(manifestFile);
+      assertManifestContent(contents);
+      filesToTestContent.map(assertDownloadFile);
     });
   });
 });

@@ -1,14 +1,20 @@
 import fs from "fs";
+import path from "path";
 import { mkdirp } from "mkdirp";
+import { confirm } from "@inquirer/prompts";
 import { getBoundMessage } from "../core";
 import type { CustomizeManifest, Lang } from "../core";
 
+export interface InitParams {
+  scope: "ALL" | "ADMIN" | "NONE";
+  outputPath: string;
+  yes: boolean;
+}
+
 export const getInitCustomizeManifest = (
-  appId: string,
   scope: "ALL" | "ADMIN" | "NONE",
 ): CustomizeManifest => {
   return {
-    app: appId,
     scope,
     desktop: {
       js: [],
@@ -23,14 +29,15 @@ export const getInitCustomizeManifest = (
 
 export const generateCustomizeManifest = (
   customizeManifest: CustomizeManifest,
-  destDir: string,
-): Promise<any> => {
-  if (!fs.existsSync(`${destDir}`)) {
-    mkdirp.sync(`${destDir}`);
+  outputPath: string,
+): Promise<string> => {
+  const destDir = path.dirname(outputPath);
+  if (destDir && !fs.existsSync(destDir)) {
+    mkdirp.sync(destDir);
   }
   return new Promise((resolve, reject) => {
     return fs.writeFile(
-      `${destDir}/customize-manifest.json`,
+      outputPath,
       JSON.stringify(customizeManifest, null, 4),
       (err) => {
         if (err) {
@@ -43,14 +50,25 @@ export const generateCustomizeManifest = (
   });
 };
 
-export const runInit = async (
-  appId: string,
-  scope: "ALL" | "ADMIN" | "NONE",
-  lang: Lang,
-  destDir: string,
-): Promise<any> => {
+export const runInit = async (params: InitParams): Promise<void> => {
+  const { scope, outputPath, yes } = params;
+  // Language is fixed to "en"
+  const lang: Lang = "en";
   const m = getBoundMessage(lang);
-  const customizeManifest = getInitCustomizeManifest(appId, scope);
-  await generateCustomizeManifest(customizeManifest, destDir);
-  console.log(`${destDir}/${m("M_CommandInitFinish")}`);
+
+  // Check if file already exists and prompt for overwrite
+  if (fs.existsSync(outputPath) && !yes) {
+    const shouldOverwrite = await confirm({
+      message: `File "${outputPath}" already exists. Overwrite?`,
+      default: false,
+    });
+    if (!shouldOverwrite) {
+      console.log("Operation cancelled.");
+      return;
+    }
+  }
+
+  const customizeManifest = getInitCustomizeManifest(scope);
+  await generateCustomizeManifest(customizeManifest, outputPath);
+  console.log(`${outputPath} ${m("M_CommandInitFinish")}`);
 };

@@ -4,29 +4,37 @@ import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
 import { setStability } from "../stability";
 import { commonOptions } from "../commonOptions";
-import { runImport } from "../../customize/import";
+import { runExport } from "../../customize/export";
 
-const command = "import <manifest-file>";
+const command = "export";
 
 const describe =
-  "Import JavaScript/CSS customization settings from a kintone app";
+  "Export JavaScript/CSS customization settings from a kintone app";
 
 const builder = (args: yargs.Argv) =>
   args
-    .positional("manifest-file", {
-      describe:
-        "The path to a manifest file containing the app ID (minimal format: { app: '<app-id>' })",
-      type: "string",
-      demandOption: true,
-    })
     .options(commonOptions)
     // NOTE: This command only supports password authn.
     .hide("api-token")
-    .option("dest-dir", {
-      describe: "The destination directory for downloaded files",
+    .option("app", {
+      alias: "a",
+      describe: "The kintone app ID",
       type: "string",
-      default: ".",
+      demandOption: true,
       requiresArg: true,
+    })
+    .option("output", {
+      alias: "o",
+      describe: "The output path for customize-manifest.json",
+      type: "string",
+      default: "customize-manifest.json",
+      requiresArg: true,
+    })
+    .option("yes", {
+      alias: "y",
+      describe: "Skip confirmation prompts",
+      type: "boolean",
+      default: false,
     });
 
 type Args = yargs.Arguments<
@@ -42,19 +50,20 @@ const handler = async (args: Args) => {
       ? parseInt(args["guest-space-id"], 10)
       : 0;
 
-    await runImport({
+    await runExport({
+      appId: args.app,
+      outputPath: args.output,
+      yes: args.yes,
       baseUrl: args["base-url"],
       username: args.username ?? null,
       password: args.password ?? null,
       oAuthToken: null,
       basicAuthUsername: args["basic-auth-username"] ?? null,
       basicAuthPassword: args["basic-auth-password"] ?? null,
-      manifestFile: args["manifest-file"],
       options: {
         lang,
         proxy: args.proxy ?? "",
         guestSpaceId,
-        destDir: args["dest-dir"],
       },
     });
   } catch (error) {
@@ -64,7 +73,7 @@ const handler = async (args: Args) => {
   }
 };
 
-export const importCommand: CommandModule<{}, Args> = setStability(
+export const exportCommand: CommandModule<{}, Args> = setStability(
   {
     command,
     describe,

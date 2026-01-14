@@ -54,8 +54,8 @@ export const messages = {
     ja: "kintoneのアプリからカスタマイズ設定されたファイルをダウンロードしています",
   },
   M_CommandInitFinish: {
-    en: "customize-manifest.json file has been created",
-    ja: "customize-manifest.json を生成しました",
+    en: "file has been created",
+    ja: "を生成しました",
   },
   M_CommandImportFinish: {
     en: "Finish importing customization files from kintone app",

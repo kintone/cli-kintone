@@ -1,14 +1,5 @@
-import { input, select } from "@inquirer/prompts";
+import { select } from "@inquirer/prompts";
 import type { BoundMessage } from "../../core";
-
-const validateForAppId = (v: string) => !!v;
-
-export const promptForAppId = async (m: BoundMessage) => {
-  return input({
-    message: m("Q_AppId"),
-    validate: validateForAppId,
-  });
-};
 
 export const promptForScope = async (m: BoundMessage) => {
   return select({

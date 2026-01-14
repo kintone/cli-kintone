@@ -1,8 +1,8 @@
 import type { CommandModule } from "yargs";
 import type yargs from "yargs";
-import { uploadCommand } from "./upload";
+import { applyCommand } from "./apply";
 import { initCommand } from "./init";
-import { importCommand } from "./import";
+import { exportCommand } from "./export";
 import { setStability } from "../stability";
 
 const command = "customize";
@@ -11,9 +11,9 @@ const describe = "Commands for kintone JavaScript/CSS customization";
 
 const builder = (args: yargs.Argv) =>
   args
-    .command(uploadCommand)
+    .command(applyCommand)
     .command(initCommand)
-    .command(importCommand)
+    .command(exportCommand)
     .demandCommand();
 
 const handler = () => {

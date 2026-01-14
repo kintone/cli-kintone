@@ -1,29 +1,30 @@
-import chokidar from "chokidar";
 import fs from "fs";
+import { confirm } from "@inquirer/prompts";
 import {
   KintoneApiClient,
   AuthenticationError,
   getBoundMessage,
-  isUrlString,
   wait,
 } from "../core";
-import type {
-  CustomizeManifest,
-  GeneralInputParams,
-  Option,
-  messages,
-} from "../core";
+import type { CustomizeManifest, Option, Lang } from "../core";
 
-export type { CustomizeManifest, GeneralInputParams, Option };
+export interface ApplyParams {
+  appId: string;
+  inputPath: string;
+  yes: boolean;
+  baseUrl: string;
+  username: string | null;
+  password: string | null;
+  oAuthToken: string | null;
+  basicAuthUsername: string | null;
+  basicAuthPassword: string | null;
+  options: Option;
+}
 
 export interface Status {
   retryCount: number;
   updateBody: any;
   updated: boolean;
-}
-
-export interface InputParams extends GeneralInputParams {
-  options: Option;
 }
 
 interface JsCssManifest {
@@ -37,31 +38,29 @@ interface JsCssManifest {
   };
 }
 
-interface HandleUploadErrorParameter {
+interface HandleApplyErrorParameter {
   error: any;
+  appId: string;
   manifest: CustomizeManifest;
   updateBody: any;
   updated: boolean;
   retryCount: number;
   options: Option;
-  boundMessage: (key: keyof typeof messages) => string;
   kintoneApiClient: KintoneApiClient;
 }
 
 const MAX_RETRY_COUNT = 3;
 
-export const upload = async (
+export const apply = async (
   kintoneApiClient: KintoneApiClient,
+  appId: string,
   manifest: CustomizeManifest,
-  status: {
-    retryCount: number;
-    updateBody: any;
-    updated: boolean;
-  },
+  status: Status,
   options: Option,
 ): Promise<void> => {
-  const boundMessage = getBoundMessage(options.lang);
-  const appId = manifest.app;
+  // Language is fixed to "en"
+  const lang: Lang = "en";
+  const boundMessage = getBoundMessage(lang);
   let { retryCount, updateBody, updated } = status;
 
   try {
@@ -69,12 +68,11 @@ export const upload = async (
       console.log(boundMessage("M_StartUploading"));
       try {
         const uploadFilesResult = await getUploadFilesResult(
-          boundMessage,
           kintoneApiClient,
           manifest,
         );
 
-        updateBody = createUpdatedManifest(manifest, uploadFilesResult);
+        updateBody = createUpdatedManifest(appId, manifest, uploadFilesResult);
         console.log(boundMessage("M_FileUploaded"));
       } catch (error) {
         console.log(boundMessage("E_FileUploaded"));
@@ -104,17 +102,17 @@ export const upload = async (
       throw error;
     }
   } catch (error) {
-    const params = {
+    const params: HandleApplyErrorParameter = {
       error,
+      appId,
       manifest,
       updateBody,
       updated,
       retryCount,
       options,
-      boundMessage,
       kintoneApiClient,
     };
-    await handleUploadError(params);
+    await handleApplyError(params);
   }
 };
 
@@ -128,10 +126,12 @@ const getJsCssFiles = (manifest: JsCssManifest) => {
 };
 
 const getUploadFilesResult = async (
-  boundMessage: (key: keyof typeof messages) => string,
   kintoneApiClient: KintoneApiClient,
   manifest: CustomizeManifest,
 ) => {
+  // Language is fixed to "en"
+  const lang: Lang = "en";
+  const boundMessage = getBoundMessage(lang);
   const uploadFilesResult = [];
   for (const files of getJsCssFiles(manifest)) {
     const results = [];
@@ -149,10 +149,13 @@ const getUploadFilesResult = async (
 };
 
 const createUpdatedManifest = (
+  appId: string,
   manifest: CustomizeManifest,
   uploadFilesResult: any,
 ) => {
-  return Object.assign({}, manifest, {
+  return {
+    app: appId,
+    scope: manifest.scope,
     desktop: {
       js: uploadFilesResult[0],
       css: uploadFilesResult[1],
@@ -161,20 +164,23 @@ const createUpdatedManifest = (
       js: uploadFilesResult[2],
       css: uploadFilesResult[3],
     },
-  });
+  };
 };
 
-const handleUploadError = async (params: HandleUploadErrorParameter) => {
-  let {
+const handleApplyError = async (params: HandleApplyErrorParameter) => {
+  const {
     error,
+    appId,
     manifest,
     updateBody,
     updated,
-    retryCount,
     options,
-    boundMessage,
     kintoneApiClient,
   } = params;
+  let { retryCount } = params;
+  // Language is fixed to "en"
+  const lang: Lang = "en";
+  const boundMessage = getBoundMessage(lang);
   const isAuthenticationError = error instanceof AuthenticationError;
   retryCount++;
   if (isAuthenticationError) {
@@ -182,8 +188,9 @@ const handleUploadError = async (params: HandleUploadErrorParameter) => {
   } else if (retryCount < MAX_RETRY_COUNT) {
     await wait(1000);
     console.log(boundMessage("E_Retry"));
-    await upload(
+    await apply(
       kintoneApiClient,
+      appId,
       manifest,
       { retryCount, updateBody, updated },
       options,
@@ -193,34 +200,47 @@ const handleUploadError = async (params: HandleUploadErrorParameter) => {
   }
 };
 
-export const run = async (params: InputParams): Promise<void> => {
+export const runApply = async (params: ApplyParams): Promise<void> => {
   const {
+    appId,
+    inputPath,
+    yes,
     username,
     password,
     oAuthToken,
     basicAuthUsername,
     basicAuthPassword,
     baseUrl,
-    manifestFile,
     options,
   } = params;
-  const boundMessage = getBoundMessage(options.lang);
+  // Language is fixed to "en"
+  const lang: Lang = "en";
+  const boundMessage = getBoundMessage(lang);
 
   const manifest: CustomizeManifest = JSON.parse(
-    fs.readFileSync(manifestFile, "utf8"),
+    fs.readFileSync(inputPath, "utf8"),
   );
-  const status = {
-    retryCount: 0,
-    updateBody: null,
-    updated: false,
-  };
 
   // support an old format for customize-manifest.json that doesn't have mobile.css
   manifest.mobile.css = manifest.mobile.css || [];
 
-  const files = manifest.desktop.js
-    .concat(manifest.desktop.css, manifest.mobile.js, manifest.mobile.css)
-    .filter((fileOrPath: string) => !isUrlString(fileOrPath));
+  // Confirmation prompt before applying
+  if (!yes) {
+    const shouldApply = await confirm({
+      message: `Apply customization to app ${appId}?`,
+      default: false,
+    });
+    if (!shouldApply) {
+      console.log("Operation cancelled.");
+      return;
+    }
+  }
+
+  const status: Status = {
+    retryCount: 0,
+    updateBody: null,
+    updated: false,
+  };
 
   const kintoneApiClient = new KintoneApiClient(
     username,
@@ -231,20 +251,7 @@ export const run = async (params: InputParams): Promise<void> => {
     baseUrl,
     options,
   );
-  await upload(kintoneApiClient, manifest, status, options);
 
-  if (options.watch) {
-    const watcher = chokidar.watch(files, {
-      // Avoid that multiple change events were fired depending on which OS or text editors you are using with
-      // Note that there would be higher possibility to get errors if you set smaller value of 'stabilityThreshold'
-      awaitWriteFinish: {
-        stabilityThreshold: 2000,
-        pollInterval: 100,
-      },
-    });
-    console.log(boundMessage("M_Watching"));
-    watcher.on("change", () =>
-      upload(kintoneApiClient, manifest, status, options),
-    );
-  }
+  await apply(kintoneApiClient, appId, manifest, status, options);
+  console.log(boundMessage("M_Deployed"));
 };

@@ -1,15 +1,16 @@
 import assert from "assert";
 import type { CustomizeManifest, Option } from "../../core";
 import type { Status } from "../index";
-import { upload } from "../index";
+import { apply } from "../index";
 import MockKintoneApiClient from "../../core/__tests__/MockKintoneApiClient";
 
 describe("index", () => {
-  describe("upload", () => {
+  describe("apply", () => {
     let kintoneApiClient: MockKintoneApiClient;
     let manifest: CustomizeManifest;
     let status: Status;
     let options: Option;
+    const appId = "1";
     beforeEach(() => {
       kintoneApiClient = new MockKintoneApiClient(
         "kintone",
@@ -24,7 +25,6 @@ describe("index", () => {
         },
       );
       manifest = {
-        app: "1",
         scope: "ALL",
         desktop: {
           js: [
@@ -50,16 +50,16 @@ describe("index", () => {
         guestSpaceId: 0,
       };
     });
-    it("should succeed the uploading", async () => {
+    it("should succeed the applying", async () => {
       try {
-        await upload(kintoneApiClient, manifest, status, options);
-        assert.ok(true, "the upload has been successful");
+        await apply(kintoneApiClient, appId, manifest, status, options);
+        assert.ok(true, "the apply has been successful");
       } catch (e: any) {
         assert.fail(e);
       }
     });
     it("should call kintone APIs by the right order", async () => {
-      await upload(kintoneApiClient, manifest, status, options);
+      await apply(kintoneApiClient, appId, manifest, status, options);
       assert.deepStrictEqual(
         kintoneApiClient.logs.map(({ method, path }) => ({
           method,

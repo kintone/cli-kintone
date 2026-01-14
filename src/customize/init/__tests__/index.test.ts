@@ -24,15 +24,13 @@ describe("init", () => {
     };
 
     it("should success generating customize-manifest.json", async () => {
-      const manifestFile = `${testDestDir}/customize-manifest.json`;
-      const manifestFileContent: CustomizeManifest = getInitCustomizeManifest(
-        "1",
-        "ALL",
-      );
-      await generateCustomizeManifest(manifestFileContent, testDestDir);
-      const content = fs.readFileSync(manifestFile);
+      const outputPath = `${testDestDir}/customize-manifest.json`;
+      const manifestFileContent: CustomizeManifest =
+        getInitCustomizeManifest("ALL");
+      await generateCustomizeManifest(manifestFileContent, outputPath);
+      const content = fs.readFileSync(outputPath);
       assertManifestContent(content);
-      assert.ok(fs.existsSync(manifestFile), `test ${manifestFile} exists`);
+      assert.ok(fs.existsSync(outputPath), `test ${outputPath} exists`);
     });
   });
 });

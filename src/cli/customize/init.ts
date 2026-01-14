@@ -4,10 +4,7 @@ import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
 import { setStability } from "../stability";
 import { runInit } from "../../customize/init";
-import {
-  promptForAppId,
-  promptForScope,
-} from "../../customize/upload/prompts/init";
+import { promptForScope } from "../../customize/init/prompts";
 import { getBoundMessage } from "../../customize/core";
 
 const command = "init";
@@ -16,22 +13,18 @@ const describe = "Initialize a customize-manifest.json file";
 
 const builder = (args: yargs.Argv) =>
   args
-    .option("app-id", {
-      describe: "The kintone app ID",
+    .option("output", {
+      alias: "o",
+      describe: "The output path for customize-manifest.json",
       type: "string",
+      default: "customize-manifest.json",
       requiresArg: true,
     })
-    .option("scope", {
-      describe: "The scope of the customization",
-      type: "string",
-      choices: ["ALL", "ADMIN", "NONE"] as const,
-      requiresArg: true,
-    })
-    .option("dest-dir", {
-      describe: "The destination directory for customize-manifest.json",
-      type: "string",
-      default: ".",
-      requiresArg: true,
+    .option("yes", {
+      alias: "y",
+      describe: "Skip confirmation prompts",
+      type: "boolean",
+      default: false,
     });
 
 type Args = yargs.Arguments<
@@ -44,14 +37,14 @@ const handler = async (args: Args) => {
     const lang = "en" as const;
     const m = getBoundMessage(lang);
 
-    // Prompt for app ID if not provided
-    const appId = args["app-id"] ?? (await promptForAppId(m));
+    // Prompt for scope
+    const scope = (await promptForScope(m)) as "ALL" | "ADMIN" | "NONE";
 
-    // Prompt for scope if not provided
-    const scope =
-      args.scope ?? ((await promptForScope(m)) as "ALL" | "ADMIN" | "NONE");
-
-    await runInit(appId, scope, lang, args["dest-dir"]);
+    await runInit({
+      scope,
+      outputPath: args.output,
+      yes: args.yes,
+    });
   } catch (error) {
     logger.error(new RunError(error));
     // eslint-disable-next-line n/no-process-exit

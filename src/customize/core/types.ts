@@ -1,7 +1,7 @@
 import type { Lang } from "./lang";
 
 export interface CustomizeManifest {
-  app: string;
+  app?: string; // Optional for backward compatibility
   scope: "ALL" | "ADMIN" | "NONE";
   desktop: {
     js: string[];
@@ -24,7 +24,6 @@ export interface GeneralInputParams {
 }
 
 export interface Option {
-  watch?: string;
   lang: Lang;
   proxy: string;
   guestSpaceId: number;

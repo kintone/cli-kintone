@@ -92,7 +92,7 @@ export default class MockKintoneApiClient extends KintoneApiClient {
     });
   }
 
-  public async uploadFile(filePath: string) {
+  public async uploadFile(_filePath: string) {
     return this.getByPathResponse({
       path: ApiPath.File,
       method: "POST",

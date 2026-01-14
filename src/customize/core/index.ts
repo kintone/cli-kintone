@@ -6,8 +6,4 @@ export type { Lang } from "./lang";
 export { getDefaultLang } from "./lang";
 export { isUrlString, parseProxy, wait } from "./util";
 export { Constans } from "./constants";
-export type {
-  CustomizeManifest,
-  GeneralInputParams,
-  Option,
-} from "./types";
+export type { CustomizeManifest, GeneralInputParams, Option } from "./types";

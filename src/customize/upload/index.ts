@@ -6,12 +6,12 @@ import {
   getBoundMessage,
   isUrlString,
   wait,
-  messages,
 } from "../core";
 import type {
   CustomizeManifest,
   GeneralInputParams,
   Option,
+  messages,
 } from "../core";
 
 export type { CustomizeManifest, GeneralInputParams, Option };

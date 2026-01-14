@@ -1,5 +1,5 @@
 import { input } from "@inquirer/prompts";
-import type { BoundMessage } from "../../messages";
+import type { BoundMessage } from "../../core";
 
 const validateForString = (v: string) => !!v;
 

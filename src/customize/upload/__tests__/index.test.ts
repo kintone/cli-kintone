@@ -1,7 +1,8 @@
 import assert from "assert";
-import type { CustomizeManifest, Option, Status } from "../index";
+import type { CustomizeManifest, Option } from "../../core";
+import type { Status } from "../index";
 import { upload } from "../index";
-import MockKintoneApiClient from "./MockKintoneApiClient";
+import MockKintoneApiClient from "../../core/__tests__/MockKintoneApiClient";
 
 describe("index", () => {
   describe("upload", () => {
@@ -27,15 +28,15 @@ describe("index", () => {
         scope: "ALL",
         desktop: {
           js: [
-            "src/commands/__tests__/fixtures/a.js",
-            "src/commands/__tests__/fixtures/b.js",
+            "src/customize/__tests__/fixtures/a.js",
+            "src/customize/__tests__/fixtures/b.js",
             "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
           ],
-          css: ["src/commands/__tests__/fixtures/a.css"],
+          css: ["src/customize/__tests__/fixtures/a.css"],
         },
         mobile: {
-          js: ["src/commands/__tests__/fixtures/c.js"],
-          css: ["src/commands/__tests__/fixtures/d.css"],
+          js: ["src/customize/__tests__/fixtures/c.js"],
+          css: ["src/customize/__tests__/fixtures/d.css"],
         },
       };
       status = {

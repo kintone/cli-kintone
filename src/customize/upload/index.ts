@@ -1,45 +1,25 @@
 import chokidar from "chokidar";
 import fs from "fs";
-import KintoneApiClient, { AuthenticationError } from "../KintoneApiClient";
-import type { Lang } from "../lang";
-import type { messages } from "../messages";
-import { getBoundMessage } from "../messages";
-import { isUrlString, wait } from "../util";
+import {
+  KintoneApiClient,
+  AuthenticationError,
+  getBoundMessage,
+  isUrlString,
+  wait,
+  messages,
+} from "../core";
+import type {
+  CustomizeManifest,
+  GeneralInputParams,
+  Option,
+} from "../core";
 
-export interface Option {
-  watch?: string;
-  lang: Lang;
-  proxy: string;
-  guestSpaceId: number;
-}
+export type { CustomizeManifest, GeneralInputParams, Option };
 
 export interface Status {
   retryCount: number;
   updateBody: any;
   updated: boolean;
-}
-
-export interface CustomizeManifest {
-  app: string;
-  scope: "ALL" | "ADMIN" | "NONE";
-  desktop: {
-    js: string[];
-    css: string[];
-  };
-  mobile: {
-    js: string[];
-    css: string[];
-  };
-}
-
-export interface GeneralInputParams {
-  baseUrl: string;
-  username: string | null;
-  password: string | null;
-  oAuthToken: string | null;
-  basicAuthUsername: string | null;
-  basicAuthPassword: string | null;
-  manifestFile: string;
 }
 
 export interface InputParams extends GeneralInputParams {
@@ -268,6 +248,3 @@ export const run = async (params: InputParams): Promise<void> => {
     );
   }
 };
-
-export * from "./import";
-export * from "./init";

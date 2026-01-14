@@ -1,5 +1,5 @@
-import type { Lang } from "../lang";
-import { getBoundMessage } from "../messages";
+import { getBoundMessage } from "../core";
+import type { Lang } from "../core";
 import {
   promptForBaseUrl,
   promptForPassword,
@@ -40,5 +40,3 @@ export const inquireParams = async ({
     baseUrl: _baseUrl,
   };
 };
-
-export * from "./init";

@@ -1,12 +1,14 @@
 import fs from "fs";
 import { mkdirp } from "mkdirp";
 import { sep } from "path";
-import { Constans } from "../constants";
-import type { CustomizeManifest, GeneralInputParams } from "./index";
-import KintoneApiClient, { AuthenticationError } from "../KintoneApiClient";
-import type { Lang } from "../lang";
-import { getBoundMessage } from "../messages";
-import { wait } from "../util";
+import {
+  Constans,
+  KintoneApiClient,
+  AuthenticationError,
+  getBoundMessage,
+  wait,
+} from "../core";
+import type { CustomizeManifest, GeneralInputParams, Lang } from "../core";
 
 export interface ImportOption {
   lang: Lang;

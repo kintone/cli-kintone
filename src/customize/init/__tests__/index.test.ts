@@ -1,8 +1,8 @@
 import assert from "assert";
 import fs from "fs";
 import { rimrafSync } from "rimraf";
-import type { CustomizeManifest } from "../index";
-import { generateCustomizeManifest, getInitCustomizeManifest } from "../init";
+import type { CustomizeManifest } from "../../core";
+import { generateCustomizeManifest, getInitCustomizeManifest } from "../index";
 
 describe("init", () => {
   const testDestDir = "testDestDir";
@@ -16,7 +16,7 @@ describe("init", () => {
       const appCustomize = JSON.parse(
         fs
           .readFileSync(
-            "src/commands/__tests__/fixtures/get-appcustomize-init.json",
+            "src/customize/__tests__/fixtures/get-appcustomize-init.json",
           )
           .toString(),
       );

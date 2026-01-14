@@ -1,9 +1,9 @@
 import assert from "assert";
 import * as fs from "fs";
 import { rimrafSync } from "rimraf";
-import type { ImportCustomizeManifest, ImportOption } from "../import";
-import { importCustomizeSetting } from "../import";
-import MockKintoneApiClient from "./MockKintoneApiClient";
+import type { ImportCustomizeManifest, ImportOption } from "../index";
+import { importCustomizeSetting } from "../index";
+import MockKintoneApiClient from "../../core/__tests__/MockKintoneApiClient";
 describe("import", () => {
   const testDestDir = "testDestDir";
   const filesToTestContent = [
@@ -183,7 +183,7 @@ describe("import", () => {
       const getAppCustomizeResponse = JSON.parse(
         fs
           .readFileSync(
-            "src/commands/__tests__/fixtures/get-appcustomize-response.json",
+            "src/customize/__tests__/fixtures/get-appcustomize-response.json",
           )
           .toString(),
       );

@@ -1,7 +1,6 @@
 import assert from "assert";
-import type { CustomizeManifest, Option } from "../../core";
+import type { CustomizeManifest } from "../../core";
 import { getBoundMessage } from "../../core";
-import type { Status } from "../index";
 import { apply } from "../index";
 import MockKintoneApiClient from "../../core/__tests__/MockKintoneApiClient";
 
@@ -9,8 +8,6 @@ describe("index", () => {
   describe("apply", () => {
     let kintoneApiClient: MockKintoneApiClient;
     let manifest: CustomizeManifest;
-    let status: Status;
-    let options: Option;
     const appId = "1";
     const boundMessage = getBoundMessage("en");
     beforeEach(() => {
@@ -41,40 +38,17 @@ describe("index", () => {
           css: ["src/customize/__tests__/fixtures/d.css"],
         },
       };
-      status = {
-        retryCount: 0,
-        updateBody: null,
-        updated: false,
-      };
-      options = {
-        proxy: "",
-        guestSpaceId: 0,
-      };
     });
     it("should succeed the applying", async () => {
       try {
-        await apply(
-          kintoneApiClient,
-          appId,
-          manifest,
-          status,
-          options,
-          boundMessage,
-        );
+        await apply(kintoneApiClient, appId, manifest, boundMessage);
         assert.ok(true, "the apply has been successful");
       } catch (e: any) {
         assert.fail(e);
       }
     });
     it("should call kintone APIs by the right order", async () => {
-      await apply(
-        kintoneApiClient,
-        appId,
-        manifest,
-        status,
-        options,
-        boundMessage,
-      );
+      await apply(kintoneApiClient, appId, manifest, boundMessage);
       assert.deepStrictEqual(
         kintoneApiClient.logs.map(({ method, path }) => ({
           method,

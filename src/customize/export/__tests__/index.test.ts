@@ -1,7 +1,6 @@
 import assert from "assert";
 import * as fs from "fs";
 import { rimrafSync } from "rimraf";
-import type { Option } from "../../core";
 import { getBoundMessage } from "../../core";
 import { exportCustomizeSetting } from "../index";
 import MockKintoneApiClient from "../../core/__tests__/MockKintoneApiClient";
@@ -23,8 +22,6 @@ describe("export", () => {
 
   describe("runExport", () => {
     let kintoneApiClient: MockKintoneApiClient;
-    let status: { retryCount: number };
-    let options: Option;
     const appId = "1";
     const m = getBoundMessage("en");
 
@@ -41,13 +38,6 @@ describe("export", () => {
           guestSpaceId: 0,
         },
       );
-      status = {
-        retryCount: 0,
-      };
-      options = {
-        proxy: "",
-        guestSpaceId: 0,
-      };
     });
 
     afterEach(() => {
@@ -195,14 +185,7 @@ describe("export", () => {
         getAppCustomizeResponse,
       );
 
-      await exportCustomizeSetting(
-        kintoneApiClient,
-        appId,
-        testOutputPath,
-        status,
-        options,
-        m,
-      );
+      await exportCustomizeSetting(kintoneApiClient, appId, testOutputPath, m);
 
       assertExportUseCaseApiRequest(kintoneApiClient);
       const manifestFile = `${testDestDir}/customize-manifest.json`;

@@ -1,11 +1,11 @@
 import fs from "fs";
 import { confirm } from "@inquirer/prompts";
 import { logger } from "../../utils/log";
+import { retry } from "../../utils/retry";
 import {
   KintoneApiClient,
   AuthenticationError,
   getBoundMessage,
-  wait,
 } from "../core";
 import type { BoundMessage, CustomizeManifest, Option } from "../core";
 
@@ -22,12 +22,6 @@ export interface ApplyParams {
   options: Option;
 }
 
-export interface Status {
-  retryCount: number;
-  updateBody: any;
-  updated: boolean;
-}
-
 interface JsCssManifest {
   desktop: {
     js: string[];
@@ -39,92 +33,90 @@ interface JsCssManifest {
   };
 }
 
-interface HandleApplyErrorParameter {
-  error: any;
-  appId: string;
-  manifest: CustomizeManifest;
-  updateBody: any;
-  updated: boolean;
-  retryCount: number;
-  options: Option;
-  kintoneApiClient: KintoneApiClient;
-  boundMessage: BoundMessage;
-}
-
-const MAX_RETRY_COUNT = 3;
-
 export const apply = async (
   kintoneApiClient: KintoneApiClient,
   appId: string,
   manifest: CustomizeManifest,
-  status: Status,
-  options: Option,
   boundMessage: BoundMessage,
 ): Promise<void> => {
-  let { retryCount, updateBody, updated } = status;
-
   logger.debug(`Starting apply for app ${appId}`);
   logger.debug(`Manifest scope: ${manifest.scope}`);
 
-  try {
-    if (!updateBody) {
-      logger.debug("Uploading customization files...");
-      logger.info(boundMessage("M_StartUploading"));
+  // State to track progress across retries
+  let uploadedManifest: ReturnType<typeof createUpdatedManifest> | null = null;
+  let updated = false;
+
+  await retry(
+    async () => {
+      // Step 1: Upload files (skip if already done)
+      if (!uploadedManifest) {
+        logger.debug("Uploading customization files...");
+        logger.info(boundMessage("M_StartUploading"));
+        try {
+          const uploadFilesResult = await getUploadFilesResult(
+            kintoneApiClient,
+            manifest,
+            boundMessage,
+          );
+
+          // eslint-disable-next-line require-atomic-updates
+          uploadedManifest = createUpdatedManifest(
+            appId,
+            manifest,
+            uploadFilesResult,
+          );
+          logger.debug("All files uploaded successfully");
+          logger.info(boundMessage("M_FileUploaded"));
+        } catch (error) {
+          logger.error(boundMessage("E_FileUploaded"));
+          throw error;
+        }
+      }
+
+      // Step 2: Update customization settings (skip if already done)
+      if (!updated) {
+        try {
+          logger.debug("Updating customization settings...");
+          await kintoneApiClient.updateCustomizeSetting(uploadedManifest);
+          logger.debug("Customization settings updated");
+          logger.info(boundMessage("M_Updated"));
+          // eslint-disable-next-line require-atomic-updates
+          updated = true;
+        } catch (error) {
+          logger.error(boundMessage("E_Updated"));
+          throw error;
+        }
+      }
+
+      // Step 3: Deploy
       try {
-        const uploadFilesResult = await getUploadFilesResult(
-          kintoneApiClient,
-          manifest,
-          boundMessage,
+        logger.debug("Starting deployment...");
+        await kintoneApiClient.deploySetting(appId);
+        await kintoneApiClient.waitFinishingDeploy(appId, () =>
+          logger.info(boundMessage("M_Deploying")),
         );
-
-        updateBody = createUpdatedManifest(appId, manifest, uploadFilesResult);
-        logger.debug("All files uploaded successfully");
-        logger.info(boundMessage("M_FileUploaded"));
+        logger.debug("Deployment completed");
+        logger.info(boundMessage("M_Deployed"));
       } catch (error) {
-        logger.error(boundMessage("E_FileUploaded"));
+        logger.error(boundMessage("E_Deployed"));
         throw error;
       }
-    }
-
-    if (!updated) {
-      try {
-        logger.debug("Updating customization settings...");
-        await kintoneApiClient.updateCustomizeSetting(updateBody);
-        logger.debug("Customization settings updated");
-        logger.info(boundMessage("M_Updated"));
-        updated = true;
-      } catch (error) {
-        logger.error(boundMessage("E_Updated"));
-        throw error;
-      }
-    }
-
-    try {
-      logger.debug("Starting deployment...");
-      await kintoneApiClient.deploySetting(appId);
-      await kintoneApiClient.waitFinishingDeploy(appId, () =>
-        logger.info(boundMessage("M_Deploying")),
-      );
-      logger.debug("Deployment completed");
-      logger.info(boundMessage("M_Deployed"));
-    } catch (error) {
-      logger.error(boundMessage("E_Deployed"));
-      throw error;
-    }
-  } catch (error) {
-    const params: HandleApplyErrorParameter = {
-      error,
-      appId,
-      manifest,
-      updateBody,
-      updated,
-      retryCount,
-      options,
-      kintoneApiClient,
-      boundMessage,
-    };
-    await handleApplyError(params);
-  }
+    },
+    {
+      retryCondition: (e) => !(e instanceof AuthenticationError),
+      onError: (e, attemptCount, toRetry, nextDelay, config) => {
+        logger.debug(`Error occurred: ${e}`);
+        if (e instanceof AuthenticationError) {
+          logger.debug("Authentication error detected, not retrying");
+        } else if (toRetry) {
+          logger.debug(
+            `Retry attempt ${attemptCount}/${config.maxAttempt}, next delay: ${nextDelay}ms`,
+          );
+          logger.warn(boundMessage("E_Retry"));
+        }
+      },
+    },
+  );
 };
 
 const getJsCssFiles = (manifest: JsCssManifest) => {
@@ -184,41 +176,6 @@ const createUpdatedManifest = (
   };
 };
 
-const handleApplyError = async (params: HandleApplyErrorParameter) => {
-  const {
-    error,
-    appId,
-    manifest,
-    updateBody,
-    updated,
-    options,
-    kintoneApiClient,
-    boundMessage,
-  } = params;
-  let { retryCount } = params;
-  const isAuthenticationError = error instanceof AuthenticationError;
-  retryCount++;
-  logger.debug(`Error occurred: ${error}`);
-  if (isAuthenticationError) {
-    logger.debug("Authentication error detected, not retrying");
-    throw new Error(boundMessage("E_Authentication"));
-  } else if (retryCount < MAX_RETRY_COUNT) {
-    logger.debug(`Retry attempt ${retryCount}/${MAX_RETRY_COUNT}`);
-    await wait(1000);
-    logger.warn(boundMessage("E_Retry"));
-    await apply(
-      kintoneApiClient,
-      appId,
-      manifest,
-      { retryCount, updateBody, updated },
-      options,
-      boundMessage,
-    );
-  } else {
-    throw error;
-  }
-};
-
 export const runApply = async (params: ApplyParams): Promise<void> => {
   const {
     appId,
@@ -258,12 +215,6 @@ export const runApply = async (params: ApplyParams): Promise<void> => {
     }
   }
 
-  const status: Status = {
-    retryCount: 0,
-    updateBody: null,
-    updated: false,
-  };
-
   const kintoneApiClient = new KintoneApiClient(
     username,
     password,
@@ -274,6 +225,5 @@ export const runApply = async (params: ApplyParams): Promise<void> => {
     options,
   );
 
-  await apply(kintoneApiClient, appId, manifest, status, options, boundMessage);
-  logger.info(boundMessage("M_Deployed"));
+  await apply(kintoneApiClient, appId, manifest, boundMessage);
 };

@@ -3,12 +3,11 @@ import path from "path";
 import { mkdirp } from "mkdirp";
 import { confirm } from "@inquirer/prompts";
 import { logger } from "../../utils/log";
+import { retry } from "../../utils/retry";
 import {
-  Constans,
   KintoneApiClient,
   AuthenticationError,
   getBoundMessage,
-  wait,
 } from "../core";
 import type { BoundMessage, CustomizeManifest, Option } from "../core";
 
@@ -55,51 +54,39 @@ export const exportCustomizeSetting = async (
   kintoneApiClient: KintoneApiClient,
   appId: string,
   outputPath: string,
-  status: {
-    retryCount: number;
-  },
-  options: Option,
   m: BoundMessage,
 ): Promise<void> => {
   const destDir = path.dirname(outputPath);
-  let { retryCount } = status;
 
   logger.debug(`Exporting customization from app ${appId}`);
   logger.debug(`Output path: ${outputPath}`);
 
-  try {
-    logger.debug("Fetching app customization settings...");
-    const appCustomize = kintoneApiClient.getAppCustomize(appId);
-    await appCustomize
-      .then((resp: GetAppCustomizeResp) => {
-        logger.info(m("M_UpdateManifestFile"));
-        return writeManifestFile(destDir, outputPath, resp);
-      })
-      .then((resp: GetAppCustomizeResp) => {
-        logger.info(m("M_DownloadUploadedFile"));
-        return downloadCustomizeFiles(kintoneApiClient, destDir, resp);
-      });
-  } catch (e) {
-    const isAuthenticationError = e instanceof AuthenticationError;
-    retryCount++;
-    if (isAuthenticationError) {
-      throw new Error(m("E_Authentication"));
-    } else if (retryCount < Constans.MAX_RETRY_COUNT) {
-      logger.debug(`Retry attempt ${retryCount}/${Constans.MAX_RETRY_COUNT}`);
-      await wait(1000);
-      logger.warn(m("E_Retry"));
-      await exportCustomizeSetting(
-        kintoneApiClient,
-        appId,
-        outputPath,
-        { retryCount },
-        options,
-        m,
-      );
-    } else {
-      throw e;
-    }
-  }
+  await retry(
+    async () => {
+      logger.debug("Fetching app customization settings...");
+      const resp = await kintoneApiClient.getAppCustomize(appId);
+
+      logger.info(m("M_UpdateManifestFile"));
+      writeManifestFile(destDir, outputPath, resp);
+
+      logger.info(m("M_DownloadUploadedFile"));
+      await downloadCustomizeFiles(kintoneApiClient, destDir, resp);
+    },
+    {
+      retryCondition: (e) => !(e instanceof AuthenticationError),
+      onError: (e, attemptCount, toRetry, nextDelay, config) => {
+        logger.debug(`Error occurred: ${e}`);
+        if (e instanceof AuthenticationError) {
+          logger.debug("Authentication error detected, not retrying");
+        } else if (toRetry) {
+          logger.debug(
+            `Retry attempt ${attemptCount}/${config.maxAttempt}, next delay: ${nextDelay}ms`,
+          );
+          logger.warn(m("E_Retry"));
+        }
+      },
+    },
+  );
 };
 
 const writeManifestFile = (
@@ -243,10 +230,6 @@ export const runExport = async (params: ExportParams): Promise<void> => {
     }
   }
 
-  const status = {
-    retryCount: 0,
-  };
-
   const kintoneApiClient = new KintoneApiClient(
     username,
     password,
@@ -256,13 +239,6 @@ export const runExport = async (params: ExportParams): Promise<void> => {
     baseUrl,
     options,
   );
-  await exportCustomizeSetting(
-    kintoneApiClient,
-    appId,
-    outputPath,
-    status,
-    options,
-    m,
-  );
+  await exportCustomizeSetting(kintoneApiClient, appId, outputPath, m);
   logger.info(m("M_CommandImportFinish"));
 };

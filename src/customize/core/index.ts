@@ -4,6 +4,5 @@ export { getMessage, getBoundMessage, messages } from "./messages";
 export type { BoundMessage } from "./messages";
 export type { Lang } from "./lang";
 export { getDefaultLang } from "./lang";
-export { isUrlString, parseProxy, wait } from "./util";
-export { Constans } from "./constants";
+export { isUrlString, parseProxy } from "./util";
 export type { CustomizeManifest, GeneralInputParams, Option } from "./types";

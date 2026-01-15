@@ -94,9 +94,10 @@ const writeManifestFile = (
   outputPath: string,
   resp: GetAppCustomizeResp,
 ): GetAppCustomizeResp => {
-  const toNameOrUrl = (fileDir: string) => (f: CustomizeFile) => {
+  // Generate paths relative to manifest file location
+  const toNameOrUrl = (relativeDir: string) => (f: CustomizeFile) => {
     if (f.type === "FILE") {
-      return `${fileDir}/${f.file.name}`;
+      return `${relativeDir}/${f.file.name}`;
     }
     return f.url;
   };
@@ -111,16 +112,16 @@ const writeManifestFile = (
     `Files: desktop.js=${desktopJs.length}, desktop.css=${desktopCss.length}, mobile.js=${mobileJs.length}, mobile.css=${mobileCss.length}`,
   );
 
-  // Manifest without app property (new spec)
+  // Manifest with paths relative to manifest file location
   const customizeJson: CustomizeManifest = {
     scope: resp.scope,
     desktop: {
-      js: desktopJs.map(toNameOrUrl(`${destDir}/desktop/js`)),
-      css: desktopCss.map(toNameOrUrl(`${destDir}/desktop/css`)),
+      js: desktopJs.map(toNameOrUrl("desktop/js")),
+      css: desktopCss.map(toNameOrUrl("desktop/css")),
     },
     mobile: {
-      js: mobileJs.map(toNameOrUrl(`${destDir}/mobile/js`)),
-      css: mobileCss.map(toNameOrUrl(`${destDir}/mobile/css`)),
+      js: mobileJs.map(toNameOrUrl("mobile/js")),
+      css: mobileCss.map(toNameOrUrl("mobile/css")),
     },
   };
 

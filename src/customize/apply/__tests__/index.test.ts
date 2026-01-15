@@ -9,6 +9,7 @@ describe("index", () => {
     let kintoneApiClient: MockKintoneApiClient;
     let manifest: CustomizeManifest;
     const appId = "1";
+    const manifestDir = "."; // Paths in manifest are relative to project root
     const boundMessage = getBoundMessage("en");
     beforeEach(() => {
       kintoneApiClient = new MockKintoneApiClient(
@@ -41,14 +42,20 @@ describe("index", () => {
     });
     it("should succeed the applying", async () => {
       try {
-        await apply(kintoneApiClient, appId, manifest, boundMessage);
+        await apply(
+          kintoneApiClient,
+          appId,
+          manifest,
+          manifestDir,
+          boundMessage,
+        );
         assert.ok(true, "the apply has been successful");
       } catch (e: any) {
         assert.fail(e);
       }
     });
     it("should call kintone APIs by the right order", async () => {
-      await apply(kintoneApiClient, appId, manifest, boundMessage);
+      await apply(kintoneApiClient, appId, manifest, manifestDir, boundMessage);
       assert.deepStrictEqual(
         kintoneApiClient.logs.map(({ method, path }) => ({
           method,

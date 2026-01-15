@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import { confirm } from "@inquirer/prompts";
 import { logger } from "../../utils/log";
 import { retry } from "../../utils/retry";
@@ -6,6 +7,7 @@ import {
   KintoneApiClient,
   AuthenticationError,
   getBoundMessage,
+  isUrlString,
 } from "../core";
 import type { BoundMessage, CustomizeManifest, Option } from "../core";
 
@@ -37,10 +39,12 @@ export const apply = async (
   kintoneApiClient: KintoneApiClient,
   appId: string,
   manifest: CustomizeManifest,
+  manifestDir: string,
   boundMessage: BoundMessage,
 ): Promise<void> => {
   logger.debug(`Starting apply for app ${appId}`);
   logger.debug(`Manifest scope: ${manifest.scope}`);
+  logger.debug(`Manifest directory: ${manifestDir}`);
 
   // State to track progress across retries
   let uploadedManifest: ReturnType<typeof createUpdatedManifest> | null = null;
@@ -56,6 +60,7 @@ export const apply = async (
           const uploadFilesResult = await getUploadFilesResult(
             kintoneApiClient,
             manifest,
+            manifestDir,
             boundMessage,
           );
 
@@ -128,9 +133,17 @@ const getJsCssFiles = (manifest: JsCssManifest) => {
   ];
 };
 
+const resolveFilePath = (file: string, manifestDir: string): string => {
+  if (isUrlString(file)) {
+    return file;
+  }
+  return path.resolve(manifestDir, file);
+};
+
 const getUploadFilesResult = async (
   kintoneApiClient: KintoneApiClient,
   manifest: CustomizeManifest,
+  manifestDir: string,
   boundMessage: BoundMessage,
 ) => {
   const uploadFilesResult = [];
@@ -141,10 +154,11 @@ const getUploadFilesResult = async (
   for (const files of allFiles) {
     const results = [];
     for (const file of files) {
-      logger.debug(`Processing file: ${file}`);
-      const result = await kintoneApiClient.prepareCustomizeFile(file);
+      const resolvedPath = resolveFilePath(file, manifestDir);
+      logger.debug(`Processing file: ${file} -> ${resolvedPath}`);
+      const result = await kintoneApiClient.prepareCustomizeFile(resolvedPath);
       if (result.type === "FILE") {
-        logger.debug(`File uploaded: ${file}`);
+        logger.debug(`File uploaded: ${resolvedPath}`);
         logger.info(`${file} ` + boundMessage("M_Uploaded"));
       } else {
         logger.debug(`File is URL, skipping upload: ${file}`);
@@ -194,6 +208,9 @@ export const runApply = async (params: ApplyParams): Promise<void> => {
   logger.debug(`Starting apply for app ${appId}`);
   logger.debug(`Input path: ${inputPath}`);
 
+  const manifestDir = path.dirname(path.resolve(inputPath));
+  logger.debug(`Manifest directory: ${manifestDir}`);
+
   const manifest: CustomizeManifest = JSON.parse(
     fs.readFileSync(inputPath, "utf8"),
   );
@@ -225,5 +242,5 @@ export const runApply = async (params: ApplyParams): Promise<void> => {
     options,
   );
 
-  await apply(kintoneApiClient, appId, manifest, boundMessage);
+  await apply(kintoneApiClient, appId, manifest, manifestDir, boundMessage);
 };

@@ -45,33 +45,33 @@ describe("export", () => {
     });
 
     const assertManifestContent = (buffer: Buffer) => {
-      // New spec: manifest should not include app property
+      // Manifest should contain paths relative to manifest file location
       const appCustomize = {
         scope: "ALL",
         desktop: {
           js: [
             "https://js.cybozu.com/vuejs/v2.5.17/vue.min.js",
             "https://js.cybozu.com/lodash/4.17.11/lodash.min.js",
-            `${testDestDir}/desktop/js/bootstrap.min.js`,
-            `${testDestDir}/desktop/js/a.js`,
+            "desktop/js/bootstrap.min.js",
+            "desktop/js/a.js",
           ],
           css: [
-            `${testDestDir}/desktop/css/bootstrap.min.css`,
-            `${testDestDir}/desktop/css/bootstrap-reboot.min.css`,
-            `${testDestDir}/desktop/css/bootstrap-grid.min.css`,
+            "desktop/css/bootstrap.min.css",
+            "desktop/css/bootstrap-reboot.min.css",
+            "desktop/css/bootstrap-grid.min.css",
           ],
         },
         mobile: {
           js: [
             "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
             "https://js.cybozu.com/jqueryui/1.12.1/jquery-ui.min.js",
-            `${testDestDir}/mobile/js/bootstrap.js`,
-            `${testDestDir}/mobile/js/b.js`,
+            "mobile/js/bootstrap.js",
+            "mobile/js/b.js",
           ],
           css: [
-            `${testDestDir}/mobile/css/bootstrap.min.css`,
-            `${testDestDir}/mobile/css/bootstrap-reboot.min.css`,
-            `${testDestDir}/mobile/css/bootstrap-grid.min.css`,
+            "mobile/css/bootstrap.min.css",
+            "mobile/css/bootstrap-reboot.min.css",
+            "mobile/css/bootstrap-grid.min.css",
           ],
         },
       };

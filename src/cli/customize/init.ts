@@ -35,8 +35,10 @@ const handler = async (args: Args) => {
   try {
     const m = getBoundMessage("en");
 
-    // Prompt for scope
-    const scope = (await promptForScope(m)) as "ALL" | "ADMIN" | "NONE";
+    // Use "ALL" by default, or prompt for scope if not --yes
+    const scope = args.yes
+      ? "ALL"
+      : ((await promptForScope(m)) as "ALL" | "ADMIN" | "NONE");
 
     await runInit({
       scope,

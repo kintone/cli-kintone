@@ -9,5 +9,6 @@ export const promptForScope = async (m: BoundMessage) => {
       { name: "ADMIN", value: "ADMIN" },
       { name: "NONE", value: "NONE" },
     ],
+    default: "ALL",
   });
 };

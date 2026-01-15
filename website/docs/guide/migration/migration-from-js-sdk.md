@@ -316,7 +316,7 @@ cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu
 kintone-customize-uploader init
 
 # cli-kintone
-cli-kintone customize init --output customize-manifest.json
+cli-kintone customize init
 ```
 
 ### customize export (vs @kintone/customize-uploader)

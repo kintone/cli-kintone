@@ -18,5 +18,13 @@
   "sidebar.guideSidebar.category.File formats.link.generated-index.description": {
     "message": "cli-kintoneはインポート・エクスポートコマンドで以下の形式をサポートしています。",
     "description": "The generated-index page description for category 'File formats' in sidebar 'guideSidebar'"
+  },
+  "sidebar.guideSidebar.category.Migration": {
+    "message": "移行ガイド",
+    "description": "The label for category 'Migration' in sidebar 'guideSidebar'"
+  },
+  "sidebar.guideSidebar.category.Migration.link.generated-index.description": {
+    "message": "旧バージョンや他のツールからの移行方法",
+    "description": "The generated-index page description for category 'Migration' in sidebar 'guideSidebar'"
   }
 }

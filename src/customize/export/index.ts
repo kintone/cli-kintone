@@ -64,7 +64,11 @@ export const exportCustomizeSetting = async (
   const destDir = path.dirname(outputPath);
   let { retryCount } = status;
 
+  logger.debug(`Exporting customization from app ${appId}`);
+  logger.debug(`Output path: ${outputPath}`);
+
   try {
+    logger.debug("Fetching app customization settings...");
     const appCustomize = kintoneApiClient.getAppCustomize(appId);
     await appCustomize
       .then((resp: GetAppCustomizeResp) => {
@@ -81,6 +85,7 @@ export const exportCustomizeSetting = async (
     if (isAuthenticationError) {
       throw new Error(m("E_Authentication"));
     } else if (retryCount < Constans.MAX_RETRY_COUNT) {
+      logger.debug(`Retry attempt ${retryCount}/${Constans.MAX_RETRY_COUNT}`);
       await wait(1000);
       logger.warn(m("E_Retry"));
       await exportCustomizeSetting(
@@ -114,6 +119,11 @@ const writeManifestFile = (
   const mobileJs: CustomizeFile[] = resp.mobile.js;
   const mobileCss: CustomizeFile[] = resp.mobile.css;
 
+  logger.debug(`Writing manifest to: ${outputPath}`);
+  logger.debug(
+    `Files: desktop.js=${desktopJs.length}, desktop.css=${desktopCss.length}, mobile.js=${mobileJs.length}, mobile.css=${mobileCss.length}`,
+  );
+
   // Manifest without app property (new spec)
   const customizeJson: CustomizeManifest = {
     scope: resp.scope,
@@ -128,6 +138,7 @@ const writeManifestFile = (
   };
 
   if (destDir && !fs.existsSync(destDir)) {
+    logger.debug(`Creating directory: ${destDir}`);
     mkdirp.sync(destDir);
   }
   fs.writeFileSync(outputPath, JSON.stringify(customizeJson, null, 4));
@@ -145,13 +156,21 @@ const downloadCustomizeFiles = async (
   const mobileJs: CustomizeFile[] = mobile.js;
   const mobileCss: CustomizeFile[] = mobile.css;
 
+  const totalFiles =
+    desktopJs.length + desktopCss.length + mobileJs.length + mobileCss.length;
+  logger.debug(`Downloading ${totalFiles} files to ${destDir}`);
+
   // Create directories
-  [
+  const directories = [
     `${destDir}${sep}desktop${sep}js`,
     `${destDir}${sep}desktop${sep}css`,
     `${destDir}${sep}mobile${sep}js`,
     `${destDir}${sep}mobile${sep}css`,
-  ].forEach((dirPath) => mkdirp.sync(dirPath));
+  ];
+  directories.forEach((dirPath) => {
+    logger.debug(`Creating directory: ${dirPath}`);
+    mkdirp.sync(dirPath);
+  });
 
   const downloadPromises = [
     ...desktopJs.map(
@@ -179,13 +198,17 @@ const downloadAndWriteFile = (
   destDir: string,
 ): ((f: CustomizeFile) => Promise<void>) => {
   return async (f) => {
-    if (f.type !== "URL") {
-      const resp = await kintoneApiClient.downloadFile(f.file.fileKey);
-      fs.writeFileSync(
-        `${destDir}${path.sep}${f.file.name}`,
-        Buffer.from(resp),
-      );
+    if (f.type === "URL") {
+      logger.debug(`Skipping URL file: ${f.url}`);
+      return;
     }
+    logger.debug(
+      `Downloading file: ${f.file.name} (fileKey: ${f.file.fileKey})`,
+    );
+    const resp = await kintoneApiClient.downloadFile(f.file.fileKey);
+    const filePath = `${destDir}${path.sep}${f.file.name}`;
+    fs.writeFileSync(filePath, Buffer.from(resp));
+    logger.debug(`Saved file: ${filePath}`);
   };
 };
 
@@ -204,8 +227,12 @@ export const runExport = async (params: ExportParams): Promise<void> => {
   } = params;
   const m = getBoundMessage("en");
 
+  logger.debug(`Starting export for app ${appId}`);
+  logger.debug(`Output path: ${outputPath}`);
+
   // Check if file already exists and prompt for overwrite
   if (fs.existsSync(outputPath) && !yes) {
+    logger.debug(`File already exists: ${outputPath}`);
     const shouldOverwrite = await confirm({
       message: `File "${outputPath}" already exists. Overwrite?`,
       default: false,

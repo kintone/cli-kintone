@@ -1,5 +1,6 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { isUrlString, parseProxy, wait } from "./util";
+import { logger } from "../../utils/log";
 
 export interface Option {
   proxy: string;
@@ -54,6 +55,13 @@ export default class KintoneApiClient {
     if (options.proxy) {
       proxy = parseProxy(options.proxy);
     }
+    logger.debug(`Initializing KintoneApiClient with baseUrl: ${baseUrl}`);
+    if (guestSpaceId) {
+      logger.debug(`Guest space ID: ${guestSpaceId}`);
+    }
+    if (proxy) {
+      logger.debug(`Using proxy`);
+    }
     this.restApiClient = new KintoneRestAPIClient({
       baseUrl,
       auth,
@@ -64,6 +72,7 @@ export default class KintoneApiClient {
       guestSpaceId,
       proxy,
     });
+    logger.debug("KintoneApiClient initialized");
   }
 
   public uploadFile(filePath: string) {
@@ -75,14 +84,18 @@ export default class KintoneApiClient {
   }
 
   public async prepareCustomizeFile(fileOrUrl: string): Promise<any> {
+    logger.debug(`Preparing customize file: ${fileOrUrl}`);
     const isUrl = isUrlString(fileOrUrl);
     if (isUrl) {
+      logger.debug(`File is URL, skipping upload`);
       return {
         type: "URL",
         url: fileOrUrl,
       };
     }
+    logger.debug(`Uploading file: ${fileOrUrl}`);
     const { fileKey } = await this.uploadFile(fileOrUrl);
+    logger.debug(`File uploaded, fileKey: ${fileKey}`);
     return {
       type: "FILE",
       file: {
@@ -103,7 +116,10 @@ export default class KintoneApiClient {
 
   public async waitFinishingDeploy(appId: string, callback: () => void) {
     let deployed = false;
+    let checkCount = 0;
+    logger.debug(`Waiting for deployment to finish for app ${appId}`);
     while (!deployed) {
+      checkCount++;
       const resp = await this.restApiClient.app.getDeployStatus({
         apps: [appId],
       });
@@ -114,21 +130,26 @@ export default class KintoneApiClient {
         },
       ).length;
       deployed = successedAppsLength === resp.apps.length;
+      const currentStatus = resp.apps[0]?.status || "UNKNOWN";
+      logger.debug(`Deploy status check #${checkCount}: ${currentStatus}`);
       if (!deployed) {
         await wait(1000);
         callback();
       }
     }
+    logger.debug(`Deployment finished after ${checkCount} checks`);
     deployed = true;
   }
 
   public downloadFile(fileKey: string) {
+    logger.debug(`Downloading file with fileKey: ${fileKey}`);
     return this.restApiClient.file.downloadFile({
       fileKey,
     });
   }
 
   public getAppCustomize(appId: string) {
+    logger.debug(`Getting app customize for app ${appId}`);
     return this.restApiClient.app.getAppCustomize({
       app: appId,
     });

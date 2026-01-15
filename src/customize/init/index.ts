@@ -33,7 +33,9 @@ export const generateCustomizeManifest = (
   outputPath: string,
 ): Promise<string> => {
   const destDir = path.dirname(outputPath);
+  logger.debug(`Writing manifest to: ${outputPath}`);
   if (destDir && !fs.existsSync(destDir)) {
+    logger.debug(`Creating directory: ${destDir}`);
     mkdirp.sync(destDir);
   }
   return new Promise((resolve, reject) => {
@@ -55,8 +57,12 @@ export const runInit = async (params: InitParams): Promise<void> => {
   const { scope, outputPath, yes } = params;
   const m = getBoundMessage("en");
 
+  logger.debug(`Initializing manifest with scope: ${scope}`);
+  logger.debug(`Output path: ${outputPath}`);
+
   // Check if file already exists and prompt for overwrite
   if (fs.existsSync(outputPath) && !yes) {
+    logger.debug(`File already exists: ${outputPath}`);
     const shouldOverwrite = await confirm({
       message: `File "${outputPath}" already exists. Overwrite?`,
       default: false,

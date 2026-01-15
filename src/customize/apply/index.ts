@@ -63,8 +63,12 @@ export const apply = async (
 ): Promise<void> => {
   let { retryCount, updateBody, updated } = status;
 
+  logger.debug(`Starting apply for app ${appId}`);
+  logger.debug(`Manifest scope: ${manifest.scope}`);
+
   try {
     if (!updateBody) {
+      logger.debug("Uploading customization files...");
       logger.info(boundMessage("M_StartUploading"));
       try {
         const uploadFilesResult = await getUploadFilesResult(
@@ -74,6 +78,7 @@ export const apply = async (
         );
 
         updateBody = createUpdatedManifest(appId, manifest, uploadFilesResult);
+        logger.debug("All files uploaded successfully");
         logger.info(boundMessage("M_FileUploaded"));
       } catch (error) {
         logger.error(boundMessage("E_FileUploaded"));
@@ -83,7 +88,9 @@ export const apply = async (
 
     if (!updated) {
       try {
+        logger.debug("Updating customization settings...");
         await kintoneApiClient.updateCustomizeSetting(updateBody);
+        logger.debug("Customization settings updated");
         logger.info(boundMessage("M_Updated"));
         updated = true;
       } catch (error) {
@@ -93,10 +100,12 @@ export const apply = async (
     }
 
     try {
+      logger.debug("Starting deployment...");
       await kintoneApiClient.deploySetting(appId);
       await kintoneApiClient.waitFinishingDeploy(appId, () =>
         logger.info(boundMessage("M_Deploying")),
       );
+      logger.debug("Deployment completed");
       logger.info(boundMessage("M_Deployed"));
     } catch (error) {
       logger.error(boundMessage("E_Deployed"));
@@ -133,12 +142,20 @@ const getUploadFilesResult = async (
   boundMessage: BoundMessage,
 ) => {
   const uploadFilesResult = [];
-  for (const files of getJsCssFiles(manifest)) {
+  const allFiles = getJsCssFiles(manifest);
+  const totalFiles = allFiles.reduce((sum, files) => sum + files.length, 0);
+  logger.debug(`Processing ${totalFiles} files for upload`);
+
+  for (const files of allFiles) {
     const results = [];
     for (const file of files) {
+      logger.debug(`Processing file: ${file}`);
       const result = await kintoneApiClient.prepareCustomizeFile(file);
       if (result.type === "FILE") {
+        logger.debug(`File uploaded: ${file}`);
         logger.info(`${file} ` + boundMessage("M_Uploaded"));
+      } else {
+        logger.debug(`File is URL, skipping upload: ${file}`);
       }
       results.push(result);
     }
@@ -181,9 +198,12 @@ const handleApplyError = async (params: HandleApplyErrorParameter) => {
   let { retryCount } = params;
   const isAuthenticationError = error instanceof AuthenticationError;
   retryCount++;
+  logger.debug(`Error occurred: ${error}`);
   if (isAuthenticationError) {
+    logger.debug("Authentication error detected, not retrying");
     throw new Error(boundMessage("E_Authentication"));
   } else if (retryCount < MAX_RETRY_COUNT) {
+    logger.debug(`Retry attempt ${retryCount}/${MAX_RETRY_COUNT}`);
     await wait(1000);
     logger.warn(boundMessage("E_Retry"));
     await apply(
@@ -214,15 +234,20 @@ export const runApply = async (params: ApplyParams): Promise<void> => {
   } = params;
   const boundMessage = getBoundMessage("en");
 
+  logger.debug(`Starting apply for app ${appId}`);
+  logger.debug(`Input path: ${inputPath}`);
+
   const manifest: CustomizeManifest = JSON.parse(
     fs.readFileSync(inputPath, "utf8"),
   );
+  logger.debug(`Manifest loaded: scope=${manifest.scope}`);
 
   // support an old format for customize-manifest.json that doesn't have mobile.css
   manifest.mobile.css = manifest.mobile.css || [];
 
   // Confirmation prompt before applying
   if (!yes) {
+    logger.debug("Prompting for confirmation...");
     const shouldApply = await confirm({
       message: `Apply customization to app ${appId}?`,
       default: false,

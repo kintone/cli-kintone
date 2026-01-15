@@ -9,7 +9,7 @@ import {
   getBoundMessage,
   wait,
 } from "../core";
-import type { CustomizeManifest, Lang, Option } from "../core";
+import type { BoundMessage, CustomizeManifest, Option } from "../core";
 
 export interface ExportParams {
   appId: string;
@@ -58,10 +58,8 @@ export const exportCustomizeSetting = async (
     retryCount: number;
   },
   options: Option,
+  m: BoundMessage,
 ): Promise<void> => {
-  // Language is fixed to "en"
-  const lang: Lang = "en";
-  const m = getBoundMessage(lang);
   const destDir = path.dirname(outputPath);
   let { retryCount } = status;
 
@@ -90,6 +88,7 @@ export const exportCustomizeSetting = async (
         outputPath,
         { retryCount },
         options,
+        m,
       );
     } else {
       throw e;
@@ -202,9 +201,7 @@ export const runExport = async (params: ExportParams): Promise<void> => {
     baseUrl,
     options,
   } = params;
-  // Language is fixed to "en"
-  const lang: Lang = "en";
-  const m = getBoundMessage(lang);
+  const m = getBoundMessage("en");
 
   // Check if file already exists and prompt for overwrite
   if (fs.existsSync(outputPath) && !yes) {
@@ -237,6 +234,7 @@ export const runExport = async (params: ExportParams): Promise<void> => {
     outputPath,
     status,
     options,
+    m,
   );
   console.log(m("M_CommandImportFinish"));
 };

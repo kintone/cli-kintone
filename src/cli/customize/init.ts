@@ -33,9 +33,7 @@ type Args = yargs.Arguments<
 
 const handler = async (args: Args) => {
   try {
-    // Language is fixed to "en"
-    const lang = "en" as const;
-    const m = getBoundMessage(lang);
+    const m = getBoundMessage("en");
 
     // Prompt for scope
     const scope = (await promptForScope(m)) as "ALL" | "ADMIN" | "NONE";

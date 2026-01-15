@@ -43,9 +43,6 @@ type Args = yargs.Arguments<
 
 const handler = async (args: Args) => {
   try {
-    // Language is fixed to "en"
-    const lang = "en" as const;
-
     const guestSpaceId = args["guest-space-id"]
       ? parseInt(args["guest-space-id"], 10)
       : 0;
@@ -61,7 +58,6 @@ const handler = async (args: Args) => {
       basicAuthUsername: args["basic-auth-username"] ?? null,
       basicAuthPassword: args["basic-auth-password"] ?? null,
       options: {
-        lang,
         proxy: args.proxy ?? "",
         guestSpaceId,
       },

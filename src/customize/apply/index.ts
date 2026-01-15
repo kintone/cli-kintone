@@ -6,7 +6,7 @@ import {
   getBoundMessage,
   wait,
 } from "../core";
-import type { CustomizeManifest, Option, Lang } from "../core";
+import type { BoundMessage, CustomizeManifest, Option } from "../core";
 
 export interface ApplyParams {
   appId: string;
@@ -47,6 +47,7 @@ interface HandleApplyErrorParameter {
   retryCount: number;
   options: Option;
   kintoneApiClient: KintoneApiClient;
+  boundMessage: BoundMessage;
 }
 
 const MAX_RETRY_COUNT = 3;
@@ -57,10 +58,8 @@ export const apply = async (
   manifest: CustomizeManifest,
   status: Status,
   options: Option,
+  boundMessage: BoundMessage,
 ): Promise<void> => {
-  // Language is fixed to "en"
-  const lang: Lang = "en";
-  const boundMessage = getBoundMessage(lang);
   let { retryCount, updateBody, updated } = status;
 
   try {
@@ -70,6 +69,7 @@ export const apply = async (
         const uploadFilesResult = await getUploadFilesResult(
           kintoneApiClient,
           manifest,
+          boundMessage,
         );
 
         updateBody = createUpdatedManifest(appId, manifest, uploadFilesResult);
@@ -111,6 +111,7 @@ export const apply = async (
       retryCount,
       options,
       kintoneApiClient,
+      boundMessage,
     };
     await handleApplyError(params);
   }
@@ -128,10 +129,8 @@ const getJsCssFiles = (manifest: JsCssManifest) => {
 const getUploadFilesResult = async (
   kintoneApiClient: KintoneApiClient,
   manifest: CustomizeManifest,
+  boundMessage: BoundMessage,
 ) => {
-  // Language is fixed to "en"
-  const lang: Lang = "en";
-  const boundMessage = getBoundMessage(lang);
   const uploadFilesResult = [];
   for (const files of getJsCssFiles(manifest)) {
     const results = [];
@@ -176,11 +175,9 @@ const handleApplyError = async (params: HandleApplyErrorParameter) => {
     updated,
     options,
     kintoneApiClient,
+    boundMessage,
   } = params;
   let { retryCount } = params;
-  // Language is fixed to "en"
-  const lang: Lang = "en";
-  const boundMessage = getBoundMessage(lang);
   const isAuthenticationError = error instanceof AuthenticationError;
   retryCount++;
   if (isAuthenticationError) {
@@ -194,6 +191,7 @@ const handleApplyError = async (params: HandleApplyErrorParameter) => {
       manifest,
       { retryCount, updateBody, updated },
       options,
+      boundMessage,
     );
   } else {
     throw error;
@@ -213,9 +211,7 @@ export const runApply = async (params: ApplyParams): Promise<void> => {
     baseUrl,
     options,
   } = params;
-  // Language is fixed to "en"
-  const lang: Lang = "en";
-  const boundMessage = getBoundMessage(lang);
+  const boundMessage = getBoundMessage("en");
 
   const manifest: CustomizeManifest = JSON.parse(
     fs.readFileSync(inputPath, "utf8"),
@@ -252,6 +248,6 @@ export const runApply = async (params: ApplyParams): Promise<void> => {
     options,
   );
 
-  await apply(kintoneApiClient, appId, manifest, status, options);
+  await apply(kintoneApiClient, appId, manifest, status, options, boundMessage);
   console.log(boundMessage("M_Deployed"));
 };

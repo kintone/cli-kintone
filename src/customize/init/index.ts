@@ -3,7 +3,7 @@ import path from "path";
 import { mkdirp } from "mkdirp";
 import { confirm } from "@inquirer/prompts";
 import { getBoundMessage } from "../core";
-import type { CustomizeManifest, Lang } from "../core";
+import type { CustomizeManifest } from "../core";
 
 export interface InitParams {
   scope: "ALL" | "ADMIN" | "NONE";
@@ -52,9 +52,7 @@ export const generateCustomizeManifest = (
 
 export const runInit = async (params: InitParams): Promise<void> => {
   const { scope, outputPath, yes } = params;
-  // Language is fixed to "en"
-  const lang: Lang = "en";
-  const m = getBoundMessage(lang);
+  const m = getBoundMessage("en");
 
   // Check if file already exists and prompt for overwrite
   if (fs.existsSync(outputPath) && !yes) {

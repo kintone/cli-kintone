@@ -2,6 +2,7 @@ import assert from "assert";
 import * as fs from "fs";
 import { rimrafSync } from "rimraf";
 import type { Option } from "../../core";
+import { getBoundMessage } from "../../core";
 import { exportCustomizeSetting } from "../index";
 import MockKintoneApiClient from "../../core/__tests__/MockKintoneApiClient";
 
@@ -25,6 +26,7 @@ describe("export", () => {
     let status: { retryCount: number };
     let options: Option;
     const appId = "1";
+    const m = getBoundMessage("en");
 
     beforeEach(() => {
       kintoneApiClient = new MockKintoneApiClient(
@@ -43,7 +45,6 @@ describe("export", () => {
         retryCount: 0,
       };
       options = {
-        lang: "en",
         proxy: "",
         guestSpaceId: 0,
       };
@@ -200,6 +201,7 @@ describe("export", () => {
         testOutputPath,
         status,
         options,
+        m,
       );
 
       assertExportUseCaseApiRequest(kintoneApiClient);

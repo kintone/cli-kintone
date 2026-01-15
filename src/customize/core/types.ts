@@ -1,5 +1,3 @@
-import type { Lang } from "./lang";
-
 export interface CustomizeManifest {
   app?: string; // Optional for backward compatibility
   scope: "ALL" | "ADMIN" | "NONE";
@@ -24,7 +22,6 @@ export interface GeneralInputParams {
 }
 
 export interface Option {
-  lang: Lang;
   proxy: string;
   guestSpaceId: number;
 }

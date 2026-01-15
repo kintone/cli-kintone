@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { mkdirp } from "mkdirp";
 import { confirm } from "@inquirer/prompts";
 import { logger } from "../../utils/log";
 import { getBoundMessage } from "../core";
@@ -36,7 +35,7 @@ export const generateCustomizeManifest = (
   logger.debug(`Writing manifest to: ${outputPath}`);
   if (destDir && !fs.existsSync(destDir)) {
     logger.debug(`Creating directory: ${destDir}`);
-    mkdirp.sync(destDir);
+    fs.mkdirSync(destDir, { recursive: true });
   }
   return new Promise((resolve, reject) => {
     return fs.writeFile(

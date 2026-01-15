@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { mkdirp } from "mkdirp";
 import { confirm } from "@inquirer/prompts";
 import { logger } from "../../utils/log";
 import { retry } from "../../utils/retry";
@@ -127,7 +126,7 @@ const writeManifestFile = (
 
   if (destDir && !fs.existsSync(destDir)) {
     logger.debug(`Creating directory: ${destDir}`);
-    mkdirp.sync(destDir);
+    fs.mkdirSync(destDir, { recursive: true });
   }
   fs.writeFileSync(outputPath, JSON.stringify(customizeJson, null, 4));
   return resp;
@@ -157,7 +156,7 @@ const downloadCustomizeFiles = async (
   ];
   directories.forEach((dirPath) => {
     logger.debug(`Creating directory: ${dirPath}`);
-    mkdirp.sync(dirPath);
+    fs.mkdirSync(dirPath, { recursive: true });
   });
 
   const downloadPromises = [

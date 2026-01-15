@@ -9,13 +9,14 @@ This guide helps you migrate from the [kintone/js-sdk](https://github.com/kinton
 
 ## Overview
 
-kintone/js-sdk provides several npm packages for plugin development:
+kintone/js-sdk provides several npm packages for plugin/customize development:
 
 - [@kintone/create-plugin](https://www.npmjs.com/package/@kintone/create-plugin) - Create plugin templates
 - [@kintone/plugin-packer](https://www.npmjs.com/package/@kintone/plugin-packer) - Package plugins into zip files
 - [@kintone/plugin-uploader](https://www.npmjs.com/package/@kintone/plugin-uploader) - Upload plugins to kintone
+- [@kintone/customize-uploader](https://www.npmjs.com/package/@kintone/customize-uploader) - Upload/download app customizations to/from kintone
 
-cli-kintone consolidates these tools into a single CLI with unified plugin commands.
+cli-kintone consolidates these tools into a single CLI.
 
 ## Why Migrate to cli-kintone?
 
@@ -165,6 +166,48 @@ cli-kintone plugin info --input ./plugin.zip --format json
 # }
 ```
 
+#### Initializing Customize Manifest File
+
+**Before (js-sdk):**
+
+```shell
+kintone-customize-uploader init
+```
+
+**After (cli-kintone):**
+
+```shell
+cli-kintone customize init --output customize-manifest.json
+```
+
+#### Importing Customizations from kintone
+
+**Before (js-sdk):**
+
+```shell
+kintone-customize-uploader import customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+```
+
+**After (cli-kintone):**
+
+```shell
+cli-kintone customize export --app 123 --output customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+```
+
+#### Applying Customizations
+
+**Before (js-sdk):**
+
+```shell
+kintone-customize-uploader customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+```
+
+**After (cli-kintone):**
+
+```shell
+cli-kintone customize apply --input customize-manifest.json --app 123 --base-url https://example.cybozu.com --username admin --password password
+```
+
 ### 3. Update package.json Scripts
 
 If you have npm scripts using js-sdk tools, update them to use cli-kintone:
@@ -257,6 +300,103 @@ kintone-plugin-uploader --base-url https://example.cybozu.com --username admin -
 cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu.com --username admin --password password
 ```
 
+### customize init (vs @kintone/customize-uploader)
+
+| Option              | js-sdk                                        | cli-kintone                                                                           |
+| ------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Output file         | `--dest-dir`, `-d`<br/>Default is `dest/`     | `--output <file>`, `-o`<br/>Default is `customize-manifest.json`                      |
+| App ID              | Entered interactively                         | Not required (not used in init)                                                       |
+| Scope               | Entered interactively                         | Entered interactively<br/>Default is `ALL`<br/>`ALL` is also used with `--yes` option |
+| Confirmation prompt | None                                          | Prompts for confirmation when overwriting<br/>Can be skipped with `--yes` option      |
+
+**Examples:**
+
+```shell
+# js-sdk
+kintone-customize-uploader init
+
+# cli-kintone
+cli-kintone customize init --output customize-manifest.json
+```
+
+### customize export (vs @kintone/customize-uploader)
+
+cli-kintone's `customize export` command corresponds to customize-uploader's `import` subcommand.
+
+| Option              | js-sdk                                                   | cli-kintone                                                                      |
+| ------------------- | -------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Command name        | `import` subcommand                                      | `export` subcommand                                                              |
+| App ID              | Specified via `app` property in manifest file            | `--app <id>`, `-a` (required)                                                    |
+| Output file         | Manifest file specified as argument                      | `--output <file>`, `-o`<br/>Default is `customize-manifest.json`                 |
+| Confirmation prompt | None                                                     | Prompts for confirmation when overwriting<br/>Can be skipped with `--yes` option |
+| Authentication      | Username/password, OAuth                                 | Username/password only<br/>API token and OAuth authentication not supported      |
+| File output path    | Same directory as manifest                               | Saved to `$(dirname $MANIFEST_PATH)/{js,css}/`                                   |
+
+**Examples:**
+
+```shell
+# js-sdk
+kintone-customize-uploader import customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+
+# cli-kintone
+cli-kintone customize export --app 123 --output customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+```
+
+### customize apply (vs @kintone/customize-uploader)
+
+| Option              | js-sdk                                                   | cli-kintone                                                                                          |
+| ------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| App ID              | Specified via `app` property in manifest file            | `--app <id>`, `-a` (required)<br/>The `app` property in manifest file is ignored                     |
+| Input file          | Manifest file specified as argument                      | `--input <file>`, `-i` (required)                                                                    |
+| Confirmation prompt | None                                                     | Prompts for confirmation before applying<br/>Can be skipped with `--yes` option                      |
+| Authentication      | Username/password, OAuth                                 | Username/password only<br/>API token and OAuth authentication not supported                          |
+| Watch mode          | `--watch` option to watch for file changes and auto-apply | Not supported                                                                                        |
+
+**Examples:**
+
+```shell
+# js-sdk
+kintone-customize-uploader customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+
+# cli-kintone
+cli-kintone customize apply --input customize-manifest.json --app 123 --base-url https://example.cybozu.com --username admin --password password
+```
+
+### Manifest File Specification
+
+cli-kintone's manifest file supports the same format as customize-uploader.
+
+```json
+{
+  "scope": "ALL",
+  "desktop": {
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "sample/customize.js"
+    ],
+    "css": ["sample/51-modern-default.css"]
+  },
+  "mobile": {
+    "js": ["https://js.cybozu.com/jquery/3.3.1/jquery.min.js"],
+    "css": []
+  }
+}
+```
+
+| Property    | Required | Type                             | Description                                                                                                                  |
+| ----------- | -------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| scope       | Yes      | `"ALL"` \| `"ADMIN"` \| `"NONE"` | Customization scope<br/>ALL: All users<br/>ADMIN: App administrators only<br/>NONE: Not applied                              |
+| desktop     | Yes      | object                           | Customization files for PC view                                                                                              |
+| desktop.js  | Yes      | string[]                         | JS files for PC view (URL or local file path)                                                                                |
+| desktop.css | Yes      | string[]                         | CSS files for PC view (URL or local file path)                                                                               |
+| mobile      | Yes      | object                           | Customization files for mobile view                                                                                          |
+| mobile.js   | Yes      | string[]                         | JS files for mobile view (URL or local file path)                                                                            |
+| mobile.css  | Yes      | string[]                         | CSS files for mobile view (URL or local file path)                                                                           |
+
+:::info Backward Compatibility
+For backward compatibility with customize-uploader, the `app` property in manifest files is accepted but ignored. cli-kintone uses the app ID specified via the `--app` option instead.
+:::
+
 ## Need Help?
 
 If you encounter issues during migration:
@@ -270,4 +410,5 @@ If you encounter issues during migration:
 - [@kintone/plugin-packer - npm](https://www.npmjs.com/package/@kintone/plugin-packer)
 - [@kintone/plugin-uploader - npm](https://www.npmjs.com/package/@kintone/plugin-uploader)
 - [@kintone/create-plugin - npm](https://www.npmjs.com/package/@kintone/create-plugin)
+- [@kintone/customize-uploader - npm](https://www.npmjs.com/package/@kintone/customize-uploader)
 - [kintone/js-sdk GitHub Repository](https://github.com/kintone/js-sdk)

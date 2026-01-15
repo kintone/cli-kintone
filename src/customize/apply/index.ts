@@ -1,5 +1,6 @@
 import fs from "fs";
 import { confirm } from "@inquirer/prompts";
+import { logger } from "../../utils/log";
 import {
   KintoneApiClient,
   AuthenticationError,
@@ -64,7 +65,7 @@ export const apply = async (
 
   try {
     if (!updateBody) {
-      console.log(boundMessage("M_StartUploading"));
+      logger.info(boundMessage("M_StartUploading"));
       try {
         const uploadFilesResult = await getUploadFilesResult(
           kintoneApiClient,
@@ -73,9 +74,9 @@ export const apply = async (
         );
 
         updateBody = createUpdatedManifest(appId, manifest, uploadFilesResult);
-        console.log(boundMessage("M_FileUploaded"));
+        logger.info(boundMessage("M_FileUploaded"));
       } catch (error) {
-        console.log(boundMessage("E_FileUploaded"));
+        logger.error(boundMessage("E_FileUploaded"));
         throw error;
       }
     }
@@ -83,10 +84,10 @@ export const apply = async (
     if (!updated) {
       try {
         await kintoneApiClient.updateCustomizeSetting(updateBody);
-        console.log(boundMessage("M_Updated"));
+        logger.info(boundMessage("M_Updated"));
         updated = true;
       } catch (error) {
-        console.log(boundMessage("E_Updated"));
+        logger.error(boundMessage("E_Updated"));
         throw error;
       }
     }
@@ -94,11 +95,11 @@ export const apply = async (
     try {
       await kintoneApiClient.deploySetting(appId);
       await kintoneApiClient.waitFinishingDeploy(appId, () =>
-        console.log(boundMessage("M_Deploying")),
+        logger.info(boundMessage("M_Deploying")),
       );
-      console.log(boundMessage("M_Deployed"));
+      logger.info(boundMessage("M_Deployed"));
     } catch (error) {
-      console.log(boundMessage("E_Deployed"));
+      logger.error(boundMessage("E_Deployed"));
       throw error;
     }
   } catch (error) {
@@ -137,7 +138,7 @@ const getUploadFilesResult = async (
     for (const file of files) {
       const result = await kintoneApiClient.prepareCustomizeFile(file);
       if (result.type === "FILE") {
-        console.log(`${file} ` + boundMessage("M_Uploaded"));
+        logger.info(`${file} ` + boundMessage("M_Uploaded"));
       }
       results.push(result);
     }
@@ -184,7 +185,7 @@ const handleApplyError = async (params: HandleApplyErrorParameter) => {
     throw new Error(boundMessage("E_Authentication"));
   } else if (retryCount < MAX_RETRY_COUNT) {
     await wait(1000);
-    console.log(boundMessage("E_Retry"));
+    logger.warn(boundMessage("E_Retry"));
     await apply(
       kintoneApiClient,
       appId,
@@ -227,7 +228,7 @@ export const runApply = async (params: ApplyParams): Promise<void> => {
       default: false,
     });
     if (!shouldApply) {
-      console.log("Operation cancelled.");
+      logger.info("Operation cancelled.");
       return;
     }
   }
@@ -249,5 +250,5 @@ export const runApply = async (params: ApplyParams): Promise<void> => {
   );
 
   await apply(kintoneApiClient, appId, manifest, status, options, boundMessage);
-  console.log(boundMessage("M_Deployed"));
+  logger.info(boundMessage("M_Deployed"));
 };

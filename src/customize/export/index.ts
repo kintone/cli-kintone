@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { mkdirp } from "mkdirp";
 import { confirm } from "@inquirer/prompts";
+import { logger } from "../../utils/log";
 import {
   Constans,
   KintoneApiClient,
@@ -67,11 +68,11 @@ export const exportCustomizeSetting = async (
     const appCustomize = kintoneApiClient.getAppCustomize(appId);
     await appCustomize
       .then((resp: GetAppCustomizeResp) => {
-        console.log(m("M_UpdateManifestFile"));
+        logger.info(m("M_UpdateManifestFile"));
         return writeManifestFile(destDir, outputPath, resp);
       })
       .then((resp: GetAppCustomizeResp) => {
-        console.log(m("M_DownloadUploadedFile"));
+        logger.info(m("M_DownloadUploadedFile"));
         return downloadCustomizeFiles(kintoneApiClient, destDir, resp);
       });
   } catch (e) {
@@ -81,7 +82,7 @@ export const exportCustomizeSetting = async (
       throw new Error(m("E_Authentication"));
     } else if (retryCount < Constans.MAX_RETRY_COUNT) {
       await wait(1000);
-      console.log(m("E_Retry"));
+      logger.warn(m("E_Retry"));
       await exportCustomizeSetting(
         kintoneApiClient,
         appId,
@@ -210,7 +211,7 @@ export const runExport = async (params: ExportParams): Promise<void> => {
       default: false,
     });
     if (!shouldOverwrite) {
-      console.log("Operation cancelled.");
+      logger.info("Operation cancelled.");
       return;
     }
   }
@@ -236,5 +237,5 @@ export const runExport = async (params: ExportParams): Promise<void> => {
     options,
     m,
   );
-  console.log(m("M_CommandImportFinish"));
+  logger.info(m("M_CommandImportFinish"));
 };

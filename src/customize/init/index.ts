@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { mkdirp } from "mkdirp";
 import { confirm } from "@inquirer/prompts";
+import { logger } from "../../utils/log";
 import { getBoundMessage } from "../core";
 import type { CustomizeManifest } from "../core";
 
@@ -61,12 +62,12 @@ export const runInit = async (params: InitParams): Promise<void> => {
       default: false,
     });
     if (!shouldOverwrite) {
-      console.log("Operation cancelled.");
+      logger.info("Operation cancelled.");
       return;
     }
   }
 
   const customizeManifest = getInitCustomizeManifest(scope);
   await generateCustomizeManifest(customizeManifest, outputPath);
-  console.log(`${outputPath} ${m("M_CommandInitFinish")}`);
+  logger.info(`${outputPath} ${m("M_CommandInitFinish")}`);
 };

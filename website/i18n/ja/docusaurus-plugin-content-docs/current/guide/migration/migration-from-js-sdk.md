@@ -75,7 +75,7 @@ cli-kintoneでは、kintone/js-sdkの使用経験から得られたフィード�
 | 出力ファイル              | `--out`  | `--output`, `-o` |
 | 秘密鍵ファイル            | `--ppk`  | `--private-key`  |
 
-詳細なインターフェース差分については、[コマンドごとのインターフェース差分](#コマンドごとのインターフェース差分)および[主な違い](#主な違い)を参照してください。
+詳細なインターフェース差分については、[コマンドごとのインターフェース・挙動差分](#command-interface-differences)および[主な違い](#主な違い)を参照してください。
 
 ## 移行手順
 
@@ -244,7 +244,7 @@ cli-kintoneへの移行が完了したら、js-sdkツールを削除できます
 npm uninstall @kintone/create-plugin @kintone/plugin-packer @kintone/plugin-uploader
 ```
 
-## コマンドごとのインターフェース・挙動差分
+## コマンドごとのインターフェース・挙動差分 {#command-interface-differences}
 
 ### plugin init (@kintone/create-plugin との比較)
 

@@ -1,29 +1,73 @@
 import assert from "assert";
+import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { CustomizeManifest } from "../../core";
 import { getBoundMessage } from "../../core";
 import { apply } from "../index";
-import MockKintoneApiClient from "../../core/__tests__/MockKintoneApiClient";
+
+type MockLog = {
+  method: string;
+  path: string;
+  body?: Record<string, unknown>;
+};
+
+const createMockApiClient = (): KintoneRestAPIClient & { logs: MockLog[] } => {
+  const logs: MockLog[] = [];
+
+  return {
+    logs,
+    file: {
+      uploadFile: async (_params: { file: { path: string } }) => {
+        logs.push({ method: "POST", path: "/k/v1/file.json" });
+        return { fileKey: "mock-file-key" };
+      },
+      downloadFile: async (_params: { fileKey: string }) => {
+        logs.push({ method: "GET", path: "/k/v1/file.json" });
+        return new ArrayBuffer(0);
+      },
+    },
+    app: {
+      updateAppCustomize: async (params: unknown) => {
+        logs.push({
+          method: "PUT",
+          path: "/k/v1/preview/app/customize.json",
+          body: params as Record<string, unknown>,
+        });
+        return {};
+      },
+      deployApp: async (params: { apps: Array<{ app: string }> }) => {
+        logs.push({
+          method: "POST",
+          path: "/k/v1/preview/app/deploy.json",
+          body: params as Record<string, unknown>,
+        });
+        return {};
+      },
+      getDeployStatus: async (_params: { apps: string[] }) => {
+        logs.push({ method: "GET", path: "/k/v1/preview/app/deploy.json" });
+        return { apps: [{ app: "1", status: "SUCCESS" as const }] };
+      },
+      getAppCustomize: async (_params: { app: string }) => {
+        logs.push({ method: "GET", path: "/k/v1/app/customize.json" });
+        return {
+          scope: "ALL",
+          desktop: { js: [], css: [] },
+          mobile: { js: [], css: [] },
+        };
+      },
+    },
+  } as unknown as KintoneRestAPIClient & { logs: MockLog[] };
+};
 
 describe("index", () => {
   describe("apply", () => {
-    let kintoneApiClient: MockKintoneApiClient;
+    let apiClient: ReturnType<typeof createMockApiClient>;
     let manifest: CustomizeManifest;
     const appId = "1";
     const manifestDir = "."; // Paths in manifest are relative to project root
     const boundMessage = getBoundMessage("en");
+
     beforeEach(() => {
-      kintoneApiClient = new MockKintoneApiClient(
-        "kintone",
-        "hogehoge",
-        "oAuthToken",
-        "basicAuthUser",
-        "basicAuthPass",
-        "https://example.com",
-        {
-          proxy: "",
-          guestSpaceId: 0,
-        },
-      );
+      apiClient = createMockApiClient();
       manifest = {
         scope: "ALL",
         desktop: {
@@ -40,27 +84,20 @@ describe("index", () => {
         },
       };
     });
+
     it("should succeed the applying", async () => {
       try {
-        await apply(
-          kintoneApiClient,
-          appId,
-          manifest,
-          manifestDir,
-          boundMessage,
-        );
+        await apply(apiClient, appId, manifest, manifestDir, boundMessage);
         assert.ok(true, "the apply has been successful");
-      } catch (e: any) {
-        assert.fail(e);
+      } catch (e: unknown) {
+        assert.fail(e as Error);
       }
     });
+
     it("should call kintone APIs by the right order", async () => {
-      await apply(kintoneApiClient, appId, manifest, manifestDir, boundMessage);
+      await apply(apiClient, appId, manifest, manifestDir, boundMessage);
       assert.deepStrictEqual(
-        kintoneApiClient.logs.map(({ method, path }) => ({
-          method,
-          path,
-        })),
+        apiClient.logs.map(({ method, path }) => ({ method, path })),
         [
           { method: "POST", path: "/k/v1/file.json" },
           { method: "POST", path: "/k/v1/file.json" },

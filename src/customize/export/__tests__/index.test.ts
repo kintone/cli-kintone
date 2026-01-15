@@ -1,9 +1,70 @@
 import assert from "assert";
 import * as fs from "fs";
 import { rimrafSync } from "rimraf";
+import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { getBoundMessage } from "../../core";
 import { exportCustomizeSetting } from "../index";
-import MockKintoneApiClient from "../../core/__tests__/MockKintoneApiClient";
+
+type MockLog = {
+  method: string;
+  path: string;
+  body?: Record<string, unknown>;
+};
+
+const createMockApiClient = (
+  getAppCustomizeResponse: unknown,
+  downloadFileResponse: ArrayBuffer,
+): KintoneRestAPIClient & { logs: MockLog[] } => {
+  const logs: MockLog[] = [];
+
+  return {
+    logs,
+    file: {
+      uploadFile: async (_params: { file: { path: string } }) => {
+        logs.push({ method: "POST", path: "/k/v1/file.json" });
+        return { fileKey: "mock-file-key" };
+      },
+      downloadFile: async (params: { fileKey: string }) => {
+        logs.push({
+          method: "GET",
+          path: "/k/v1/file.json",
+          body: { fileKey: params.fileKey },
+        });
+        return downloadFileResponse;
+      },
+    },
+    app: {
+      updateAppCustomize: async (params: unknown) => {
+        logs.push({
+          method: "PUT",
+          path: "/k/v1/preview/app/customize.json",
+          body: params as Record<string, unknown>,
+        });
+        return {};
+      },
+      deployApp: async (params: { apps: Array<{ app: string }> }) => {
+        logs.push({
+          method: "POST",
+          path: "/k/v1/preview/app/deploy.json",
+          body: params as Record<string, unknown>,
+        });
+        return {};
+      },
+      getDeployStatus: async (_params: { apps: string[] }) => {
+        logs.push({ method: "GET", path: "/k/v1/preview/app/deploy.json" });
+        return { apps: [{ app: "1", status: "SUCCESS" as const }] };
+      },
+      getAppCustomize: async (params: { app: string }) => {
+        logs.push({
+          method: "GET",
+          path: "/k/v1/app/customize.json",
+          body: { app: params.app },
+        });
+        return getAppCustomizeResponse;
+      },
+    },
+  } as unknown as KintoneRestAPIClient & { logs: MockLog[] };
+};
 
 describe("export", () => {
   const testDestDir = "testDestDir";
@@ -21,22 +82,23 @@ describe("export", () => {
   const uploadFileBody = `(function() { console.log("hello"); })();`;
 
   describe("runExport", () => {
-    let kintoneApiClient: MockKintoneApiClient;
+    let apiClient: ReturnType<typeof createMockApiClient>;
     const appId = "1";
     const m = getBoundMessage("en");
 
     beforeEach(() => {
-      kintoneApiClient = new MockKintoneApiClient(
-        "kintone",
-        "hogehoge",
-        "oAuthToken",
-        "basicAuthUser",
-        "basicAuthPass",
-        "https://example.com",
-        {
-          proxy: "",
-          guestSpaceId: 0,
-        },
+      const getAppCustomizeResponse = JSON.parse(
+        fs
+          .readFileSync(
+            "src/customize/__tests__/fixtures/get-appcustomize-response.json",
+          )
+          .toString(),
+      );
+      const downloadFileResponse = new TextEncoder().encode(uploadFileBody)
+        .buffer as ArrayBuffer;
+      apiClient = createMockApiClient(
+        getAppCustomizeResponse,
+        downloadFileResponse,
       );
     });
 
@@ -85,9 +147,9 @@ describe("export", () => {
     };
 
     const assertExportUseCaseApiRequest = (
-      mockKintoneApiClient: MockKintoneApiClient,
+      mockApiClient: ReturnType<typeof createMockApiClient>,
     ) => {
-      const expected: any[] = [
+      const expected: MockLog[] = [
         {
           body: {
             app: "1",
@@ -166,28 +228,13 @@ describe("export", () => {
           path: "/k/v1/file.json",
         },
       ];
-      assert.deepStrictEqual(mockKintoneApiClient.logs, expected);
+      assert.deepStrictEqual(mockApiClient.logs, expected);
     };
 
     it("should success updating customize-manifest.json and downloading uploaded js/css files", async () => {
-      const getAppCustomizeResponse = JSON.parse(
-        fs
-          .readFileSync(
-            "src/customize/__tests__/fixtures/get-appcustomize-response.json",
-          )
-          .toString(),
-      );
+      await exportCustomizeSetting(apiClient, appId, testOutputPath, m);
 
-      kintoneApiClient.willBeReturn("/k/v1/file.json", "GET", uploadFileBody);
-      kintoneApiClient.willBeReturn(
-        "/k/v1/app/customize.json",
-        "GET",
-        getAppCustomizeResponse,
-      );
-
-      await exportCustomizeSetting(kintoneApiClient, appId, testOutputPath, m);
-
-      assertExportUseCaseApiRequest(kintoneApiClient);
+      assertExportUseCaseApiRequest(apiClient);
       const manifestFile = `${testDestDir}/customize-manifest.json`;
       assert.ok(fs.existsSync(manifestFile), `test ${manifestFile} exists`);
       const contents = fs.readFileSync(manifestFile);

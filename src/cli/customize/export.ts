@@ -43,24 +43,19 @@ type Args = yargs.Arguments<
 
 const handler = async (args: Args) => {
   try {
-    const guestSpaceId = args["guest-space-id"]
-      ? parseInt(args["guest-space-id"], 10)
-      : 0;
-
     await runExport({
       appId: args.app,
       outputPath: args.output,
       yes: args.yes,
       baseUrl: args["base-url"],
-      username: args.username ?? null,
-      password: args.password ?? null,
-      oAuthToken: null,
-      basicAuthUsername: args["basic-auth-username"] ?? null,
-      basicAuthPassword: args["basic-auth-password"] ?? null,
-      options: {
-        proxy: args.proxy ?? "",
-        guestSpaceId,
-      },
+      username: args.username,
+      password: args.password,
+      basicAuthUsername: args["basic-auth-username"],
+      basicAuthPassword: args["basic-auth-password"],
+      guestSpaceId: args["guest-space-id"],
+      pfxFilePath: args["pfx-file-path"],
+      pfxFilePassword: args["pfx-file-password"],
+      httpsProxy: args.proxy,
     });
   } catch (error) {
     logger.error(new RunError(error));

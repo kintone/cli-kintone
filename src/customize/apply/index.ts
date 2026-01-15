@@ -1,28 +1,21 @@
 import fs from "fs";
 import path from "path";
 import { confirm } from "@inquirer/prompts";
+import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { logger } from "../../utils/log";
 import { retry } from "../../utils/retry";
 import {
-  KintoneApiClient,
-  AuthenticationError,
-  getBoundMessage,
-  isUrlString,
-} from "../core";
-import type { BoundMessage, CustomizeManifest, Option } from "../core";
+  buildRestAPIClient,
+  type RestAPIClientOptions,
+} from "../../kintone/client";
+import { getBoundMessage, isUrlString } from "../core";
+import type { BoundMessage, CustomizeManifest } from "../core";
 
-export interface ApplyParams {
+export type ApplyParams = RestAPIClientOptions & {
   appId: string;
   inputPath: string;
   yes: boolean;
-  baseUrl: string;
-  username: string | null;
-  password: string | null;
-  oAuthToken: string | null;
-  basicAuthUsername: string | null;
-  basicAuthPassword: string | null;
-  options: Option;
-}
+};
 
 interface JsCssManifest {
   desktop: {
@@ -35,8 +28,11 @@ interface JsCssManifest {
   };
 }
 
+const wait = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
 export const apply = async (
-  kintoneApiClient: KintoneApiClient,
+  apiClient: KintoneRestAPIClient,
   appId: string,
   manifest: CustomizeManifest,
   manifestDir: string,
@@ -58,7 +54,7 @@ export const apply = async (
         logger.info(boundMessage("M_StartUploading"));
         try {
           const uploadFilesResult = await getUploadFilesResult(
-            kintoneApiClient,
+            apiClient,
             manifest,
             manifestDir,
             boundMessage,
@@ -82,7 +78,7 @@ export const apply = async (
       if (!updated) {
         try {
           logger.debug("Updating customization settings...");
-          await kintoneApiClient.updateCustomizeSetting(uploadedManifest);
+          await apiClient.app.updateAppCustomize(uploadedManifest);
           logger.debug("Customization settings updated");
           logger.info(boundMessage("M_Updated"));
           // eslint-disable-next-line require-atomic-updates
@@ -96,8 +92,8 @@ export const apply = async (
       // Step 3: Deploy
       try {
         logger.debug("Starting deployment...");
-        await kintoneApiClient.deploySetting(appId);
-        await kintoneApiClient.waitFinishingDeploy(appId, () =>
+        await apiClient.app.deployApp({ apps: [{ app: appId }] });
+        await waitForDeploy(apiClient, appId, () =>
           logger.info(boundMessage("M_Deploying")),
         );
         logger.debug("Deployment completed");
@@ -108,12 +104,9 @@ export const apply = async (
       }
     },
     {
-      retryCondition: (e) => !(e instanceof AuthenticationError),
       onError: (e, attemptCount, toRetry, nextDelay, config) => {
         logger.debug(`Error occurred: ${e}`);
-        if (e instanceof AuthenticationError) {
-          logger.debug("Authentication error detected, not retrying");
-        } else if (toRetry) {
+        if (toRetry) {
           logger.debug(
             `Retry attempt ${attemptCount}/${config.maxAttempt}, next delay: ${nextDelay}ms`,
           );
@@ -122,6 +115,29 @@ export const apply = async (
       },
     },
   );
+};
+
+const waitForDeploy = async (
+  apiClient: KintoneRestAPIClient,
+  appId: string,
+  callback: () => void,
+): Promise<void> => {
+  let deployed = false;
+  let checkCount = 0;
+  logger.debug(`Waiting for deployment to finish for app ${appId}`);
+  while (!deployed) {
+    checkCount++;
+    const resp = await apiClient.app.getDeployStatus({ apps: [appId] });
+    const successedApps = resp.apps.filter((r) => r.status === "SUCCESS");
+    deployed = successedApps.length === resp.apps.length;
+    const currentStatus = resp.apps[0]?.status || "UNKNOWN";
+    logger.debug(`Deploy status check #${checkCount}: ${currentStatus}`);
+    if (!deployed) {
+      await wait(1000);
+      callback();
+    }
+  }
+  logger.debug(`Deployment finished after ${checkCount} checks`);
 };
 
 const getJsCssFiles = (manifest: JsCssManifest) => {
@@ -140,8 +156,27 @@ const resolveFilePath = (file: string, manifestDir: string): string => {
   return path.resolve(manifestDir, file);
 };
 
+const prepareCustomizeFile = async (
+  apiClient: KintoneRestAPIClient,
+  fileOrUrl: string,
+): Promise<
+  { type: "URL"; url: string } | { type: "FILE"; file: { fileKey: string } }
+> => {
+  logger.debug(`Preparing customize file: ${fileOrUrl}`);
+  if (isUrlString(fileOrUrl)) {
+    logger.debug(`File is URL, skipping upload`);
+    return { type: "URL", url: fileOrUrl };
+  }
+  logger.debug(`Uploading file: ${fileOrUrl}`);
+  const { fileKey } = await apiClient.file.uploadFile({
+    file: { path: fileOrUrl },
+  });
+  logger.debug(`File uploaded, fileKey: ${fileKey}`);
+  return { type: "FILE", file: { fileKey } };
+};
+
 const getUploadFilesResult = async (
-  kintoneApiClient: KintoneApiClient,
+  apiClient: KintoneRestAPIClient,
   manifest: CustomizeManifest,
   manifestDir: string,
   boundMessage: BoundMessage,
@@ -156,7 +191,7 @@ const getUploadFilesResult = async (
     for (const file of files) {
       const resolvedPath = resolveFilePath(file, manifestDir);
       logger.debug(`Processing file: ${file} -> ${resolvedPath}`);
-      const result = await kintoneApiClient.prepareCustomizeFile(resolvedPath);
+      const result = await prepareCustomizeFile(apiClient, resolvedPath);
       if (result.type === "FILE") {
         logger.debug(`File uploaded: ${resolvedPath}`);
         logger.info(`${file} ` + boundMessage("M_Uploaded"));
@@ -174,7 +209,9 @@ const getUploadFilesResult = async (
 const createUpdatedManifest = (
   appId: string,
   manifest: CustomizeManifest,
-  uploadFilesResult: any,
+  uploadFilesResult: Array<
+    Array<Awaited<ReturnType<typeof prepareCustomizeFile>>>
+  >,
 ) => {
   return {
     app: appId,
@@ -191,18 +228,7 @@ const createUpdatedManifest = (
 };
 
 export const runApply = async (params: ApplyParams): Promise<void> => {
-  const {
-    appId,
-    inputPath,
-    yes,
-    username,
-    password,
-    oAuthToken,
-    basicAuthUsername,
-    basicAuthPassword,
-    baseUrl,
-    options,
-  } = params;
+  const { appId, inputPath, yes, ...restApiClientOptions } = params;
   const boundMessage = getBoundMessage("en");
 
   logger.debug(`Starting apply for app ${appId}`);
@@ -232,15 +258,7 @@ export const runApply = async (params: ApplyParams): Promise<void> => {
     }
   }
 
-  const kintoneApiClient = new KintoneApiClient(
-    username,
-    password,
-    oAuthToken,
-    basicAuthUsername,
-    basicAuthPassword,
-    baseUrl,
-    options,
-  );
+  const apiClient = buildRestAPIClient(restApiClientOptions);
 
-  await apply(kintoneApiClient, appId, manifest, manifestDir, boundMessage);
+  await apply(apiClient, appId, manifest, manifestDir, boundMessage);
 };

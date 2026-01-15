@@ -1,27 +1,21 @@
 import fs from "fs";
 import path from "path";
 import { confirm } from "@inquirer/prompts";
+import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { logger } from "../../utils/log";
 import { retry } from "../../utils/retry";
 import {
-  KintoneApiClient,
-  AuthenticationError,
-  getBoundMessage,
-} from "../core";
-import type { BoundMessage, CustomizeManifest, Option } from "../core";
+  buildRestAPIClient,
+  type RestAPIClientOptions,
+} from "../../kintone/client";
+import { getBoundMessage } from "../core";
+import type { BoundMessage, CustomizeManifest } from "../core";
 
-export interface ExportParams {
+export type ExportParams = RestAPIClientOptions & {
   appId: string;
   outputPath: string;
   yes: boolean;
-  baseUrl: string;
-  username: string | null;
-  password: string | null;
-  oAuthToken: string | null;
-  basicAuthUsername: string | null;
-  basicAuthPassword: string | null;
-  options: Option;
-}
+};
 
 interface UploadedFile {
   type: "FILE";
@@ -50,7 +44,7 @@ interface GetAppCustomizeResp {
 }
 
 export const exportCustomizeSetting = async (
-  kintoneApiClient: KintoneApiClient,
+  apiClient: KintoneRestAPIClient,
   appId: string,
   outputPath: string,
   m: BoundMessage,
@@ -63,21 +57,20 @@ export const exportCustomizeSetting = async (
   await retry(
     async () => {
       logger.debug("Fetching app customization settings...");
-      const resp = await kintoneApiClient.getAppCustomize(appId);
+      const resp = (await apiClient.app.getAppCustomize({
+        app: appId,
+      })) as GetAppCustomizeResp;
 
       logger.info(m("M_UpdateManifestFile"));
       writeManifestFile(destDir, outputPath, resp);
 
       logger.info(m("M_DownloadUploadedFile"));
-      await downloadCustomizeFiles(kintoneApiClient, destDir, resp);
+      await downloadCustomizeFiles(apiClient, destDir, resp);
     },
     {
-      retryCondition: (e) => !(e instanceof AuthenticationError),
       onError: (e, attemptCount, toRetry, nextDelay, config) => {
         logger.debug(`Error occurred: ${e}`);
-        if (e instanceof AuthenticationError) {
-          logger.debug("Authentication error detected, not retrying");
-        } else if (toRetry) {
+        if (toRetry) {
           logger.debug(
             `Retry attempt ${attemptCount}/${config.maxAttempt}, next delay: ${nextDelay}ms`,
           );
@@ -133,7 +126,7 @@ const writeManifestFile = (
 };
 
 const downloadCustomizeFiles = async (
-  kintoneApiClient: KintoneApiClient,
+  apiClient: KintoneRestAPIClient,
   destDir: string,
   { desktop, mobile }: GetAppCustomizeResp,
 ): Promise<void[]> => {
@@ -161,19 +154,16 @@ const downloadCustomizeFiles = async (
 
   const downloadPromises = [
     ...desktopJs.map(
-      downloadAndWriteFile(kintoneApiClient, `${destDir}${sep}desktop${sep}js`),
+      downloadAndWriteFile(apiClient, `${destDir}${sep}desktop${sep}js`),
     ),
     ...desktopCss.map(
-      downloadAndWriteFile(
-        kintoneApiClient,
-        `${destDir}${sep}desktop${sep}css`,
-      ),
+      downloadAndWriteFile(apiClient, `${destDir}${sep}desktop${sep}css`),
     ),
     ...mobileJs.map(
-      downloadAndWriteFile(kintoneApiClient, `${destDir}${sep}mobile${sep}js`),
+      downloadAndWriteFile(apiClient, `${destDir}${sep}mobile${sep}js`),
     ),
     ...mobileCss.map(
-      downloadAndWriteFile(kintoneApiClient, `${destDir}${sep}mobile${sep}css`),
+      downloadAndWriteFile(apiClient, `${destDir}${sep}mobile${sep}css`),
     ),
   ];
 
@@ -181,7 +171,7 @@ const downloadCustomizeFiles = async (
 };
 
 const downloadAndWriteFile = (
-  kintoneApiClient: KintoneApiClient,
+  apiClient: KintoneRestAPIClient,
   destDir: string,
 ): ((f: CustomizeFile) => Promise<void>) => {
   return async (f) => {
@@ -192,7 +182,7 @@ const downloadAndWriteFile = (
     logger.debug(
       `Downloading file: ${f.file.name} (fileKey: ${f.file.fileKey})`,
     );
-    const resp = await kintoneApiClient.downloadFile(f.file.fileKey);
+    const resp = await apiClient.file.downloadFile({ fileKey: f.file.fileKey });
     const filePath = `${destDir}${path.sep}${f.file.name}`;
     fs.writeFileSync(filePath, Buffer.from(resp));
     logger.debug(`Saved file: ${filePath}`);
@@ -200,18 +190,7 @@ const downloadAndWriteFile = (
 };
 
 export const runExport = async (params: ExportParams): Promise<void> => {
-  const {
-    appId,
-    outputPath,
-    yes,
-    username,
-    password,
-    oAuthToken,
-    basicAuthUsername,
-    basicAuthPassword,
-    baseUrl,
-    options,
-  } = params;
+  const { appId, outputPath, yes, ...restApiClientOptions } = params;
   const m = getBoundMessage("en");
 
   logger.debug(`Starting export for app ${appId}`);
@@ -230,15 +209,7 @@ export const runExport = async (params: ExportParams): Promise<void> => {
     }
   }
 
-  const kintoneApiClient = new KintoneApiClient(
-    username,
-    password,
-    oAuthToken,
-    basicAuthUsername,
-    basicAuthPassword,
-    baseUrl,
-    options,
-  );
-  await exportCustomizeSetting(kintoneApiClient, appId, outputPath, m);
+  const apiClient = buildRestAPIClient(restApiClientOptions);
+  await exportCustomizeSetting(apiClient, appId, outputPath, m);
   logger.info(m("M_CommandImportFinish"));
 };

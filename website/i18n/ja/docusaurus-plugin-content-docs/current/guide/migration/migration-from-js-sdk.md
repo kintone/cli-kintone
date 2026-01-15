@@ -5,15 +5,16 @@ unlisted: true
 
 # js-sdkからの移行
 
-このガイドでは、[kintone/js-sdk](https://github.com/kintone/js-sdk)のプラグイン開発ツールからcli-kintoneへ移行する方法を説明します。
+このガイドでは、[kintone/js-sdk](https://github.com/kintone/js-sdk)のプラグイン/カスタマイズ開発ツールからcli-kintoneへ移行する方法を説明します。
 
 ## 概要
 
-kintone/js-sdkは、プラグイン開発のためにいくつかのnpmパッケージを提供しています：
+kintone/js-sdkは、プラグイン/カスタマイズ開発のためにいくつかのnpmパッケージを提供しています：
 
 - [@kintone/create-plugin](https://www.npmjs.com/package/@kintone/create-plugin) - プラグインテンプレートの作成
 - [@kintone/plugin-packer](https://www.npmjs.com/package/@kintone/plugin-packer) - プラグインをzipファイルにパッケージ化
 - [@kintone/plugin-uploader](https://www.npmjs.com/package/@kintone/plugin-uploader) - プラグインをkintoneにアップロード
+- [@kintone/customize-uploader](https://www.npmjs.com/package/@kintone/customize-uploader) - アプリカスタマイズをkintoneにアップロード/ダウンロード
 
 cli-kintoneは、これらのツールを単一のCLIに統合しています。
 
@@ -26,7 +27,7 @@ kintone/js-sdkから[cli-kintone](https://github.com/kintone/cli-kintone)への�
 
 ### 導入・学習コストの集約
 
-kintone/js-sdkでは、プラグイン開発に必要な機能が複数のnpmパッケージ（@kintone/create-plugin、@kintone/plugin-packer、@kintone/plugin-uploader）に分散していました。
+kintone/js-sdkでは、プラグイン開発に必要な機能が複数のnpmパッケージに分散していました。
 それぞれのパッケージを個別にインストールし、異なるコマンドとオプションを学習する必要がありました。
 
 cli-kintoneでは、これらすべての機能を1つのCLIに統合しています。単一のツールをインストールするだけで、プラグインの作成からアップロードまでのすべての操作が可能になり、学習コストが大幅に削減されます。
@@ -46,20 +47,23 @@ cli-kintoneでは、kintone/js-sdkの使用経験から得られたフィード�
 
 ## ツールの比較
 
-| js-sdkのツール           | cli-kintoneのコマンド                         | 説明                                                                                     |
-| ------------------------ | --------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| @kintone/create-plugin   | [plugin init](../commands/plugin-init.md)     | 新しいプラグインプロジェクトを初期化                                                     |
-| @kintone/plugin-packer   | [plugin pack](../commands/plugin-pack.md)     | プラグインをzipファイルにパッケージング<br/>※秘密鍵の生成は`plugin keygen`コマンドに分離 |
-| @kintone/plugin-uploader | [plugin upload](../commands/plugin-upload.md) | プラグインをkintone環境にアップロード                                                    |
-| -                        | [plugin keygen](../commands/plugin-keygen.md) | プラグイン用の秘密鍵を生成                                                               |
-| -                        | [plugin info](../commands/plugin-info.md)     | プラグイン情報を表示                                                                     |
+| js-sdkのツール              | cli-kintoneのコマンド                               | 説明                                                                                     |
+| --------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| @kintone/create-plugin      | [plugin init](../commands/plugin-init.md)           | 新しいプラグインプロジェクトを初期化                                                     |
+| @kintone/plugin-packer      | [plugin pack](../commands/plugin-pack.md)           | プラグインをzipファイルにパッケージング<br/>※秘密鍵の生成は`plugin keygen`コマンドに分離 |
+| @kintone/plugin-packer      | [plugin keygen](../commands/plugin-keygen.md)       | プラグイン用の秘密鍵を生成                                                               |
+| @kintone/plugin-uploader    | [plugin upload](../commands/plugin-upload.md)       | プラグインをkintone環境にアップロード                                                    |
+| -                           | [plugin info](../commands/plugin-info.md)           | プラグイン情報を表示                                                                     |
+| @kintone/customize-uploader | [customize init](../commands/customize-init.md)     | カスタマイズのマニフェストファイルの初期化                                               |
+| @kintone/customize-uploader | [customize apply](../commands/customize-apply.md)   | マニフェストファイルからkintone環境にカスタマイズを反映                                  |
+| @kintone/customize-uploader | [customize export](../commands/customize-export.md) | kintone環境からカスタマイズのマニフェストファイルを生成                                  |
 
 ### 主な違い
 
 #### コマンド構造
 
 - **js-sdk：** 各ツールは独立したnpmパッケージで、それぞれ独自のコマンドを持ちます
-- **cli-kintone：** すべてのプラグインコマンドは`cli-kintone plugin`名前空間の下にあります
+- **cli-kintone：** すべての開発用コマンドは`cli-kintone plugin`と`cli-kintone customize`名前空間の下にあります
 
 #### オプション名
 
@@ -162,6 +166,48 @@ cli-kintone plugin info --input ./plugin.zip --format json
 # }
 ```
 
+#### カスタマイズのマニフェストファイルの初期化
+
+**移行前（js-sdk）：**
+
+```shell
+kintone-customize-uploader init
+```
+
+**移行後（cli-kintone）：**
+
+```shell
+cli-kintone customize init --output customize-manifest.json
+```
+
+#### kintone環境からカスタマイズのインポート
+
+**移行前（js-sdk）：**
+
+```shell
+kintone-customize-uploader import customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+```
+
+**移行後（cli-kintone）：**
+
+```shell
+cli-kintone customize export --app 123 --output customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+```
+
+#### カスタマイズの適用
+
+**移行前（js-sdk）：**
+
+```shell
+kintone-customize-uploader customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+```
+
+**移行後（cli-kintone）：**
+
+```shell
+cli-kintone customize apply --input customize-manifest.json --app 123 --base-url https://example.cybozu.com --username admin --password password
+```
+
 ### 3. package.jsonスクリプトの更新
 
 js-sdkツールを使用しているnpmスクリプトがある場合は、cli-kintoneを使用するように更新してください：
@@ -254,6 +300,103 @@ kintone-plugin-uploader --base-url https://example.cybozu.com --username admin -
 cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu.com --username admin --password password
 ```
 
+### customize init (@kintone/customize-uploader との比較)
+
+| オプション     | js-sdk                                       | cli-kintone                                                               |
+| -------------- | -------------------------------------------- | ------------------------------------------------------------------------- |
+| 出力ファイル   | `--dest-dir`, `-d`<br/>デフォルト値は`dest/` | `--output <file>`, `-o`<br/>デフォルト値は`customize-manifest.json`       |
+| アプリID       | 対話形式で入力                               | 不要（initでは使用しない）                                                |
+| スコープ       | 対話形式で入力                               | 対話形式で入力<br/>デフォルト値は`ALL`<br/>`--yes`オプション指定時も`ALL` |
+| 確認プロンプト | なし                                         | 上書きの場合はプロンプトで確認<br/>`--yes`オプションでスキップ可能        |
+
+**実行例：**
+
+```shell
+# js-sdk
+kintone-customize-uploader init
+
+# cli-kintone
+cli-kintone customize init --output customize-manifest.json
+```
+
+### customize export (@kintone/customize-uploader との比較)
+
+cli-kintoneの`customize export`コマンドは、customize-uploaderの`import`サブコマンドに相当します。
+
+| オプション     | js-sdk                                        | cli-kintone                                                         |
+| -------------- | --------------------------------------------- | ------------------------------------------------------------------- |
+| コマンド名     | `import`サブコマンド                          | `export`サブコマンド                                                |
+| アプリID       | マニフェストファイル内の`app`プロパティで指定 | `--app <id>`, `-a`（必須）                                          |
+| 出力ファイル   | マニフェストファイルを引数で指定              | `--output <file>`, `-o`<br/>デフォルト値は`customize-manifest.json` |
+| 確認プロンプト | なし                                          | 上書きの場合はプロンプトで確認<br/>`--yes`オプションでスキップ可能  |
+| 認証方式       | ユーザー名/パスワード、OAuth                  | ユーザー名/パスワードのみ<br/>APIトークン認証・OAuth認証は非対応    |
+| ファイル出力先 | マニフェストと同じディレクトリ                | `$(dirname $MANIFEST_PATH)/{js,css}/`に保存                         |
+
+**実行例：**
+
+```shell
+# js-sdk
+kintone-customize-uploader import customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+
+# cli-kintone
+cli-kintone customize export --app 123 --output customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+```
+
+### customize apply (@kintone/customize-uploader との比較)
+
+| オプション     | js-sdk                                              | cli-kintone                                                                        |
+| -------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| アプリID       | マニフェストファイル内の`app`プロパティで指定       | `--app <id>`, `-a`（必須）<br/>マニフェストファイルの`app`プロパティは無視されます |
+| 入力ファイル   | マニフェストファイルを引数で指定                    | `--input <file>`, `-i`（必須）                                                     |
+| 確認プロンプト | なし                                                | 反映前にプロンプトで確認<br/>`--yes`オプションでスキップ可能                       |
+| 認証方式       | ユーザー名/パスワード、OAuth                        | ユーザー名/パスワードのみ<br/>APIトークン認証・OAuth認証は非対応                   |
+| 監視モード     | `--watch`オプションでファイル変更を監視して自動反映 | 非対応                                                                             |
+
+**実行例：**
+
+```shell
+# js-sdk
+kintone-customize-uploader customize-manifest.json --base-url https://example.cybozu.com --username admin --password password
+
+# cli-kintone
+cli-kintone customize apply --input customize-manifest.json --app 123 --base-url https://example.cybozu.com --username admin --password password
+```
+
+### マニフェストファイルの仕様
+
+cli-kintoneのマニフェストファイルは、customize-uploaderのマニフェストファイルと同じ形式をサポートしています。
+
+```json
+{
+  "scope": "ALL",
+  "desktop": {
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "sample/customize.js"
+    ],
+    "css": ["sample/51-modern-default.css"]
+  },
+  "mobile": {
+    "js": ["https://js.cybozu.com/jquery/3.3.1/jquery.min.js"],
+    "css": []
+  }
+}
+```
+
+| プロパティ  | 必須 | 型                               | 説明                                                                                                |
+| ----------- | ---- | -------------------------------- | --------------------------------------------------------------------------------------------------- |
+| scope       | Yes  | `"ALL"` \| `"ADMIN"` \| `"NONE"` | カスタマイズの適用範囲<br/>ALL: すべてのユーザー<br/>ADMIN: アプリの管理者だけ<br/>NONE: 適用しない |
+| desktop     | Yes  | object                           | PCビューに適用されるカスタマイズファイル群                                                          |
+| desktop.js  | Yes  | string[]                         | PCビューに適用されるJSファイル（URLまたはローカルファイルパス）                                     |
+| desktop.css | Yes  | string[]                         | PCビューに適用されるCSSファイル（URLまたはローカルファイルパス）                                    |
+| mobile      | Yes  | object                           | モバイルビューに適用されるカスタマイズファイル群                                                    |
+| mobile.js   | Yes  | string[]                         | モバイルビューに適用されるJSファイル（URLまたはローカルファイルパス）                               |
+| mobile.css  | Yes  | string[]                         | モバイルビューに適用されるCSSファイル（URLまたはローカルファイルパス）                              |
+
+:::info 後方互換性
+customize-uploaderとの後方互換性のため、マニフェストファイルに`app`プロパティが存在しても正常に処理されます。ただし、cli-kintoneでは`app`プロパティは無視され、`--app`オプションで指定したアプリIDが使用されます。
+:::
+
 ## お困りの場合
 
 移行中に問題が発生した場合：
@@ -267,4 +410,5 @@ cli-kintone plugin upload --input ./plugin.zip --base-url https://example.cybozu
 - [@kintone/plugin-packer - npm](https://www.npmjs.com/package/@kintone/plugin-packer)
 - [@kintone/plugin-uploader - npm](https://www.npmjs.com/package/@kintone/plugin-uploader)
 - [@kintone/create-plugin - npm](https://www.npmjs.com/package/@kintone/create-plugin)
+- [@kintone/customize-uploader - npm](https://www.npmjs.com/package/@kintone/customize-uploader)
 - [kintone/js-sdk GitHubリポジトリ](https://github.com/kintone/js-sdk)

@@ -139,15 +139,6 @@ const waitForDeploy = async (
   logger.debug(`Deployment finished after ${checkCount} checks`);
 };
 
-const getJsCssFiles = (manifest: JsCssManifest) => {
-  return [
-    manifest.desktop.js,
-    manifest.desktop.css,
-    manifest.mobile.js,
-    manifest.mobile.css,
-  ];
-};
-
 const resolveFilePath = (file: string, manifestDir: string): string => {
   if (isUrlString(file)) {
     return file;
@@ -174,54 +165,88 @@ const prepareCustomizeFile = async (
   return { type: "FILE", file: { fileKey } };
 };
 
+const uploadFiles = async (
+  apiClient: KintoneRestAPIClient,
+  files: string[],
+  manifestDir: string,
+  boundMessage: BoundMessage,
+) => {
+  const results = [];
+  for (const file of files) {
+    const resolvedPath = resolveFilePath(file, manifestDir);
+    logger.debug(`Processing file: ${file} -> ${resolvedPath}`);
+    const result = await prepareCustomizeFile(apiClient, resolvedPath);
+    if (result.type === "FILE") {
+      logger.debug(`File uploaded: ${resolvedPath}`);
+      logger.info(`${file} ` + boundMessage("M_Uploaded"));
+    } else {
+      logger.debug(`File is URL, skipping upload: ${file}`);
+    }
+    results.push(result);
+  }
+  return results;
+};
+
 const getUploadFilesResult = async (
   apiClient: KintoneRestAPIClient,
   manifest: CustomizeManifest,
   manifestDir: string,
   boundMessage: BoundMessage,
 ) => {
-  const uploadFilesResult = [];
-  const allFiles = getJsCssFiles(manifest);
-  const totalFiles = allFiles.reduce((sum, files) => sum + files.length, 0);
+  const totalFiles =
+    manifest.desktop.js.length +
+    manifest.desktop.css.length +
+    manifest.mobile.js.length +
+    manifest.mobile.css.length;
   logger.debug(`Processing ${totalFiles} files for upload`);
 
-  for (const files of allFiles) {
-    const results = [];
-    for (const file of files) {
-      const resolvedPath = resolveFilePath(file, manifestDir);
-      logger.debug(`Processing file: ${file} -> ${resolvedPath}`);
-      const result = await prepareCustomizeFile(apiClient, resolvedPath);
-      if (result.type === "FILE") {
-        logger.debug(`File uploaded: ${resolvedPath}`);
-        logger.info(`${file} ` + boundMessage("M_Uploaded"));
-      } else {
-        logger.debug(`File is URL, skipping upload: ${file}`);
-      }
-      results.push(result);
-    }
-    uploadFilesResult.push(results);
-  }
-
-  return uploadFilesResult;
+  return {
+    desktop: {
+      js: await uploadFiles(
+        apiClient,
+        manifest.desktop.js,
+        manifestDir,
+        boundMessage,
+      ),
+      css: await uploadFiles(
+        apiClient,
+        manifest.desktop.css,
+        manifestDir,
+        boundMessage,
+      ),
+    },
+    mobile: {
+      js: await uploadFiles(
+        apiClient,
+        manifest.mobile.js,
+        manifestDir,
+        boundMessage,
+      ),
+      css: await uploadFiles(
+        apiClient,
+        manifest.mobile.css,
+        manifestDir,
+        boundMessage,
+      ),
+    },
+  };
 };
 
 const createUpdatedManifest = (
   appId: string,
   manifest: CustomizeManifest,
-  uploadFilesResult: Array<
-    Array<Awaited<ReturnType<typeof prepareCustomizeFile>>>
-  >,
+  uploadFilesResult: Awaited<ReturnType<typeof getUploadFilesResult>>,
 ) => {
   return {
     app: appId,
     scope: manifest.scope,
     desktop: {
-      js: uploadFilesResult[0],
-      css: uploadFilesResult[1],
+      js: uploadFilesResult.desktop.js,
+      css: uploadFilesResult.desktop.css,
     },
     mobile: {
-      js: uploadFilesResult[2],
-      css: uploadFilesResult[3],
+      js: uploadFilesResult.mobile.js,
+      css: uploadFilesResult.mobile.css,
     },
   };
 };

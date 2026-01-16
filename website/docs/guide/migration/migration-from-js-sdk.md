@@ -177,7 +177,7 @@ kintone-customize-uploader init
 **After (cli-kintone):**
 
 ```shell
-cli-kintone customize init --output customize-manifest.json
+cli-kintone customize init
 ```
 
 #### Importing Customizations from kintone

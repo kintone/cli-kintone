@@ -177,7 +177,7 @@ kintone-customize-uploader init
 **移行後（cli-kintone）：**
 
 ```shell
-cli-kintone customize init --output customize-manifest.json
+cli-kintone customize init
 ```
 
 #### kintone環境からカスタマイズのインポート

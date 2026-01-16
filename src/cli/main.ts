@@ -1,6 +1,7 @@
 import yargs from "yargs";
 import { recordCommand } from "./record";
 import { pluginCommand } from "./plugin";
+import { customizeCommand } from "./customize";
 import packageJson from "../../package.json";
 import { logHandler, logOptions } from "./logOption";
 
@@ -8,6 +9,7 @@ import { logHandler, logOptions } from "./logOption";
 yargs
   .command(recordCommand)
   .command(pluginCommand)
+  .command(customizeCommand)
   .options(logOptions)
   .middleware(logHandler)
   .demandCommand()

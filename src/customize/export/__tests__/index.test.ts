@@ -149,86 +149,34 @@ describe("export", () => {
     const assertExportUseCaseApiRequest = (
       mockApiClient: ReturnType<typeof createMockApiClient>,
     ) => {
-      const expected: MockLog[] = [
-        {
-          body: {
-            app: "1",
-          },
-          method: "GET",
-          path: "/k/v1/app/customize.json",
-        },
-        {
-          body: {
-            fileKey: "20181116095653774F24C632AF46E69BDC8F5EF04C8E24014",
-          },
-          method: "GET",
-          path: "/k/v1/file.json",
-        },
-        {
-          body: {
-            fileKey: "20181116095653FF8D40EE4B364FD89A2B3A382EDCB259286",
-          },
-          method: "GET",
-          path: "/k/v1/file.json",
-        },
-        {
-          body: {
-            fileKey: "201811160956531AFF9246D7CB40938A91EAC14A0622C9250",
-          },
-          method: "GET",
-          path: "/k/v1/file.json",
-        },
-        {
-          body: {
-            fileKey: "201811160956531DCC5DA8C6E0480C8F3BD8A92EEFF584123",
-          },
-          method: "GET",
-          path: "/k/v1/file.json",
-        },
-        {
-          body: {
-            fileKey: "20181116095653A6A52415705D403A9B1AB36E1448B32E191",
-          },
-          method: "GET",
-          path: "/k/v1/file.json",
-        },
-        {
-          body: {
-            fileKey: "20181116095653C06A1FE34CFD43D6B21BE7F55D3B6ECB031",
-          },
-          method: "GET",
-          path: "/k/v1/file.json",
-        },
-        {
-          body: {
-            fileKey: "201811160956535E4F00740689488C9ABE7DCF3E794B34315",
-          },
-          method: "GET",
-          path: "/k/v1/file.json",
-        },
-        {
-          body: {
-            fileKey: "201811160956531AFF9246D7CB40938A91EAC14A0622C9250",
-          },
-          method: "GET",
-          path: "/k/v1/file.json",
-        },
-        {
-          body: {
-            fileKey: "201811160956531DCC5DA8C6E0480C8F3BD8A92EEFF584123",
-          },
-          method: "GET",
-          path: "/k/v1/file.json",
-        },
-        {
-          body: {
-            fileKey: "20181116095653A6A52415705D403A9B1AB36E1448B32E191",
-          },
-          method: "GET",
-          path: "/k/v1/file.json",
-        },
+      // First request should be getAppCustomize
+      assert.deepStrictEqual(mockApiClient.logs[0], {
+        body: { app: "1" },
+        method: "GET",
+        path: "/k/v1/app/customize.json",
+      });
+
+      // File download requests (order may vary due to parallel execution)
+      const expectedFileKeys = [
+        "20181116095653774F24C632AF46E69BDC8F5EF04C8E24014",
+        "20181116095653FF8D40EE4B364FD89A2B3A382EDCB259286",
+        "201811160956531AFF9246D7CB40938A91EAC14A0622C9250",
+        "201811160956531DCC5DA8C6E0480C8F3BD8A92EEFF584123",
+        "20181116095653A6A52415705D403A9B1AB36E1448B32E191",
+        "20181116095653C06A1FE34CFD43D6B21BE7F55D3B6ECB031",
+        "201811160956535E4F00740689488C9ABE7DCF3E794B34315",
+        "201811160956531AFF9246D7CB40938A91EAC14A0622C9250",
+        "201811160956531DCC5DA8C6E0480C8F3BD8A92EEFF584123",
+        "20181116095653A6A52415705D403A9B1AB36E1448B32E191",
       ];
-      assert.deepStrictEqual(mockApiClient.logs, expected);
+
+      const actualFileKeys = mockApiClient.logs
+        .slice(1)
+        .map((log) => (log.body as { fileKey: string }).fileKey)
+        .sort();
+      const sortedExpectedFileKeys = [...expectedFileKeys].sort();
+
+      assert.deepStrictEqual(actualFileKeys, sortedExpectedFileKeys);
     };
 
     it("should success updating customize-manifest.json and downloading uploaded js/css files", async () => {

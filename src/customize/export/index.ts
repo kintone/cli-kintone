@@ -128,44 +128,28 @@ const downloadCustomizeFiles = async (
   destDir: string,
   { desktop, mobile }: GetAppCustomizeResp,
 ) => {
-  const sep = path.sep;
-  const desktopJs: CustomizeFile[] = desktop.js;
-  const desktopCss: CustomizeFile[] = desktop.css;
-  const mobileJs: CustomizeFile[] = mobile.js;
-  const mobileCss: CustomizeFile[] = mobile.css;
+  const fileCategories = [
+    { files: desktop.js, subDir: "desktop/js" },
+    { files: desktop.css, subDir: "desktop/css" },
+    { files: mobile.js, subDir: "mobile/js" },
+    { files: mobile.css, subDir: "mobile/css" },
+  ];
 
-  const totalFiles =
-    desktopJs.length + desktopCss.length + mobileJs.length + mobileCss.length;
+  const totalFiles = fileCategories.reduce(
+    (sum, category) => sum + category.files.length,
+    0,
+  );
   logger.debug(`Downloading ${totalFiles} files to ${destDir}`);
 
-  // Create directories
-  const directories = [
-    `${destDir}${sep}desktop${sep}js`,
-    `${destDir}${sep}desktop${sep}css`,
-    `${destDir}${sep}mobile${sep}js`,
-    `${destDir}${sep}mobile${sep}css`,
-  ];
-  directories.forEach(async (dirPath) => {
+  // Create directories and download files in parallel
+  const downloadPromises = fileCategories.map(async ({ files, subDir }) => {
+    const dirPath = path.join(destDir, subDir);
     logger.debug(`Creating directory: ${dirPath}`);
     await fs.mkdir(dirPath, { recursive: true });
+    return Promise.all(files.map(downloadAndWriteFile(apiClient, dirPath)));
   });
 
-  const downloadPromises = [
-    ...desktopJs.map(
-      downloadAndWriteFile(apiClient, `${destDir}${sep}desktop${sep}js`),
-    ),
-    ...desktopCss.map(
-      downloadAndWriteFile(apiClient, `${destDir}${sep}desktop${sep}css`),
-    ),
-    ...mobileJs.map(
-      downloadAndWriteFile(apiClient, `${destDir}${sep}mobile${sep}js`),
-    ),
-    ...mobileCss.map(
-      downloadAndWriteFile(apiClient, `${destDir}${sep}mobile${sep}css`),
-    ),
-  ];
-
-  return Promise.all(downloadPromises);
+  await Promise.all(downloadPromises);
 };
 
 const downloadAndWriteFile = (

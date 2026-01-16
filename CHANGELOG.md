@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.0](https://github.com/kintone/cli-kintone/compare/v1.16.2...v1.17.0) (2026-01-16)
+
+
+### Features
+
+* customize upload ([#1308](https://github.com/kintone/cli-kintone/issues/1308)) ([b434cd2](https://github.com/kintone/cli-kintone/commit/b434cd2471b72a32bc0b435acd4b50f79366c834))
+
+
+### Documentation
+
+* add migration guide from customize-uploader ([#1311](https://github.com/kintone/cli-kintone/issues/1311)) ([a271dea](https://github.com/kintone/cli-kintone/commit/a271dea031bc3eef8441f855e78af2aa048bb9cc))
+
 ## [1.16.2](https://github.com/kintone/cli-kintone/compare/v1.16.1...v1.16.2) (2025-12-22)
 
 

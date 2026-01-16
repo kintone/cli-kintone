@@ -1,6 +1,5 @@
 ---
 sidebar_position: 100
-unlisted: true
 ---
 
 # Migrate from js-sdk

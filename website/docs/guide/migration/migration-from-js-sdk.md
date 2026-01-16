@@ -52,7 +52,7 @@ Additionally, some commands have improved internal behavior compared to the trad
 | @kintone/create-plugin      | [plugin init](../commands/plugin-init.md)           | Initialize a new plugin project                                                   |
 | @kintone/plugin-packer      | [plugin pack](../commands/plugin-pack.md)           | Package plugin into zip file<br/>※Private key generation moved to `plugin keygen` |
 | @kintone/plugin-uploader    | [plugin upload](../commands/plugin-upload.md)       | Upload plugin to kintone environment                                              |
-| -                           | [plugin keygen](../commands/plugin-keygen.md)       | Generate private key for plugin                                                   |
+| @kintone/plugin-packer      | [plugin keygen](../commands/plugin-keygen.md)       | Generate private key for plugin                                                   |
 | -                           | [plugin info](../commands/plugin-info.md)           | Display plugin information                                                        |
 | @kintone/customize-uploader | [customize init](../commands/customize-init.md)     | Initialize customize manifest file                                                |
 | @kintone/customize-uploader | [customize apply](../commands/customize-apply.md)   | Apply customize settings from manifest file to kintone app                        |

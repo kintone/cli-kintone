@@ -180,7 +180,7 @@ kintone-customize-uploader init
 cli-kintone customize init
 ```
 
-#### kintone環境からカスタマイズのダウンロード
+#### kintone環境からマニフェストファイルを生成
 
 **移行前（js-sdk）：**
 
@@ -330,7 +330,7 @@ cli-kintoneの`customize export`コマンドは、customize-uploaderの`import`�
 | 出力ファイル   | マニフェストファイルを引数で指定              | `--output <file>`, `-o`<br/>デフォルト値は`customize-manifest.json` |
 | 確認プロンプト | なし                                          | 上書きの場合はプロンプトで確認<br/>`--yes`オプションでスキップ可能  |
 | 認証方式       | ユーザー名/パスワード、OAuth                  | ユーザー名/パスワードのみ<br/>APIトークン認証・OAuth認証は非対応    |
-| ファイル出力先 | マニフェストと同じディレクトリ                | `$(dirname $MANIFEST_PATH)/{js,css}/`に保存                         |
+| ファイル出力先 | マニフェストと同じディレクトリ                | `$(dirname $MANIFEST_PATH)/{desktop,mobile}/{js,css}/`に保存        |
 
 **実行例：**
 

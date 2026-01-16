@@ -180,7 +180,7 @@ kintone-customize-uploader init
 cli-kintone customize init
 ```
 
-#### Downloading Customizations from kintone
+#### Generating Manifest File from kintone
 
 **Before (js-sdk):**
 
@@ -330,7 +330,7 @@ cli-kintone's `customize export` command corresponds to customize-uploader's `im
 | Output file         | Manifest file specified as argument           | `--output <file>`, `-o`<br/>Default is `customize-manifest.json`                 |
 | Confirmation prompt | None                                          | Prompts for confirmation when overwriting<br/>Can be skipped with `--yes` option |
 | Authentication      | Username/password, OAuth                      | Username/password only<br/>API token and OAuth authentication not supported      |
-| File output path    | Same directory as manifest                    | Saved to `$(dirname $MANIFEST_PATH)/{js,css}/`                                   |
+| File output path    | Same directory as manifest                    | Saved to `$(dirname $MANIFEST_PATH)/{desktop,mobile}/{js,css}/`                  |
 
 **Examples:**
 

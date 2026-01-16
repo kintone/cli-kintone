@@ -28,8 +28,7 @@ interface JsCssManifest {
   };
 }
 
-const wait = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const apply = async (
   apiClient: KintoneRestAPIClient,
@@ -37,7 +36,7 @@ export const apply = async (
   manifest: CustomizeManifest,
   manifestDir: string,
   boundMessage: BoundMessage,
-): Promise<void> => {
+) => {
   logger.debug(`Starting apply for app ${appId}`);
   logger.debug(`Manifest scope: ${manifest.scope}`);
   logger.debug(`Manifest directory: ${manifestDir}`);
@@ -121,7 +120,7 @@ const waitForDeploy = async (
   apiClient: KintoneRestAPIClient,
   appId: string,
   callback: () => void,
-): Promise<void> => {
+) => {
   let deployed = false;
   let checkCount = 0;
   logger.debug(`Waiting for deployment to finish for app ${appId}`);
@@ -227,7 +226,7 @@ const createUpdatedManifest = (
   };
 };
 
-export const runApply = async (params: ApplyParams): Promise<void> => {
+export const runApply = async (params: ApplyParams) => {
   const { appId, inputPath, yes, ...restApiClientOptions } = params;
   const boundMessage = getBoundMessage("en");
 

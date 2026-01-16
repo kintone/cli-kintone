@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
 import { confirm } from "@inquirer/prompts";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
@@ -10,6 +10,7 @@ import {
 } from "../../kintone/client";
 import { getBoundMessage } from "../core";
 import type { BoundMessage, CustomizeManifest } from "../core";
+import { isFile } from "../../utils/file";
 
 export type ExportParams = RestAPIClientOptions & {
   appId: string;
@@ -48,7 +49,7 @@ export const exportCustomizeSetting = async (
   appId: string,
   outputPath: string,
   m: BoundMessage,
-): Promise<void> => {
+) => {
   const destDir = path.dirname(outputPath);
 
   logger.debug(`Exporting customization from app ${appId}`);
@@ -57,12 +58,12 @@ export const exportCustomizeSetting = async (
   await retry(
     async () => {
       logger.debug("Fetching app customization settings...");
-      const resp = (await apiClient.app.getAppCustomize({
+      const resp = await apiClient.app.getAppCustomize({
         app: appId,
-      })) as GetAppCustomizeResp;
+      });
 
       logger.info(m("M_UpdateManifestFile"));
-      writeManifestFile(destDir, outputPath, resp);
+      await writeManifestFile(destDir, outputPath, resp);
 
       logger.info(m("M_DownloadUploadedFile"));
       await downloadCustomizeFiles(apiClient, destDir, resp);
@@ -81,11 +82,11 @@ export const exportCustomizeSetting = async (
   );
 };
 
-const writeManifestFile = (
+const writeManifestFile = async (
   destDir: string,
   outputPath: string,
   resp: GetAppCustomizeResp,
-): GetAppCustomizeResp => {
+) => {
   // Generate paths relative to manifest file location
   const toNameOrUrl = (relativeDir: string) => (f: CustomizeFile) => {
     if (f.type === "FILE") {
@@ -117,19 +118,16 @@ const writeManifestFile = (
     },
   };
 
-  if (destDir && !fs.existsSync(destDir)) {
-    logger.debug(`Creating directory: ${destDir}`);
-    fs.mkdirSync(destDir, { recursive: true });
-  }
-  fs.writeFileSync(outputPath, JSON.stringify(customizeJson, null, 4));
-  return resp;
+  logger.debug(`Creating directory: ${destDir}`);
+  await fs.mkdir(destDir, { recursive: true });
+  await fs.writeFile(outputPath, JSON.stringify(customizeJson, null, 4));
 };
 
 const downloadCustomizeFiles = async (
   apiClient: KintoneRestAPIClient,
   destDir: string,
   { desktop, mobile }: GetAppCustomizeResp,
-): Promise<void[]> => {
+) => {
   const sep = path.sep;
   const desktopJs: CustomizeFile[] = desktop.js;
   const desktopCss: CustomizeFile[] = desktop.css;
@@ -147,9 +145,9 @@ const downloadCustomizeFiles = async (
     `${destDir}${sep}mobile${sep}js`,
     `${destDir}${sep}mobile${sep}css`,
   ];
-  directories.forEach((dirPath) => {
+  directories.forEach(async (dirPath) => {
     logger.debug(`Creating directory: ${dirPath}`);
-    fs.mkdirSync(dirPath, { recursive: true });
+    await fs.mkdir(dirPath, { recursive: true });
   });
 
   const downloadPromises = [
@@ -184,12 +182,12 @@ const downloadAndWriteFile = (
     );
     const resp = await apiClient.file.downloadFile({ fileKey: f.file.fileKey });
     const filePath = `${destDir}${path.sep}${f.file.name}`;
-    fs.writeFileSync(filePath, Buffer.from(resp));
+    await fs.writeFile(filePath, Buffer.from(resp));
     logger.debug(`Saved file: ${filePath}`);
   };
 };
 
-export const runExport = async (params: ExportParams): Promise<void> => {
+export const runExport = async (params: ExportParams) => {
   const { appId, outputPath, yes, ...restApiClientOptions } = params;
   const m = getBoundMessage("en");
 
@@ -197,7 +195,7 @@ export const runExport = async (params: ExportParams): Promise<void> => {
   logger.debug(`Output path: ${outputPath}`);
 
   // Check if file already exists and prompt for overwrite
-  if (fs.existsSync(outputPath) && !yes) {
+  if ((await isFile(outputPath)) && !yes) {
     logger.debug(`File already exists: ${outputPath}`);
     const shouldOverwrite = await confirm({
       message: `File "${outputPath}" already exists. Overwrite?`,

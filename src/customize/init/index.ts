@@ -1,9 +1,10 @@
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
 import { confirm } from "@inquirer/prompts";
 import { logger } from "../../utils/log";
 import { getBoundMessage } from "../core";
 import type { CustomizeManifest } from "../core";
+import { isFile } from "../../utils/file";
 
 export interface InitParams {
   scope: "ALL" | "ADMIN" | "NONE";
@@ -27,32 +28,20 @@ export const getInitCustomizeManifest = (
   };
 };
 
-export const generateCustomizeManifest = (
+export const generateCustomizeManifest = async (
   customizeManifest: CustomizeManifest,
   outputPath: string,
-): Promise<string> => {
+) => {
   const destDir = path.dirname(outputPath);
   logger.debug(`Writing manifest to: ${outputPath}`);
-  if (destDir && !fs.existsSync(destDir)) {
-    logger.debug(`Creating directory: ${destDir}`);
-    fs.mkdirSync(destDir, { recursive: true });
-  }
-  return new Promise((resolve, reject) => {
-    return fs.writeFile(
-      outputPath,
-      JSON.stringify(customizeManifest, null, 4),
-      (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(JSON.stringify(customizeManifest, null, 4));
-        }
-      },
-    );
-  });
+  logger.debug(`Creating directory: ${destDir}`);
+  await fs.mkdir(destDir, { recursive: true });
+  const manifestJson = JSON.stringify(customizeManifest, null, 4);
+  await fs.writeFile(outputPath, manifestJson);
+  return manifestJson;
 };
 
-export const runInit = async (params: InitParams): Promise<void> => {
+export const runInit = async (params: InitParams) => {
   const { scope, outputPath, yes } = params;
   const m = getBoundMessage("en");
 
@@ -60,7 +49,7 @@ export const runInit = async (params: InitParams): Promise<void> => {
   logger.debug(`Output path: ${outputPath}`);
 
   // Check if file already exists and prompt for overwrite
-  if (fs.existsSync(outputPath) && !yes) {
+  if ((await isFile(outputPath)) && !yes) {
     logger.debug(`File already exists: ${outputPath}`);
     const shouldOverwrite = await confirm({
       message: `File "${outputPath}" already exists. Overwrite?`,

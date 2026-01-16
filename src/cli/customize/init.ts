@@ -4,8 +4,6 @@ import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
 import { setStability } from "../stability";
 import { runInit } from "../../customize/init";
-import { promptForScope } from "../../customize/init/prompts";
-import { getBoundMessage } from "../../customize/core";
 
 const command = "init";
 
@@ -33,15 +31,7 @@ type Args = yargs.Arguments<
 
 const handler = async (args: Args) => {
   try {
-    const m = getBoundMessage("en");
-
-    // Use "ALL" by default, or prompt for scope if not --yes
-    const scope = args.yes
-      ? "ALL"
-      : ((await promptForScope(m)) as "ALL" | "ADMIN" | "NONE");
-
     await runInit({
-      scope,
       outputPath: args.output,
       yes: args.yes,
     });

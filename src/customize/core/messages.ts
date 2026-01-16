@@ -21,10 +21,6 @@ export const messages = {
     en: "Input your app id:",
     ja: "アプリIDを入力してください:",
   },
-  Q_Scope: {
-    en: "Select the scope of customization:",
-    ja: "カスタマイズの適用範囲を選択してください:",
-  },
   M_StartUploading: {
     en: "Start uploading customization files",
     ja: "カスタマイズのアップロードを開始します",

@@ -7,16 +7,13 @@ import type { CustomizeManifest } from "../core";
 import { isFile } from "../../utils/file";
 
 export interface InitParams {
-  scope: "ALL" | "ADMIN" | "NONE";
   outputPath: string;
   yes: boolean;
 }
 
-export const getInitCustomizeManifest = (
-  scope: "ALL" | "ADMIN" | "NONE",
-): CustomizeManifest => {
+export const getInitCustomizeManifest = (): CustomizeManifest => {
   return {
-    scope,
+    scope: "ALL",
     desktop: {
       js: [],
       css: [],
@@ -42,10 +39,9 @@ export const generateCustomizeManifest = async (
 };
 
 export const runInit = async (params: InitParams) => {
-  const { scope, outputPath, yes } = params;
+  const { outputPath, yes } = params;
   const m = getBoundMessage("en");
 
-  logger.debug(`Initializing manifest with scope: ${scope}`);
   logger.debug(`Output path: ${outputPath}`);
 
   // Check if file already exists and prompt for overwrite
@@ -61,7 +57,7 @@ export const runInit = async (params: InitParams) => {
     }
   }
 
-  const customizeManifest = getInitCustomizeManifest(scope);
+  const customizeManifest = getInitCustomizeManifest();
   await generateCustomizeManifest(customizeManifest, outputPath);
   logger.info(`${outputPath} ${m("M_CommandInitFinish")}`);
 };

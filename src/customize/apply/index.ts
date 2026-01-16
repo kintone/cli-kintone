@@ -17,17 +17,6 @@ export type ApplyParams = RestAPIClientOptions & {
   yes: boolean;
 };
 
-interface JsCssManifest {
-  desktop: {
-    js: string[];
-    css: string[];
-  };
-  mobile: {
-    js: string[];
-    css: string[];
-  };
-}
-
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const apply = async (

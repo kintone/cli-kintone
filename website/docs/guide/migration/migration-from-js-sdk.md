@@ -180,7 +180,7 @@ kintone-customize-uploader init
 cli-kintone customize init
 ```
 
-#### Importing Customizations from kintone
+#### Downloading Customizations from kintone
 
 **Before (js-sdk):**
 

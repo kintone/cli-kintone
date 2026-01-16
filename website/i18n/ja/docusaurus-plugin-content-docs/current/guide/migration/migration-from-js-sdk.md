@@ -180,7 +180,7 @@ kintone-customize-uploader init
 cli-kintone customize init
 ```
 
-#### kintone環境からカスタマイズのインポート
+#### kintone環境からカスタマイズのダウンロード
 
 **移行前（js-sdk）：**
 

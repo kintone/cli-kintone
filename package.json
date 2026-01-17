@@ -87,7 +87,7 @@
     "allure-commandline": "^2.36.0",
     "allure-cucumberjs": "^2.15.1",
     "allure-vitest": "^3.4.4",
-    "allure-js-commons": "^3.4.4",
+    "allure-js-commons": "^3.4.5",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.2",
     "vitest": "^3.2.4",

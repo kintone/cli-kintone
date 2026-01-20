@@ -7,6 +7,32 @@ Then("I have a file at {string}", async function (filePath: string) {
   assert.ok(await this.isFileExists(filePath));
 });
 
+Then("I have a directory at {string}", async function (dirPath: string) {
+  // Debug: print working directory and its contents
+  const fullPath = path.join(this.workingDir, dirPath);
+
+  console.log("=== DEBUG INFO ===");
+  console.log("Working directory:", this.workingDir);
+  console.log("Looking for directory:", fullPath);
+  try {
+    const contents = await fs.promises.readdir(this.workingDir);
+    console.log("Working directory contents:", contents);
+  } catch (err) {
+    console.log("Error reading working directory:", err);
+  }
+  console.log("=== STDOUT ===");
+  console.log(this.response.stdout.toString());
+  console.log("=== STDERR ===");
+  console.log(this.response.stderr.toString());
+  console.log("=== END DEBUG ===");
+
+  assert.ok(await this.isDirectoryExists(dirPath));
+});
+
+Given("The directory {string} exists", async function (dirPath: string) {
+  await this.generateDirectory(dirPath);
+});
+
 const assetsRootPath = path.resolve(__dirname, "..", "assets");
 
 /**

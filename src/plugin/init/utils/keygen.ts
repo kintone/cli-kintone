@@ -12,10 +12,9 @@ export const runKeygen = (targetDirectory: string, lang: Lang): void => {
   logger.info(getMessage(lang, "generatingPrivateKey"));
   logger.debug(`targetDirectory: ${targetDirectory}`);
 
-  const result = spawnSync("npm", ["run", "keygen"], {
+  const result = spawnSync("npm run keygen", {
     cwd: targetDirectory,
     stdio: "inherit",
-    // TODO: Consider to remove shell option to avoid security vulnerability
     shell: true,
   });
   if (result.status !== 0) {

@@ -4,7 +4,6 @@ import { keygenCommand } from "./keygen";
 import { packCommand } from "./pack";
 import { infoCommand } from "./info";
 import { uploadCommand } from "./upload";
-import { setStability } from "../stability";
 import { initCommand } from "./init";
 
 const command = "plugin";
@@ -24,13 +23,9 @@ const handler = () => {
   /** noop **/
 };
 
-export const pluginCommand: CommandModule = setStability(
-  {
-    command,
-    describe,
-    builder,
-    handler,
-  },
-  "experimental",
-  "This feature is under early development",
-);
+export const pluginCommand: CommandModule = {
+  command,
+  describe,
+  builder,
+  handler,
+};

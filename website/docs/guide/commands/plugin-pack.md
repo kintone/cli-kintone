@@ -6,12 +6,6 @@ sidebar_position: 1400
 
 The `plugin pack` command allows you to packaging kintone plugin project.
 
-:::experimental
-
-This feature is under early development.
-
-:::
-
 ## Example
 
 ```shell

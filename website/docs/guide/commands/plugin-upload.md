@@ -6,12 +6,6 @@ sidebar_position: 1600
 
 The `plugin upload` command allows you to upload a plugin to a kintone environment.
 
-:::experimental
-
-This feature is under early development.
-
-:::
-
 **Notice**
 
 - This command only supports password authentication.

@@ -4,7 +4,6 @@ import type { OutputFormat } from "../../plugin/info/";
 import { run } from "../../plugin/info/";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
-import { setStability } from "../stability";
 
 const command = "info";
 
@@ -42,13 +41,9 @@ const handler = async (args: Args) => {
   }
 };
 
-export const infoCommand: CommandModule<{}, Args> = setStability(
-  {
-    command,
-    describe,
-    builder,
-    handler,
-  },
-  "experimental",
-  "This feature is under early development",
-);
+export const infoCommand: CommandModule<{}, Args> = {
+  command,
+  describe,
+  builder,
+  handler,
+};

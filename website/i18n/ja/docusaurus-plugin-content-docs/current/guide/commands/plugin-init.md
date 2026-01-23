@@ -6,12 +6,6 @@ sidebar_position: 1200
 
 `plugin init`コマンドは、新しいkintoneプラグイン開発プロジェクトを初期化します。
 
-:::experimental
-
-この機能は開発初期段階です。
-
-:::
-
 ## 例
 
 ```shell

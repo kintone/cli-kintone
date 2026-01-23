@@ -6,12 +6,6 @@ sidebar_position: 400
 
 `customize init`コマンドは、JavaScript/CSSカスタマイズ用のマニフェストファイルを初期化します。
 
-:::experimental
-
-この機能は開発初期段階です。
-
-:::
-
 ## 例
 
 ```shell

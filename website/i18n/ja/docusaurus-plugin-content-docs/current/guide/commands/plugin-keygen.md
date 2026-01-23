@@ -6,12 +6,6 @@ sidebar_position: 1300
 
 `plugin keygen`コマンドは、プラグイン用の秘密鍵を生成します。
 
-:::experimental
-
-この機能は開発初期段階です。
-
-:::
-
 ## 例
 
 ```shell

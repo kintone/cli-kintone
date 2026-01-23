@@ -3,7 +3,6 @@ import type { CommandModule } from "yargs";
 import { pack } from "../../plugin/packer/";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
-import { setStability } from "../stability";
 
 const command = "pack";
 
@@ -62,13 +61,9 @@ const handler = async (args: Args) => {
   }
 };
 
-export const packCommand: CommandModule<{}, Args> = setStability(
-  {
-    command,
-    describe,
-    builder,
-    handler,
-  },
-  "experimental",
-  "This feature is under early development",
-);
+export const packCommand: CommandModule<{}, Args> = {
+  command,
+  describe,
+  builder,
+  handler,
+};

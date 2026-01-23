@@ -6,12 +6,6 @@ sidebar_position: 1100
 
 `plugin info`コマンドは、プラグインzipファイルの情報を表示します。
 
-:::experimental
-
-この機能は開発初期段階です。
-
-:::
-
 ## 例
 
 ```shell

@@ -2,3 +2,6 @@ packages:
   - "website"
 
 minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  # Renovate security update: undici@7.18.2
+  - undici@7.18.2

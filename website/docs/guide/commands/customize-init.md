@@ -27,14 +27,6 @@ See [Options](/guide/options) page for common options.
 | `--output` |          | Output path for the manifest file<br/>Default to `customize-manifest.json` |
 | `--yes`    |          | Skip confirmation                                                          |
 
-## Interactive Prompts
-
-When you run `customize init`, you will be prompted to select:
-
-1. **Scope** - Customization scope (ALL/ADMIN/NONE)
-
-If `--yes` is specified, the default value "ALL" is used.
-
 ## Manifest File
 
 The manifest file is a JSON file with the following structure:

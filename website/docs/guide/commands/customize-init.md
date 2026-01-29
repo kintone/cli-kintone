@@ -6,12 +6,6 @@ sidebar_position: 400
 
 The `customize init` command allows you to initialize a manifest file for JavaScript/CSS customization.
 
-:::experimental
-
-This feature is under early development.
-
-:::
-
 ## Example
 
 ```shell

@@ -6,12 +6,6 @@ sidebar_position: 1100
 
 The `plugin info` command allows you to see information of the plugin zip file.
 
-:::experimental
-
-This feature is under early development.
-
-:::
-
 ## Example
 
 ```shell

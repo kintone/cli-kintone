@@ -15,10 +15,9 @@ export const installDependencies = (
   logger.info(getMessage(lang, "installDependencies"));
   logger.debug(`targetDirectory: ${targetDirectory}`);
 
-  const result = spawnSync("npm", ["install"], {
+  const result = spawnSync("npm install", {
     cwd: targetDirectory,
     stdio: "inherit",
-    // TODO: Consider to remove shell option to avoid security vulnerability
     shell: true,
   });
   if (result.status !== 0) {

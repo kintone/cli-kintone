@@ -6,12 +6,6 @@ sidebar_position: 1200
 
 The `plugin init` command allows you to initialize a new kintone plugin project.
 
-:::experimental
-
-This feature is under early development.
-
-:::
-
 ## Example
 
 ```shell

@@ -6,12 +6,6 @@ sidebar_position: 600
 
 The `customize apply` command allows you to apply JavaScript/CSS customization to a Kintone app from a manifest file.
 
-:::experimental
-
-This feature is under early development.
-
-:::
-
 ## Example
 
 ```shell

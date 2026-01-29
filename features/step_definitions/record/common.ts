@@ -207,11 +207,14 @@ When("I type {string}", function (userInput) {
 
 When("I press Enter", function () {
   return new Promise<void>((resolve) => {
-    this.childProcess.stdin.write("\n");
-    this.childProcess.stdin.end();
+    // Register event listener BEFORE writing to stdin
+    // to avoid race condition where process exits before listener is attached
     this.childProcess.on("close", () => {
       resolve();
     });
+
+    this.childProcess.stdin.write("\n");
+    this.childProcess.stdin.end();
   });
 });
 

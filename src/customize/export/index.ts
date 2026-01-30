@@ -198,5 +198,5 @@ export const runExport = async (params: ExportParams) => {
 
   const apiClient = buildRestAPIClient(restApiClientOptions);
   await exportCustomizeSetting(apiClient, appId, outputPath, m);
-  logger.info(m("M_CommandImportFinish"));
+  logger.info(m("M_CommandExportFinish"));
 };

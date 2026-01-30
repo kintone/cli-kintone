@@ -59,5 +59,5 @@ export const runInit = async (params: InitParams) => {
 
   const customizeManifest = getInitCustomizeManifest();
   await generateCustomizeManifest(customizeManifest, outputPath);
-  logger.info(`${outputPath} ${m("M_CommandInitFinish")}`);
+  logger.info(m("M_CommandInitFinish"));
 };

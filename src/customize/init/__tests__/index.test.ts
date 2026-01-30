@@ -25,8 +25,7 @@ describe("init", () => {
 
     it("should success generating customize-manifest.json", async () => {
       const outputPath = `${testDestDir}/customize-manifest.json`;
-      const manifestFileContent: CustomizeManifest =
-        getInitCustomizeManifest("ALL");
+      const manifestFileContent: CustomizeManifest = getInitCustomizeManifest();
       await generateCustomizeManifest(manifestFileContent, outputPath);
       const content = fs.readFileSync(outputPath);
       assertManifestContent(content);

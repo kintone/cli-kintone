@@ -70,7 +70,7 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@actions/core": "^1.11.1",
+    "@actions/core": "^2.0.3",
     "@cucumber/cucumber": "^11.3.0",
     "@cybozu/eslint-config": "^24.3.0",
     "@cybozu/license-manager": "^1.4.1",

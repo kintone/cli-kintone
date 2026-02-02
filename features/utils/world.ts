@@ -114,21 +114,27 @@ export class OurWorld extends World {
       },
     );
 
-    let stdout: Buffer;
-    let stderr: Buffer;
+    const stdoutChunks: Buffer[] = [];
+    const stderrChunks: Buffer[] = [];
 
     this.childProcess.stdout.on("data", (data: Buffer) => {
-      stdout = data;
+      stdoutChunks.push(data);
     });
 
     this.childProcess.stderr.on("data", (data: Buffer) => {
-      stderr = data;
+      stderrChunks.push(data);
     });
 
     this.childProcess.on("exit", (code: number) => {
       this.response = {
-        stdout: stdout ?? Buffer.from(""),
-        stderr: stderr ?? Buffer.from(""),
+        stdout:
+          stdoutChunks.length > 0
+            ? Buffer.concat(stdoutChunks)
+            : Buffer.from(""),
+        stderr:
+          stderrChunks.length > 0
+            ? Buffer.concat(stderrChunks)
+            : Buffer.from(""),
         status: code,
       };
     });

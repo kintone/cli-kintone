@@ -106,7 +106,7 @@
     "@kintone/rest-api-client": "^6.0.0",
     "chalk": "4.1.2",
     "chokidar": "^4.0.3",
-    "csv-parse": "^5.6.0",
+    "csv-parse": "^6.1.0",
     "csv-stringify": "6.5.2",
     "https-proxy-agent": "^7.0.6",
     "iconv-lite": "^0.7.2",

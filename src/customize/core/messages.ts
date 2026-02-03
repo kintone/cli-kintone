@@ -50,8 +50,8 @@ export const messages = {
     ja: "kintoneのアプリからカスタマイズ設定されたファイルをダウンロードしています",
   },
   M_CommandInitFinish: {
-    en: "Manifest file created successfully",
-    ja: "マニフェストファイルを生成しました",
+    en: "file has been created",
+    ja: "を生成しました",
   },
   M_CommandExportFinish: {
     en: "Exported customization files successfully",

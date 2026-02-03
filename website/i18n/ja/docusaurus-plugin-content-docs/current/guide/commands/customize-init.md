@@ -27,14 +27,6 @@ cli-kintone customize init --output customize-manifest.json
 | `--output` |      | マニフェストファイルの出力パス<br/>デフォルト：`customize-manifest.json` |
 | `--yes`    |      | 確認をスキップ                                                           |
 
-## 対話型プロンプト
-
-`customize init`を実行すると、以下の選択を求められます：
-
-1. **Scope** - カスタマイズのスコープ（ALL/ADMIN/NONE）
-
-`--yes`が指定された場合、デフォルト値の「ALL」が使用されます。
-
 ## マニフェストファイル
 
 マニフェストファイルは以下の構造を持つJSONファイルです：

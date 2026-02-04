@@ -23,7 +23,6 @@ const builder = (args: yargs.Argv) =>
       requiresArg: true,
     })
     .option("app", {
-      alias: "a",
       describe: "The kintone app ID",
       type: "string",
       demandOption: true,

@@ -17,7 +17,6 @@ const builder = (args: yargs.Argv) =>
     // NOTE: This command only supports password authn.
     .hide("api-token")
     .option("app", {
-      alias: "a",
       describe: "The kintone app ID",
       type: "string",
       demandOption: true,

@@ -84,9 +84,8 @@ export const apply = async (
       try {
         logger.debug("Starting deployment...");
         await apiClient.app.deployApp({ apps: [{ app: appId }] });
-        await waitForDeploy(apiClient, appId, () =>
-          logger.info(boundMessage("M_Deploying")),
-        );
+        logger.info(boundMessage("M_Deploying"));
+        await waitForDeploy(apiClient, appId);
         logger.debug("Deployment completed");
         logger.info(boundMessage("M_Deployed"));
       } catch (error) {
@@ -113,7 +112,7 @@ export const apply = async (
 const waitForDeploy = async (
   apiClient: KintoneRestAPIClient,
   appId: string,
-  callback: () => void,
+  callback?: () => void,
 ) => {
   let deployed = false;
   let checkCount = 0;
@@ -127,7 +126,7 @@ const waitForDeploy = async (
     logger.debug(`Deploy status check #${checkCount}: ${currentStatus}`);
     if (!deployed) {
       await wait(1000);
-      callback();
+      callback?.();
     }
   }
   logger.debug(`Deployment finished after ${checkCount} checks`);

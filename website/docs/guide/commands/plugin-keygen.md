@@ -6,12 +6,6 @@ sidebar_position: 1300
 
 The `plugin keygen` command generates private key for a plugin.
 
-:::experimental
-
-This feature is under early development.
-
-:::
-
 ## Example
 
 ```shell

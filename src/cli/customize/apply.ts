@@ -2,7 +2,6 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
-import { setStability } from "../stability";
 import { commonOptions } from "../commonOptions";
 import { runApply } from "../../customize/apply";
 
@@ -63,13 +62,9 @@ const handler = async (args: Args) => {
   }
 };
 
-export const applyCommand: CommandModule<{}, Args> = setStability(
-  {
-    command,
-    describe,
-    builder,
-    handler,
-  },
-  "experimental",
-  "This feature is under early development",
-);
+export const applyCommand: CommandModule<{}, Args> = {
+  command,
+  describe,
+  builder,
+  handler,
+};

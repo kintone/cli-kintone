@@ -41,7 +41,7 @@ Feature: customize apply
     Given An asset with key "customize_manifest" is available as "manifest"
     And Load app ID of the app "app_in_guest_space_for_customize_apply" as env var: "APP_ID"
     And Load guest space ID of the app "app_in_guest_space_for_customize_apply" as env var: "GUEST_SPACE_ID"
-    And Load username and password of user "user_for_guest_space" as env vars: "USERNAME" and "PASSWORD"
+    And Load username and password of user "kintone_admin" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "customize apply --base-url $$TEST_KINTONE_BASE_URL --app $APP_ID --input manifest/customize-manifest.json --username $USERNAME --password $PASSWORD --guest-space-id $GUEST_SPACE_ID --yes"
     Then I should get the exit code is zero
 

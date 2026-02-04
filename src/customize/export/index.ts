@@ -79,7 +79,7 @@ export const exportCustomizeSetting = async (
         logger.debug(`Error occurred: ${e}`);
         if (toRetry) {
           logger.debug(
-            `Retry attempt ${attemptCount}/${config.maxAttempt}, next delay: ${nextDelay}ms`,
+            `Retry attempt ${attemptCount}/${config.maxAttempt}, next delay: ${_nextDelay}ms`,
           );
           logger.warn(m("E_Retry"));
         }

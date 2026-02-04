@@ -22,6 +22,15 @@ const assetMap: Record<string, string | undefined> = {
     assetsRootPath,
     "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v2.zip",
   ),
+  customize_manifest: path.resolve(assetsRootPath, "customize_manifest"),
+};
+
+export const getAssetPath = (assetKey: string): string => {
+  const srcPath = assetMap[assetKey];
+  if (!srcPath) {
+    throw new Error(`Unknown asset key: ${assetKey}`);
+  }
+  return srcPath;
 };
 
 Given(

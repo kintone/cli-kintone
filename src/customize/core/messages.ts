@@ -41,9 +41,9 @@ export const messages = {
     en: "Customize setting has been updated!",
     ja: "JavaScript/CSS カスタマイズの設定を変更しました!",
   },
-  M_UpdateManifestFile: {
-    en: "Update manifest file based on the current customization setting on kintone app",
-    ja: "kintoneのアプリのカスタマイズ設定を元にマニフェストファイルを更新しています",
+  M_GenerateManifestFile: {
+    en: "Generating manifest file based on the current customization setting on kintone app",
+    ja: "kintoneのアプリのカスタマイズ設定を元にマニフェストファイルを生成しています",
   },
   M_DownloadUploadedFile: {
     en: "Download the current customization files on kintone app",

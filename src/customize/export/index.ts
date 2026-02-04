@@ -58,6 +58,9 @@ export const exportCustomizeSetting = async (
   logger.debug(`Exporting customization from app ${appId}`);
   logger.debug(`Output path: ${outputPath}`);
 
+  logger.info(m("M_GenerateManifestFile"));
+  logger.info(m("M_DownloadUploadedFile"));
+
   await retry(
     async () => {
       logger.debug("Fetching app customization settings...");
@@ -65,16 +68,14 @@ export const exportCustomizeSetting = async (
         app: appId,
       });
 
-      logger.info(m("M_UpdateManifestFile"));
       await writeManifestFile(destDir, outputPath, resp);
 
-      logger.info(m("M_DownloadUploadedFile"));
       await downloadCustomizeFiles(apiClient, destDir, resp);
     },
     {
       retryCondition: (e: unknown) =>
         e instanceof KintoneRestAPIError && e.status >= 500 && e.status < 600,
-      onError: (e, attemptCount, toRetry, nextDelay, config) => {
+      onError: (e, attemptCount, toRetry, _nextDelay, config) => {
         logger.debug(`Error occurred: ${e}`);
         if (toRetry) {
           logger.debug(

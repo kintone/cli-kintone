@@ -84,8 +84,9 @@ export const apply = async (
       try {
         logger.debug("Starting deployment...");
         await apiClient.app.deployApp({ apps: [{ app: appId }] });
-        logger.info(boundMessage("M_Deploying"));
-        await waitForDeploy(apiClient, appId);
+        await waitForDeploy(apiClient, appId, () =>
+          logger.info(boundMessage("M_Deploying")),
+        );
         logger.debug("Deployment completed");
         logger.info(boundMessage("M_Deployed"));
       } catch (error) {
@@ -112,24 +113,36 @@ export const apply = async (
 const waitForDeploy = async (
   apiClient: KintoneRestAPIClient,
   appId: string,
-  callback?: () => void,
+  callback: () => void,
 ) => {
-  let deployed = false;
-  let checkCount = 0;
+  const POLLING_INTERVAL_MS = 1000;
+  const CALLBACK_INTERVAL_MS = 5000;
+
+  const startTime = Date.now();
   logger.debug(`Waiting for deployment to finish for app ${appId}`);
-  while (!deployed) {
-    checkCount++;
-    const resp = await apiClient.app.getDeployStatus({ apps: [appId] });
-    const successedApps = resp.apps.filter((r) => r.status === "SUCCESS");
-    deployed = successedApps.length === resp.apps.length;
-    const currentStatus = resp.apps[0]?.status || "UNKNOWN";
-    logger.debug(`Deploy status check #${checkCount}: ${currentStatus}`);
-    if (!deployed) {
-      await wait(1000);
-      callback?.();
+
+  const callbackTimer = setInterval(callback, CALLBACK_INTERVAL_MS);
+
+  try {
+    while (true) {
+      const resp = await apiClient.app.getDeployStatus({ apps: [appId] });
+      const successedApps = resp.apps.filter((r) => r.status === "SUCCESS");
+      const deployed = successedApps.length === resp.apps.length;
+      const currentStatus = resp.apps[0]?.status || "UNKNOWN";
+      logger.debug(
+        `Deploy status check at ${Date.now() - startTime}ms: ${currentStatus}`,
+      );
+
+      if (deployed) {
+        break;
+      }
+      await wait(POLLING_INTERVAL_MS);
     }
+  } finally {
+    clearInterval(callbackTimer);
   }
-  logger.debug(`Deployment finished after ${checkCount} checks`);
+
+  logger.debug(`Deployment finished after ${Date.now() - startTime}ms`);
 };
 
 const resolveFilePath = (file: string, manifestDir: string): string => {

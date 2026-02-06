@@ -113,15 +113,15 @@ export const apply = async (
 const waitForDeploy = async (
   apiClient: KintoneRestAPIClient,
   appId: string,
-  callback: () => void,
+  onProgress: () => void,
 ) => {
   const POLLING_INTERVAL_MS = 1000;
-  const CALLBACK_INTERVAL_MS = 5000;
+  const PROGRESS_NOTIFY_INTERVAL_MS = 5000;
 
   const startTime = Date.now();
   logger.debug(`Waiting for deployment to finish for app ${appId}`);
 
-  const callbackTimer = setInterval(callback, CALLBACK_INTERVAL_MS);
+  const progressTimer = setInterval(onProgress, PROGRESS_NOTIFY_INTERVAL_MS);
 
   try {
     while (true) {
@@ -132,14 +132,13 @@ const waitForDeploy = async (
       logger.debug(
         `Deploy status check at ${Date.now() - startTime}ms: ${currentStatus}`,
       );
-
       if (deployed) {
         break;
       }
       await wait(POLLING_INTERVAL_MS);
     }
   } finally {
-    clearInterval(callbackTimer);
+    clearInterval(progressTimer);
   }
 
   logger.debug(`Deployment finished after ${Date.now() - startTime}ms`);

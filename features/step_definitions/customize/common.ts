@@ -23,6 +23,16 @@ Then(
     assert.ok(content.scope !== undefined, "Missing 'scope' property");
     assert.ok(content.desktop !== undefined, "Missing 'desktop' property");
     assert.ok(content.mobile !== undefined, "Missing 'mobile' property");
+    assert.ok(Array.isArray(content.desktop?.js), "desktop.js should be array");
+    assert.ok(
+      Array.isArray(content.desktop?.css),
+      "desktop.css should be array",
+    );
+    assert.ok(Array.isArray(content.mobile?.js), "mobile.js should be array");
+    assert.ok(
+      Array.isArray(content.mobile?.css),
+      "mobile.css should be array",
+    );
   },
 );
 

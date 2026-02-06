@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.0](https://github.com/kintone/cli-kintone/compare/v1.17.0...v1.18.0) (2026-02-06)
+
+
+### Features
+
+* official release of plugin and customize commands ([#1322](https://github.com/kintone/cli-kintone/issues/1322)) ([28ada81](https://github.com/kintone/cli-kintone/commit/28ada8195d063f9438e75dc860d720cb1bf9157a))
+
+
+### Bug Fixes
+
+* fix update of customize commands ([#1330](https://github.com/kintone/cli-kintone/issues/1330)) ([2d60e94](https://github.com/kintone/cli-kintone/commit/2d60e94f4c12c62281387d357f4b55aa05b57e49))
+
 ## [1.17.0](https://github.com/kintone/cli-kintone/compare/v1.16.2...v1.17.0) (2026-01-16)
 
 

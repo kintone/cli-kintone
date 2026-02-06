@@ -29,10 +29,7 @@ Then(
       "desktop.css should be array",
     );
     assert.ok(Array.isArray(content.mobile?.js), "mobile.js should be array");
-    assert.ok(
-      Array.isArray(content.mobile?.css),
-      "mobile.css should be array",
-    );
+    assert.ok(Array.isArray(content.mobile?.css), "mobile.css should be array");
   },
 );
 

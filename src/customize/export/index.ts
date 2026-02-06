@@ -1,7 +1,10 @@
 import fs from "fs/promises";
 import path from "path";
 import { confirm } from "@inquirer/prompts";
-import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
+import {
+  KintoneRestAPIError,
+  type KintoneRestAPIClient,
+} from "@kintone/rest-api-client";
 import { logger } from "../../utils/log";
 import { retry } from "../../utils/retry";
 import {
@@ -55,6 +58,9 @@ export const exportCustomizeSetting = async (
   logger.debug(`Exporting customization from app ${appId}`);
   logger.debug(`Output path: ${outputPath}`);
 
+  logger.info(m("M_GenerateManifestFile"));
+  logger.info(m("M_DownloadUploadedFile"));
+
   await retry(
     async () => {
       logger.debug("Fetching app customization settings...");
@@ -62,18 +68,18 @@ export const exportCustomizeSetting = async (
         app: appId,
       });
 
-      logger.info(m("M_UpdateManifestFile"));
       await writeManifestFile(destDir, outputPath, resp);
 
-      logger.info(m("M_DownloadUploadedFile"));
       await downloadCustomizeFiles(apiClient, destDir, resp);
     },
     {
-      onError: (e, attemptCount, toRetry, nextDelay, config) => {
+      retryCondition: (e: unknown) =>
+        e instanceof KintoneRestAPIError && e.status >= 500 && e.status < 600,
+      onError: (e, attemptCount, toRetry, _nextDelay, config) => {
         logger.debug(`Error occurred: ${e}`);
         if (toRetry) {
           logger.debug(
-            `Retry attempt ${attemptCount}/${config.maxAttempt}, next delay: ${nextDelay}ms`,
+            `Retry attempt ${attemptCount}/${config.maxAttempt}, next delay: ${_nextDelay}ms`,
           );
           logger.warn(m("E_Retry"));
         }
@@ -193,5 +199,5 @@ export const runExport = async (params: ExportParams) => {
 
   const apiClient = buildRestAPIClient(restApiClientOptions);
   await exportCustomizeSetting(apiClient, appId, outputPath, m);
-  logger.info(m("M_CommandImportFinish"));
+  logger.info(m("M_CommandExportFinish"));
 };

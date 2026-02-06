@@ -1,7 +1,10 @@
 import fs from "fs";
 import path from "path";
 import { confirm } from "@inquirer/prompts";
-import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
+import {
+  KintoneRestAPIError,
+  type KintoneRestAPIClient,
+} from "@kintone/rest-api-client";
 import { logger } from "../../utils/log";
 import { retry } from "../../utils/retry";
 import {
@@ -92,6 +95,8 @@ export const apply = async (
       }
     },
     {
+      retryCondition: (e: unknown) =>
+        e instanceof KintoneRestAPIError && e.status >= 500 && e.status < 600,
       onError: (e, attemptCount, toRetry, nextDelay, config) => {
         logger.debug(`Error occurred: ${e}`);
         if (toRetry) {
@@ -108,24 +113,35 @@ export const apply = async (
 const waitForDeploy = async (
   apiClient: KintoneRestAPIClient,
   appId: string,
-  callback: () => void,
+  onProgress: () => void,
 ) => {
-  let deployed = false;
-  let checkCount = 0;
+  const POLLING_INTERVAL_MS = 1000;
+  const PROGRESS_NOTIFY_INTERVAL_MS = 5000;
+
+  const startTime = Date.now();
   logger.debug(`Waiting for deployment to finish for app ${appId}`);
-  while (!deployed) {
-    checkCount++;
-    const resp = await apiClient.app.getDeployStatus({ apps: [appId] });
-    const successedApps = resp.apps.filter((r) => r.status === "SUCCESS");
-    deployed = successedApps.length === resp.apps.length;
-    const currentStatus = resp.apps[0]?.status || "UNKNOWN";
-    logger.debug(`Deploy status check #${checkCount}: ${currentStatus}`);
-    if (!deployed) {
-      await wait(1000);
-      callback();
+
+  const progressTimer = setInterval(onProgress, PROGRESS_NOTIFY_INTERVAL_MS);
+
+  try {
+    while (true) {
+      const resp = await apiClient.app.getDeployStatus({ apps: [appId] });
+      const successedApps = resp.apps.filter((r) => r.status === "SUCCESS");
+      const deployed = successedApps.length === resp.apps.length;
+      const currentStatus = resp.apps[0]?.status || "UNKNOWN";
+      logger.debug(
+        `Deploy status check at ${Date.now() - startTime}ms: ${currentStatus}`,
+      );
+      if (deployed) {
+        break;
+      }
+      await wait(POLLING_INTERVAL_MS);
     }
+  } finally {
+    clearInterval(progressTimer);
   }
-  logger.debug(`Deployment finished after ${checkCount} checks`);
+
+  logger.debug(`Deployment finished after ${Date.now() - startTime}ms`);
 };
 
 const resolveFilePath = (file: string, manifestDir: string): string => {

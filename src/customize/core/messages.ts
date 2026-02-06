@@ -41,9 +41,9 @@ export const messages = {
     en: "Customize setting has been updated!",
     ja: "JavaScript/CSS カスタマイズの設定を変更しました!",
   },
-  M_UpdateManifestFile: {
-    en: "Update manifest file based on the current customization setting on kintone app",
-    ja: "kintoneのアプリのカスタマイズ設定を元にマニフェストファイルを更新しています",
+  M_GenerateManifestFile: {
+    en: "Generating manifest file based on the current customization setting on kintone app",
+    ja: "kintoneのアプリのカスタマイズ設定を元にマニフェストファイルを生成しています",
   },
   M_DownloadUploadedFile: {
     en: "Download the current customization files on kintone app",
@@ -53,9 +53,9 @@ export const messages = {
     en: "file has been created",
     ja: "を生成しました",
   },
-  M_CommandImportFinish: {
-    en: "Finish importing customization files from kintone app",
-    ja: "kintoneのアプリからカスタマイズのインポートが完了しました",
+  M_CommandExportFinish: {
+    en: "Exported customization files successfully",
+    ja: "カスタマイズファイルのエクスポートが完了しました",
   },
   E_Updated: {
     en: "Failed to update customize setting",

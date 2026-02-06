@@ -83,6 +83,7 @@ Given("I have an empty file at {string}", async function (filePath: string) {
 
 Given(
   "The app {string} has customization from asset {string}",
+  { timeout: 100000 },
   async function (appKey: string, assetKey: string) {
     const appCredential = this.getAppCredentialByAppKey(appKey);
     const userCredential = this.getUserCredentialByUserKey("kintone_admin");
@@ -128,28 +129,32 @@ Given(
   },
 );
 
-Given("The app {string} has no customization", async function (appKey: string) {
-  const appCredential = this.getAppCredentialByAppKey(appKey);
-  const userCredential = this.getUserCredentialByUserKey("kintone_admin");
+Given(
+  "The app {string} has no customization",
+  { timeout: 100000 },
+  async function (appKey: string) {
+    const appCredential = this.getAppCredentialByAppKey(appKey);
+    const userCredential = this.getUserCredentialByUserKey("kintone_admin");
 
-  const client = new KintoneRestAPIClient({
-    baseUrl: process.env.TEST_KINTONE_BASE_URL,
-    auth: {
-      username: userCredential.username,
-      password: userCredential.password,
-    },
-  });
+    const client = new KintoneRestAPIClient({
+      baseUrl: process.env.TEST_KINTONE_BASE_URL,
+      auth: {
+        username: userCredential.username,
+        password: userCredential.password,
+      },
+    });
 
-  await client.app.updateAppCustomize({
-    app: appCredential.appId,
-    scope: "NONE",
-    desktop: { js: [], css: [] },
-    mobile: { js: [], css: [] },
-  });
+    await client.app.updateAppCustomize({
+      app: appCredential.appId,
+      scope: "NONE",
+      desktop: { js: [], css: [] },
+      mobile: { js: [], css: [] },
+    });
 
-  await client.app.deployApp({ apps: [{ app: appCredential.appId }] });
-  await waitForDeploy(client, appCredential.appId);
-});
+    await client.app.deployApp({ apps: [{ app: appCredential.appId }] });
+    await waitForDeploy(client, appCredential.appId);
+  },
+);
 
 const waitForDeploy = async (
   client: KintoneRestAPIClient,

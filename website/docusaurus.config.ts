@@ -40,7 +40,7 @@ const config: Config = {
         label: "English",
       },
       ja: {
-        label: "日本語 (30%)",
+        label: "日本語 (34%)",
       },
     },
   },

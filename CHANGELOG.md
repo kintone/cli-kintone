@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.1](https://github.com/kintone/cli-kintone/compare/v1.18.0...v1.18.1) (2026-02-08)
+
+
+### Documentation
+
+* add v1.18.0 release blog ([#1337](https://github.com/kintone/cli-kintone/issues/1337)) ([e048623](https://github.com/kintone/cli-kintone/commit/e0486236bf0a71ec67935da08f38b53bfdfba319))
+
 ## [1.18.0](https://github.com/kintone/cli-kintone/compare/v1.17.0...v1.18.0) (2026-02-06)
 
 

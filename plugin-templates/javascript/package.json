@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@cybozu/eslint-config": "^24.0.0",
-    "@kintone/cli": "^1.17.0",
+    "@kintone/cli": "^1.18.0",
     "npm-run-all": "^4.1.5",
     "eslint": "^9.39.2"
   }

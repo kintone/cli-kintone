@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.0](https://github.com/kintone/cli-kintone/compare/v1.18.0...v1.19.0) (2026-02-10)
+
+
+### Features
+
+* **plugin-packer:** add ms language support ([#1340](https://github.com/kintone/cli-kintone/issues/1340)) ([21c9ef3](https://github.com/kintone/cli-kintone/commit/21c9ef3309adb82828b67a7eb1d84c839e27a47d))
+
+
+### Documentation
+
+* add v1.18.0 release blog ([#1337](https://github.com/kintone/cli-kintone/issues/1337)) ([e048623](https://github.com/kintone/cli-kintone/commit/e0486236bf0a71ec67935da08f38b53bfdfba319))
+
 ## [1.18.0](https://github.com/kintone/cli-kintone/compare/v1.17.0...v1.18.0) (2026-02-06)
 
 

@@ -80,6 +80,7 @@ export type ManifestV2JsonObject = {
     es?: string;
     "pt-BR"?: string;
     th?: string;
+    ms?: string;
   };
   description?: {
     ja?: string;
@@ -89,6 +90,7 @@ export type ManifestV2JsonObject = {
     es?: string;
     "pt-BR"?: string;
     th?: string;
+    ms?: string;
   };
   icon: string;
   homepage_url?: {
@@ -99,6 +101,7 @@ export type ManifestV2JsonObject = {
     es?: string;
     "pt-BR"?: string;
     th?: string;
+    ms?: string;
   };
   components?: [
     {

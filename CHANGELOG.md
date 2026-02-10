@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.0](https://github.com/kintone/cli-kintone/compare/v1.17.0...v1.18.0) (2026-02-06)
+
+
+### Features
+
+* official release of plugin and customize commands ([#1322](https://github.com/kintone/cli-kintone/issues/1322)) ([28ada81](https://github.com/kintone/cli-kintone/commit/28ada8195d063f9438e75dc860d720cb1bf9157a))
+
+
+### Bug Fixes
+
+* fix update of customize commands ([#1330](https://github.com/kintone/cli-kintone/issues/1330)) ([2d60e94](https://github.com/kintone/cli-kintone/commit/2d60e94f4c12c62281387d357f4b55aa05b57e49))
+
+## [1.17.0](https://github.com/kintone/cli-kintone/compare/v1.16.2...v1.17.0) (2026-01-16)
+
+
+### Features
+
+* customize upload ([#1308](https://github.com/kintone/cli-kintone/issues/1308)) ([b434cd2](https://github.com/kintone/cli-kintone/commit/b434cd2471b72a32bc0b435acd4b50f79366c834))
+
+
+### Documentation
+
+* add migration guide from customize-uploader ([#1311](https://github.com/kintone/cli-kintone/issues/1311)) ([a271dea](https://github.com/kintone/cli-kintone/commit/a271dea031bc3eef8441f855e78af2aa048bb9cc))
+
+## [1.16.2](https://github.com/kintone/cli-kintone/compare/v1.16.1...v1.16.2) (2025-12-22)
+
+
+### Bug Fixes
+
+* uncaught error caused by missing await ([#1292](https://github.com/kintone/cli-kintone/issues/1292)) ([a56f8a9](https://github.com/kintone/cli-kintone/commit/a56f8a9175a2c739830b79bbe82c6be3de5f8329))
+
+
+### Documentation
+
+* add Japanese localization ([#1272](https://github.com/kintone/cli-kintone/issues/1272)) ([9cf78f3](https://github.com/kintone/cli-kintone/commit/9cf78f35aa6b77e2a0a85e02b872a0b2ccc9bf54))
+* add Migration Guide ([#1259](https://github.com/kintone/cli-kintone/issues/1259)) ([ff8f8cf](https://github.com/kintone/cli-kintone/commit/ff8f8cff261550b97ae3b147584235db37a6cc00))
+* refine Migration Guide ([#1289](https://github.com/kintone/cli-kintone/issues/1289)) ([289f4ff](https://github.com/kintone/cli-kintone/commit/289f4ff0254646015ae402636ffadd4f2b7be326))
+* update Migration Guide ([#1290](https://github.com/kintone/cli-kintone/issues/1290)) ([9e1c60f](https://github.com/kintone/cli-kintone/commit/9e1c60f79093e580749d6a434277de57a72c6b6a))
+
 ## [1.16.1](https://github.com/kintone/cli-kintone/compare/v1.16.0...v1.16.1) (2025-12-03)
 
 

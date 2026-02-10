@@ -6,12 +6,6 @@ sidebar_position: 1400
 
 `plugin pack`コマンドは、kintoneプラグインプロジェクトをパッケージ化します。
 
-:::experimental
-
-この機能は開発初期段階です。
-
-:::
-
 ## 例
 
 ```shell

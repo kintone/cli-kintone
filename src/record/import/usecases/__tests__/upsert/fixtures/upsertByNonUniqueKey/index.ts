@@ -2,13 +2,11 @@ import type { TestPattern } from "../../index.test";
 import { records } from "./records";
 import { schema } from "../schema";
 import { recordsOnKintone } from "../recordsOnKintone";
-import { LocalRecordRepositoryMock } from "../../../../../repositories/localRecordRepositoryMock";
 
 export const pattern: TestPattern = {
   description: "should throw error when update key field is not unique",
   input: {
-    records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv"),
+    repository: { source: records, format: "csv" },
     schema: schema,
     updateKey: "singleLineText_nonUnique",
     options: {
@@ -18,6 +16,8 @@ export const pattern: TestPattern = {
   },
   recordsOnKintone: recordsOnKintone,
   expected: {
-    failure: { cause: new Error("update key field should set to unique") },
+    failure: {
+      cause: new Error("update key field should set to unique"),
+    },
   },
 };

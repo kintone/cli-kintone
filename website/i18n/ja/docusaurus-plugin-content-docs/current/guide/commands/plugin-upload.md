@@ -6,12 +6,6 @@ sidebar_position: 1600
 
 `plugin upload`コマンドは、プラグインをkintone環境にアップロードします。
 
-:::experimental
-
-この機能は開発初期段階です。
-
-:::
-
 **注意**
 
 - このコマンドはパスワード認証のみをサポートしています。

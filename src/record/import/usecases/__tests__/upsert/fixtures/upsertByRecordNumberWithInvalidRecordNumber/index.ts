@@ -2,13 +2,11 @@ import type { TestPattern } from "../../index.test";
 import { records } from "./records";
 import { schema } from "./schema";
 import { recordsOnKintone } from "./recordsOnKintone";
-import { LocalRecordRepositoryMock } from "../../../../../repositories/localRecordRepositoryMock";
 
 export const pattern: TestPattern = {
   description: "should throw error because the record number is invalid",
   input: {
-    records: records,
-    repository: new LocalRecordRepositoryMock(records, "csv"),
+    repository: { source: records, format: "csv" },
     schema: schema,
     updateKey: "recordNumber",
     options: {

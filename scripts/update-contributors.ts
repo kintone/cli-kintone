@@ -6,6 +6,7 @@ const ignoredUsers = [
   "github-actions[bot]",
   "trigger-github-actions-release[bot]",
   "renovate-bot",
+  "claude",
 ];
 
 const file = "README.md";

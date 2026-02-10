@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import childProcess from "child_process";
 import { promisify } from "util";
 import path from "path";
@@ -7,7 +8,7 @@ const exec = promisify(childProcess.exec);
 const packageJson = require(path.resolve(projectRoot, "package.json"));
 const mainFilePath = path.resolve(projectRoot, packageJson.bin["cli-kintone"]);
 
-jest.setTimeout(30000);
+vi.setConfig({ testTimeout: 30000 });
 
 const checkRejectArg = ({
   arg,

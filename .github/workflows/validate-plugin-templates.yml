@@ -17,7 +17,7 @@ jobs:
     outputs:
       templates: ${{ steps.find-templates.outputs.templates }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Find template directories
         id: find-templates
@@ -35,7 +35,7 @@ jobs:
         template: ${{ fromJSON(needs.find-templates.outputs.templates) }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v6
         with:

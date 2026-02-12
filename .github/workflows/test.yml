@@ -38,7 +38,7 @@ jobs:
       - name: Upload allure results
         id: upload-allure-results
         if: ${{ env.platform == 'ubuntu' && !cancelled() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: allure_results_unit_${{ env.platform }}_node${{ matrix.node-version }}
           path: allure-results
@@ -98,7 +98,7 @@ jobs:
       - name: Upload allure results
         id: upload-allure-results
         if: ${{ env.platform == 'ubuntu' && !cancelled() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: allure_results_e2e_${{ env.platform }}
           path: allure-results

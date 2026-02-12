@@ -14,7 +14,7 @@ jobs:
     # ref. https://github.com/yao-pkg/pkg/issues/183
     runs-on: macos-latest
     steps:
-      - uses: Kesin11/actions-timeline@54d513e0b5ff1158f1cf8321108d666a5a6c1fca # v2
+      - uses: Kesin11/actions-timeline@7c7e0821d38f27460f4a71ef874a1c8cf23602e4 # v2
 
       - uses: actions/checkout@v5
 
@@ -37,7 +37,7 @@ jobs:
     name: Build website
     runs-on: ubuntu-latest
     steps:
-      - uses: Kesin11/actions-timeline@54d513e0b5ff1158f1cf8321108d666a5a6c1fca # v2
+      - uses: Kesin11/actions-timeline@7c7e0821d38f27460f4a71ef874a1c8cf23602e4 # v2
 
       - uses: actions/checkout@v5
 

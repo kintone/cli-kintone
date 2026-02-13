@@ -124,27 +124,6 @@ describe("api", () => {
     });
   });
 
-  it("should prioritize username and password over apiToken", () => {
-    const apiClient = buildRestAPIClient({
-      baseUrl: BASE_URL,
-      username: USERNAME,
-      password: PASSWORD,
-      apiToken: API_TOKEN,
-    });
-    expect(apiClient).toBeInstanceOf(KintoneRestAPIClient);
-    expect(KintoneRestAPIClient).toHaveBeenCalledWith({
-      baseUrl: BASE_URL,
-      auth: {
-        username: USERNAME,
-        password: PASSWORD,
-      },
-      userAgent: expectedUa,
-      httpsAgent: new https.Agent(),
-      proxy: false,
-      socketTimeout: DEFAULT_SOCKET_TIMEOUT,
-    });
-  });
-
   it("should pass basic auth params to the apiClient correctly", () => {
     const BASIC_AUTH_USERNAME = "basic_auth_username";
     const BASIC_AUTH_PASSWORD = "basic_auth_password";

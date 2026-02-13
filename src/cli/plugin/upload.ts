@@ -2,7 +2,7 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
-import { commonOptions } from "../commonOptions";
+import { withPasswordAuth } from "../connectionOptions";
 import type { Params } from "../../plugin/upload";
 import { upload } from "../../plugin/upload";
 import type { RestAPIClientOptions } from "../../kintone/client";
@@ -12,12 +12,7 @@ const command = "upload";
 const describe = "Upload a plugin to kintone";
 
 const builder = (args: yargs.Argv) =>
-  args
-    .options(commonOptions)
-    // NOTE: This command only supports password authn.
-    .hide("api-token")
-    // NOTE: This command works regardless of guest space usage.
-    .hide("guest-space-id")
+  withPasswordAuth(args)
     .option("input", {
       alias: "i",
       describe: "The input plugin zip",
@@ -50,13 +45,11 @@ const handler = async (args: Args) => {
       watch: args.watch,
     };
     const apiClientOptions: RestAPIClientOptions = {
-      // TODO: Refactor API client params
       baseUrl: args["base-url"],
       username: args.username,
       password: args.password,
       basicAuthUsername: args["basic-auth-username"],
       basicAuthPassword: args["basic-auth-password"],
-      guestSpaceId: args["guest-space-id"],
       pfxFilePath: args["pfx-file-path"],
       pfxFilePassword: args["pfx-file-password"],
       httpsProxy: args.proxy,

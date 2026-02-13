@@ -2,7 +2,7 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
-import { commonOptions } from "../commonOptions";
+import { withPasswordAuth, guestSpaceOptions } from "../connectionOptions";
 import { runApply } from "../../customize/apply";
 
 const command = "apply";
@@ -10,10 +10,8 @@ const command = "apply";
 const describe = "Apply JavaScript/CSS customization to a kintone app";
 
 const builder = (args: yargs.Argv) =>
-  args
-    .options(commonOptions)
-    // NOTE: This command only supports password authn.
-    .hide("api-token")
+  withPasswordAuth(args)
+    .options(guestSpaceOptions)
     .option("input", {
       alias: "i",
       describe: "The path to customize-manifest.json",

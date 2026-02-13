@@ -2,9 +2,8 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { run } from "../../record/delete";
 import type { SupportedImportEncoding } from "../../utils/file";
-import { logger } from "../../utils/log";
 import { confirm } from "@inquirer/prompts";
-import { commonOptions } from "../commonOptions";
+import { withApiTokenAuth, guestSpaceOptions } from "../connectionOptions";
 
 const command = "delete";
 
@@ -16,11 +15,8 @@ const FORCE_DELETE_KEY = "yes";
 const FORCE_DELETE_ALIAS = "y";
 
 const builder = (args: yargs.Argv) =>
-  args
-    .options(commonOptions)
-    // NOTE: record delete command only accepts API token authn.
-    .hide("username")
-    .hide("password")
+  withApiTokenAuth(args)
+    .options(guestSpaceOptions)
     .option("app", {
       describe: "The ID of the app",
       type: "string",
@@ -65,12 +61,6 @@ const execute = (args: Args) => {
 };
 
 const handler = async (args: Args) => {
-  if (!hasApiToken(args["api-token"]) && (args.username || args.password)) {
-    logger.error("The delete command only supports API token authentication.");
-    // eslint-disable-next-line n/no-process-exit
-    process.exit(1);
-  }
-
   if (args.yes !== undefined && args.yes) {
     return execute(args);
   }
@@ -86,18 +76,6 @@ const handler = async (args: Args) => {
   }
 
   return undefined;
-};
-
-const hasApiToken = (apiTokenArg?: string | string[]): boolean => {
-  if (!apiTokenArg) {
-    return false;
-  }
-
-  if (typeof apiTokenArg === "string") {
-    return !!apiTokenArg;
-  }
-
-  return apiTokenArg.filter(Boolean).length > 0;
 };
 
 export const deleteCommand: CommandModule<{}, Args> = {

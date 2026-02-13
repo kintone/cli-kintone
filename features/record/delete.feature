@@ -39,7 +39,7 @@ Feature: record delete
     And Load app ID of the app "app_for_delete" as env var: "APP_ID"
     And Load app token of the app "app_for_delete" with exact permissions "view,delete" as env var: "API_TOKEN"
     And Load username and password of the app "app_for_delete" with exact permissions "add" as env vars: "USERNAME" and "PASSWORD"
-    When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN --username $USERNAME --password $PASSWORD --yes"
+    When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --api-token $API_TOKEN --yes"
     Then I should get the exit code is zero
     And The app "app_for_delete" should have no records
 
@@ -99,7 +99,7 @@ Feature: record delete
     And Load username and password of the app "app_for_delete" with exact permissions "view,delete" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --username $USERNAME --password $PASSWORD --yes"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "ERROR: The delete command only supports API token authentication."
+    And The output error message should match with the pattern: "Unknown arguments: username, password"
 
   @serial(app_for_delete)
   Scenario: Specify records with a file

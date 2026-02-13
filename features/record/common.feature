@@ -66,7 +66,7 @@ Feature: record common
   Scenario: No authorization information
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app 1"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[401\] \[CB_AU01\] Please login."
+    And The output error message should match with the pattern: "Either username \(--username\) or API token \(--api-token\) is required"
 
   Scenario: Incorrect API token
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app 1 --api-token abc"
@@ -82,7 +82,7 @@ Feature: record common
     Given Load username and password of user "user_for_common" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "record export --base-url $$TEST_KINTONE_BASE_URL --app 1 --username $USERNAME"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "\[401\] \[CB_WA01\] Password authentication failed."
+    And The output error message should match with the pattern: "Password is required \(--password or KINTONE_PASSWORD\)"
 
   Scenario: Incorrect password
     Given Load username and password of user "user_for_common" as env vars: "USERNAME" and "PASSWORD"

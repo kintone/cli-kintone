@@ -83,7 +83,7 @@
     "@types/yazl": "^3.3.0",
     "@vercel/ncc": "^0.38.4",
     "@yao-pkg/pkg": "^6.13.1",
-    "ajv": "^8.17.1",
+    "ajv": "^8.18.0",
     "allure-commandline": "^2.36.0",
     "allure-cucumberjs": "^2.15.1",
     "allure-js-commons": "^3.4.5",

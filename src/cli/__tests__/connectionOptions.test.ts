@@ -1,16 +1,11 @@
-import type yargs from "yargs";
 import yargsFactory from "yargs";
-import {
-  withPasswordAuth,
-  withApiTokenAuth,
-  withEitherAuth,
-} from "../connectionOptions";
+import { buildConnectionOptions } from "../connectionOptions";
 
 const buildParser = (
-  builder: (args: yargs.Argv) => yargs.Argv,
+  config: Parameters<typeof buildConnectionOptions>[1],
   args: string[],
 ) => {
-  return builder(yargsFactory(args))
+  return buildConnectionOptions(yargsFactory(args), config)
     .option("base-url", { default: "https://example.com" })
     .exitProcess(false)
     .fail((msg, err) => {
@@ -18,10 +13,12 @@ const buildParser = (
     });
 };
 
-describe("withPasswordAuth", () => {
+describe("buildConnectionOptions with password auth", () => {
+  const config = { auth: ["password"] } as const;
+
   it("should accept when username and password are provided", () => {
     expect(() =>
-      buildParser(withPasswordAuth, [
+      buildParser(config, [
         "--username",
         "user",
         "--password",
@@ -32,41 +29,45 @@ describe("withPasswordAuth", () => {
 
   it("should reject when only username is provided", () => {
     expect(() =>
-      buildParser(withPasswordAuth, ["--username", "user"]).parseSync(),
-    ).toThrow("Password is required (--password or KINTONE_PASSWORD)");
+      buildParser(config, ["--username", "user"]).parseSync(),
+    ).toThrow("Authentication required (login)");
   });
 
   it("should reject when only password is provided", () => {
-    expect(() =>
-      buildParser(withPasswordAuth, ["--password", "pw"]).parseSync(),
-    ).toThrow("Username is required (--username or KINTONE_USERNAME)");
+    expect(() => buildParser(config, ["--password", "pw"]).parseSync()).toThrow(
+      "Authentication required (login)",
+    );
   });
 
   it("should reject when no auth is provided", () => {
-    expect(() => buildParser(withPasswordAuth, []).parseSync()).toThrow(
-      "Username and password are required (--username or KINTONE_USERNAME, --password or KINTONE_PASSWORD)",
+    expect(() => buildParser(config, []).parseSync()).toThrow(
+      "Authentication required (login)",
     );
   });
 });
 
-describe("withApiTokenAuth", () => {
+describe("buildConnectionOptions with apiToken auth", () => {
+  const config = { auth: ["apiToken"] } as const;
+
   it("should accept when api-token is provided", () => {
     expect(() =>
-      buildParser(withApiTokenAuth, ["--api-token", "token"]).parseSync(),
+      buildParser(config, ["--api-token", "token"]).parseSync(),
     ).not.toThrow();
   });
 
   it("should reject when no auth is provided", () => {
-    expect(() => buildParser(withApiTokenAuth, []).parseSync()).toThrow(
-      "API token is required (--api-token or KINTONE_API_TOKEN)",
+    expect(() => buildParser(config, []).parseSync()).toThrow(
+      "Authentication required (API token)",
     );
   });
 });
 
-describe("withEitherAuth", () => {
+describe("buildConnectionOptions with either auth", () => {
+  const config = { auth: ["password", "apiToken"] } as const;
+
   it("should accept when username and password are provided", () => {
     expect(() =>
-      buildParser(withEitherAuth, [
+      buildParser(config, [
         "--username",
         "user",
         "--password",
@@ -77,12 +78,12 @@ describe("withEitherAuth", () => {
 
   it("should accept when only api-token is provided", () => {
     expect(() =>
-      buildParser(withEitherAuth, ["--api-token", "token"]).parseSync(),
+      buildParser(config, ["--api-token", "token"]).parseSync(),
     ).not.toThrow();
   });
 
   it("should accept when both are provided and clear api-token", async () => {
-    const argv = await buildParser(withEitherAuth, [
+    const argv = await buildParser(config, [
       "--username",
       "user",
       "--password",
@@ -97,13 +98,13 @@ describe("withEitherAuth", () => {
 
   it("should reject when only username is provided without password", () => {
     expect(() =>
-      buildParser(withEitherAuth, ["--username", "user"]).parseSync(),
-    ).toThrow("Password is required (--password or KINTONE_PASSWORD)");
+      buildParser(config, ["--username", "user"]).parseSync(),
+    ).toThrow("Authentication required (login or API token)");
   });
 
   it("should reject when no auth is provided", () => {
-    expect(() => buildParser(withEitherAuth, []).parseSync()).toThrow(
-      "Either username (--username) or API token (--api-token) is required",
+    expect(() => buildParser(config, []).parseSync()).toThrow(
+      "Authentication required (login or API token)",
     );
   });
 });

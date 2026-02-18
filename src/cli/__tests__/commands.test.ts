@@ -39,7 +39,7 @@ describe("record import", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
       arg: "record import --base-url https://example.com --app 1 --file-path /tmp/test.csv",
-      errorMessage: /Either username .* or API token .* is required/,
+      errorMessage: /Authentication required \(login or API token\)/,
     });
   });
 });
@@ -48,7 +48,7 @@ describe("record export", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
       arg: "record export --base-url https://example.com --app 1",
-      errorMessage: /Either username .* or API token .* is required/,
+      errorMessage: /Authentication required \(login or API token\)/,
     });
   });
 });
@@ -57,14 +57,14 @@ describe("record delete", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
       arg: "record delete --base-url https://example.com --app 1 --yes",
-      errorMessage: /API token is required/,
+      errorMessage: /Authentication required \(API token\)/,
     });
   });
 
-  it("should reject --username as unknown argument", () => {
+  it("should reject --username with auth required error", () => {
     return checkRejectArg({
       arg: "record delete --base-url https://example.com --app 1 --yes --username user",
-      errorMessage: /Unknown argument: username/,
+      errorMessage: /Authentication required \(API token\)/,
     });
   });
 });
@@ -73,7 +73,14 @@ describe("plugin upload", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
       arg: "plugin upload --base-url https://example.com --input /tmp/plugin.zip",
-      errorMessage: /Username and password are required/,
+      errorMessage: /Authentication required \(login\)/,
+    });
+  });
+
+  it("should reject --api-token with auth required error", () => {
+    return checkRejectArg({
+      arg: "plugin upload --base-url https://example.com --input /tmp/plugin.zip --api-token xxx",
+      errorMessage: /Authentication required \(login\)/,
     });
   });
 });
@@ -82,7 +89,7 @@ describe("customize apply", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
       arg: "customize apply --base-url https://example.com --app 1 --input /tmp/manifest.json",
-      errorMessage: /Username and password are required/,
+      errorMessage: /Authentication required \(login\)/,
     });
   });
 });
@@ -91,7 +98,7 @@ describe("customize export", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
       arg: "customize export --base-url https://example.com --app 1",
-      errorMessage: /Username and password are required/,
+      errorMessage: /Authentication required \(login\)/,
     });
   });
 });

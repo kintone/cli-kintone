@@ -2,7 +2,7 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
-import { withPasswordAuth, guestSpaceOptions } from "../connectionOptions";
+import { buildConnectionOptions } from "../connectionOptions";
 import { runApply } from "../../customize/apply";
 
 const command = "apply";
@@ -10,8 +10,7 @@ const command = "apply";
 const describe = "Apply JavaScript/CSS customization to a kintone app";
 
 const builder = (args: yargs.Argv) =>
-  withPasswordAuth(args)
-    .options(guestSpaceOptions)
+  buildConnectionOptions(args, { auth: ["password"], guestSpace: true })
     .option("input", {
       alias: "i",
       describe: "The path to customize-manifest.json",

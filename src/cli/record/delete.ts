@@ -3,7 +3,7 @@ import type { CommandModule } from "yargs";
 import { run } from "../../record/delete";
 import type { SupportedImportEncoding } from "../../utils/file";
 import { confirm } from "@inquirer/prompts";
-import { withApiTokenAuth, guestSpaceOptions } from "../connectionOptions";
+import { buildConnectionOptions } from "../connectionOptions";
 
 const command = "delete";
 
@@ -15,8 +15,7 @@ const FORCE_DELETE_KEY = "yes";
 const FORCE_DELETE_ALIAS = "y";
 
 const builder = (args: yargs.Argv) =>
-  withApiTokenAuth(args)
-    .options(guestSpaceOptions)
+  buildConnectionOptions(args, { auth: ["apiToken"], guestSpace: true })
     .option("app", {
       describe: "The ID of the app",
       type: "string",

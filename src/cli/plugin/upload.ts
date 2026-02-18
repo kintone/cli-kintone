@@ -2,7 +2,7 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
-import { withPasswordAuth } from "../connectionOptions";
+import { buildConnectionOptions } from "../connectionOptions";
 import type { Params } from "../../plugin/upload";
 import { upload } from "../../plugin/upload";
 import type { RestAPIClientOptions } from "../../kintone/client";
@@ -12,7 +12,7 @@ const command = "upload";
 const describe = "Upload a plugin to kintone";
 
 const builder = (args: yargs.Argv) =>
-  withPasswordAuth(args)
+  buildConnectionOptions(args, { auth: ["password"] })
     .option("input", {
       alias: "i",
       describe: "The input plugin zip",

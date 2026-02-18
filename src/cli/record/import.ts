@@ -2,7 +2,7 @@ import type yargs from "yargs";
 import { run } from "../../record/import";
 import type { SupportedImportEncoding } from "../../utils/file";
 import type { CommandModule } from "yargs";
-import { withEitherAuth, guestSpaceOptions } from "../connectionOptions";
+import { buildConnectionOptions } from "../connectionOptions";
 
 const command = "import";
 
@@ -11,8 +11,10 @@ const describe = "import the records of the specified app";
 const encoding: SupportedImportEncoding[] = ["utf8", "sjis"];
 
 const builder = (args: yargs.Argv) =>
-  withEitherAuth(args)
-    .options(guestSpaceOptions)
+  buildConnectionOptions(args, {
+    auth: ["password", "apiToken"],
+    guestSpace: true,
+  })
     .option("app", {
       describe: "The ID of the app",
       type: "string",

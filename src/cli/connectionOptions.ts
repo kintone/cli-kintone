@@ -1,11 +1,16 @@
 import type yargs from "yargs";
 
+import {
+  type AuthMethod,
+  type AuthArgv,
+  type AuthResolvedArgv,
+  authModules,
+  checkAuth,
+  resolveAuthPriority,
+} from "./authOptions";
+
 type OptionsDefinition = Parameters<yargs.Argv["options"]>[0];
 
-/**
- * Connection and authentication base options (used by all remote commands)
- * ref. https://cli.kintone.dev/guide/options
- */
 const connectionOptions = {
   "base-url": {
     describe: "Kintone Base Url",
@@ -47,40 +52,7 @@ const connectionOptions = {
   },
 } satisfies OptionsDefinition;
 
-const passwordAuthOptions = {
-  username: {
-    alias: "u",
-    describe: "Kintone Username",
-    default: process.env.KINTONE_USERNAME,
-    defaultDescription: "KINTONE_USERNAME",
-    type: "string",
-    requiresArg: true,
-  },
-  password: {
-    alias: "p",
-    describe: "Kintone Password",
-    default: process.env.KINTONE_PASSWORD,
-    defaultDescription: "KINTONE_PASSWORD",
-    type: "string",
-    requiresArg: true,
-  },
-} satisfies OptionsDefinition;
-
-const apiTokenAuthOptions = {
-  "api-token": {
-    describe: "App's API token",
-    default: process.env.KINTONE_API_TOKEN,
-    defaultDescription: "KINTONE_API_TOKEN",
-    type: "array",
-    string: true,
-    requiresArg: true,
-  },
-} satisfies OptionsDefinition;
-
-/**
- * Guest space options
- */
-export const guestSpaceOptions = {
+const guestSpaceOptions = {
   "guest-space-id": {
     describe: "The ID of guest space",
     default: process.env.KINTONE_GUEST_SPACE_ID,
@@ -90,99 +62,43 @@ export const guestSpaceOptions = {
   },
 } satisfies OptionsDefinition;
 
-const hasPasswordAuth = (argv: {
-  username?: string;
-  password?: string;
-}): boolean => {
-  return !!argv.username && !!argv.password;
-};
+export const buildConnectionOptions = (
+  args: yargs.Argv,
+  config: {
+    auth: readonly [AuthMethod, ...AuthMethod[]];
+    guestSpace?: boolean;
+  },
+) => {
+  // NOTE: Calling .options() in a loop breaks yargs type inference, so we use AuthResolvedArgv to supplement the auth argv types.
+  let builder = args.options(connectionOptions) as yargs.Argv<
+    yargs.InferredOptionTypes<typeof connectionOptions> & AuthResolvedArgv
+  >;
 
-const hasApiTokenAuth = (argv: {
-  "api-token"?: string | string[];
-}): boolean => {
-  const apiToken = argv["api-token"];
-  if (!apiToken) {
-    return false;
+  for (const [method, module] of Object.entries(authModules)) {
+    builder = builder.options(
+      config.auth.includes(method as AuthMethod)
+        ? module.options
+        : module.hiddenOptions,
+    );
   }
-  if (typeof apiToken === "string") {
-    return !!apiToken;
+
+  const checked = builder
+    .options(
+      config.guestSpace
+        ? guestSpaceOptions
+        : {
+            "guest-space-id": {
+              ...guestSpaceOptions["guest-space-id"],
+              hidden: true,
+            },
+          },
+    )
+    .check((a: AuthArgv): true => checkAuth(config.auth, a));
+
+  if (config.auth.length > 1) {
+    return checked.middleware((a: AuthArgv): void =>
+      resolveAuthPriority(config.auth, a),
+    );
   }
-  return apiToken.filter(Boolean).length > 0;
-};
-
-/**
- * Connection + password authentication options with validation.
- * Username and password are required.
- */
-export const withPasswordAuth = (args: yargs.Argv) => {
-  return args
-    .options(connectionOptions)
-    .options(passwordAuthOptions)
-    .check((argv) => {
-      if (!argv.username && !argv.password) {
-        throw new Error(
-          "Username and password are required (--username or KINTONE_USERNAME, --password or KINTONE_PASSWORD)",
-        );
-      }
-      if (!argv.username) {
-        throw new Error(
-          "Username is required (--username or KINTONE_USERNAME)",
-        );
-      }
-      if (!argv.password) {
-        throw new Error(
-          "Password is required (--password or KINTONE_PASSWORD)",
-        );
-      }
-      return true;
-    });
-};
-
-/**
- * Connection + API token authentication options with validation.
- * API token is required.
- */
-export const withApiTokenAuth = (args: yargs.Argv) => {
-  return args
-    .options(connectionOptions)
-    .options(apiTokenAuthOptions)
-    .check((argv) => {
-      if (!hasApiTokenAuth(argv)) {
-        throw new Error(
-          "API token is required (--api-token or KINTONE_API_TOKEN)",
-        );
-      }
-      return true;
-    });
-};
-
-/**
- * Connection + both authentication options with validation.
- * Either (username AND password) or API token is required.
- * When both are provided, password auth takes priority (api-token is cleared).
- */
-export const withEitherAuth = (args: yargs.Argv) => {
-  return args
-    .options(connectionOptions)
-    .options(passwordAuthOptions)
-    .options(apiTokenAuthOptions)
-    .check((argv) => {
-      if (!hasPasswordAuth(argv) && !hasApiTokenAuth(argv)) {
-        if (argv.username) {
-          throw new Error(
-            "Password is required (--password or KINTONE_PASSWORD)",
-          );
-        }
-        throw new Error(
-          "Either username (--username) or API token (--api-token) is required",
-        );
-      }
-      return true;
-    })
-    .middleware((argv) => {
-      // Password auth takes priority over API token auth
-      if (hasPasswordAuth(argv) && hasApiTokenAuth(argv)) {
-        argv["api-token"] = undefined;
-      }
-    });
+  return checked;
 };

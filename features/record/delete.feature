@@ -99,7 +99,7 @@ Feature: record delete
     And Load username and password of the app "app_for_delete" with exact permissions "view,delete" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "record delete --app $APP_ID --base-url $$TEST_KINTONE_BASE_URL --username $USERNAME --password $PASSWORD --yes"
     Then I should get the exit code is non-zero
-    And The output error message should match with the pattern: "Unknown arguments: username, password"
+    And The output error message should match with the pattern: "Authentication required \(API token\)"
 
   @serial(app_for_delete)
   Scenario: Specify records with a file

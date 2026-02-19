@@ -7,3 +7,5 @@ minimumReleaseAgeExclude:
   - tar@7.5.7 || 7.5.8
   # Renovate security update: ajv@8.18.0
   - ajv@8.18.0
+  # Renovate security update: undici@7.18.2
+  - undici@7.18.2

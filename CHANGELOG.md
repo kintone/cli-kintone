@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.1](https://github.com/kintone/cli-kintone/compare/v1.19.0...v1.19.1) (2026-02-20)
+
+
+### Bug Fixes
+
+* fix check of auth options required ([#1346](https://github.com/kintone/cli-kintone/issues/1346)) ([c78a44b](https://github.com/kintone/cli-kintone/commit/c78a44bde3386a50e602e7b85466e431a005099c))
+
+
+### Documentation
+
+* add release note for v1.19.0 ([#1345](https://github.com/kintone/cli-kintone/issues/1345)) ([1d87c09](https://github.com/kintone/cli-kintone/commit/1d87c09e9035ef6955ef11ec7350b8c86c0c060b))
+
 ## [1.19.0](https://github.com/kintone/cli-kintone/compare/v1.18.0...v1.19.0) (2026-02-10)
 
 

@@ -71,7 +71,7 @@
   },
   "devDependencies": {
     "@actions/core": "^1.11.1",
-    "@cucumber/cucumber": "^11.3.0",
+    "@cucumber/cucumber": "^12.6.0",
     "@cybozu/eslint-config": "^25.0.0",
     "@cybozu/license-manager": "^1.4.1",
     "@octokit/rest": "^22.0.1",

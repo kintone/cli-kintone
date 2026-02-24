@@ -2,7 +2,7 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { logger } from "../../utils/log";
 import { RunError } from "../../record/error";
-import { commonOptions } from "../commonOptions";
+import { buildConnectionOptions } from "../connectionOptions";
 import { runExport } from "../../customize/export";
 
 const command = "export";
@@ -11,10 +11,7 @@ const describe =
   "Export JavaScript/CSS customization settings from a kintone app";
 
 const builder = (args: yargs.Argv) =>
-  args
-    .options(commonOptions)
-    // NOTE: This command only supports password authn.
-    .hide("api-token")
+  buildConnectionOptions(args, { auth: ["password"], guestSpace: true })
     .option("app", {
       describe: "The kintone app ID",
       type: "string",

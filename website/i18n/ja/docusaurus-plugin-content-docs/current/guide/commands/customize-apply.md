@@ -6,6 +6,10 @@ sidebar_position: 600
 
 `customize apply`コマンドは、マニフェストファイルからKintoneアプリにJavaScript/CSSカスタマイズを適用します。
 
+**注意**
+
+- このコマンドはパスワード認証のみをサポートしています。
+
 ## 例
 
 ```shell

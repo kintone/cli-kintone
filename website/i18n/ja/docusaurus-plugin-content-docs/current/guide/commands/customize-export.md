@@ -6,6 +6,10 @@ sidebar_position: 500
 
 `customize export`コマンドは、KintoneアプリからJavaScript/CSSカスタマイズ設定をエクスポートします。
 
+**注意**
+
+- このコマンドはパスワード認証のみをサポートしています。
+
 ## 例
 
 ```shell

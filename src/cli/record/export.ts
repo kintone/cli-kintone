@@ -2,7 +2,7 @@ import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import type { ExportFileEncoding } from "../../record/export";
 import { run } from "../../record/export";
-import { commonOptions } from "../commonOptions";
+import { buildConnectionOptions } from "../connectionOptions";
 
 const encodings: ExportFileEncoding[] = ["utf8", "sjis"];
 
@@ -11,8 +11,10 @@ const command = "export";
 const describe = "export the records of the specified app";
 
 const builder = (args: yargs.Argv) =>
-  args
-    .options(commonOptions)
+  buildConnectionOptions(args, {
+    auth: ["password", "apiToken"],
+    guestSpace: true,
+  })
     .option("app", {
       describe: "The ID of the app",
       type: "string",

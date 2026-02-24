@@ -6,6 +6,10 @@ sidebar_position: 500
 
 The `customize export` command allows you to export JavaScript/CSS customization settings from a Kintone app.
 
+**Notice**
+
+- This command only supports password authentication.
+
 ## Example
 
 ```shell

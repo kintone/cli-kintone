@@ -5,3 +5,4 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   # Renovate security update: tar@7.5.7
   - tar@7.5.7
+  - "@kintone/eslint-plugin@0.1.0"

@@ -1,0 +1,4 @@
+*,Table,Text,Number
+*,\d+,Alice,10
+*,\d+,Bob,20
+*,\d+,Jenny,30

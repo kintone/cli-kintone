@@ -48,7 +48,6 @@ export const checkCommand: CommandModule<{}, Args> = setStability(
     describe,
     builder,
     handler,
-    hidden: true,
   },
   "experimental",
   "This feature is under early development",

@@ -11,23 +11,16 @@ import path from "path";
 import { logger } from "../../utils/log";
 import type { Linter } from "eslint";
 import { ESLint } from "eslint";
-import noCybozuData from "./rules/no-cybozu-data";
-import noKintoneInternalSelector from "./rules/no-kintone-internal-selector";
+import kintoneESLintPlugin from "@kintone/eslint-plugin";
 
 const eslintConfig: Linter.Config[] = [
+  // Workaround for type compatibility issue between @typescript-eslint/utils RuleModule and @types/eslint
+  // https://github.com/typescript-eslint/typescript-eslint/issues/9724
+  kintoneESLintPlugin.configs.recommended as unknown as Linter.Config,
   {
-    // https://eslint.org/docs/latest/use/configure/plugins#configure-a-virtual-plugin
-    plugins: {
-      local: {
-        rules: {
-          "no-cybozu-data": noCybozuData,
-          "no-kintone-internal-selector": noKintoneInternalSelector,
-        },
-      },
-    },
     rules: {
-      "local/no-cybozu-data": "error",
-      "local/no-kintone-internal-selector": "error",
+      "@kintone/eslint-plugin/no-cybozu-data": "error",
+      "@kintone/eslint-plugin/no-kintone-internal-selector": "error",
     },
     linterOptions: { reportUnusedDisableDirectives: false },
   },

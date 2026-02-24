@@ -13,6 +13,13 @@ This feature is under early development.
 
 :::
 
+:::note
+
+This command is only available when installed via npm (`npx @kintone/cli` or `npm install -g @kintone/cli`).
+It is not available in the binary version.
+
+:::
+
 ## Example
 
 ```shell
@@ -39,40 +46,10 @@ See [Options](/guide/options) page for common options.
 
 The `plugin check` command runs the following checks on JavaScript files in the plugin:
 
-### no-cybozu-data
-
-Detects access to `cybozu.data`, which is an internal and unsupported API that may change without notice.
-
-**Example of detected code:**
-
-```javascript
-// ❌ Not allowed
-console.log(cybozu.data);
-const data = cybozu.data;
-cybozu.data.foo();
-```
-
-### no-kintone-internal-selector
-
-Detects the use of kintone's internal CSS class names that may change without notice. This includes patterns like:
-
-- `gaia-argoui-*` (e.g., `gaia-argoui-button`)
-- `*-gaia` (e.g., `button-gaia`)
-- `ocean-*` (e.g., `ocean-ui-button`)
-- `kintone-*` (e.g., `kintone-dialog`)
-
-**Example of detected code:**
-
-```javascript
-// ❌ Not allowed
-document.querySelector(".gaia-argoui-button");
-document.querySelectorAll(".ocean-ui-dialog");
-element.closest(".kintone-dialog");
-document.getElementsByClassName("button-gaia");
-
-// Also detected in string literals (e.g., jQuery)
-$(".gaia-argoui-button").click();
-```
+| Rule                                                                                                                                                                              | Description                                                                |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [no-cybozu-data](https://github.com/kintone/js-sdk/blob/230a964e0800412003d46effbbda3cc31f72501c/packages/eslint-plugin/docs/rules/no-cybozu-data.md)                             | Detects access to `cybozu.data`, which is an internal and unsupported API. |
+| [no-kintone-internal-selector](https://github.com/kintone/js-sdk/blob/230a964e0800412003d46effbbda3cc31f72501c/packages/eslint-plugin/docs/rules/no-kintone-internal-selector.md) | Detects the use of kintone's internal CSS class names.                     |
 
 ## Output Format
 

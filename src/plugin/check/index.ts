@@ -9,26 +9,61 @@ import {
 
 import path from "path";
 import { logger } from "../../utils/log";
-import type { Linter } from "eslint";
-import { ESLint } from "eslint";
-import kintoneESLintPlugin from "@kintone/eslint-plugin";
-
-const eslintConfig: Linter.Config[] = [
-  // Workaround for type compatibility issue between @typescript-eslint/utils RuleModule and @types/eslint
-  // https://github.com/typescript-eslint/typescript-eslint/issues/9724
-  kintoneESLintPlugin.configs.recommended as unknown as Linter.Config,
-  {
-    rules: {
-      "@kintone/eslint-plugin/no-cybozu-data": "error",
-      "@kintone/eslint-plugin/no-kintone-internal-selector": "error",
-    },
-    linterOptions: { reportUnusedDisableDirectives: false },
-  },
-];
+import type { Linter, ESLint } from "eslint";
 
 export type OutputFormat = "plain" | "json";
 
+/**
+ * Load ESLint dependencies dynamically.
+ *
+ * ESLint is loaded via dynamic import to avoid bundling it in SEA binary.
+ * ncc cannot bundle ESLint due to circular dependency issues,
+ * and we use `--external` flag to exclude it from the bundle.
+ *
+ * In future, we can use `sea.isSea()` API to detect SEA binary explicitly:
+ * https://nodejs.org/api/single-executable-applications.html#seaissea
+ * This requires:
+ * - engines.node >= 20.12.0
+ * - @types/node >= 20
+ */
+const loadESLintDependencies = async () => {
+  try {
+    const { ESLint } = await import("eslint");
+    const kintoneESLintPlugin = (await import("@kintone/eslint-plugin"))
+      .default;
+
+    const eslintConfig: Linter.Config[] = [
+      // Workaround for type compatibility issue between @typescript-eslint/utils RuleModule and @types/eslint
+      // https://github.com/typescript-eslint/typescript-eslint/issues/9724
+      kintoneESLintPlugin.configs.recommended as unknown as Linter.Config,
+      {
+        rules: {
+          "@kintone/eslint-plugin/no-cybozu-data": "error",
+          "@kintone/eslint-plugin/no-kintone-internal-selector": "error",
+        },
+        linterOptions: { reportUnusedDisableDirectives: false },
+      },
+    ];
+
+    return { ESLint, eslintConfig };
+  } catch (e) {
+    if (
+      e instanceof Error &&
+      "code" in e &&
+      e.code === "ERR_UNKNOWN_BUILTIN_MODULE"
+    ) {
+      throw new Error(
+        "The 'plugin check' command is not available in the standalone binary version.\n" +
+          "Please use the npm version instead: npx @kintone/cli plugin check",
+      );
+    }
+    throw e;
+  }
+};
+
 export const check = async (inputFilePath: string, format: OutputFormat) => {
+  const { ESLint, eslintConfig } = await loadESLintDependencies();
+
   let manifest: ManifestInterface;
   let driver: DriverInterface;
 

@@ -19,7 +19,7 @@
     "build:artifacts": "run-s clean:artifacts build:executables license:analyze license:extract compress",
     "build:executables": "run-s build:ncc package",
     "build:tsc": "tsc --build ./tsconfig.build.json",
-    "build:ncc": "ncc build ./src/cli/main.ts -m",
+    "build:ncc": "ncc build ./src/cli/main.ts -m -e eslint -e @kintone/eslint-plugin",
     "package": "mkdirp ./bin && pkg --sea ./dist/index.js -o ./bin/cli-kintone -t linux-x64,macos-arm64,win-x64",
     "license:analyze": "license-manager analyze -c license-manager.config.js",
     "license:extract": "license-manager extract -c license-manager.config.js -w .",

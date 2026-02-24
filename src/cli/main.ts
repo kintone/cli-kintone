@@ -2,6 +2,7 @@ import yargs from "yargs";
 import { recordCommand } from "./record";
 import { pluginCommand } from "./plugin";
 import { customizeCommand } from "./customize";
+import { kintoneCommand } from "./kintone";
 import packageJson from "../../package.json";
 import { logHandler, logOptions } from "./logOption";
 
@@ -10,6 +11,7 @@ yargs
   .command(recordCommand)
   .command(pluginCommand)
   .command(customizeCommand)
+  .command(kintoneCommand)
   .options(logOptions)
   .middleware(logHandler)
   .demandCommand()

@@ -17,8 +17,8 @@ importers:
         specifier: ^7.10.1
         version: 7.10.1(@types/node@18.19.130)
       '@kintone/eslint-plugin':
-        specifier: ^0.1.0
-        version: 0.1.0(eslint@9.39.3(jiti@1.21.7))(typescript@5.9.3)
+        specifier: ^0.1.1
+        version: 0.1.1(eslint@9.39.3(jiti@1.21.7))(typescript@5.9.3)
       '@kintone/plugin-manifest-validator':
         specifier: ^11.1.0
         version: 11.1.0
@@ -1947,8 +1947,8 @@ packages:
     peerDependencies:
       tslib: '2'
 
-  '@kintone/eslint-plugin@0.1.0':
-    resolution: {integrity: sha512-aX/CqvYz3aqa/57pIkTAhVtyzsid5VMJZ4MbUK+O6Xk5PQvGlRWav3anodRmq9lh33GPKOoWtUIs5wkeqjkO1w==}
+  '@kintone/eslint-plugin@0.1.1':
+    resolution: {integrity: sha512-JGdviVEwi+hv02MYtBZpYhMcc8maaFM6toF6JSK/PBWxUgKnhopxDQna+x+Ykku/SEgN4qpBZ0lJpJveqCHhjg==}
     peerDependencies:
       eslint: '>=9.16.0'
 
@@ -10623,7 +10623,7 @@ snapshots:
       '@jsonjoy.com/codegen': 1.0.0(tslib@2.8.1)
       tslib: 2.8.1
 
-  '@kintone/eslint-plugin@0.1.0(eslint@9.39.3(jiti@1.21.7))(typescript@5.9.3)':
+  '@kintone/eslint-plugin@0.1.1(eslint@9.39.3(jiti@1.21.7))(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/utils': 8.56.0(eslint@9.39.3(jiti@1.21.7))(typescript@5.9.3)
       eslint: 9.39.3(jiti@1.21.7)

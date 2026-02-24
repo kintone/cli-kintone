@@ -9,4 +9,5 @@ minimumReleaseAgeExclude:
   - ajv@8.18.0
   # Renovate security update: undici@7.18.2
   - undici@7.18.2
-  - "@kintone/eslint-plugin@0.1.0"
+  # Packages maintained by Cybozu
+  - "@kintone/eslint-plugin"

@@ -33,9 +33,7 @@ const loadESLintDependencies = async () => {
       .default;
 
     const eslintConfig: Linter.Config[] = [
-      // Workaround for type compatibility issue between @typescript-eslint/utils RuleModule and @types/eslint
-      // https://github.com/typescript-eslint/typescript-eslint/issues/9724
-      kintoneESLintPlugin.configs.recommended as unknown as Linter.Config,
+      kintoneESLintPlugin.configs.recommended,
       {
         rules: {
           "@kintone/eslint-plugin/no-cybozu-data": "error",

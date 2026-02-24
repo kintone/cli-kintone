@@ -102,7 +102,7 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^7.10.1",
-    "@kintone/eslint-plugin": "^0.1.0",
+    "@kintone/eslint-plugin": "^0.1.1",
     "@kintone/plugin-manifest-validator": "^11.1.0",
     "@kintone/rest-api-client": "^6.1.2",
     "chalk": "4.1.2",

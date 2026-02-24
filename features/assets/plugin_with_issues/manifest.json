@@ -1,0 +1,15 @@
+{
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "name": {
+    "en": "test-plugin"
+  },
+  "description": {
+    "en": "Test plugin for E2E testing"
+  },
+  "icon": "image/icon.png",
+  "desktop": {
+    "js": ["js/desktop.js"]
+  }
+}

@@ -5,6 +5,7 @@ const config = {
     requireModule: ["ts-node/register"],
     require: ["features/supports/**/*.ts", "features/step_definitions/**/*.ts"],
     parallel: 10,
+    tags: "not @skip",
   },
 };
 module.exports = config;

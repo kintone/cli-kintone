@@ -1,8 +1,11 @@
-import RSA from "node-rsa";
+import crypto from "crypto";
 
-export const sign = (contents: Buffer, privateKey: string): Buffer => {
-  const key = new RSA(privateKey, "pkcs1-private-pem", {
-    signingScheme: "pkcs1-sha1",
+export const sign = (
+  contents: Buffer,
+  privateKey: crypto.KeyObject,
+): Buffer => {
+  return crypto.sign("sha1", contents, {
+    key: privateKey,
+    padding: crypto.constants.RSA_PKCS1_PADDING,
   });
-  return key.sign(contents);
 };

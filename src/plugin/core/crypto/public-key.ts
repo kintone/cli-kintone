@@ -1,6 +1,5 @@
-import RSA from "node-rsa";
-import { uuid } from "./uuid";
 import crypto from "crypto";
+import { uuid } from "./uuid";
 
 export interface PublicKeyInterface {
   /**
@@ -22,13 +21,13 @@ export interface PublicKeyInterface {
 }
 
 export class PublicKey implements PublicKeyInterface {
-  private readonly key: RSA;
+  private readonly key: crypto.KeyObject;
 
   /**
    * Use static method importKey() instead.
    * @private
    */
-  private constructor(key: RSA) {
+  private constructor(key: crypto.KeyObject) {
     this.key = key;
   }
 
@@ -37,18 +36,22 @@ export class PublicKey implements PublicKeyInterface {
    * @param key {string} pkcs8 der file
    */
   public static importKey(key: Buffer): PublicKey {
-    const rsa = new RSA(key, "pkcs8-public-der");
-    if (rsa.isPrivate()) {
-      throw new Error("key contains private key");
-    }
-    if (!rsa.isPublic()) {
+    const publicKey = crypto.createPublicKey({
+      key,
+      format: "der",
+      type: "spki",
+    });
+    if (publicKey.type !== "public") {
       throw new Error("key must contain public key");
     }
-    return new PublicKey(rsa);
+    return new PublicKey(publicKey);
   }
 
   public exportPublicKey(): Buffer {
-    return this.key.exportKey("pkcs8-public-der");
+    return this.key.export({
+      type: "spki",
+      format: "der",
+    }) as Buffer;
   }
 
   public uuid(): string {
@@ -56,10 +59,14 @@ export class PublicKey implements PublicKeyInterface {
   }
 
   public verify(data: Buffer, signature: Buffer): boolean {
-    const pem = this.key.exportKey("pkcs1-public-pem");
-    const verifier = crypto.createVerify("RSA-SHA1");
-    verifier.update(data);
-
-    return verifier.verify(pem, signature);
+    return crypto.verify(
+      "sha1",
+      data,
+      {
+        key: this.key,
+        padding: crypto.constants.RSA_PKCS1_PADDING,
+      },
+      signature,
+    );
   }
 }

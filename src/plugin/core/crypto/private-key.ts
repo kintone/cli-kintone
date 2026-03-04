@@ -1,4 +1,4 @@
-import RSA from "node-rsa";
+import crypto from "crypto";
 import { uuid } from "./uuid";
 import { sign } from "./sign";
 
@@ -28,13 +28,13 @@ export interface PrivateKeyInterface {
 }
 
 export class PrivateKey implements PrivateKeyInterface {
-  private readonly key: RSA;
+  private readonly key: crypto.KeyObject;
 
   /**
    * Use static method generateKey() or importKey() instead.
    * @private
    */
-  private constructor(key: RSA) {
+  private constructor(key: crypto.KeyObject) {
     this.key = key;
   }
 
@@ -42,7 +42,10 @@ export class PrivateKey implements PrivateKeyInterface {
    * Generate new private key
    */
   public static generateKey(): PrivateKey {
-    return new PrivateKey(new RSA({ b: 1024 }));
+    const { privateKey } = crypto.generateKeyPairSync("rsa", {
+      modulusLength: 1024,
+    });
+    return new PrivateKey(privateKey);
   }
 
   /**
@@ -50,15 +53,28 @@ export class PrivateKey implements PrivateKeyInterface {
    * @param key {string} utf8 encoded ppk file
    */
   public static importKey(key: string): PrivateKey {
-    return new PrivateKey(new RSA(key));
+    const privateKey = crypto.createPrivateKey({
+      key,
+      format: "pem",
+    });
+    return new PrivateKey(privateKey);
   }
 
   public exportPrivateKey(): string {
-    return this.key.exportKey("pkcs1-private") + "\n";
+    const pem = this.key.export({
+      type: "pkcs1",
+      format: "pem",
+    }) as string;
+    // Ensure trailing newline for compatibility
+    return pem.endsWith("\n") ? pem : pem + "\n";
   }
 
   public exportPublicKey(): Buffer {
-    return this.key.exportKey("pkcs8-public-der");
+    const publicKey = crypto.createPublicKey(this.key);
+    return publicKey.export({
+      type: "spki",
+      format: "der",
+    }) as Buffer;
   }
 
   public uuid(): string {

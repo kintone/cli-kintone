@@ -82,6 +82,6 @@ export class PrivateKey implements PrivateKeyInterface {
   }
 
   public sign(contents: Buffer): Buffer {
-    return sign(contents, this.exportPrivateKey());
+    return sign(contents, this.key);
   }
 }

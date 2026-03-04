@@ -41,9 +41,6 @@ export class PublicKey implements PublicKeyInterface {
       format: "der",
       type: "spki",
     });
-    if (publicKey.type !== "public") {
-      throw new Error("key must contain public key");
-    }
     return new PublicKey(publicKey);
   }
 

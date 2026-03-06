@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.2](https://github.com/kintone/cli-kintone/compare/v1.19.1...v1.19.2) (2026-03-06)
+
+
+### Documentation
+
+* fix broken community banner ([#1366](https://github.com/kintone/cli-kintone/issues/1366)) ([6fe5570](https://github.com/kintone/cli-kintone/commit/6fe557078a59cd0b2066512574e61448805f6f64))
+
 ## [1.19.1](https://github.com/kintone/cli-kintone/compare/v1.19.0...v1.19.1) (2026-02-24)
 
 

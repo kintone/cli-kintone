@@ -105,8 +105,8 @@ importers:
         specifier: ^2.15.1
         version: 2.15.1
       allure-js-commons:
-        specifier: ^3.5.0
-        version: 3.5.0
+        specifier: ^3.6.0
+        version: 3.6.0
       allure-vitest:
         specifier: ^3.5.0
         version: 3.5.0(@vitest/runner@3.2.4)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@18.19.130)(jiti@1.21.7)(sass@1.97.3)(terser@5.44.0)(yaml@2.8.1))
@@ -2995,6 +2995,14 @@ packages:
     resolution: {integrity: sha512-iBVFNQkX5i48QGlb5U3iWm+NiNOl/ucxv6dvEJBNeJTPMI8t0Dn0CuXMQEiv4forSSAppD7FB9uGal2JwunH/A==}
     peerDependencies:
       allure-playwright: 3.5.0
+    peerDependenciesMeta:
+      allure-playwright:
+        optional: true
+
+  allure-js-commons@3.6.0:
+    resolution: {integrity: sha512-RquIzMlh2l+ZLtq+Uxt+ZpOptxLzyPvLfPGbwU7dtgXo0QfUvhLFFkCljIR7Gjxo7jZ+WVqoto1yOPpXqU/i4g==}
+    peerDependencies:
+      allure-playwright: 3.6.0
     peerDependenciesMeta:
       allure-playwright:
         optional: true
@@ -11835,6 +11843,10 @@ snapshots:
       strip-ansi: 5.2.0
 
   allure-js-commons@3.5.0:
+    dependencies:
+      md5: 2.3.0
+
+  allure-js-commons@3.6.0:
     dependencies:
       md5: 2.3.0
 

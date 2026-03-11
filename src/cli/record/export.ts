@@ -1,8 +1,8 @@
-import type yargs from "yargs";
+import type * as yargs from "yargs";
 import type { CommandModule } from "yargs";
-import type { ExportFileEncoding } from "../../record/export";
-import { run } from "../../record/export";
-import { buildConnectionOptions } from "../connectionOptions";
+import type { ExportFileEncoding } from "../../record/export/index.js";
+import { run } from "../../record/export/index.js";
+import { buildConnectionOptions } from "../connectionOptions.js";
 
 const encodings: ExportFileEncoding[] = ["utf8", "sjis"];
 

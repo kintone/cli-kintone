@@ -1,5 +1,5 @@
-import { LocalFSDriver } from "../../../core";
-import { logger } from "../../../../utils/log";
+import { LocalFSDriver } from "../../../core/index.js";
+import { logger } from "../../../../utils/log.js";
 
 export type PackageJsonPatch = {
   name: string;

@@ -1,4 +1,4 @@
-export { PublicKey } from "./public-key";
-export type { PublicKeyInterface } from "./public-key";
-export { PrivateKey } from "./private-key";
-export type { PrivateKeyInterface } from "./private-key";
+export { PublicKey } from "./public-key.js";
+export type { PublicKeyInterface } from "./public-key.js";
+export { PrivateKey } from "./private-key.js";
+export type { PrivateKeyInterface } from "./private-key.js";

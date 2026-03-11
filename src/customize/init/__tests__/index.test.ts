@@ -1,8 +1,11 @@
 import assert from "assert";
 import fs from "fs";
 import { rimrafSync } from "rimraf";
-import type { CustomizeManifest } from "../../core";
-import { generateCustomizeManifest, getInitCustomizeManifest } from "../index";
+import type { CustomizeManifest } from "../../core/index.js";
+import {
+  generateCustomizeManifest,
+  getInitCustomizeManifest,
+} from "../index.js";
 
 describe("init", () => {
   const testDestDir = "testDestDir";

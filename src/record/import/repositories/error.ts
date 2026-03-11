@@ -1,4 +1,4 @@
-import { CliKintoneError } from "../../../utils/error";
+import { CliKintoneError } from "../../../utils/error.js";
 
 export class RepositoryError extends CliKintoneError {
   constructor(cause: unknown) {

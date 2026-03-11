@@ -1,5 +1,5 @@
-import { stderr as chalkStderr } from "chalk";
-import { CliKintoneError } from "./error";
+import { chalkStderr } from "chalk";
+import { CliKintoneError } from "./error.js";
 
 export interface Logger {
   trace: (message: any) => void;

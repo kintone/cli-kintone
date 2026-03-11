@@ -1,5 +1,5 @@
 import assert from "assert";
-import { isUrlString } from "../util";
+import { isUrlString } from "../util.js";
 
 describe("util", () => {
   describe("isUrlString", () => {

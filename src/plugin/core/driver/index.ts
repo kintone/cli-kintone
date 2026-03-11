@@ -1,3 +1,3 @@
-export type { DriverInterface } from "./interface";
-export { LocalFSDriver } from "./local-fs";
-export { ZipFileDriver } from "./zip";
+export type { DriverInterface } from "./interface.js";
+export { LocalFSDriver } from "./local-fs.js";
+export { ZipFileDriver } from "./zip.js";

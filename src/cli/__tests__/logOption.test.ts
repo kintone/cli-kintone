@@ -1,6 +1,6 @@
 import { vi } from "vitest";
-import { StandardLogger, LOG_CONFIG_LEVELS } from "../../utils/log";
-import { logHandler } from "../logOption";
+import { StandardLogger, LOG_CONFIG_LEVELS } from "../../utils/log.js";
+import { logHandler } from "../logOption.js";
 
 describe("logHandler", () => {
   it(`should set "debug" to the log config level when verbose argument is true`, () => {

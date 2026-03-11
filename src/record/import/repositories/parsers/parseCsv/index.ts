@@ -1,11 +1,11 @@
-import type { RecordSchema } from "../../../types/schema";
+import type { RecordSchema } from "../../../types/schema.js";
 
 import { parse } from "csv-parse";
 
-import { convertRecord, recordReader } from "./record";
-import { SEPARATOR } from "./constants";
-import { ParserError } from "../error";
-import type { LocalRecordRepository } from "../../../usecases/interface";
+import { convertRecord, recordReader } from "./record.js";
+import { SEPARATOR } from "./constants.js";
+import { ParserError } from "../error.js";
+import type { LocalRecordRepository } from "../../../usecases/interface.js";
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style

@@ -1,6 +1,6 @@
 import { vi } from "vitest";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { deleteByRecordNumber } from "../../deleteByRecordNumber";
+import { deleteByRecordNumber } from "../../deleteByRecordNumber.js";
 
 describe("deleteRecords", () => {
   let apiClient: KintoneRestAPIClient;

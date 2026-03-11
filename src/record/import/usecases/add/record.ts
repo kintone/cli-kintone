@@ -1,7 +1,7 @@
-import type { KintoneRecordForParameter } from "../../../../kintone/types";
-import type { LocalRecord } from "../../types/record";
-import type * as Fields from "../../types/field";
-import type { FieldSchema, RecordSchema } from "../../types/schema";
+import type { KintoneRecordForParameter } from "../../../../kintone/types.js";
+import type { LocalRecord } from "../../types/record.js";
+import type * as Fields from "../../types/field.js";
+import type { FieldSchema, RecordSchema } from "../../types/schema.js";
 
 export const recordConverter: (
   record: LocalRecord,

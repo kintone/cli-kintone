@@ -1,5 +1,5 @@
-import { ParserError } from "../../error";
-import { parseCsv } from "../index";
+import { ParserError } from "../../error.js";
+import { parseCsv } from "../index.js";
 
 describe("ParserError", () => {
   it("should throw error when the record number field code is not found", () => {

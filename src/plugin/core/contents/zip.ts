@@ -1,9 +1,9 @@
-import type { ManifestInterface } from "../manifest";
-import type { DriverInterface } from "../driver";
+import type { ManifestInterface } from "../manifest/index.js";
+import type { DriverInterface } from "../driver/index.js";
 import yazl from "yazl";
 import path from "path";
 import consumers from "node:stream/consumers";
-import { logger } from "../../../utils/log";
+import { logger } from "../../../utils/log.js";
 
 /**
  * Build a zipped contents

@@ -1,5 +1,5 @@
-import { sourceListV2 } from "../sourcelist";
-import type { ManifestV2JsonObject } from "../index";
+import { sourceListV2 } from "../sourcelist.js";
+import type { ManifestV2JsonObject } from "../index.js";
 
 describe("sourceListV2", () => {
   let manifest: ManifestV2JsonObject;

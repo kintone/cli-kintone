@@ -1,6 +1,9 @@
 import { vi } from "vitest";
-import { StandardLogger } from "../log";
-import { emitDeprecationWarning, emitExperimentalWarning } from "../stability";
+import { StandardLogger } from "../log.js";
+import {
+  emitDeprecationWarning,
+  emitExperimentalWarning,
+} from "../stability.js";
 
 describe("stability", () => {
   const mockDate = new Date(0);

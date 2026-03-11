@@ -1,10 +1,10 @@
-import type { TestPattern } from "../e2e.test";
+import type { TestPattern } from "../e2e.test.js";
 import {
   ANSWER_NO,
   CREATE_PLUGIN_COMMAND,
   DEFAULT_ANSWER,
-} from "../utils/constants";
-import { getBoundMessage } from "../../utils/messages";
+} from "../utils/constants.js";
+import { getBoundMessage } from "../../utils/messages.js";
 
 const m = getBoundMessage("en");
 let outputDir: string;

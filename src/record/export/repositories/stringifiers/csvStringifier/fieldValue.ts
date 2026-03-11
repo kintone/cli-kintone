@@ -1,6 +1,6 @@
-import type * as Fields from "../../../types/field";
+import type * as Fields from "../../../types/field.js";
 
-import { LINE_BREAK } from "./constants";
+import { LINE_BREAK } from "./constants.js";
 
 export const convertFieldValue = (
   field: Fields.OneOf,

@@ -1,6 +1,6 @@
-import type { TestPattern } from "../e2e.test";
-import { ANSWER_YES, CREATE_PLUGIN_COMMAND } from "../utils/constants";
-import { getBoundMessage } from "../../utils/messages";
+import type { TestPattern } from "../e2e.test.js";
+import { ANSWER_YES, CREATE_PLUGIN_COMMAND } from "../utils/constants.js";
+import { getBoundMessage } from "../../utils/messages.js";
 
 const m = getBoundMessage("en");
 

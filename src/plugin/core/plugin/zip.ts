@@ -1,8 +1,8 @@
-import type { ContentsZip } from "../contents";
-import { logger } from "../../../utils/log";
+import type { ContentsZip } from "../contents/index.js";
+import { logger } from "../../../utils/log.js";
 import yazl from "yazl";
 import consumers from "node:stream/consumers";
-import type { PrivateKeyInterface } from "../crypto";
+import type { PrivateKeyInterface } from "../crypto/index.js";
 
 /**
  * Build a zipped plugin

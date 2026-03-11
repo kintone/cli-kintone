@@ -1,4 +1,4 @@
-import type { Lang } from "./lang";
+import type { Lang } from "./lang.js";
 
 type LangMap = { [lang in Lang]: string };
 type MessageMap = { [key in keyof typeof messages]: LangMap };

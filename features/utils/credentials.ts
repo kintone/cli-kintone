@@ -2,9 +2,10 @@ import type { ErrorObject } from "ajv";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import fs from "fs";
 import path from "path";
-import Ajv from "ajv";
+import { fileURLToPath } from "node:url";
+import { Ajv } from "ajv";
 import * as core from "@actions/core";
-import e2eCredentialsSchema from "../../e2e-credentials-schema.json";
+import e2eCredentialsSchema from "../../e2e-credentials-schema.json" with { type: "json" };
 
 type AppCredentialRecord = {
   key: {
@@ -101,6 +102,7 @@ export type UserCredential = {
   password: string;
 };
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const e2eCredentialFileName = ".e2e-credentials.json";
 const e2eCredentialFilePath = path.join(
   __dirname,

@@ -7,8 +7,8 @@ import { join } from "path";
 import {
   downloadAndExtractFromUrl,
   type TemplateSource,
-} from "../../template/downloader";
-import { mockFetchWithTarball, mockFetchError } from "../helpers/mockFetch";
+} from "../../template/downloader.js";
+import { mockFetchWithTarball, mockFetchError } from "../helpers/mockFetch.js";
 
 describe("template/downloader", () => {
   describe("downloadAndExtractFromUrl", () => {

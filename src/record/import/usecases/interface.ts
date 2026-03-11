@@ -1,4 +1,4 @@
-import type { LocalRecord } from "../types/record";
+import type { LocalRecord } from "../types/record.js";
 
 export type LocalRecordRepository = {
   readonly format: string;

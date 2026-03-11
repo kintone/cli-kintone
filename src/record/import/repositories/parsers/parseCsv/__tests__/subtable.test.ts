@@ -1,7 +1,7 @@
-import type { SubtableRow, FieldInSubtable } from "../subtable";
+import type { SubtableRow, FieldInSubtable } from "../subtable.js";
 
-import { fieldInSubtableReader } from "../subtable";
-import type { InSubtable } from "../../../../types/schema";
+import { fieldInSubtableReader } from "../subtable.js";
+import type { InSubtable } from "../../../../types/schema.js";
 
 const fields: InSubtable[] = [
   {

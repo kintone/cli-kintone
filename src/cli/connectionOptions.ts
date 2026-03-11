@@ -1,4 +1,4 @@
-import type yargs from "yargs";
+import type * as yargs from "yargs";
 
 import {
   type AuthMethod,
@@ -7,7 +7,7 @@ import {
   authModules,
   checkAuth,
   resolveAuthPriority,
-} from "./authOptions";
+} from "./authOptions/index.js";
 
 type OptionsDefinition = Parameters<yargs.Argv["options"]>[0];
 

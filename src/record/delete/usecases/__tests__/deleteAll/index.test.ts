@@ -1,7 +1,7 @@
 import { vi } from "vitest";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { deleteAllRecords } from "../../deleteAll";
-import { DeleteAllRecordsError } from "../../deleteAll/error";
+import { deleteAllRecords } from "../../deleteAll.js";
+import { DeleteAllRecordsError } from "../../deleteAll/error.js";
 
 describe("deleteAllRecords", () => {
   let apiClient: KintoneRestAPIClient;

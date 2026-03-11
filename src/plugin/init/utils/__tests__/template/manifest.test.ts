@@ -2,8 +2,8 @@ import assert from "assert";
 import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
-import { updateManifests } from "../../template/manifest";
-import type { ManifestPatch } from "../../template/manifest";
+import { updateManifests } from "../../template/manifest.js";
+import type { ManifestPatch } from "../../template/manifest.js";
 
 describe("template/manifest", () => {
   describe("updateManifests", () => {

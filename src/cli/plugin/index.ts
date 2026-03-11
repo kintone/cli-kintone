@@ -1,10 +1,10 @@
 import type { CommandModule } from "yargs";
-import type yargs from "yargs";
-import { keygenCommand } from "./keygen";
-import { packCommand } from "./pack";
-import { infoCommand } from "./info";
-import { uploadCommand } from "./upload";
-import { initCommand } from "./init";
+import type * as yargs from "yargs";
+import { keygenCommand } from "./keygen.js";
+import { packCommand } from "./pack.js";
+import { infoCommand } from "./info.js";
+import { uploadCommand } from "./upload.js";
+import { initCommand } from "./init.js";
 
 const command = "plugin";
 

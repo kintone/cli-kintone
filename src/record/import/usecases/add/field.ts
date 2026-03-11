@@ -1,11 +1,11 @@
-import type { KintoneRecordForParameter } from "../../../../kintone/types";
+import type { KintoneRecordForParameter } from "../../../../kintone/types.js";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { KintoneRestAPIError } from "@kintone/rest-api-client";
-import type * as Fields from "../../types/field";
-import type { FieldSchema } from "../../types/schema";
+import type * as Fields from "../../types/field.js";
+import type { FieldSchema } from "../../types/schema.js";
 import path from "path";
-import { retry } from "../../../../utils/retry";
-import { logger } from "../../../../utils/log";
+import { retry } from "../../../../utils/retry.js";
+import { logger } from "../../../../utils/log.js";
 
 export const fieldProcessor: (
   apiClient: KintoneRestAPIClient,

@@ -1,8 +1,8 @@
-import type { SchemaTransformer } from "../";
-import type { FieldsJson, LayoutJson } from "../../../../kintone/types";
-import type { FieldSchema } from "../../types/schema";
-import { isSupportedField } from "../constants";
-import { tableLayoutComparator } from "./helpers/table";
+import type { SchemaTransformer } from "..//index.js";
+import type { FieldsJson, LayoutJson } from "../../../../kintone/types.js";
+import type { FieldSchema } from "../../types/schema.js";
+import { isSupportedField } from "../constants.js";
+import { tableLayoutComparator } from "./helpers/table.js";
 
 /**
  * This transformer returns only all supported fields.

@@ -1,9 +1,9 @@
-import { getRecordNumberFromCsvRows } from "../record";
+import { getRecordNumberFromCsvRows } from "../record.js";
 
-import { pattern as withSubtable } from "./fixtures/withSubtable";
-import { pattern as withoutSubtable } from "./fixtures/withoutSubtable";
-import type { CsvRow } from "../../../../../kintone/types";
-import type { RecordNumber } from "../../../types/field";
+import { pattern as withSubtable } from "./fixtures/withSubtable.js";
+import { pattern as withoutSubtable } from "./fixtures/withoutSubtable.js";
+import type { CsvRow } from "../../../../../kintone/types.js";
+import type { RecordNumber } from "../../../types/field.js";
 
 export type TestPattern = {
   description: string;

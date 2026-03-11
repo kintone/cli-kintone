@@ -1,4 +1,4 @@
-import { sourceList } from "../sourcelist";
+import { sourceList } from "../sourcelist.js";
 
 describe("sourcelist", () => {
   let manifest: any;

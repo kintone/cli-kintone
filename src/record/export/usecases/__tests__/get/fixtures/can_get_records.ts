@@ -1,6 +1,6 @@
-import type { KintoneRecordForResponse } from "../../../../../../kintone/types";
-import type { LocalRecord } from "../../../../types/record";
-import type { RecordSchema } from "../../../../types/schema";
+import type { KintoneRecordForResponse } from "../../../../../../kintone/types.js";
+import type { LocalRecord } from "../../../../types/record.js";
+import type { RecordSchema } from "../../../../types/schema.js";
 
 export const input: KintoneRecordForResponse[] = [
   {

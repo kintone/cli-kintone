@@ -2,7 +2,7 @@ import type { ChildProcessByStdio } from "child_process";
 import type { Readable, Writable } from "node:stream";
 import fs from "fs";
 import path from "path";
-import { execCommand } from "./executeCommand";
+import { execCommand } from "./executeCommand.js";
 
 export type QuestionInput = {
   question: string;

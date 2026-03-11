@@ -1,13 +1,13 @@
 import path from "path";
-import { resolveGitHubTemplateSource } from "./template/github";
-import { downloadAndExtractFromUrl } from "./template/downloader";
-import type { ManifestPatch } from "./template/manifest";
-import { updateManifests } from "./template/manifest";
+import { resolveGitHubTemplateSource } from "./template/github.js";
+import { downloadAndExtractFromUrl } from "./template/downloader.js";
+import type { ManifestPatch } from "./template/manifest.js";
+import { updateManifests } from "./template/manifest.js";
 import {
   updatePackageJson,
   type PackageJsonPatch,
-} from "./template/pacakge-json";
-import { logger } from "../../../utils/log";
+} from "./template/pacakge-json.js";
+import { logger } from "../../../utils/log.js";
 import { mkdir } from "fs/promises";
 
 export const setupTemplate = async (opts: {

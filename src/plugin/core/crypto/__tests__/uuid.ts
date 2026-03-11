@@ -1,4 +1,4 @@
-import { hex2a } from "../uuid";
+import { hex2a } from "../uuid.js";
 
 describe("hex2a", () => {
   it("empty string", () => {

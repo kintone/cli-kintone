@@ -1,4 +1,4 @@
-import type { TestPattern } from "../../index.test";
+import type { TestPattern } from "../../index.test.js";
 
 export const expected: TestPattern["expected"] = {
   success: {

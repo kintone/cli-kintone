@@ -5,15 +5,15 @@ import {
   KintoneRestAPIError,
   type KintoneRestAPIClient,
 } from "@kintone/rest-api-client";
-import { logger } from "../../utils/log";
-import { retry } from "../../utils/retry";
+import { logger } from "../../utils/log.js";
+import { retry } from "../../utils/retry.js";
 import {
   buildRestAPIClient,
   type RestAPIClientOptions,
-} from "../../kintone/client";
-import { getBoundMessage } from "../core";
-import type { BoundMessage, CustomizeManifest } from "../core";
-import { isFile } from "../../utils/file";
+} from "../../kintone/client.js";
+import { getBoundMessage } from "../core/index.js";
+import type { BoundMessage, CustomizeManifest } from "../core/index.js";
+import { isFile } from "../../utils/file.js";
 
 export type ExportParams = RestAPIClientOptions & {
   appId: string;

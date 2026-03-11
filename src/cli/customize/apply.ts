@@ -1,9 +1,9 @@
-import type yargs from "yargs";
+import type * as yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { logger } from "../../utils/log";
-import { RunError } from "../../record/error";
-import { buildConnectionOptions } from "../connectionOptions";
-import { runApply } from "../../customize/apply";
+import { logger } from "../../utils/log.js";
+import { RunError } from "../../record/error/index.js";
+import { buildConnectionOptions } from "../connectionOptions.js";
+import { runApply } from "../../customize/apply/index.js";
 
 const command = "apply";
 

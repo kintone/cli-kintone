@@ -1,8 +1,8 @@
-import type { LayoutJson } from "../../../../kintone/types";
+import type { LayoutJson } from "../../../../kintone/types.js";
 import type { KintoneFormFieldProperty } from "@kintone/rest-api-client";
-import type { SchemaTransformer } from "../";
-import type { FieldSchema } from "../../types/schema";
-import { tableLayoutComparator } from "./helpers/table";
+import type { SchemaTransformer } from "..//index.js";
+import type { FieldSchema } from "../../types/schema.js";
+import { tableLayoutComparator } from "./helpers/table.js";
 
 /**
  * This transformer returns all supported fields.

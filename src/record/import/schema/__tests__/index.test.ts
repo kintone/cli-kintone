@@ -1,11 +1,11 @@
-import type { FieldsJson } from "../../../../kintone/types";
-import type { RecordSchema } from "../../types/schema";
-import type { SchemaTransformer } from "../index";
-import { createSchema } from "../index";
+import type { FieldsJson } from "../../../../kintone/types.js";
+import type { RecordSchema } from "../../types/schema.js";
+import type { SchemaTransformer } from "../index.js";
+import { createSchema } from "../index.js";
 
-import { pattern as common } from "./fixtures/common";
-import { pattern as userSelected } from "./fixtures/userSelected";
-import { pattern as userSelectedWithUpdateKey } from "./fixtures/userSelectedWithUpdateKey";
+import { pattern as common } from "./fixtures/common/index.js";
+import { pattern as userSelected } from "./fixtures/userSelected/index.js";
+import { pattern as userSelectedWithUpdateKey } from "./fixtures/userSelectedWithUpdateKey/index.js";
 
 export type TestPattern = {
   description: string;

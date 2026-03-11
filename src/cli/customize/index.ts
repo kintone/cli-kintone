@@ -1,8 +1,8 @@
 import type { CommandModule } from "yargs";
-import type yargs from "yargs";
-import { applyCommand } from "./apply";
-import { initCommand } from "./init";
-import { exportCommand } from "./export";
+import type * as yargs from "yargs";
+import { applyCommand } from "./apply.js";
+import { initCommand } from "./init.js";
+import { exportCommand } from "./export.js";
 
 const command = "customize";
 

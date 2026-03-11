@@ -5,21 +5,21 @@ import type {
   ImportArgsList,
   ExportArgsList,
   DeleteArgsList,
-} from "./subcommand";
+} from "./subcommand.js";
 import {
   ExportCommand,
   ImportCommand,
   DeleteCommand,
   SUBCOMMANDS,
   getArgumentsListBySubcommand,
-} from "./subcommand";
+} from "./subcommand.js";
 import {
   APP_IS_REQUIRED,
   BASE_URL_IS_REQUIRED,
   FILE_PATH_IS_REQUIRED,
   SUB_COMMAND_IS_NOT_INITIALIZED,
-} from "../error";
-import type { Command, Subcommand } from "../index";
+} from "../error.js";
+import type { Command, Subcommand } from "../index.js";
 
 export const RECORD = "record";
 export const SUPPORTED_COMMANDS = [RECORD] as const;

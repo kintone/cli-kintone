@@ -1,7 +1,7 @@
-import { LocalFSDriver } from "../../../core/driver";
-import type { ManifestV1JsonObject } from "../../../core/manifest/v1";
-import { logger } from "../../../../utils/log";
-import type { DeepPartial } from "../../../../utils/types";
+import { LocalFSDriver } from "../../../core/driver/index.js";
+import type { ManifestV1JsonObject } from "../../../core/manifest/v1/index.js";
+import { logger } from "../../../../utils/log.js";
+import type { DeepPartial } from "../../../../utils/types.js";
 
 export type ManifestPatch = DeepPartial<
   Pick<ManifestV1JsonObject, "name" | "description" | "homepage_url">

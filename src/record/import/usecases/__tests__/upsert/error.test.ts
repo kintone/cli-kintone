@@ -1,7 +1,7 @@
-import type { LocalRecord } from "../../../types/record";
-import { UpsertRecordsError } from "../../upsert/error";
-import { buildKintoneAllRecordsError } from "../add/error.test";
-import type { RecordSchema } from "../../../types/schema";
+import type { LocalRecord } from "../../../types/record.js";
+import { UpsertRecordsError } from "../../upsert/error.js";
+import { buildKintoneAllRecordsError } from "../add/error.test.js";
+import type { RecordSchema } from "../../../types/schema.js";
 
 const schema: RecordSchema = {
   fields: [

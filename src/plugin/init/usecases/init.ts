@@ -1,14 +1,14 @@
 import chalk from "chalk";
-import type { Lang } from "../utils/lang";
-import { getBoundMessage, getMessage } from "../utils/messages";
-import { setupTemplate } from "../utils/template";
-import { runPrompt } from "../utils/qa";
-import { logger } from "../../../utils/log";
+import type { Lang } from "../utils/lang.js";
+import { getBoundMessage, getMessage } from "../utils/messages.js";
+import { setupTemplate } from "../utils/template.js";
+import { runPrompt } from "../utils/qa.js";
+import { logger } from "../../../utils/log.js";
 import path from "path";
 import fs from "fs";
-import { installDependencies } from "../utils/deps";
-import { runKeygen } from "../utils/keygen";
-import { isDirectory } from "../../../utils/file";
+import { installDependencies } from "../utils/deps.js";
+import { runKeygen } from "../utils/keygen.js";
+import { isDirectory } from "../../../utils/file.js";
 
 const getSuccessCreatedPluginMessage = (
   packageName: string,

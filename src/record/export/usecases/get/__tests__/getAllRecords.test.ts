@@ -1,8 +1,8 @@
 import { vi } from "vitest";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { getAllRecords } from "../getAllRecords";
-import type { LocalRecord } from "../../../types/record";
-import type { KintoneRecordForResponse } from "../../../../../kintone/types";
+import { getAllRecords } from "../getAllRecords.js";
+import type { LocalRecord } from "../../../types/record.js";
+import type { KintoneRecordForResponse } from "../../../../../kintone/types.js";
 
 describe("getAllRecords", () => {
   let apiClient: KintoneRestAPIClient;

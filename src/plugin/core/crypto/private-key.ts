@@ -1,6 +1,6 @@
 import crypto from "crypto";
-import { uuid } from "./uuid";
-import { sign } from "./sign";
+import { uuid } from "./uuid.js";
+import { sign } from "./sign.js";
 
 /**
  * PrivateKey represents private key to pack, sign, and verify plugin

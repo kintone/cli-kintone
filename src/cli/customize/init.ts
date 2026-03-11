@@ -1,8 +1,8 @@
-import type yargs from "yargs";
+import type * as yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { logger } from "../../utils/log";
-import { RunError } from "../../record/error";
-import { runInit } from "../../customize/init";
+import { logger } from "../../utils/log.js";
+import { RunError } from "../../record/error/index.js";
+import { runInit } from "../../customize/init/index.js";
 
 const command = "init";
 

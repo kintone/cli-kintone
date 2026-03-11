@@ -1,6 +1,6 @@
 import type { Arguments, Options } from "yargs";
-import type { LogConfigLevel } from "../utils/log";
-import { logger, LOG_CONFIG_LEVELS } from "../utils/log";
+import type { LogConfigLevel } from "../utils/log.js";
+import { logger, LOG_CONFIG_LEVELS } from "../utils/log.js";
 
 export const logOptions: { [key: string]: Options } = {
   "log-level": {

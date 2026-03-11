@@ -1,15 +1,15 @@
-import type { LocalRecord } from "../../../../types/record";
-import type { RecordSchema } from "../../../../types/schema";
+import type { LocalRecord } from "../../../../types/record.js";
+import type { RecordSchema } from "../../../../types/schema.js";
 
-import { CsvStringifier } from "../index";
+import { CsvStringifier } from "../index.js";
 
-import { pattern as common } from "./fixtures/index/common";
-import { pattern as withFileAndAttachmentsDir } from "./fixtures/index/withFileAndAttachmentsDir";
-import { pattern as withFileAndNoAttachmentsDir } from "./fixtures/index/withFileAndNoAttachmentsDir";
-import { pattern as withSubtableAndFileAndAttachmentsDir } from "./fixtures/index/withSubtableAndFileAndAttachmentsDir";
-import { pattern as withSubtableAndFileAndNoAttachmentsDir } from "./fixtures/index/withSubtableAndFileAndNoAttachmentsDir";
-import { pattern as withEmptySubtable } from "./fixtures/index/withEmptySubtable";
-import { pattern as withNoRecord } from "./fixtures/index/withNoRecord";
+import { pattern as common } from "./fixtures/index/common/index.js";
+import { pattern as withFileAndAttachmentsDir } from "./fixtures/index/withFileAndAttachmentsDir/index.js";
+import { pattern as withFileAndNoAttachmentsDir } from "./fixtures/index/withFileAndNoAttachmentsDir/index.js";
+import { pattern as withSubtableAndFileAndAttachmentsDir } from "./fixtures/index/withSubtableAndFileAndAttachmentsDir/index.js";
+import { pattern as withSubtableAndFileAndNoAttachmentsDir } from "./fixtures/index/withSubtableAndFileAndNoAttachmentsDir/index.js";
+import { pattern as withEmptySubtable } from "./fixtures/index/withEmptySubtable/index.js";
+import { pattern as withNoRecord } from "./fixtures/index/withNoRecord/index.js";
 import { Readable } from "stream";
 
 export type TestPattern = {

@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { retry } from "../retry";
+import { retry } from "../retry.js";
 
 // Mock setTimeout because we don't need to really wait.
 vi.mock("timers/promises", () => ({

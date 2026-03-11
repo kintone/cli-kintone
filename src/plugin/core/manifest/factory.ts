@@ -1,8 +1,11 @@
-import type { DriverInterface } from "../driver";
-import { LocalFSDriver } from "../driver";
-import type { ManifestInterface, ManifestStaticInterface } from "./interface";
-import { ManifestV1 } from "./v1";
-import { ManifestV2 } from "./v2";
+import type { DriverInterface } from "../driver/index.js";
+import { LocalFSDriver } from "../driver/index.js";
+import type {
+  ManifestInterface,
+  ManifestStaticInterface,
+} from "./interface.js";
+import { ManifestV1 } from "./v1/index.js";
+import { ManifestV2 } from "./v2/index.js";
 
 /**
  * Factory to instantiate Manifest

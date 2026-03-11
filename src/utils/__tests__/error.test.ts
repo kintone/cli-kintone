@@ -3,7 +3,7 @@ import {
   KintoneAllRecordsError,
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
-import { CliKintoneError } from "../error";
+import { CliKintoneError } from "../error.js";
 
 const CHUNK_SIZE = 100;
 

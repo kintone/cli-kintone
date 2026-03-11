@@ -1,6 +1,6 @@
 import type { KintoneRestAPIError } from "@kintone/rest-api-client";
-import type { LocalRecord } from "../types/record";
-import type { RecordSchema } from "../types/schema";
+import type { LocalRecord } from "../types/record.js";
+import type { RecordSchema } from "../types/schema.js";
 
 /** *
  * @param error

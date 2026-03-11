@@ -1,18 +1,18 @@
-import type { LocalRecord } from "../../../types/record";
-import type { CsvRow } from "../../../../../kintone/types";
-import type { RecordSchema } from "../../../types/schema";
+import type { LocalRecord } from "../../../types/record.js";
+import type { CsvRow } from "../../../../../kintone/types.js";
+import type { RecordSchema } from "../../../types/schema.js";
 
 import {
   stringify,
   type Stringifier as CsvStringifyStringifier,
 } from "csv-stringify";
 
-import { convertRecord, recordReader } from "./record";
-import { LINE_BREAK, SEPARATOR } from "./constants";
-import { buildHeaderFields } from "./header";
+import { convertRecord, recordReader } from "./record.js";
+import { LINE_BREAK, SEPARATOR } from "./constants.js";
+import { buildHeaderFields } from "./header.js";
 import type { TransformCallback } from "stream";
 import { PassThrough, Transform } from "stream";
-import type { Stringifier } from "../index";
+import type { Stringifier } from "../index.js";
 
 export class CsvStringifier implements Stringifier {
   private readonly recordTransformer: Transform;

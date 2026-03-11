@@ -1,8 +1,8 @@
-import type yargs from "yargs";
+import type * as yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { logger } from "../../utils/log";
-import { RunError } from "../../record/error";
-import { keygen } from "../../plugin/keygen";
+import { logger } from "../../utils/log.js";
+import { RunError } from "../../record/error/index.js";
+import { keygen } from "../../plugin/keygen/index.js";
 
 const command = "keygen";
 

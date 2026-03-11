@@ -1,6 +1,6 @@
 import { vi } from "vitest";
-import type { LogConfigLevel, LogEventLevel, Printer } from "../log";
-import { StandardLogger } from "../log";
+import type { LogConfigLevel, LogEventLevel, Printer } from "../log.js";
+import { StandardLogger } from "../log.js";
 
 describe("StandardLogger", () => {
   const mockDate = new Date(0);

@@ -1,8 +1,8 @@
 import fs from "fs";
 import iconv from "iconv-lite";
 import readline from "readline";
-import { extractFileFormat } from "./file";
-import type { SupportedImportEncoding } from "./file";
+import { extractFileFormat } from "./file.js";
+import type { SupportedImportEncoding } from "./file.js";
 import { Transform } from "stream";
 
 export const isMismatchEncoding = async (

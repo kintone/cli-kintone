@@ -1,8 +1,8 @@
-export type { AuthArgv, AuthModule, AuthResolvedArgv } from "./types";
+export type { AuthArgv, AuthModule, AuthResolvedArgv } from "./types.js";
 
-import type { AuthArgv, AuthModule } from "./types";
-import { passwordAuth } from "./passwordAuth";
-import { apiTokenAuth } from "./apiTokenAuth";
+import type { AuthArgv, AuthModule } from "./types.js";
+import { passwordAuth } from "./passwordAuth.js";
+import { apiTokenAuth } from "./apiTokenAuth.js";
 
 export type AuthMethod = "password" | "apiToken";
 

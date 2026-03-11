@@ -1,9 +1,9 @@
-import type yargs from "yargs";
+import type * as yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { run } from "../../record/delete";
-import type { SupportedImportEncoding } from "../../utils/file";
+import { run } from "../../record/delete/index.js";
+import type { SupportedImportEncoding } from "../../utils/file.js";
 import { confirm } from "@inquirer/prompts";
-import { buildConnectionOptions } from "../connectionOptions";
+import { buildConnectionOptions } from "../connectionOptions.js";
 
 const command = "delete";
 

@@ -1,6 +1,6 @@
 // NOTE: We don't use process.emitWarning() for display consistency with our own logger,
 
-import { logger as defaultLogger } from "./log";
+import { logger as defaultLogger } from "./log.js";
 
 export const emitExperimentalWarning = (
   message: string,

@@ -1,10 +1,10 @@
 import { confirm, input } from "@inquirer/prompts";
-import type { BoundMessage } from "../messages";
+import type { BoundMessage } from "../messages.js";
 import {
   validateForDescription,
   validateForName,
   validateForProjectName,
-} from "./validator";
+} from "./validator.js";
 
 export type SupportLang = "En" | "Ja" | "Zh" | "Es";
 

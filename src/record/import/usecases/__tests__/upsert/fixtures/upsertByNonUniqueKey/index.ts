@@ -1,7 +1,7 @@
-import type { TestPattern } from "../../index.test";
-import { records } from "./records";
-import { schema } from "../schema";
-import { recordsOnKintone } from "../recordsOnKintone";
+import type { TestPattern } from "../../index.test.js";
+import { records } from "./records.js";
+import { schema } from "../schema.js";
+import { recordsOnKintone } from "../recordsOnKintone.js";
 
 export const pattern: TestPattern = {
   description: "should throw error when update key field is not unique",

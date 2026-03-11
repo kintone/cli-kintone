@@ -3,10 +3,10 @@ import type {
   KintoneRestAPIClient,
 } from "@kintone/rest-api-client";
 
-import type { FieldSchema, RecordSchema } from "../../types/schema";
-import type { LocalRecord } from "../../types/record";
-import type { LocalRecordRepository } from "../interface";
-import { withIndex } from "../../../../utils/iterator";
+import type { FieldSchema, RecordSchema } from "../../types/schema.js";
+import type { LocalRecord } from "../../types/record.js";
+import type { LocalRecordRepository } from "../interface.js";
+import { withIndex } from "../../../../utils/iterator.js";
 
 type UpdateKeyField = {
   code: string;

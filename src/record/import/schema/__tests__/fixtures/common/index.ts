@@ -1,7 +1,7 @@
-import type { TestPattern } from "../../index.test";
-import { input } from "./input";
-import { expected } from "./expected";
-import { noop } from "../../../transformers/noop";
+import type { TestPattern } from "../../index.test.js";
+import { input } from "./input.js";
+import { expected } from "./expected.js";
+import { noop } from "../../../transformers/noop.js";
 
 export const pattern: TestPattern = {
   description: "should create schema correctly",

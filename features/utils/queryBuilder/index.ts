@@ -1,4 +1,4 @@
-import { RecordCommand } from "./record/command";
+import { RecordCommand } from "./record/command.js";
 
 export interface Command {
   getCommandName: () => string;

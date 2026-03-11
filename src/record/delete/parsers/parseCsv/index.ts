@@ -1,10 +1,10 @@
-import type { CsvRow } from "../../../../kintone/types";
-import type { RecordNumber } from "../../types/field";
+import type { CsvRow } from "../../../../kintone/types.js";
+import type { RecordNumber } from "../../types/field.js";
 
 import { parse as csvParse } from "csv-parse/sync";
-import { getRecordNumberFromCsvRows } from "./record";
-import { SEPARATOR } from "./constants";
-import { ParserError } from "../error";
+import { getRecordNumberFromCsvRows } from "./record.js";
+import { SEPARATOR } from "./constants.js";
+import { ParserError } from "../error.js";
 
 export const parseCsv: (
   csv: string,

@@ -1,10 +1,10 @@
 import path from "path";
 import fs from "fs";
 
-import type { PluginInterface } from "../index";
-import { PluginZip } from "../index";
-import { PrivateKey, PublicKey } from "../../crypto";
-import { ContentsZip } from "../../contents";
+import type { PluginInterface } from "../index.js";
+import { PluginZip } from "../index.js";
+import { PrivateKey, PublicKey } from "../../crypto/index.js";
+import { ContentsZip } from "../../contents/index.js";
 
 const contentsZipPath = path.join(__dirname, "fixtures", "contents.zip");
 

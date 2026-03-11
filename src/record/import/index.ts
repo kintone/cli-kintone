@@ -1,17 +1,17 @@
-import type { RestAPIClientOptions } from "../../kintone/client";
-import { buildRestAPIClient } from "../../kintone/client";
-import type { SupportedImportEncoding } from "../../utils/file";
-import { extractFileFormat, openFsStreamWithEncode } from "../../utils/file";
-import { addRecords } from "./usecases/add";
-import { upsertRecords } from "./usecases/upsert";
-import { createSchema } from "./schema";
-import { noop as defaultTransformer } from "./schema/transformers/noop";
-import { userSelected } from "./schema/transformers/userSelected";
-import { logger } from "../../utils/log";
-import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
-import { RunError } from "../error";
-import { isMismatchEncoding } from "../../utils/encoding";
-import { emitDeprecationWarning } from "../../utils/stability";
+import type { RestAPIClientOptions } from "../../kintone/client.js";
+import { buildRestAPIClient } from "../../kintone/client.js";
+import type { SupportedImportEncoding } from "../../utils/file.js";
+import { extractFileFormat, openFsStreamWithEncode } from "../../utils/file.js";
+import { addRecords } from "./usecases/add.js";
+import { upsertRecords } from "./usecases/upsert.js";
+import { createSchema } from "./schema/index.js";
+import { noop as defaultTransformer } from "./schema/transformers/noop.js";
+import { userSelected } from "./schema/transformers/userSelected.js";
+import { logger } from "../../utils/log.js";
+import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream.js";
+import { RunError } from "../error/index.js";
+import { isMismatchEncoding } from "../../utils/encoding.js";
+import { emitDeprecationWarning } from "../../utils/stability.js";
 
 export type Options = {
   app: string;

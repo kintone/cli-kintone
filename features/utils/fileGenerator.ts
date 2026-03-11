@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import iconv from "iconv-lite";
-import type { SupportedEncoding } from "./helper";
+import type { SupportedEncoding } from "./helper.js";
 
 const BASE64_FILE_CONTENTS = {
   txt: "VGhpcyBpcyBhIHRlc3QgZmlsZQ==",

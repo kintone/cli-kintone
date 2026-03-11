@@ -1,8 +1,8 @@
 import fs from "fs/promises";
-import { PrivateKey } from "../core";
+import { PrivateKey } from "../core/index.js";
 import path from "path";
-import { logger } from "../../utils/log";
-import { isFile } from "../../utils/file";
+import { logger } from "../../utils/log.js";
+import { isFile } from "../../utils/file.js";
 
 export const keygen = async (output?: string) => {
   // Generate new ppk

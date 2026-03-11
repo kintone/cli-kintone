@@ -3,9 +3,9 @@ import assert from "assert";
 import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
-import { setupTemplate } from "../template";
-import { resolveGitHubTemplateSource as _resolveGitHubTemplateSource } from "../template/github";
-import { downloadAndExtractFromUrl as _downloadAndExtractFromUrl } from "../template/downloader";
+import { setupTemplate } from "../template.js";
+import { resolveGitHubTemplateSource as _resolveGitHubTemplateSource } from "../template/github.js";
+import { downloadAndExtractFromUrl as _downloadAndExtractFromUrl } from "../template/downloader.js";
 
 // GitHub関連の関数をモック
 vi.mock("../template/github");

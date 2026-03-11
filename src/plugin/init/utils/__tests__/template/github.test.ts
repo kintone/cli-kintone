@@ -4,12 +4,12 @@ import assert from "assert";
 import {
   isGitHubTemplateExists,
   resolveGitHubTemplateSource,
-} from "../../template/github";
+} from "../../template/github.js";
 import {
   mockFetchSuccess,
   mockFetchNotFound,
   mockFetchError,
-} from "../helpers/mockFetch";
+} from "../helpers/mockFetch.js";
 
 describe("template/github", () => {
   describe("isGitHubTemplateExists", () => {

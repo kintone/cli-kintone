@@ -1,21 +1,21 @@
 import { vi } from "vitest";
-import type * as Fields from "../../../types/field";
+import type * as Fields from "../../../types/field.js";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { promises as fs } from "fs";
 
 import os from "os";
 import path from "path";
-import { getRecords, NO_RECORDS_WARNING } from "../../get";
+import { getRecords, NO_RECORDS_WARNING } from "../../get.js";
 
-import * as caseCanGetRecords from "./fixtures/can_get_records";
-import * as caseCanDownloadFiles from "./fixtures/can_download_files";
-import * as caseCanDownloadFilesInSubtable from "./fixtures/can_download_files_in_subtable";
-import * as caseCanDownloadFilesIncludingSpecialCharacters from "./fixtures/can_download_files_including_special_characters";
-import * as caseCanDownloadFilesIncludingSpecialCharactersInSubTable from "./fixtures/can_download_files_including_special_characters_in_subtable";
-import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock";
-import { logger } from "../../../../../utils/log";
-import type { RecordSchema } from "../../../types/schema";
+import * as caseCanGetRecords from "./fixtures/can_get_records.js";
+import * as caseCanDownloadFiles from "./fixtures/can_download_files.js";
+import * as caseCanDownloadFilesInSubtable from "./fixtures/can_download_files_in_subtable.js";
+import * as caseCanDownloadFilesIncludingSpecialCharacters from "./fixtures/can_download_files_including_special_characters.js";
+import * as caseCanDownloadFilesIncludingSpecialCharactersInSubTable from "./fixtures/can_download_files_including_special_characters_in_subtable.js";
+import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock.js";
+import { logger } from "../../../../../utils/log.js";
+import type { RecordSchema } from "../../../types/schema.js";
 
 type KintoneRecord = Awaited<
   ReturnType<KintoneRestAPIClient["record"]["getAllRecords"]>

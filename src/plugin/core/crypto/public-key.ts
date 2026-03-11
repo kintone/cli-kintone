@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { uuid } from "./uuid";
+import { uuid } from "./uuid.js";
 
 export interface PublicKeyInterface {
   /**

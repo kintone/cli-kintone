@@ -1,7 +1,7 @@
 import { vi } from "vitest";
-import type { Logger } from "../../../../../utils/log";
+import type { Logger } from "../../../../../utils/log.js";
 
-import { ProgressLogger } from "../../add/progress";
+import { ProgressLogger } from "../../add/progress.js";
 
 const mockLogger: Logger = {
   info: vi.fn(),

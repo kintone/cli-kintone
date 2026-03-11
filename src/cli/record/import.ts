@@ -1,8 +1,8 @@
-import type yargs from "yargs";
-import { run } from "../../record/import";
-import type { SupportedImportEncoding } from "../../utils/file";
+import type * as yargs from "yargs";
+import { run } from "../../record/import/index.js";
+import type { SupportedImportEncoding } from "../../utils/file.js";
 import type { CommandModule } from "yargs";
-import { buildConnectionOptions } from "../connectionOptions";
+import { buildConnectionOptions } from "../connectionOptions.js";
 
 const command = "import";
 

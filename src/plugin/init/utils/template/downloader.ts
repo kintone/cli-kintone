@@ -1,8 +1,8 @@
 import { Readable } from "stream";
 import { pipeline } from "stream/promises";
 import { x } from "tar";
-import { logger } from "../../../../utils/log";
-import { fetchGitHubAPI } from "../../../../utils/github";
+import { logger } from "../../../../utils/log.js";
+import { fetchGitHubAPI } from "../../../../utils/github.js";
 
 /**
  * Template source information

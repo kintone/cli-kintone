@@ -1,6 +1,9 @@
 import { spawn, spawnSync } from "child_process";
 import path from "path";
-import { QueryBuilder } from "./queryBuilder";
+import { fileURLToPath } from "node:url";
+import { QueryBuilder } from "./queryBuilder/index.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const SUPPORTED_ENCODING = ["utf8", "sjis"] as const;
 export type SupportedEncoding = (typeof SUPPORTED_ENCODING)[number];

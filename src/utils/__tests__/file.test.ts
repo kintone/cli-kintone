@@ -1,6 +1,6 @@
-import type { SupportedImportEncoding } from "../file";
-import { readFile } from "../file";
-import { expected } from "./fixtures/expected";
+import type { SupportedImportEncoding } from "../file.js";
+import { readFile } from "../file.js";
+import { expected } from "./fixtures/expected.js";
 
 import path from "path";
 

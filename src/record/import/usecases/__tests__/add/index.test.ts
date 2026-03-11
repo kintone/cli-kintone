@@ -1,17 +1,17 @@
 import { vi } from "vitest";
-import type { RecordSchema } from "../../../types/schema";
-import type { LocalRecord } from "../../../types/record";
+import type { RecordSchema } from "../../../types/schema.js";
+import type { LocalRecord } from "../../../types/record.js";
 
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { addRecords } from "../../add";
+import { addRecords } from "../../add.js";
 
 import path from "path";
 
-import * as canUploadFiles from "./fixtures/can_upload_files";
-import * as canUploadFilesInSubtable from "./fixtures/can_upload_files_in_subtable";
-import { AddRecordsError } from "../../add/error";
-import { inputRecords } from "./fixtures/can_upload_files";
-import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock";
+import * as canUploadFiles from "./fixtures/can_upload_files.js";
+import * as canUploadFilesInSubtable from "./fixtures/can_upload_files_in_subtable.js";
+import { AddRecordsError } from "../../add/error.js";
+import { inputRecords } from "./fixtures/can_upload_files.js";
+import { LocalRecordRepositoryMock } from "../../../repositories/localRecordRepositoryMock.js";
 
 describe("addRecords", () => {
   let apiClient: KintoneRestAPIClient;

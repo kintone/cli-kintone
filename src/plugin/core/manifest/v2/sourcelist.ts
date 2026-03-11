@@ -1,4 +1,4 @@
-import type { ManifestV2JsonObject } from "./index";
+import type { ManifestV2JsonObject } from "./index.js";
 
 /**
  * Create contents file list from manifest.json

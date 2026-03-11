@@ -1,12 +1,14 @@
-import { Given, Then } from "../utils/world";
+import { Given, Then } from "../utils/world.js";
 import * as assert from "assert";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "node:url";
 
 Then("I have a file at {string}", async function (filePath: string) {
   assert.ok(await this.isFileExists(filePath));
 });
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const assetsRootPath = path.resolve(__dirname, "..", "assets");
 
 /**

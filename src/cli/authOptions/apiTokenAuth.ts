@@ -1,5 +1,5 @@
-import type { AuthModule } from "./types";
-import type yargs from "yargs";
+import type { AuthModule } from "./types.js";
+import type * as yargs from "yargs";
 
 type OptionsDefinition = Parameters<yargs.Argv["options"]>[0];
 

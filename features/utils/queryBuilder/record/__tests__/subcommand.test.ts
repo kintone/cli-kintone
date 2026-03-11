@@ -1,5 +1,5 @@
-import { getArgumentsListBySubcommand, SUBCOMMANDS } from "../subcommand";
-import * as Arguments from "../../arguments";
+import { getArgumentsListBySubcommand, SUBCOMMANDS } from "../subcommand.js";
+import * as Arguments from "../../arguments.js";
 
 describe("Record - Subcommand", () => {
   describe("getArgumentsListBySubcommand", () => {

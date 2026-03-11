@@ -1,5 +1,5 @@
-import { RecordCommand } from "../command";
-import type { ImportArgs, ExportArgs, DeleteArgs } from "../subcommand";
+import { RecordCommand } from "../command.js";
+import type { ImportArgs, ExportArgs, DeleteArgs } from "../subcommand.js";
 
 describe("Record command", () => {
   describe("Missing required parameters", () => {

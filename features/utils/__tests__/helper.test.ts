@@ -3,7 +3,7 @@ import {
   generateCsvRow,
   replacePlaceholders,
   validateRequireColumnsInTable,
-} from "../helper";
+} from "../helper.js";
 
 describe("Helper functions", () => {
   describe("generateCsvRow", () => {

@@ -1,8 +1,8 @@
-import type { LocalRecordRepository } from "../usecases/interface";
-import type { RecordSchema } from "../types/schema";
-import { RepositoryError } from "./error";
-import { countRecordsFromCsv, csvReader } from "./parsers/parseCsv";
-import type { LocalRecord } from "../types/record";
+import type { LocalRecordRepository } from "../usecases/interface.js";
+import type { RecordSchema } from "../types/schema.js";
+import { RepositoryError } from "./error.js";
+import { countRecordsFromCsv, csvReader } from "./parsers/parseCsv/index.js";
+import type { LocalRecord } from "../types/record.js";
 
 export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
   readonly format: string;

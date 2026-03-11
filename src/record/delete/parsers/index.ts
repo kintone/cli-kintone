@@ -1,7 +1,7 @@
-import type { RecordNumber } from "../types/field";
+import type { RecordNumber } from "../types/field.js";
 
-import { parseCsv } from "./parseCsv";
-import { ParserError } from "./error";
+import { parseCsv } from "./parseCsv/index.js";
+import { ParserError } from "./error.js";
 
 export const parseRecords: (options: {
   source: string;

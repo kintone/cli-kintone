@@ -1,7 +1,7 @@
 import { spawnSync } from "child_process";
-import type { Lang } from "./lang";
-import { getMessage } from "./messages";
-import { logger } from "../../../utils/log";
+import type { Lang } from "./lang.js";
+import { getMessage } from "./messages.js";
+import { logger } from "../../../utils/log.js";
 
 /**
  * Run npm run keygen to generate private key

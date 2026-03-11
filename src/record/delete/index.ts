@@ -1,16 +1,16 @@
-import type { RestAPIClientOptions } from "../../kintone/client";
+import type { RestAPIClientOptions } from "../../kintone/client.js";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { RecordNumber } from "./types/field";
-import type { FieldsJson } from "../../kintone/types";
-import { buildRestAPIClient } from "../../kintone/client";
-import { deleteAllRecords } from "./usecases/deleteAll";
-import { deleteByRecordNumber } from "./usecases/deleteByRecordNumber";
-import { logger } from "../../utils/log";
-import type { SupportedImportEncoding } from "../../utils/file";
-import { readFile } from "../../utils/file";
-import { isMismatchEncoding } from "../../utils/encoding";
-import { parseRecords } from "./parsers";
-import { RunError } from "../error";
+import type { RecordNumber } from "./types/field.js";
+import type { FieldsJson } from "../../kintone/types.js";
+import { buildRestAPIClient } from "../../kintone/client.js";
+import { deleteAllRecords } from "./usecases/deleteAll.js";
+import { deleteByRecordNumber } from "./usecases/deleteByRecordNumber.js";
+import { logger } from "../../utils/log.js";
+import type { SupportedImportEncoding } from "../../utils/file.js";
+import { readFile } from "../../utils/file.js";
+import { isMismatchEncoding } from "../../utils/encoding.js";
+import { parseRecords } from "./parsers/index.js";
+import { RunError } from "../error/index.js";
 
 export type Options = {
   app: string;

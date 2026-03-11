@@ -1,5 +1,5 @@
-import type { RecordNumber } from "../../../types/field";
-import type { TestPattern } from "../index.test";
+import type { RecordNumber } from "../../../types/field.js";
+import type { TestPattern } from "../index.test.js";
 
 const appCode = "";
 

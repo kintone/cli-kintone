@@ -1,11 +1,11 @@
-import type { TestPattern } from "../e2e.test";
+import type { TestPattern } from "../e2e.test.js";
 import {
   ANSWER_NO,
   CREATE_PLUGIN_COMMAND,
   DEFAULT_ANSWER,
-} from "../utils/constants";
-import { getBoundMessage } from "../../utils/messages";
-import { generateRandomString } from "../utils/helper";
+} from "../utils/constants.js";
+import { getBoundMessage } from "../../utils/messages.js";
+import { generateRandomString } from "../utils/helper.js";
 
 const m = getBoundMessage("en");
 const pluginDescription = generateRandomString(200);

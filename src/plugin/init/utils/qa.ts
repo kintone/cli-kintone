@@ -1,5 +1,5 @@
-import type { BoundMessage } from "./messages";
-import { promptForLang, promptForProjectName } from "../utils/qa/prompt";
+import type { BoundMessage } from "./messages.js";
+import { promptForLang, promptForProjectName } from "../utils/qa/prompt.js";
 import path from "path";
 
 export type Answers = {

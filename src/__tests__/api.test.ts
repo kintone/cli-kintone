@@ -1,11 +1,11 @@
 import { vi } from "vitest";
-import { buildRestAPIClient } from "../kintone/client";
+import { buildRestAPIClient } from "../kintone/client.js";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import * as https from "https";
 import fs from "fs";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import type { HttpsProxyAgentOptions } from "https-proxy-agent";
-const packageJson = require("../../package.json");
+import packageJson from "../../package.json" with { type: "json" };
 const expectedUa = `${packageJson.name}@${packageJson.version}`;
 
 vi.mock("@kintone/rest-api-client");

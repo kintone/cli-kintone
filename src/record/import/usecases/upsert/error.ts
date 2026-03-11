@@ -1,9 +1,9 @@
 import type { KintoneRestAPIError } from "@kintone/rest-api-client";
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import type { LocalRecord } from "../../types/record";
-import type { RecordSchema } from "../../types/schema";
-import { CliKintoneError } from "../../../../utils/error";
-import { parseKintoneRestAPIError } from "../../utils/error";
+import type { LocalRecord } from "../../types/record.js";
+import type { RecordSchema } from "../../types/schema.js";
+import { CliKintoneError } from "../../../../utils/error.js";
+import { parseKintoneRestAPIError } from "../../utils/error.js";
 
 // Magic number from @kintone/rest-api-client
 // https://github.com/kintone/js-sdk/blob/master/packages/rest-api-client/src/client/RecordClient.ts#L17

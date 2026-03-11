@@ -1,7 +1,7 @@
-import type { RecordSchema } from "../../types/schema";
+import type { RecordSchema } from "../../types/schema.js";
 
-import { CsvStringifier } from "./csvStringifier";
-import type { LocalRecord } from "../../types/record";
+import { CsvStringifier } from "./csvStringifier/index.js";
+import type { LocalRecord } from "../../types/record.js";
 
 export type Stringifier = {
   write(records: LocalRecord[]): Promise<void>;

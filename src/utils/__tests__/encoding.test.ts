@@ -1,4 +1,4 @@
-import { isMismatchEncoding } from "../encoding";
+import { isMismatchEncoding } from "../encoding.js";
 import path from "path";
 
 describe("isMismatchEncoding", () => {

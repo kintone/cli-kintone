@@ -1,13 +1,13 @@
-import type { CsvRow } from "../../../../../kintone/types";
-import type { LocalRecord } from "../../../types/record";
-import type { RecordSchema } from "../../../types/schema";
+import type { CsvRow } from "../../../../../kintone/types.js";
+import type { LocalRecord } from "../../../types/record.js";
+import type { RecordSchema } from "../../../types/schema.js";
 
-import { convertField, fieldReader } from "./field";
-import { convertSubtableField, subtableFieldReader } from "./subtable";
-import { PRIMARY_MARK } from "./constants";
-import type csvParse from "csv-parse";
+import { convertField, fieldReader } from "./field.js";
+import { convertSubtableField, subtableFieldReader } from "./subtable.js";
+import { PRIMARY_MARK } from "./constants.js";
+import type { Parser } from "csv-parse";
 import { Readable } from "stream";
-import { withIndex, withNext } from "../../../../../utils/iterator";
+import { withIndex, withNext } from "../../../../../utils/iterator.js";
 
 type RecordCsv = {
   rows: CsvRow[];
@@ -41,7 +41,7 @@ export const convertRecord = (
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#use_of_the_yield_keyword
 // eslint-disable-next-line func-style
 export async function* recordReader(
-  csvStream: csvParse.Parser,
+  csvStream: Parser,
 ): AsyncGenerator<RecordCsv, void, undefined> {
   const lineOffset = 1; // offset the header row
 

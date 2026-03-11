@@ -1,4 +1,12 @@
-import type { ParallelAssignmentValidator } from "@cucumber/cucumber/lib/support_code_library_builder/types";
+type PickleLike = {
+  name: string;
+  tags: ReadonlyArray<{ name: string }>;
+};
+
+type ParallelAssignmentValidator = (
+  pickleInQuestion: PickleLike,
+  picklesInProgress: readonly PickleLike[],
+) => boolean;
 
 /**
  * Our parallel can assign rules

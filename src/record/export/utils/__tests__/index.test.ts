@@ -1,4 +1,4 @@
-import { replaceSpecialCharacters } from "../file";
+import { replaceSpecialCharacters } from "../file.js";
 
 describe("utils/operateFilename.ts", () => {
   it("should replace a special character", () => {

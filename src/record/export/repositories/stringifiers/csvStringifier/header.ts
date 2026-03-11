@@ -1,5 +1,5 @@
-import type { RecordSchema } from "../../../types/schema";
-import { PRIMARY_MARK } from "./constants";
+import type { RecordSchema } from "../../../types/schema.js";
+import { PRIMARY_MARK } from "./constants.js";
 
 export const buildHeaderFields = (schema: RecordSchema): string[] => {
   const headerFields: string[] = [];

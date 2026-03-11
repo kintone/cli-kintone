@@ -1,4 +1,4 @@
-import { Given, Then } from "../../utils/world";
+import { Given, Then } from "../../utils/world.js";
 
 Then(
   "The plugin with id {string} should be installed",

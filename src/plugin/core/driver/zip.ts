@@ -1,6 +1,6 @@
 import yauzl from "yauzl";
 import { promisify } from "util";
-import type { DriverInterface, Encoding, FileStats } from "./interface";
+import type { DriverInterface, Encoding, FileStats } from "./interface.js";
 import type { Readable } from "node:stream";
 import consumers from "node:stream/consumers";
 

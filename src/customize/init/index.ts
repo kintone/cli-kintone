@@ -1,10 +1,10 @@
 import fs from "fs/promises";
 import path from "path";
 import { confirm } from "@inquirer/prompts";
-import { logger } from "../../utils/log";
-import { getBoundMessage } from "../core";
-import type { CustomizeManifest } from "../core";
-import { isFile } from "../../utils/file";
+import { logger } from "../../utils/log.js";
+import { getBoundMessage } from "../core/index.js";
+import type { CustomizeManifest } from "../core/index.js";
+import { isFile } from "../../utils/file.js";
 
 export interface InitParams {
   outputPath: string;

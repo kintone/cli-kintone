@@ -1,7 +1,18 @@
-import type * as Ajv from "ajv";
-import type { DriverInterface } from "../driver";
-import type { ManifestInterface } from "./interface";
-import validate from "@kintone/plugin-manifest-validator";
+import type { ErrorObject } from "ajv";
+import type { DriverInterface } from "../driver/index.js";
+import type { ManifestInterface } from "./interface.js";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const pluginManifestValidator = require("@kintone/plugin-manifest-validator")
+  .default as (
+  json: Record<string, any>,
+  options?: Record<string, any>,
+) => {
+  valid: boolean;
+  errors: ErrorObject[] | null;
+  warnings: Array<{ message: string }> | null;
+};
 
 export type ValidationResult =
   | {
@@ -26,7 +37,7 @@ export const validateManifest = async (
       }
     : {};
 
-  const result = validate(manifest.json, options);
+  const result = pluginManifestValidator(manifest.json, options);
 
   const warnings = result.warnings?.map((warn) => warn.message) ?? [];
 
@@ -45,7 +56,7 @@ export const validateManifest = async (
   };
 };
 
-const buildErrorMessages = (errors: Ajv.ErrorObject[]): string[] => {
+const buildErrorMessages = (errors: ErrorObject[]): string[] => {
   return errors.map((e) => {
     if (e.keyword === "enum") {
       return `"${e.instancePath}" ${e.message} (${(

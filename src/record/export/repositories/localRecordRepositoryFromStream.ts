@@ -1,6 +1,6 @@
-import type { LocalRecordRepository } from "../usecases/interface";
-import type { RecordSchema } from "../types/schema";
-import { stringifierFactory } from "./stringifiers";
+import type { LocalRecordRepository } from "../usecases/interface.js";
+import type { RecordSchema } from "../types/schema.js";
+import { stringifierFactory } from "./stringifiers/index.js";
 
 export class LocalRecordRepositoryFromStream implements LocalRecordRepository {
   readonly format = "csv";

@@ -1,5 +1,5 @@
-import type { FieldsJson } from "../../../../kintone/types";
-import { userSelected } from "../transformers/userSelected";
+import type { FieldsJson } from "../../../../kintone/types.js";
+import { userSelected } from "../transformers/userSelected.js";
 
 export const fieldsJson: FieldsJson = {
   revision: "29",

@@ -1,5 +1,5 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import * as packageJson from "../../package.json";
+import packageJson from "../../package.json" with { type: "json" };
 import { HttpsProxyAgent } from "https-proxy-agent";
 import type { HttpsProxyAgentOptions } from "https-proxy-agent";
 import * as https from "https";

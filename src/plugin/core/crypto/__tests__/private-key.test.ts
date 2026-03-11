@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 
-import { PrivateKey } from "../index";
+import { PrivateKey } from "../index.js";
 
 const privateKeyPath = path.join(__dirname, "fixtures", "private.ppk");
 

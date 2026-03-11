@@ -1,16 +1,16 @@
-import type { LocalRecord } from "../../../../types/record";
-import type { RecordSchema } from "../../../../types/schema";
+import type { LocalRecord } from "../../../../types/record.js";
+import type { RecordSchema } from "../../../../types/schema.js";
 
-import { csvReader } from "../index";
+import { csvReader } from "../index.js";
 
-import { pattern as withoutSubtable } from "./fixtures/withoutSubtable";
-import { pattern as withSubtable } from "./fixtures/withSubtable";
-import { pattern as withMultipleSubtable } from "./fixtures/withMultipleSubtable";
-import { pattern as emptyCsv } from "./fixtures/emptyCsv";
-import { pattern as withNoRecord } from "./fixtures/withNoRecord";
-import { pattern as withCrLf } from "./fixtures/withCrLf";
-import { pattern as withCr } from "./fixtures/withCr";
-import { pattern as withLf } from "./fixtures/withLf";
+import { pattern as withoutSubtable } from "./fixtures/withoutSubtable/index.js";
+import { pattern as withSubtable } from "./fixtures/withSubtable/index.js";
+import { pattern as withMultipleSubtable } from "./fixtures/withMultipleSubtable/index.js";
+import { pattern as emptyCsv } from "./fixtures/emptyCsv/index.js";
+import { pattern as withNoRecord } from "./fixtures/withNoRecord/index.js";
+import { pattern as withCrLf } from "./fixtures/withCrLf/index.js";
+import { pattern as withCr } from "./fixtures/withCr/index.js";
+import { pattern as withLf } from "./fixtures/withLf/index.js";
 import { Readable } from "stream";
 
 export type TestPattern = {

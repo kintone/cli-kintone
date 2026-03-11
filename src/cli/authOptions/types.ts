@@ -1,4 +1,4 @@
-import type yargs from "yargs";
+import type * as yargs from "yargs";
 
 type OptionsDefinition = Parameters<yargs.Argv["options"]>[0];
 

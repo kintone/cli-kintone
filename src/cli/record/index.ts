@@ -1,8 +1,8 @@
 import type { CommandModule } from "yargs";
-import type yargs from "yargs";
-import { exportCommand } from "./export";
-import { importCommand } from "./import";
-import { deleteCommand } from "./delete";
+import type * as yargs from "yargs";
+import { exportCommand } from "./export.js";
+import { importCommand } from "./import.js";
+import { deleteCommand } from "./delete.js";
 
 const command = "record";
 

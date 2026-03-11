@@ -1,15 +1,15 @@
 import fs from "fs/promises";
 import { confirm } from "@inquirer/prompts";
-import { PluginZip } from "../core";
+import { PluginZip } from "../core/index.js";
 import {
   buildRestAPIClient,
   type RestAPIClientOptions,
-} from "../../kintone/client";
-import { logger } from "../../utils/log";
+} from "../../kintone/client.js";
+import { logger } from "../../utils/log.js";
 import os from "os";
 import * as chokidar from "chokidar";
 import path from "path";
-import { isFile } from "../../utils/file";
+import { isFile } from "../../utils/file.js";
 
 export type Params = {
   pluginFilePath: string;

@@ -2,7 +2,9 @@ import { vi } from "vitest";
 import childProcess from "child_process";
 import { promisify } from "util";
 import path from "path";
+import { createRequire } from "module";
 
+const require = createRequire(import.meta.url);
 const projectRoot = path.resolve(__dirname, "../../../");
 const exec = promisify(childProcess.exec);
 const packageJson = require(path.resolve(projectRoot, "package.json"));

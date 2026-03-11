@@ -1,5 +1,5 @@
-import type { LocalRecordRepository } from "../usecases/interface";
-import type { LocalRecord } from "../types/record";
+import type { LocalRecordRepository } from "../usecases/interface.js";
+import type { LocalRecord } from "../types/record.js";
 
 export class LocalRecordRepositoryMock implements LocalRecordRepository {
   readonly format: string;

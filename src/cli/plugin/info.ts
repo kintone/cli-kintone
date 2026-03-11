@@ -1,9 +1,9 @@
-import type yargs from "yargs";
+import type * as yargs from "yargs";
 import type { CommandModule } from "yargs";
-import type { OutputFormat } from "../../plugin/info/";
-import { run } from "../../plugin/info/";
-import { logger } from "../../utils/log";
-import { RunError } from "../../record/error";
+import type { OutputFormat } from "../../plugin/info//index.js";
+import { run } from "../../plugin/info//index.js";
+import { logger } from "../../utils/log.js";
+import { RunError } from "../../record/error/index.js";
 
 const command = "info";
 

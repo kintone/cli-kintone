@@ -2,9 +2,14 @@ import path from "path";
 import fs from "fs/promises";
 import os from "os";
 import * as chokidar from "chokidar";
-import { logger } from "../../utils/log";
-import { ManifestFactory, PluginZip, PrivateKey, LocalFSDriver } from "../core";
-import { isFile } from "../../utils/file";
+import { logger } from "../../utils/log.js";
+import {
+  ManifestFactory,
+  PluginZip,
+  PrivateKey,
+  LocalFSDriver,
+} from "../core/index.js";
+import { isFile } from "../../utils/file.js";
 
 type Params = {
   input: string;

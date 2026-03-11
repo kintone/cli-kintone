@@ -1,5 +1,5 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { KintoneRecordForResponse } from "../../../../kintone/types";
+import type { KintoneRecordForResponse } from "../../../../kintone/types.js";
 
 const GET_RECORDS_LIMIT = 500;
 

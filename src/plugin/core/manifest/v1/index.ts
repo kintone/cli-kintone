@@ -1,10 +1,13 @@
-import { sourceList } from "./sourcelist";
-import type { ManifestInterface, ManifestStaticInterface } from "../interface";
-import type { DriverInterface } from "../../driver";
-import { LocalFSDriver } from "../../driver";
-import { validateManifest } from "../validate";
-import { ContentsZip } from "../../contents";
-import { logger } from "../../../../utils/log";
+import { sourceList } from "./sourcelist.js";
+import type {
+  ManifestInterface,
+  ManifestStaticInterface,
+} from "../interface.js";
+import type { DriverInterface } from "../../driver/index.js";
+import { LocalFSDriver } from "../../driver/index.js";
+import { validateManifest } from "../validate.js";
+import { ContentsZip } from "../../contents/index.js";
+import { logger } from "../../../../utils/log.js";
 
 export class ManifestV1 implements ManifestInterface {
   manifest: ManifestV1JsonObject;

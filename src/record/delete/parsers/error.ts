@@ -1,5 +1,5 @@
 import { CsvError } from "csv-parse";
-import { CliKintoneError } from "../../../utils/error";
+import { CliKintoneError } from "../../../utils/error.js";
 
 export class ParserError extends CliKintoneError {
   constructor(cause: unknown) {

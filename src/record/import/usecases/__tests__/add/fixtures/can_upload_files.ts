@@ -1,9 +1,9 @@
-import type { LocalRecord } from "../../../../types/record";
-import type { KintoneRecordForParameter } from "../../../../../../kintone/types";
-import type { RecordSchema } from "../../../../types/schema";
+import type { LocalRecord } from "../../../../types/record.js";
+import type { KintoneRecordForParameter } from "../../../../../../kintone/types.js";
+import type { RecordSchema } from "../../../../types/schema.js";
 
 import path from "path";
-import { LocalRecordRepositoryMock } from "../../../../repositories/localRecordRepositoryMock";
+import { LocalRecordRepositoryMock } from "../../../../repositories/localRecordRepositoryMock.js";
 
 export const inputRecords: LocalRecord[] = [
   {

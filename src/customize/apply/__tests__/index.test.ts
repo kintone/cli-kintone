@@ -1,8 +1,8 @@
 import assert from "assert";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { CustomizeManifest } from "../../core";
-import { getBoundMessage } from "../../core";
-import { apply } from "../index";
+import type { CustomizeManifest } from "../../core/index.js";
+import { getBoundMessage } from "../../core/index.js";
+import { apply } from "../index.js";
 
 type MockLog = {
   method: string;

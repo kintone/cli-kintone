@@ -1,6 +1,6 @@
 import { vi, type MockedClass } from "vitest";
 import path from "path";
-import { upload } from "../index";
+import { upload } from "../index.js";
 
 const fixturesDir = path.join(__dirname, "fixtures");
 

@@ -1,7 +1,7 @@
-import type { KintoneRecordForResponse } from "../../../kintone/types";
-import type { LocalRecord } from "../types/record";
-import type * as Fields from "../types/field";
-import type { FieldSchema, RecordSchema } from "../types/schema";
+import type { KintoneRecordForResponse } from "../../../kintone/types.js";
+import type { LocalRecord } from "../types/record.js";
+import type * as Fields from "../types/field.js";
+import type { FieldSchema, RecordSchema } from "../types/schema.js";
 import type {
   KintoneRecordField,
   KintoneRestAPIClient,
@@ -11,11 +11,11 @@ import { KintoneRestAPIError } from "@kintone/rest-api-client";
 import path from "path";
 
 import { existsSync, mkdirSync, writeFileSync } from "fs";
-import { getAllRecords } from "./get/getAllRecords";
-import type { LocalRecordRepository } from "./interface";
-import { replaceSpecialCharacters } from "../utils/file";
-import { logger } from "../../../utils/log";
-import { retry } from "../../../utils/retry";
+import { getAllRecords } from "./get/getAllRecords.js";
+import type { LocalRecordRepository } from "./interface.js";
+import { replaceSpecialCharacters } from "../utils/file.js";
+import { logger } from "../../../utils/log.js";
+import { retry } from "../../../utils/retry.js";
 
 export const NO_RECORDS_WARNING =
   "No records exist in the app or match the condition.";

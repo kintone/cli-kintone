@@ -1,1 +1,1 @@
-export { pack } from "../packer/pack";
+export { pack } from "../packer/pack.js";

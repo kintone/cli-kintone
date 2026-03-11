@@ -1,6 +1,6 @@
-import { pattern as canStringifyRecordsCorrectly } from "./fixtures/canStringifyRecordsCorrectly";
-import { pattern as canStringifyRecordsCorrectlyIterative } from "./fixtures/canStringifyRecordsCorrectlyIterative";
-import { stringifierFactory } from "../index";
+import { pattern as canStringifyRecordsCorrectly } from "./fixtures/canStringifyRecordsCorrectly/index.js";
+import { pattern as canStringifyRecordsCorrectlyIterative } from "./fixtures/canStringifyRecordsCorrectlyIterative/index.js";
+import { stringifierFactory } from "../index.js";
 
 describe("stringifier", () => {
   it("should stringify records as csv correctly", async () => {

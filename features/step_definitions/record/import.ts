@@ -1,10 +1,10 @@
 import * as assert from "assert";
-import { Given, Then } from "../../utils/world";
+import { Given, Then } from "../../utils/world.js";
 import fs from "fs";
-import type { SupportedEncoding } from "../../utils/helper";
-import { SUPPORTED_ENCODING, generateCsvRow } from "../../utils/helper";
+import type { SupportedEncoding } from "../../utils/helper.js";
+import { SUPPORTED_ENCODING, generateCsvRow } from "../../utils/helper.js";
 import path from "path";
-import { QueryBuilder } from "../../utils/queryBuilder";
+import { QueryBuilder } from "../../utils/queryBuilder/index.js";
 
 Given(
   "The CSV file {string} with content as below:",

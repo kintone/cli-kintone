@@ -1,7 +1,7 @@
 import path from "path";
-import { ManifestFactory } from "../../manifest";
-import { ContentsZip } from "../index";
-import { LocalFSDriver } from "../../driver";
+import { ManifestFactory } from "../../manifest/index.js";
+import { ContentsZip } from "../index.js";
+import { LocalFSDriver } from "../../driver/index.js";
 import fs from "fs";
 
 const fixturesDir = path.join(__dirname, "fixtures");

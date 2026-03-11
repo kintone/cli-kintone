@@ -1,15 +1,15 @@
 import assert from "assert";
-import type { QuestionInput } from "./utils/CreatePlugin";
-import type { PluginTemplate } from "./utils/verification";
+import type { QuestionInput } from "./utils/CreatePlugin.js";
+import type { PluginTemplate } from "./utils/verification.js";
 import path from "path";
-import { generateWorkingDir } from "./utils/helper";
+import { generateWorkingDir } from "./utils/helper.js";
 import fs from "fs";
 import { rimrafSync } from "rimraf";
 import {
   assertObjectIncludes,
   readPluginManifestJson,
-} from "./utils/verification";
-import { CreatePlugin } from "./utils/CreatePlugin";
+} from "./utils/verification.js";
+import { CreatePlugin } from "./utils/CreatePlugin.js";
 import {
   requiredOptions,
   pluginNameContain64Chars,
@@ -25,7 +25,7 @@ import {
   createKintonePluginCommand,
   javascriptTemplate,
   typescriptTemplate,
-} from "./fixtures";
+} from "./fixtures/index.js";
 
 export type TestPattern = {
   description: string;

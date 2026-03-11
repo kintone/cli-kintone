@@ -1,6 +1,6 @@
-import type { KintoneRecordForDeleteAllParameter } from "../../../../../kintone/types";
-import { DeleteSpecifiedRecordsError } from "../../deleteByRecordNumber/error";
-import { buildKintoneAllRecordsError } from "../deleteAll/error.test";
+import type { KintoneRecordForDeleteAllParameter } from "../../../../../kintone/types.js";
+import { DeleteSpecifiedRecordsError } from "../../deleteByRecordNumber/error.js";
+import { buildKintoneAllRecordsError } from "../deleteAll/error.test.js";
 
 describe("DeleteRecordsError", () => {
   it("should return error message", () => {

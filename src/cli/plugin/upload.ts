@@ -1,11 +1,11 @@
-import type yargs from "yargs";
+import type * as yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { logger } from "../../utils/log";
-import { RunError } from "../../record/error";
-import { buildConnectionOptions } from "../connectionOptions";
-import type { Params } from "../../plugin/upload";
-import { upload } from "../../plugin/upload";
-import type { RestAPIClientOptions } from "../../kintone/client";
+import { logger } from "../../utils/log.js";
+import { RunError } from "../../record/error/index.js";
+import { buildConnectionOptions } from "../connectionOptions.js";
+import type { Params } from "../../plugin/upload/index.js";
+import { upload } from "../../plugin/upload/index.js";
+import type { RestAPIClientOptions } from "../../kintone/client.js";
 
 const command = "upload";
 

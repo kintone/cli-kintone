@@ -1,8 +1,8 @@
-import type yargs from "yargs";
+import type * as yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { pack } from "../../plugin/packer/";
-import { logger } from "../../utils/log";
-import { RunError } from "../../record/error";
+import { pack } from "../../plugin/packer//index.js";
+import { logger } from "../../utils/log.js";
+import { RunError } from "../../record/error/index.js";
 
 const command = "pack";
 

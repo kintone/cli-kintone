@@ -1,9 +1,9 @@
-import { Given, Then } from "../../utils/world";
+import { Given, Then } from "../../utils/world.js";
 import * as assert from "assert";
 import * as fs from "fs";
 import * as path from "path";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { getAssetPath } from "../file";
+import { getAssetPath } from "../file.js";
 
 Then("The file {string} should exist", function (filePath: string) {
   const fullPath = path.join(this.workingDir, filePath);

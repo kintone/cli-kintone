@@ -2,8 +2,8 @@ import assert from "assert";
 import * as fs from "fs";
 import { rimrafSync } from "rimraf";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { getBoundMessage } from "../../core";
-import { exportCustomizeSetting } from "../index";
+import { getBoundMessage } from "../../core/index.js";
+import { exportCustomizeSetting } from "../index.js";
 
 type MockLog = {
   method: string;

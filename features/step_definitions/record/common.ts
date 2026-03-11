@@ -1,9 +1,9 @@
 import * as assert from "assert";
-import { Given, When, Then } from "../../utils/world";
-import type { Permission } from "../../utils/credentials";
-import { TOKEN_PERMISSIONS } from "../../utils/credentials";
-import { generateCsvRow } from "../../utils/helper";
-import { QueryBuilder } from "../../utils/queryBuilder";
+import { Given, When, Then } from "../../utils/world.js";
+import type { Permission } from "../../utils/credentials.js";
+import { TOKEN_PERMISSIONS } from "../../utils/credentials.js";
+import { generateCsvRow } from "../../utils/helper.js";
+import { QueryBuilder } from "../../utils/queryBuilder/index.js";
 
 Given(
   "Load environment variable {string} as {string}",

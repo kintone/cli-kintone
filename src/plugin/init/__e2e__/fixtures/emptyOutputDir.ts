@@ -1,5 +1,5 @@
-import type { TestPattern } from "../e2e.test";
-import { CREATE_PLUGIN_COMMAND } from "../utils/constants";
+import type { TestPattern } from "../e2e.test.js";
+import { CREATE_PLUGIN_COMMAND } from "../utils/constants.js";
 
 export const pattern: TestPattern = {
   description:

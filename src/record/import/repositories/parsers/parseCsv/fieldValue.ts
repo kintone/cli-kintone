@@ -1,7 +1,7 @@
-import type * as Fields from "../../../types/field";
-import type { FieldSchema } from "../../../types/schema";
+import type * as Fields from "../../../types/field.js";
+import type { FieldSchema } from "../../../types/schema.js";
 
-import { LINE_BREAK } from "./constants";
+import { LINE_BREAK } from "./constants.js";
 
 export const convertFieldValue = ({
   type,

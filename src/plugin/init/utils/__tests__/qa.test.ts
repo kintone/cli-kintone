@@ -1,10 +1,10 @@
 import { vi } from "vitest";
 import assert from "assert";
-import * as prompt from "../qa/prompt";
-import type { LangAnswers, SupportLang } from "../qa/prompt";
-import { validateForDescription, validateForName } from "../qa/validator";
-import { runPrompt } from "../qa";
-import { getBoundMessage } from "../messages";
+import * as prompt from "../qa/prompt.js";
+import type { LangAnswers, SupportLang } from "../qa/prompt.js";
+import { validateForDescription, validateForName } from "../qa/validator.js";
+import { runPrompt } from "../qa.js";
+import { getBoundMessage } from "../messages.js";
 
 const MOCK_ANSWERS: LangAnswers = {
   name: "pass",

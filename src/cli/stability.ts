@@ -2,7 +2,7 @@ import type { ArgumentsCamelCase, CommandModule } from "yargs";
 import {
   emitDeprecationWarning,
   emitExperimentalWarning,
-} from "../utils/stability";
+} from "../utils/stability.js";
 
 /**
  * Set stability index to a command.

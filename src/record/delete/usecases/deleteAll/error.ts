@@ -1,6 +1,6 @@
 import { KintoneAllRecordsError } from "@kintone/rest-api-client";
-import type { KintoneRecordForDeleteAllParameter } from "../../../../kintone/types";
-import { CliKintoneError } from "../../../../utils/error";
+import type { KintoneRecordForDeleteAllParameter } from "../../../../kintone/types.js";
+import { CliKintoneError } from "../../../../utils/error.js";
 
 export class DeleteAllRecordsError extends CliKintoneError {
   readonly detail: string;

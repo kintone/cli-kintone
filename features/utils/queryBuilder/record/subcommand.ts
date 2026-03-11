@@ -1,5 +1,5 @@
-import type { Subcommand } from "../index";
-import * as Arguments from "../arguments";
+import type { Subcommand } from "../index.js";
+import * as Arguments from "../arguments.js";
 
 export const SUBCOMMANDS = {
   IMPORT: "import",

@@ -1,4 +1,4 @@
-import { ParserError } from "../error";
+import { ParserError } from "../error.js";
 import { CsvError } from "csv-parse";
 
 describe("ParserError", () => {

@@ -1,8 +1,8 @@
-import type { CsvRow } from "../../../../../kintone/types";
-import type * as Fields from "../../../types/field";
-import type { FieldSchema, RecordSchema } from "../../../types/schema";
+import type { CsvRow } from "../../../../../kintone/types.js";
+import type * as Fields from "../../../types/field.js";
+import type { FieldSchema, RecordSchema } from "../../../types/schema.js";
 
-import { convertFieldValue } from "./fieldValue";
+import { convertFieldValue } from "./fieldValue.js";
 
 type Field = {
   code: string;

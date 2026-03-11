@@ -1,4 +1,4 @@
-import type { DriverInterface, Encoding, FileStats } from "./interface";
+import type { DriverInterface, Encoding, FileStats } from "./interface.js";
 
 import fs from "fs/promises";
 import { statSync, createReadStream } from "fs";

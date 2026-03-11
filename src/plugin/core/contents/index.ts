@@ -1,9 +1,9 @@
-import type { ManifestInterface } from "../manifest";
-import { ManifestFactory } from "../manifest";
+import type { ManifestInterface } from "../manifest/index.js";
+import { ManifestFactory } from "../manifest/index.js";
 
-import type { DriverInterface } from "../driver";
-import { ZipFileDriver } from "../driver";
-import { buildContentsZip } from "./zip";
+import type { DriverInterface } from "../driver/index.js";
+import { ZipFileDriver } from "../driver/index.js";
+import { buildContentsZip } from "./zip.js";
 
 // TODO: Depends on manifest and driver explicitly
 /**

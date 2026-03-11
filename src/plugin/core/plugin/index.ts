@@ -1,10 +1,10 @@
-import type { PrivateKeyInterface } from "../crypto";
-import { PublicKey } from "../crypto";
-import { ContentsZip } from "../contents";
-import type { DriverInterface } from "../driver";
-import { ZipFileDriver } from "../driver";
-import type { ManifestInterface } from "../manifest";
-import { buildPluginZip } from "./zip";
+import type { PrivateKeyInterface } from "../crypto/index.js";
+import { PublicKey } from "../crypto/index.js";
+import { ContentsZip } from "../contents/index.js";
+import type { DriverInterface } from "../driver/index.js";
+import { ZipFileDriver } from "../driver/index.js";
+import type { ManifestInterface } from "../manifest/index.js";
+import { buildPluginZip } from "./zip.js";
 
 /**
  * Plugin represents plugin includes Contents, public key, and signature.

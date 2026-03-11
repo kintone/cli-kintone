@@ -1,6 +1,6 @@
 import path from "path";
-import { ManifestFactory } from "../factory";
-import { LocalFSDriver } from "../../driver";
+import { ManifestFactory } from "../factory.js";
+import { LocalFSDriver } from "../../driver/index.js";
 
 const fixturesDir = path.posix.join(__dirname, "fixtures");
 

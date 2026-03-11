@@ -2,7 +2,7 @@ import assert from "assert";
 import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
-import { updatePackageJson } from "../../template/pacakge-json";
+import { updatePackageJson } from "../../template/pacakge-json.js";
 
 describe("template/package-json", () => {
   describe("updatePackageJson", () => {

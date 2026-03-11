@@ -1,6 +1,6 @@
-import type { DriverInterface } from "../driver";
-import type { ContentsZip } from "../contents";
-import type { ValidationResult } from "./validate";
+import type { DriverInterface } from "../driver/index.js";
+import type { ContentsZip } from "../contents/index.js";
+import type { ValidationResult } from "./validate.js";
 
 export interface ManifestStaticInterface {
   /**

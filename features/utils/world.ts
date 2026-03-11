@@ -1,25 +1,25 @@
 import type { SpawnSyncReturns, ChildProcessByStdio } from "child_process";
-import type { Credentials, AppCredential, Permission } from "./credentials";
+import type { Credentials, AppCredential, Permission } from "./credentials.js";
 import * as cucumber from "@cucumber/cucumber";
 import { World } from "@cucumber/cucumber";
-import type { SupportedEncoding, Replacements } from "./helper";
+import type { SupportedEncoding, Replacements } from "./helper.js";
 import {
   execCliKintoneSync,
   execCliKintone,
   getRecordNumbers,
   replacePlaceholders,
-} from "./helper";
+} from "./helper.js";
 import {
   generateFile,
   generateCsvFile,
   generateFileWithContent,
-} from "./fileGenerator";
+} from "./fileGenerator.js";
 import {
   getAppCredentialByAppKey,
   getAPITokenByAppAndPermissions,
   getUserCredentialByUserKey,
   getUserCredentialByAppAndUserPermissions,
-} from "./credentials";
+} from "./credentials.js";
 import type { Writable, Readable } from "node:stream";
 import { stat } from "fs/promises";
 import path from "path";

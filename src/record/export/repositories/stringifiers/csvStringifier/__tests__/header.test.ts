@@ -1,9 +1,9 @@
-import { buildHeaderFields } from "../header";
-import { PRIMARY_MARK } from "../constants";
+import { buildHeaderFields } from "../header.js";
+import { PRIMARY_MARK } from "../constants.js";
 
-import { schema } from "./fixtures/header/schema";
-import { schema as fileSchema } from "./fixtures/header/file_schema";
-import { schema as subtableSchema } from "./fixtures/header/subtable_schema";
+import { schema } from "./fixtures/header/schema.js";
+import { schema as fileSchema } from "./fixtures/header/file_schema.js";
+import { schema as subtableSchema } from "./fixtures/header/subtable_schema.js";
 
 describe("buildHeaderFields", () => {
   it("should generate fieldCode array correctly (data without subtable)", () => {

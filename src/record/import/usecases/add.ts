@@ -1,15 +1,15 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { LocalRecord } from "../types/record";
-import type { KintoneRecordForParameter } from "../../../kintone/types";
-import type { RecordSchema } from "../types/schema";
+import type { LocalRecord } from "../types/record.js";
+import type { KintoneRecordForParameter } from "../../../kintone/types.js";
+import type { RecordSchema } from "../types/schema.js";
 
-import { fieldProcessor } from "./add/field";
-import { recordConverter } from "./add/record";
-import { AddRecordsError } from "./add/error";
-import { logger } from "../../../utils/log";
-import { ProgressLogger } from "./add/progress";
-import type { LocalRecordRepository } from "./interface";
-import { chunked } from "../../../utils/iterator";
+import { fieldProcessor } from "./add/field.js";
+import { recordConverter } from "./add/record.js";
+import { AddRecordsError } from "./add/error.js";
+import { logger } from "../../../utils/log.js";
+import { ProgressLogger } from "./add/progress.js";
+import type { LocalRecordRepository } from "./interface.js";
+import { chunked } from "../../../utils/iterator.js";
 
 const CHUNK_SIZE = 2000;
 

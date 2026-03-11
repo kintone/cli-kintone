@@ -1,4 +1,4 @@
-import { initPlugin } from "./usecases/init";
+import { initPlugin } from "./usecases/init.js";
 
 type Options = {
   name: string | undefined;

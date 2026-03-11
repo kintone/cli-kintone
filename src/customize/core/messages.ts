@@ -1,4 +1,4 @@
-import type { Lang } from "./lang";
+import type { Lang } from "./lang.js";
 
 export const messages = {
   E_requiredManifestFile: {

@@ -1,10 +1,10 @@
-import type { CsvRow } from "../../../../../kintone/types";
-import type { LocalRecord } from "../../../types/record";
+import type { CsvRow } from "../../../../../kintone/types.js";
+import type { LocalRecord } from "../../../types/record.js";
 
-import { convertField, fieldReader } from "./field";
-import { convertSubtableField, subtableFieldReader } from "./subtable";
-import { PRIMARY_MARK } from "./constants";
-import type { RecordSchema } from "../../../types/schema";
+import { convertField, fieldReader } from "./field.js";
+import { convertSubtableField, subtableFieldReader } from "./subtable.js";
+import { PRIMARY_MARK } from "./constants.js";
+import type { RecordSchema } from "../../../types/schema.js";
 
 export type RecordAsCsvRows = CsvRow[];
 

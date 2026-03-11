@@ -1,6 +1,6 @@
-import type { CsvRow } from "../../../../../../kintone/types";
-import type { RecordNumber } from "../../../../types/field";
-import type { TestPattern } from "../record.test";
+import type { CsvRow } from "../../../../../../kintone/types.js";
+import type { RecordNumber } from "../../../../types/field.js";
+import type { TestPattern } from "../record.test.js";
 
 const input: CsvRow[] = [
   {

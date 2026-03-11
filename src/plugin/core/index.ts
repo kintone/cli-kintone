@@ -1,7 +1,7 @@
-export { PluginZip } from "./plugin";
-export type { PluginInterface } from "./plugin";
-export { ManifestFactory, ManifestV1, ManifestV2 } from "./manifest";
-export type { ManifestInterface } from "./manifest";
-export { ZipFileDriver, LocalFSDriver } from "./driver";
-export type { DriverInterface } from "./driver";
-export { PrivateKey, PublicKey } from "./crypto";
+export { PluginZip } from "./plugin/index.js";
+export type { PluginInterface } from "./plugin/index.js";
+export { ManifestFactory, ManifestV1, ManifestV2 } from "./manifest/index.js";
+export type { ManifestInterface } from "./manifest/index.js";
+export { ZipFileDriver, LocalFSDriver } from "./driver/index.js";
+export type { DriverInterface } from "./driver/index.js";
+export { PrivateKey, PublicKey } from "./crypto/index.js";

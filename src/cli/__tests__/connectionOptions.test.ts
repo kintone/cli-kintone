@@ -1,5 +1,5 @@
 import yargsFactory from "yargs";
-import { buildConnectionOptions } from "../connectionOptions";
+import { buildConnectionOptions } from "../connectionOptions.js";
 
 const buildParser = (
   config: Parameters<typeof buildConnectionOptions>[1],

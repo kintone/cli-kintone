@@ -1,8 +1,8 @@
 import type { KintoneErrorResponse } from "@kintone/rest-api-client";
 import { KintoneRestAPIError } from "@kintone/rest-api-client";
-import type { RecordSchema } from "../../types/schema";
-import type { LocalRecord } from "../../types/record";
-import { parseKintoneRestAPIError } from "../error";
+import type { RecordSchema } from "../../types/schema.js";
+import type { LocalRecord } from "../../types/record.js";
+import { parseKintoneRestAPIError } from "../error.js";
 
 const CHUNK_SIZE = 100;
 

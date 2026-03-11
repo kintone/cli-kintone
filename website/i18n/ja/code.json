@@ -558,7 +558,7 @@
     "description": "The title of the tag list page"
   },
   "homepage.tagline": {
-    "message": "Kintone のコマンドラインインターフェース",
+    "message": "kintone のコマンドラインインターフェース",
     "description": "The homepage tagline"
   },
   "homepage.getStarted": {
@@ -566,7 +566,7 @@
     "description": "The get started button label"
   },
   "homepage.description": {
-    "message": "Kintone のコマンドラインインターフェース",
+    "message": "kintone のコマンドラインインターフェース",
     "description": "The homepage meta description"
   },
   "homepage.features.easyToUse.title": {
@@ -576,7 +576,7 @@
     "message": "cli-kintone はIT担当者やエンジニア以外の方でも使えるように設計されています。すぐに慣れることができます。"
   },
   "homepage.features.allInOne.title": {
-    "message": "オールインワン Kintone CLI"
+    "message": "オールインワン kintone CLI"
   },
   "homepage.features.allInOne.description": {
     "message": "レコード操作、プラグイン開発、JavaScript/CSS カスタマイズ — すべてを1つのツールで。"
@@ -588,7 +588,7 @@
     "message": "cli-kintone はシェルスクリプトとの連携に優れています。定期的な作業や日常業務を自動化できます。"
   },
   "homepage.title": {
-    "message": "cli-kintone - Kintone のコマンドラインインターフェース",
+    "message": "cli-kintone - kintone のコマンドラインインターフェース",
     "description": "The homepage title"
   }
 }

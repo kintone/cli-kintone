@@ -2,8 +2,8 @@
 const config = {
   default: {
     formatOptions: { snippetInterface: "synchronous" },
-    requireModule: ["ts-node/register"],
-    require: ["features/supports/**/*.ts", "features/step_definitions/**/*.ts"],
+    requireModule: ["tsx"],
+    import: ["features/supports/**/*.ts", "features/step_definitions/**/*.ts"],
     parallel: 10,
   },
 };

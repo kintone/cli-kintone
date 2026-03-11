@@ -64,10 +64,6 @@ const OVERRIDE_LICENSES_TEXT = {
     licensePageUrl:
       "https://raw.githubusercontent.com/dominictarr/through/master/LICENSE.MIT",
   },
-  "node-rsa": {
-    // License text is written in README.md
-    licenseText: "See https://github.com/rzcoder/node-rsa#license",
-  },
   "undici-types": {
     licensePageUrl:
       "https://raw.githubusercontent.com/nodejs/undici/main/LICENSE",

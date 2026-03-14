@@ -9,3 +9,5 @@ minimumReleaseAgeExclude:
   - ajv@8.18.0
   # Renovate security update: undici@7.18.2
   - undici@7.18.2
+  # Renovate security update: yauzl@3.2.1
+  - yauzl@3.2.1

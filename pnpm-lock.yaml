@@ -50,7 +50,7 @@ importers:
         specifier: ^17.7.2
         version: 17.7.2
       yauzl:
-        specifier: ^3.2.0
+        specifier: ^3.2.1
         version: 3.2.1
       yazl:
         specifier: ^3.3.1

@@ -84,7 +84,7 @@
     "@vercel/ncc": "^0.38.4",
     "@yao-pkg/pkg": "^6.14.1",
     "ajv": "^8.18.0",
-    "allure-commandline": "^2.38.0",
+    "allure-commandline": "^2.38.1",
     "allure-cucumberjs": "^2.15.1",
     "allure-js-commons": "^3.6.0",
     "allure-vitest": "^3.6.0",

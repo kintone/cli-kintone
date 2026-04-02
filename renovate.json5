@@ -3,6 +3,7 @@
     "github>cybozu/renovate-config",
     ":prConcurrentLimitNone"
   ],
+  rangeStrategy: "pin",
   npm: {
     packageRules: [
       {

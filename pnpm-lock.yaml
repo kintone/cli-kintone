@@ -20,8 +20,8 @@ importers:
         specifier: 11.1.1
         version: 11.1.1
       '@kintone/rest-api-client':
-        specifier: 6.1.4
-        version: 6.1.4
+        specifier: 6.1.5
+        version: 6.1.5
       chalk:
         specifier: 4.1.2
         version: 4.1.2
@@ -1928,8 +1928,8 @@ packages:
     resolution: {integrity: sha512-ucGgZtgNSFg3cRSpd4ddM5D9AJYMVCa+GWxTzoSbmP+wDxW8n7l8w6kDW5FW9rWMPNeiMx9Idm7nXf0AE6f+qw==}
     engines: {node: '>=20'}
 
-  '@kintone/rest-api-client@6.1.4':
-    resolution: {integrity: sha512-L3E7zcJW4EWnBWHJqo9xr4S6NrxNJsAvjiTr1zWzT+6wfiHe14sTIfW4kO46XGPigu81pLUcKGyKydG9/tQZZg==}
+  '@kintone/rest-api-client@6.1.5':
+    resolution: {integrity: sha512-4mKrVry5w/yBE1GWRixbkTN1MnnmYkUtu7oWz6Pnb5vqIp/jci47wwilgKC8kec/MhQokwGlBzroEEL3a6wFkg==}
     engines: {node: '>=20'}
 
   '@leichtgewicht/ip-codec@2.0.5':
@@ -3576,9 +3576,6 @@ packages:
 
   core-js@3.45.1:
     resolution: {integrity: sha512-L4NPsJlCfZsPeXukyzHFlg/i7IIVwHSItR0wg0FLNqYClJ4MQYTYLbC7EkjKYRLZF2iof2MUgN0EGy7MdQFChg==}
-
-  core-js@3.49.0:
-    resolution: {integrity: sha512-es1U2+YTtzpwkxVLwAFdSpaIMyQaq0PBgm3YD1W3Qpsn1NAmO3KSgZfu+oGSWVu6NvLHoHCV/aYcsE5wiB7ALg==}
 
   core-util-is@1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
@@ -10598,10 +10595,9 @@ snapshots:
       ajv-formats: 3.0.1(ajv@8.18.0)
       bytes: 3.1.2
 
-  '@kintone/rest-api-client@6.1.4':
+  '@kintone/rest-api-client@6.1.5':
     dependencies:
       axios: 1.14.0
-      core-js: 3.49.0
       form-data: 4.0.5
       js-base64: 3.7.8
       mime: 3.0.0
@@ -12360,8 +12356,6 @@ snapshots:
   core-js-pure@3.45.1: {}
 
   core-js@3.45.1: {}
-
-  core-js@3.49.0: {}
 
   core-util-is@1.0.2: {}
 

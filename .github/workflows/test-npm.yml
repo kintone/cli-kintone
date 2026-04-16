@@ -10,6 +10,9 @@ on:
 jobs:
   prepare:
     name: Prepare npm package
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -18,6 +21,10 @@ jobs:
         with:
           node-version: "24"
           cache: "pnpm"
+
+      - uses: flatt-security/setup-takumi-guard-npm@v1
+        with:
+          bot-id: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm build

@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     name: Build
+    permissions:
+      contents: read
+      id-token: write
     # ubuntu上でビルドしたmacOS向けの実行ファイルが正常に動作しないため、
     # macOSランナー上でビルドする
     # ref. https://github.com/yao-pkg/pkg/issues/183
@@ -25,6 +28,10 @@ jobs:
           node-version: "24"
           cache: "pnpm"
 
+      - uses: flatt-security/setup-takumi-guard-npm@v1
+        with:
+          bot-id: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - run: pnpm build:all
@@ -35,6 +42,9 @@ jobs:
 
   build-website:
     name: Build website
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: Kesin11/actions-timeline@54d513e0b5ff1158f1cf8321108d666a5a6c1fca # v2
@@ -47,6 +57,10 @@ jobs:
         with:
           node-version: "24"
           cache: "pnpm"
+
+      - uses: flatt-security/setup-takumi-guard-npm@v1
+        with:
+          bot-id: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

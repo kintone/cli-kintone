@@ -9,6 +9,9 @@ on:
 jobs:
   build-executables:
     name: Build executables
+    permissions:
+      contents: read
+      id-token: write
     # ubuntu上でビルドしたmacOS向けの実行ファイルが正常に動作しないため、
     # macOSランナー上でビルドする
     # ref. https://github.com/yao-pkg/pkg/issues/183
@@ -21,6 +24,10 @@ jobs:
         with:
           node-version: "24"
           cache: "pnpm"
+
+      - uses: flatt-security/setup-takumi-guard-npm@v1
+        with:
+          bot-id: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:executables

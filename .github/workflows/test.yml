@@ -10,6 +10,9 @@ on:
 jobs:
   test-unit:
     name: Unit test - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -27,6 +30,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
+
+      - uses: flatt-security/setup-takumi-guard-npm@v1
+        with:
+          bot-id: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -63,6 +70,9 @@ jobs:
 
   test-e2e:
     name: E2E test - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ${{ matrix.os }}
     concurrency:
       group: test-e2e-workflow-concurrency-group
@@ -81,6 +91,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
+
+      - uses: flatt-security/setup-takumi-guard-npm@v1
+        with:
+          bot-id: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - run: pnpm build:executables

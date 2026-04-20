@@ -81,7 +81,7 @@
     "@types/yauzl": "2.10.3",
     "@types/yazl": "3.3.1",
     "@vercel/ncc": "0.38.4",
-    "@yao-pkg/pkg": "6.15.0",
+    "@yao-pkg/pkg": "6.16.0",
     "ajv": "8.18.0",
     "allure-commandline": "2.38.1",
     "allure-cucumberjs": "2.15.1",

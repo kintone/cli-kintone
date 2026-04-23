@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import { confirm } from "@inquirer/prompts";
 import { PluginZip } from "../core";
+import type { ManifestInterface } from "../core/manifest/interface";
 import {
   buildRestAPIClient,
   type RestAPIClientOptions,
@@ -48,6 +49,7 @@ export const upload = async (
   const isSameVersion = installedPlugin?.version === pluginManifest.version;
 
   // Show installation summary
+  const sandboxSummary = buildSandboxSummary(pluginManifest);
   const installationSummary = `
   Installation Summary:
     Destination: ${restApiClientOptions.baseUrl}
@@ -55,7 +57,7 @@ export const upload = async (
     Plugin ID: ${pluginId}
     Plugin Name: ${pluginManifest.name}
     Current version: ${installedPlugin?.version ?? "(not installed)"}
-    Target version: ${pluginManifest.version}${isSameVersion ? " (reinstall)" : ""}`;
+    Target version: ${pluginManifest.version}${isSameVersion ? " (reinstall)" : ""}${sandboxSummary}`;
   logger.info(installationSummary);
 
   // Get confirmation from user if required
@@ -104,4 +106,38 @@ export const upload = async (
   }
 
   logger.info("Plugin is installed successfully.");
+};
+
+// Mirrors `plugin info`: if any sandbox-related field is defined, print all
+// four lines together; otherwise omit the whole block.
+const buildSandboxSummary = (
+  manifest: Pick<ManifestInterface, "sandbox" | "allowedHosts" | "permissions">,
+): string => {
+  const hasSandboxFields =
+    manifest.sandbox !== undefined ||
+    manifest.allowedHosts !== undefined ||
+    manifest.permissions !== undefined;
+  if (!hasSandboxFields) {
+    return "";
+  }
+
+  const formatList = (list: string[] | undefined, parentDefined: boolean) => {
+    if (!parentDefined) {
+      return "(not set)";
+    }
+    if (list === undefined || list.length === 0) {
+      return "(none)";
+    }
+    return list.join(", ");
+  };
+
+  const permissionsDefined = manifest.permissions !== undefined;
+
+  const lines = [
+    `    Sandbox: ${manifest.sandbox ?? "(not set)"}`,
+    `    Allowed hosts: ${formatList(manifest.allowedHosts, manifest.allowedHosts !== undefined)}`,
+    `    Permissions (js_api): ${formatList(manifest.permissions?.js_api, permissionsDefined)}`,
+    `    Permissions (rest_api): ${formatList(manifest.permissions?.rest_api, permissionsDefined)}`,
+  ];
+  return "\n" + lines.join("\n");
 };

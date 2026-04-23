@@ -110,7 +110,7 @@ export const upload = async (
 
 // Mirrors `plugin info`: if any sandbox-related field is defined, print all
 // four lines together; otherwise omit the whole block.
-const buildSandboxSummary = (
+export const buildSandboxSummary = (
   manifest: Pick<ManifestInterface, "sandbox" | "allowedHosts" | "permissions">,
 ): string => {
   const hasSandboxFields =

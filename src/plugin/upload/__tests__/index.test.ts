@@ -1,6 +1,6 @@
 import { vi, type MockedClass } from "vitest";
 import path from "path";
-import { upload } from "../index";
+import { upload, buildSandboxSummary } from "../index";
 
 const fixturesDir = path.join(__dirname, "fixtures");
 
@@ -109,5 +109,92 @@ describe("plugin upload command", () => {
       id: pluginId,
       fileKey: dummyFileKey,
     });
+  });
+});
+
+describe("buildSandboxSummary", () => {
+  it("returns empty string when no sandbox fields are defined", () => {
+    expect(
+      buildSandboxSummary({
+        sandbox: undefined,
+        allowedHosts: undefined,
+        permissions: undefined,
+      }),
+    ).toBe("");
+  });
+
+  it("prints all four lines when every field is defined", () => {
+    expect(
+      buildSandboxSummary({
+        sandbox: true,
+        allowedHosts: ["https://example.com", "wss://example.com/ws/*"],
+        permissions: {
+          js_api: ["app:read", "network:connect"],
+          rest_api: ["app_record:read"],
+        },
+      }),
+    ).toBe(
+      [
+        "",
+        "    Sandbox: true",
+        "    Allowed hosts: https://example.com, wss://example.com/ws/*",
+        "    Permissions (js_api): app:read, network:connect",
+        "    Permissions (rest_api): app_record:read",
+      ].join("\n"),
+    );
+  });
+
+  it("uses (not set) for fields that are undefined when at least one sibling is defined", () => {
+    expect(
+      buildSandboxSummary({
+        sandbox: true,
+        allowedHosts: undefined,
+        permissions: undefined,
+      }),
+    ).toBe(
+      [
+        "",
+        "    Sandbox: true",
+        "    Allowed hosts: (not set)",
+        "    Permissions (js_api): (not set)",
+        "    Permissions (rest_api): (not set)",
+      ].join("\n"),
+    );
+  });
+
+  it("uses (none) when the parent is declared but entries are empty or missing", () => {
+    expect(
+      buildSandboxSummary({
+        sandbox: true,
+        allowedHosts: [],
+        permissions: { js_api: [] },
+      }),
+    ).toBe(
+      [
+        "",
+        "    Sandbox: true",
+        "    Allowed hosts: (none)",
+        "    Permissions (js_api): (none)",
+        "    Permissions (rest_api): (none)",
+      ].join("\n"),
+    );
+  });
+
+  it("prints sandbox: (not set) when only non-sandbox siblings are defined", () => {
+    expect(
+      buildSandboxSummary({
+        sandbox: undefined,
+        allowedHosts: ["https://example.com"],
+        permissions: undefined,
+      }),
+    ).toBe(
+      [
+        "",
+        "    Sandbox: (not set)",
+        "    Allowed hosts: https://example.com",
+        "    Permissions (js_api): (not set)",
+        "    Permissions (rest_api): (not set)",
+      ].join("\n"),
+    );
   });
 });

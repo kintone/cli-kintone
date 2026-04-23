@@ -41,6 +41,11 @@ describe("validate", () => {
       dir: "plugin-locales/v1/invalid-locales",
       expected: false,
     },
+    {
+      name: "`sandbox-valid`",
+      dir: "plugin-sandbox-valid",
+      expected: true,
+    },
     // TODO : Validation for v2 is not yet implemented. see src/plugin/core/manifest/v2/index.ts
     // {
     //   name: "`valid-locales-v2`",

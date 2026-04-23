@@ -1,4 +1,8 @@
-import type { ManifestInterface, ManifestStaticInterface } from "../interface";
+import type {
+  ManifestInterface,
+  ManifestPermissions,
+  ManifestStaticInterface,
+} from "../interface";
 import { sourceListV2 } from "./sourcelist";
 import type { DriverInterface } from "../../driver";
 import { LocalFSDriver } from "../../driver";
@@ -42,6 +46,21 @@ export class ManifestV2 implements ManifestInterface {
 
   get homepageUrl(): string | undefined {
     return this.manifest.homepage_url?.en;
+  }
+
+  // Manifest v2 does not define a sandbox field; always absent by design.
+  // `allowedHosts` / `permissions` return raw manifest values; normalization
+  // belongs to the validator layer.
+  get sandbox(): boolean | undefined {
+    return undefined;
+  }
+
+  get allowedHosts(): string[] | undefined {
+    return this.manifest.allowed_hosts;
+  }
+
+  get permissions(): ManifestPermissions | undefined {
+    return this.manifest.permissions;
   }
 
   get json(): ManifestV2JsonObject {

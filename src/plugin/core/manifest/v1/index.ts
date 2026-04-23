@@ -1,5 +1,9 @@
 import { sourceList } from "./sourcelist";
-import type { ManifestInterface, ManifestStaticInterface } from "../interface";
+import type {
+  ManifestInterface,
+  ManifestPermissions,
+  ManifestStaticInterface,
+} from "../interface";
 import type { DriverInterface } from "../../driver";
 import { LocalFSDriver } from "../../driver";
 import { validateManifest } from "../validate";
@@ -44,6 +48,20 @@ export class ManifestV1 implements ManifestInterface {
 
   get homepageUrl(): string | undefined {
     return this.manifest.homepage_url?.en;
+  }
+
+  // Sandbox-related accessors return raw manifest values. Normalization
+  // (dedup, canonicalization, etc.) belongs to the validator layer.
+  get sandbox(): boolean | undefined {
+    return this.manifest.sandbox;
+  }
+
+  get allowedHosts(): string[] | undefined {
+    return this.manifest.allowed_hosts;
+  }
+
+  get permissions(): ManifestPermissions | undefined {
+    return this.manifest.permissions;
   }
 
   get json(): ManifestV1JsonObject {
@@ -117,4 +135,7 @@ export type ManifestV1JsonObject = {
     css?: string[];
     required_params?: string[];
   };
+  sandbox?: boolean;
+  allowed_hosts?: string[];
+  permissions?: ManifestPermissions;
 };

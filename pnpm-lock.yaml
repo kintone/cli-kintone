@@ -87,8 +87,8 @@ importers:
         specifier: 0.38.4
         version: 0.38.4
       '@yao-pkg/pkg':
-        specifier: 6.18.2
-        version: 6.18.2
+        specifier: 6.19.0
+        version: 6.19.0
       ajv:
         specifier: 8.18.0
         version: 8.18.0
@@ -2116,8 +2116,8 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@roberts_lando/vfs@0.3.2':
-    resolution: {integrity: sha512-whXj9v78S4n3t0RvoTGj8vui27VVtK/oy8YfBL+gDWdlfRFkKpPjry+U8p+3XM++5rAIpXEtXcTUgUAEHZVoFA==}
+  '@roberts_lando/vfs@0.3.3':
+    resolution: {integrity: sha512-YjkxVSLw5WMZQoARaryRAjcxA+GbBzWMJdwYZX5oLUt9cC/gew9as4Dn7tcLzPp7BPoR221VpTZ+78TRPawnjg==}
     engines: {node: '>= 22'}
 
   '@rollup/rollup-android-arm-eabi@4.52.2':
@@ -2842,8 +2842,8 @@ packages:
     resolution: {integrity: sha512-j2UoH+eP4VobfovQg1gkWwDoB4O/tv8rlLnEjUEEHuWXJ5eBLNUIrobMSEp773/2pgUJUfqqPUFIhS1pN8OZuQ==}
     hasBin: true
 
-  '@yao-pkg/pkg@6.18.2':
-    resolution: {integrity: sha512-lo+fNeV10ldTeTrDbgK2eYTIhKDqCUVVq7a4W3s7LiTwd9/8UKYdxBodVNNCbEd2JBtqKA4BZpevitfsOzyXig==}
+  '@yao-pkg/pkg@6.19.0':
+    resolution: {integrity: sha512-Ys9Fn/F44C3nOTlNyhwviLyMxydgFzsB13jAAXKxEuIR7aAz8PrFlUpxTUlwaXUU847nlmg5mnaGIyOJpnVtRw==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
@@ -10798,7 +10798,7 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@roberts_lando/vfs@0.3.2': {}
+  '@roberts_lando/vfs@0.3.3': {}
 
   '@rollup/rollup-android-arm-eabi@4.52.2':
     optional: true
@@ -11561,17 +11561,16 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@yao-pkg/pkg@6.18.2':
+  '@yao-pkg/pkg@6.19.0':
     dependencies:
       '@babel/generator': 7.28.5
       '@babel/parser': 7.28.5
       '@babel/traverse': 7.28.5
       '@babel/types': 7.28.5
-      '@roberts_lando/vfs': 0.3.2
+      '@roberts_lando/vfs': 0.3.3
       '@yao-pkg/pkg-fetch': 3.5.33
       esbuild: 0.27.3
       into-stream: 9.1.0
-      minimist: 1.2.8
       multistream: 4.1.0
       picocolors: 1.1.1
       picomatch: 4.0.3

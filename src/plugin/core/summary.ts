@@ -29,6 +29,10 @@ const formatHostList = (list: string[] | undefined): string => {
   return list.join(", ");
 };
 
+// permissions.js_api / .rest_api は親 (permissions) の有無で挙動が変わる:
+//   permissions 自体が未宣言        → (not set)
+//   permissions.{js_api|rest_api}   → 空配列でも未指定でも (none)
+// allowed_hosts のように「自身の undefined と [] を区別する」構造ではない点に注意。
 const formatPermissionList = (
   list: string[] | undefined,
   parentDefined: boolean,

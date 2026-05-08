@@ -99,8 +99,8 @@ importers:
         specifier: 2.15.1
         version: 2.15.1
       allure-js-commons:
-        specifier: 3.7.1
-        version: 3.7.1
+        specifier: 3.7.2
+        version: 3.7.2
       allure-vitest:
         specifier: 3.7.1
         version: 3.7.1(@vitest/runner@3.2.4)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@18.19.130)(jiti@1.21.7)(sass@1.97.3)(terser@5.44.0)(yaml@2.8.1))
@@ -2650,6 +2650,7 @@ packages:
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
+    deprecated: Potential CWE-502 - Update to 1.3.1 or higher
 
   '@unrs/resolver-binding-android-arm-eabi@1.11.1':
     resolution: {integrity: sha512-ppLRUgHVaGRWUx0R0Ut06Mjo9gBaBkg3v/8AxusGLhsIotbBLuRk51rAzqLC8gq6NyyAojEXglNjzf6R948DNw==}
@@ -2945,6 +2946,14 @@ packages:
     resolution: {integrity: sha512-S8tFymEzgWpp3ITGFu01z2+6KYdiNZC3sX8FbJaNgLoLWBHDBNQ0lq4lTQgkVjV6IN4TIUrnYfa2YuytWpv8WA==}
     peerDependencies:
       allure-playwright: 3.7.1
+    peerDependenciesMeta:
+      allure-playwright:
+        optional: true
+
+  allure-js-commons@3.7.2:
+    resolution: {integrity: sha512-X83MUg7bDFHyQJm28vrPuXTk2ZkssJdugzpre4tHCv6IPDcILF+p8K1mPZLdb98PcMc+IycpcgIYdCzoz49p7Q==}
+    peerDependencies:
+      allure-playwright: 3.7.2
     peerDependenciesMeta:
       allure-playwright:
         optional: true
@@ -7594,6 +7603,7 @@ packages:
 
   uuid@10.0.0:
     resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   uuid@11.0.5:
@@ -7602,14 +7612,17 @@ packages:
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   uuid@9.0.0:
     resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   v8-compile-cache-lib@3.0.1:
@@ -11705,6 +11718,10 @@ snapshots:
       strip-ansi: 5.2.0
 
   allure-js-commons@3.7.1:
+    dependencies:
+      md5: 2.3.0
+
+  allure-js-commons@3.7.2:
     dependencies:
       md5: 2.3.0
 

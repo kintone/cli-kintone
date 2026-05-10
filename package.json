@@ -109,7 +109,7 @@
     "csv-stringify": "6.5.2",
     "https-proxy-agent": "7.0.6",
     "iconv-lite": "0.7.2",
-    "tar": "7.5.14",
+    "tar": "7.5.15",
     "yargs": "17.7.2",
     "yauzl": "3.2.1",
     "yazl": "3.3.1"

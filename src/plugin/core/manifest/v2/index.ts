@@ -49,8 +49,6 @@ export class ManifestV2 implements ManifestInterface {
   }
 
   // Manifest v2 does not define a sandbox field; always absent by design.
-  // `allowedHosts` / `permissions` return raw manifest values; normalization
-  // belongs to the validator layer.
   get sandbox(): boolean | undefined {
     return undefined;
   }

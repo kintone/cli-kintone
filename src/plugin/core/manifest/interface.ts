@@ -48,6 +48,8 @@ export interface ManifestInterface {
   get version(): number | string;
   get description(): string | undefined;
   get homepageUrl(): string | undefined;
+  // Sandbox-related accessors return raw manifest values. Normalization
+  // (dedup, canonicalization, etc.) belongs to the validator layer.
   get sandbox(): boolean | undefined;
   get allowedHosts(): string[] | undefined;
   get permissions(): ManifestPermissions | undefined;

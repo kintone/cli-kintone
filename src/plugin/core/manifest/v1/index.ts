@@ -50,8 +50,6 @@ export class ManifestV1 implements ManifestInterface {
     return this.manifest.homepage_url?.en;
   }
 
-  // Sandbox-related accessors return raw manifest values. Normalization
-  // (dedup, canonicalization, etc.) belongs to the validator layer.
   get sandbox(): boolean | undefined {
     return this.manifest.sandbox;
   }

@@ -57,15 +57,15 @@ export const upload = async (
     `    Plugin Name: ${summary.name}`,
     `    Current version: ${installedPlugin?.version ?? "(not installed)"}`,
     `    Target version: ${summary.version}${isSameVersion ? " (reinstall)" : ""}`,
+    ...(summary.sandbox !== null
+      ? [
+          `    Sandbox: ${summary.sandbox.sandbox}`,
+          `    Allowed hosts: ${summary.sandbox.allowedHosts}`,
+          `    Permissions (js_api): ${summary.sandbox.permissionsJsApi}`,
+          `    Permissions (rest_api): ${summary.sandbox.permissionsRestApi}`,
+        ]
+      : []),
   ];
-  if (summary.sandbox !== null) {
-    lines.push(
-      `    Sandbox: ${summary.sandbox.sandbox}`,
-      `    Allowed hosts: ${summary.sandbox.allowedHosts}`,
-      `    Permissions (js_api): ${summary.sandbox.permissionsJsApi}`,
-      `    Permissions (rest_api): ${summary.sandbox.permissionsRestApi}`,
-    );
-  }
   const installationSummary = `\n  Installation Summary:\n${lines.join("\n")}`;
   logger.info(installationSummary);
 

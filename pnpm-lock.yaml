@@ -41,8 +41,8 @@ importers:
         specifier: 0.7.2
         version: 0.7.2
       tar:
-        specifier: 7.5.14
-        version: 7.5.14
+        specifier: 7.5.15
+        version: 7.5.15
       yargs:
         specifier: 17.7.2
         version: 17.7.2
@@ -7265,8 +7265,8 @@ packages:
   tar-stream@3.1.7:
     resolution: {integrity: sha512-qJj60CXt7IU1Ffyc3NJMjh6EkuCFej46zUqJ4J7pqYlThyd9bO0XBTmcOIhSzZJVWfsLks0+nle/j538YAW9RQ==}
 
-  tar@7.5.14:
-    resolution: {integrity: sha512-/7sHKgQO3JLP9ESlwTYUUftHUadOURUqq23xs1vjcnp8Vss6k0wCfzulyEtk5g91pjvnuriimGlyG7k6msrzRw==}
+  tar@7.5.15:
+    resolution: {integrity: sha512-dzGK0boVlC4W5QFuQN1EFSl3bIDYsk7Tj40U6eIBnK2k/8ml7TZ5agbI5j5+qnoVcAA+rNtBml8SEiLxZpNqRQ==}
     engines: {node: '>=18'}
 
   terser-webpack-plugin@5.3.14:
@@ -11587,7 +11587,7 @@ snapshots:
       resolve: 1.22.10
       resolve.exports: 2.0.3
       stream-meter: 1.0.4
-      tar: 7.5.14
+      tar: 7.5.15
       tinyglobby: 0.2.15
       unzipper: 0.12.3
     transitivePeerDependencies:
@@ -16728,7 +16728,7 @@ snapshots:
       - bare-abort-controller
       - react-native-b4a
 
-  tar@7.5.14:
+  tar@7.5.15:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0

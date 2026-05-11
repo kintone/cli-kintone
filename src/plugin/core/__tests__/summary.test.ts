@@ -95,7 +95,7 @@ describe("buildPluginSummary", () => {
       });
     });
 
-    it("uses (none) when the parent is declared but entries are empty or missing", () => {
+    it("uses (none) for explicitly empty arrays and (not set) for omitted children", () => {
       const summary = buildPluginSummary(
         "plugin-id",
         withSandboxFields({
@@ -108,8 +108,20 @@ describe("buildPluginSummary", () => {
         sandbox: "true",
         allowedHosts: "(none)",
         permissionsJsApi: "(none)",
-        permissionsRestApi: "(none)",
+        permissionsRestApi: "(not set)",
       });
+    });
+
+    it("uses (not set) for both permission children when permissions is declared empty", () => {
+      const summary = buildPluginSummary(
+        "plugin-id",
+        withSandboxFields({
+          sandbox: true,
+          permissions: {},
+        }),
+      );
+      expect(summary.sandbox?.permissionsJsApi).toBe("(not set)");
+      expect(summary.sandbox?.permissionsRestApi).toBe("(not set)");
     });
 
     it("returns sandbox: (not set) when only siblings are defined", () => {

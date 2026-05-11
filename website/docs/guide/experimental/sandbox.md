@@ -52,8 +52,8 @@ Validates the three fields against the manifest schema before packaging. Validat
 
 When any of `sandbox` / `allowed_hosts` / `permissions` is defined in the manifest, `plugin info` prints all four sandbox-related lines (`sandbox`, `allowed_hosts`, `permissions.js_api`, `permissions.rest_api`). Sandbox-unaware plugins (none of the three fields defined) omit the block entirely.
 
-- `(not set)` — the parent field is absent from the manifest.
-- `(none)` — the parent field is declared but has no entries.
+- `(not set)` — the field is absent from the manifest. For `permissions.js_api` / `permissions.rest_api`, this also applies when `permissions` is declared but the child key is omitted.
+- `(none)` — the field is declared as an explicitly empty array.
 
 Example plain output:
 

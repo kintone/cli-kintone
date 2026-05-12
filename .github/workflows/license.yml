@@ -11,7 +11,6 @@ jobs:
     name: Analyze and extract licenses
     permissions:
       contents: read
-      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: Kesin11/actions-timeline@54d513e0b5ff1158f1cf8321108d666a5a6c1fca # v2

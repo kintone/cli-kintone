@@ -1,5 +1,6 @@
 import { vi } from "vitest";
-import { retry } from "../retry";
+import { KintoneRestAPIError } from "@kintone/rest-api-client";
+import { isRetryableKintoneError, retry } from "../retry";
 
 // Mock setTimeout because we don't need to really wait.
 vi.mock("timers/promises", () => ({
@@ -155,5 +156,47 @@ describe("retry", () => {
       },
       5 * 1000,
     );
+  });
+});
+
+describe("isRetryableKintoneError", () => {
+  const buildKintoneRestAPIError = (
+    status: number,
+    code: string,
+  ): KintoneRestAPIError =>
+    new KintoneRestAPIError({
+      data: { id: "some id", code, message: "some error" },
+      status,
+      statusText: "",
+      headers: {},
+    });
+
+  it("retries on 5xx KintoneRestAPIError", () => {
+    expect(
+      isRetryableKintoneError(buildKintoneRestAPIError(500, "GAIA_XX01")),
+    ).toBe(true);
+    expect(
+      isRetryableKintoneError(buildKintoneRestAPIError(503, "GAIA_XX01")),
+    ).toBe(true);
+  });
+
+  it("retries on 400 GAIA_DA02", () => {
+    expect(
+      isRetryableKintoneError(buildKintoneRestAPIError(400, "GAIA_DA02")),
+    ).toBe(true);
+  });
+
+  it("does not retry on other 4xx errors", () => {
+    expect(
+      isRetryableKintoneError(buildKintoneRestAPIError(400, "GAIA_IL01")),
+    ).toBe(false);
+    expect(
+      isRetryableKintoneError(buildKintoneRestAPIError(404, "GAIA_AP01")),
+    ).toBe(false);
+  });
+
+  it("does not retry on non-KintoneRestAPIError", () => {
+    expect(isRetryableKintoneError(new Error("plain"))).toBe(false);
+    expect(isRetryableKintoneError(undefined)).toBe(false);
   });
 });

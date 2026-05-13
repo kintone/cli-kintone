@@ -1,12 +1,9 @@
 import fs from "fs/promises";
 import path from "path";
 import { confirm } from "@inquirer/prompts";
-import {
-  KintoneRestAPIError,
-  type KintoneRestAPIClient,
-} from "@kintone/rest-api-client";
+import { type KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { logger } from "../../utils/log";
-import { retry } from "../../utils/retry";
+import { isRetryableKintoneError, retry } from "../../utils/retry";
 import {
   buildRestAPIClient,
   type RestAPIClientOptions,
@@ -73,8 +70,7 @@ export const exportCustomizeSetting = async (
       await downloadCustomizeFiles(apiClient, destDir, resp);
     },
     {
-      retryCondition: (e: unknown) =>
-        e instanceof KintoneRestAPIError && e.status >= 500 && e.status < 600,
+      retryCondition: isRetryableKintoneError,
       onError: (e, attemptCount, toRetry, _nextDelay, config) => {
         logger.debug(`Error occurred: ${e}`);
         if (toRetry) {

@@ -1,4 +1,32 @@
 import { setTimeout } from "timers/promises";
+import { KintoneRestAPIError } from "@kintone/rest-api-client";
+
+/**
+ * Transient kintone REST API errors that should be retried even though they
+ * are not 5xx. Extend this list as new retryable codes are found.
+ *
+ * - GAIA_DA02: returned with the message "Please wait a while and try again."
+ */
+const RETRYABLE_KINTONE_ERRORS: ReadonlyArray<{
+  status: number;
+  code: string;
+}> = [{ status: 400, code: "GAIA_DA02" }];
+
+/**
+ * Returns true if the given error is a transient kintone REST API error
+ * worth retrying: any 5xx, or an entry in RETRYABLE_KINTONE_ERRORS.
+ */
+export const isRetryableKintoneError = (e: unknown): boolean => {
+  if (!(e instanceof KintoneRestAPIError)) {
+    return false;
+  }
+  if (e.status >= 500 && e.status < 600) {
+    return true;
+  }
+  return RETRYABLE_KINTONE_ERRORS.some(
+    (entry) => entry.status === e.status && entry.code === e.code,
+  );
+};
 
 /**
  * Retry given function with exponential backoff with jitter strategy.

@@ -135,8 +135,5 @@ export type ManifestV2JsonObject = {
     required_params?: string[];
   };
   allowed_hosts?: string[];
-  permissions?: {
-    js_api?: string[];
-    rest_api?: string[];
-  };
+  permissions?: ManifestPermissions;
 };

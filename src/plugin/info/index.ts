@@ -1,6 +1,9 @@
 import fs from "fs/promises";
 import { PluginZip } from "../core";
-import type { ManifestInterface } from "../core/manifest/interface";
+import type {
+  ManifestInterface,
+  ManifestPermissions,
+} from "../core/manifest/interface";
 import { buildPluginSummary } from "../core/summary";
 
 export type OutputFormat = "plain" | "json";
@@ -13,7 +16,7 @@ export type PluginInfoJson = {
   homepage: string | undefined;
   sandbox: boolean | undefined;
   allowed_hosts: string[] | undefined;
-  permissions: { js_api?: string[]; rest_api?: string[] } | undefined;
+  permissions: ManifestPermissions | undefined;
 };
 
 export const buildJsonInfo = (

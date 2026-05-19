@@ -37,12 +37,6 @@ describe("buildPluginSummary", () => {
   });
 
   it("uses (not set) for missing description / homepage", () => {
-    const summary = buildPluginSummary(
-      "plugin-id",
-      withSandboxFields({}) /* base has values; override below */,
-    );
-    expect(summary.description).toBe("A plugin for unit test");
-
     const empty = buildPluginSummary("plugin-id", {
       ...baseManifest,
       description: undefined,

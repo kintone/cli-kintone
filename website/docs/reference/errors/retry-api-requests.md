@@ -10,8 +10,16 @@ Retries are performed for each API request. When requests are wrapped in Bulk Re
 
 - [Download File](https://kintone.dev/en/docs/kintone/rest-api/files/download-file/) (`GET /k/v1/file.json`)
   - 5xx errors
+  - Retryable 4xx errors
 - [Upload File](https://kintone.dev/en/docs/kintone/rest-api/files/upload-file/) (`POST /k/v1/file.json`)
   - 5xx errors
+  - Retryable 4xx errors
+- [Get Customization](https://kintone.dev/en/docs/kintone/rest-api/apps/settings/get-customization/) (`GET /k/v1/preview/app/customize.json`)
+  - 5xx errors
+  - Retryable 4xx errors
+- [Update Customization](https://kintone.dev/en/docs/kintone/rest-api/apps/update-customization/) (`PUT /k/v1/preview/app/customize.json`)
+  - 5xx errors
+  - Retryable 4xx errors
 
 ## Strategy
 

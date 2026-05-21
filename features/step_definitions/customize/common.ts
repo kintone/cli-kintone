@@ -164,6 +164,9 @@ const waitForDeploy = async (
   for (let i = 0; i < maxRetries; i++) {
     const { apps } = await client.app.getDeployStatus({ apps: [appId] });
     if (apps[0].status === "SUCCESS") {
+      // Grace period: a subsequent customize update right after SUCCESS can
+      // intermittently fail with GAIA_DA02. Wait briefly before returning.
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       return;
     }
     if (apps[0].status === "FAIL") {

@@ -1,10 +1,9 @@
 import type { KintoneRecordForParameter } from "../../../../kintone/types";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { KintoneRestAPIError } from "@kintone/rest-api-client";
 import type * as Fields from "../../types/field";
 import type { FieldSchema } from "../../types/schema";
 import path from "path";
-import { retry } from "../../../../utils/retry";
+import { isRetryableKintoneError, retry } from "../../../../utils/retry";
 import { logger } from "../../../../utils/log";
 
 export const fieldProcessor: (
@@ -78,8 +77,7 @@ const fileFieldProcessor = async (
             );
           }
         },
-        retryCondition: (e: unknown) =>
-          e instanceof KintoneRestAPIError && e.status >= 500 && e.status < 600,
+        retryCondition: isRetryableKintoneError,
       },
     );
 

@@ -1,0 +1,14 @@
+{
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "name": {
+    "en": "sandbox invalid sample"
+  },
+  "icon": "image/icon.png",
+  "sandbox": true,
+  "permissions": {
+    "js_api": ["app:read"],
+    "rest_api": ["app_record:read"]
+  }
+}

@@ -46,6 +46,11 @@ describe("validate", () => {
       dir: "plugin-sandbox-valid",
       expected: true,
     },
+    {
+      name: "`sandbox-invalid-missing-allowed-hosts`",
+      dir: "plugin-sandbox-invalid-missing-allowed-hosts",
+      expected: false,
+    },
     // TODO : Validation for v2 is not yet implemented. see src/plugin/core/manifest/v2/index.ts
     // {
     //   name: "`valid-locales-v2`",

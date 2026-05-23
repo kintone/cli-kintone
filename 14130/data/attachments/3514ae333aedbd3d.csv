@@ -1,0 +1,3 @@
+Expected_FilePath,Actual_FilePath
+attachments/file1.txt,exported-attachments/Attachment-$RECORD_NUMBERS[0]/file1.txt
+attachments/image1.png,exported-attachments/Attachment-$RECORD_NUMBERS[1]/image1.png

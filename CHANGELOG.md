@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.3](https://github.com/kintone/cli-kintone/compare/v1.19.2...v1.19.3) (2026-05-25)
+
+
+### Bug Fixes
+
+* **ci:** keep working tree clean when Takumi Guard configures registry ([#1466](https://github.com/kintone/cli-kintone/issues/1466)) ([b155d91](https://github.com/kintone/cli-kintone/commit/b155d91fb77c0f778d5224b479fc46fca7c721b0))
+* **deps:** replace node-rsa to node crypto ([#1380](https://github.com/kintone/cli-kintone/issues/1380)) ([1952af7](https://github.com/kintone/cli-kintone/commit/1952af7da4b7cc32783ec99b1cb40b509a1a92b9))
+* **deps:** update dependency @kintone/rest-api-client to v6.2.0 ([1aacaac](https://github.com/kintone/cli-kintone/commit/1aacaac267e34d8bc08e199a7d7997332fd2bebd))
+* fix dependencies versions ([#1415](https://github.com/kintone/cli-kintone/issues/1415)) ([993df64](https://github.com/kintone/cli-kintone/commit/993df64188ccaee2c16f7f06fc30693a858a89fa))
+* retry transient kintone API errors ([#1464](https://github.com/kintone/cli-kintone/issues/1464)) ([a224c0d](https://github.com/kintone/cli-kintone/commit/a224c0dd455c15a58a6a38eba74f8e87a6e17a1a))
+
 ## [1.19.2](https://github.com/kintone/cli-kintone/compare/v1.19.1...v1.19.2) (2026-03-31)
 
 

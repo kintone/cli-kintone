@@ -35,6 +35,11 @@ const builder = (args: yargs.Argv) =>
     .option("watch", {
       describe: "Run in watch mode",
       type: "boolean",
+    })
+    .option("skip-manifest-validation", {
+      type: "boolean",
+      default: false,
+      hidden: true,
     });
 
 type Args = yargs.Arguments<
@@ -48,6 +53,7 @@ const handler = async (args: Args) => {
       output: args.output,
       ppkFilePath: args["private-key"],
       watch: args.watch,
+      skipManifestValidation: args["skip-manifest-validation"],
     };
     if (process.env.NODE_ENV === "test") {
       console.log(JSON.stringify(params));

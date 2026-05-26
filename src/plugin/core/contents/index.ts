@@ -39,10 +39,15 @@ export class ContentsZip extends ZipFileDriver implements ContentsInterface {
     return ContentsZip.fromBuffer(buffer);
   }
 
-  public static async fromBuffer(buffer: Buffer) {
+  public static async fromBuffer(
+    buffer: Buffer,
+    options: { skipValidation?: boolean } = {},
+  ) {
     const contentsZip = new ContentsZip(buffer);
     await contentsZip.cacheEntries();
-    await contentsZip.validate();
+    if (!options.skipValidation) {
+      await contentsZip.validate();
+    }
     return contentsZip;
   }
 

@@ -15,6 +15,7 @@ export type Params = {
   pluginFilePath: string;
   force?: boolean;
   watch?: boolean;
+  skipManifestValidation?: boolean;
 };
 
 export const upload = async (
@@ -33,7 +34,9 @@ export const upload = async (
   const buffer = await fs.readFile(pluginFilePath);
   const pluginZip = await PluginZip.fromBuffer(buffer);
   const pluginId = await pluginZip.getPluginID();
-  const pluginManifest = await pluginZip.manifest();
+  const pluginManifest = await pluginZip.manifest({
+    skipValidation: params.skipManifestValidation,
+  });
 
   // Read plugin info from kintone
   const { plugins: installedPlugins } = await apiClient.plugin.getPlugins(

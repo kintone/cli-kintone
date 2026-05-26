@@ -34,9 +34,6 @@ export const upload = async (
   const buffer = await fs.readFile(pluginFilePath);
   const pluginZip = await PluginZip.fromBuffer(buffer);
   const pluginId = await pluginZip.getPluginID();
-  const pluginManifest = await pluginZip.manifest({
-    skipValidation: params.skipManifestValidation,
-  });
 
   // Read plugin info from kintone
   const { plugins: installedPlugins } = await apiClient.plugin.getPlugins(
@@ -48,10 +45,13 @@ export const upload = async (
   const installedPlugin = installedPlugins.find((p) => p.id === pluginId);
   const isInstalled = installedPlugin !== undefined;
 
-  const isSameVersion = installedPlugin?.version === pluginManifest.version;
-
   // Show installation summary
-  const installationSummary = `
+  // Reading the manifest requires a well-formed manifest.json, so we skip the
+  // summary when validation is intentionally bypassed.
+  if (!params.skipManifestValidation) {
+    const pluginManifest = await pluginZip.manifest();
+    const isSameVersion = installedPlugin?.version === pluginManifest.version;
+    const installationSummary = `
   Installation Summary:
     Destination: ${restApiClientOptions.baseUrl}
     File Path: ${pluginFilePath}
@@ -59,7 +59,8 @@ export const upload = async (
     Plugin Name: ${pluginManifest.name}
     Current version: ${installedPlugin?.version ?? "(not installed)"}
     Target version: ${pluginManifest.version}${isSameVersion ? " (reinstall)" : ""}`;
-  logger.info(installationSummary);
+    logger.info(installationSummary);
+  }
 
   // Get confirmation from user if required
   if (!params.force && !params.watch) {

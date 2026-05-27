@@ -35,7 +35,10 @@ export interface ManifestInterface {
    * Generate contents.zip from Manifest and Driver
    * @param driver
    */
-  generateContentsZip(driver: DriverInterface): Promise<ContentsZip>;
+  generateContentsZip(
+    driver: DriverInterface,
+    skipManifestValidation?: boolean,
+  ): Promise<ContentsZip>;
 
   // Accessor
   get manifestVersion(): 1 | 2;

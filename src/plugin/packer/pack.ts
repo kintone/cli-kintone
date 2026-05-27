@@ -80,6 +80,7 @@ export const pack = async (params: Params) => {
     manifest,
     privateKey,
     new LocalFSDriver(sourceRootDir),
+    params.skipManifestValidation,
   );
 
   // 7. Start watch mode if watch option is given

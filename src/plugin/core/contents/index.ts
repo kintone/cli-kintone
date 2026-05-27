@@ -33,16 +33,19 @@ export class ContentsZip extends ZipFileDriver implements ContentsInterface {
   public static async buildFromManifest(
     manifest: ManifestInterface,
     driver: DriverInterface,
+    skipManifestValidation = false,
   ): Promise<ContentsZip> {
     const buffer = await buildContentsZip(manifest, driver);
     // const buffer = await _createContentsZipStream(manifest, driver);
-    return ContentsZip.fromBuffer(buffer);
+    return ContentsZip.fromBuffer(buffer, skipManifestValidation);
   }
 
-  public static async fromBuffer(buffer: Buffer) {
+  public static async fromBuffer(buffer: Buffer, skipManifestValidation = false) {
     const contentsZip = new ContentsZip(buffer);
     await contentsZip.cacheEntries();
-    await contentsZip.validate();
+    if (!skipManifestValidation) {
+      await contentsZip.validate();
+    }
     return contentsZip;
   }
 

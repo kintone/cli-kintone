@@ -31,8 +31,12 @@ export class PluginZip extends ZipFileDriver implements PluginInterface {
     manifest: ManifestInterface,
     privateKey: PrivateKeyInterface,
     driver: DriverInterface,
+    skipManifestValidation = false,
   ): Promise<PluginZip> {
-    const contentsZip = await manifest.generateContentsZip(driver);
+    const contentsZip = await manifest.generateContentsZip(
+      driver,
+      skipManifestValidation,
+    );
     return this.buildFromContentsZip(contentsZip, privateKey);
   }
 

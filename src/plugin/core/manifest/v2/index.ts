@@ -60,8 +60,11 @@ export class ManifestV2 implements ManifestInterface {
     return sourceListV2(this.manifest);
   }
 
-  async generateContentsZip(driver: DriverInterface): Promise<ContentsZip> {
-    return ContentsZip.buildFromManifest(this, driver);
+  async generateContentsZip(
+    driver: DriverInterface,
+    skipManifestValidation = false,
+  ): Promise<ContentsZip> {
+    return ContentsZip.buildFromManifest(this, driver, skipManifestValidation);
   }
 }
 

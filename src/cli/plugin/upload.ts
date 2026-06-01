@@ -30,6 +30,11 @@ const builder = (args: yargs.Argv) =>
       describe: "Run in watch mode",
       type: "boolean",
       default: false,
+    })
+    .option("skip-manifest-validation", {
+      type: "boolean",
+      default: false,
+      hidden: true,
     });
 
 type Args = yargs.Arguments<
@@ -43,6 +48,7 @@ const handler = async (args: Args) => {
       pluginFilePath: args.input,
       force: args.yes,
       watch: args.watch,
+      skipManifestValidation: args["skip-manifest-validation"],
     };
     const apiClientOptions: RestAPIClientOptions = {
       baseUrl: args["base-url"],

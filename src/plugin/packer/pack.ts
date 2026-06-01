@@ -11,6 +11,7 @@ type Params = {
   ppkFilePath: string;
   output?: string;
   watch?: boolean;
+  skipManifestValidation?: boolean;
 };
 
 // TODO: Reduce statements in this func
@@ -44,20 +45,22 @@ export const pack = async (params: Params) => {
   }
 
   // 3. Validate manifest.json
-  const result = await manifest.validate(new LocalFSDriver(sourceRootDir));
+  if (!params.skipManifestValidation) {
+    const result = await manifest.validate(new LocalFSDriver(sourceRootDir));
 
-  if (result.warnings.length > 0) {
-    result.warnings.forEach((warning) => {
-      logger.warn(warning);
-    });
-  }
+    if (result.warnings.length > 0) {
+      result.warnings.forEach((warning) => {
+        logger.warn(warning);
+      });
+    }
 
-  if (!result.valid) {
-    logger.error("Invalid manifest.json:");
-    result.errors.forEach((msg) => {
-      logger.error(`- ${msg}`);
-    });
-    throw new Error("Invalid manifest.json");
+    if (!result.valid) {
+      logger.error("Invalid manifest.json:");
+      result.errors.forEach((msg) => {
+        logger.error(`- ${msg}`);
+      });
+      throw new Error("Invalid manifest.json");
+    }
   }
 
   // 4. Prepare output directory
@@ -77,6 +80,7 @@ export const pack = async (params: Params) => {
     manifest,
     privateKey,
     new LocalFSDriver(sourceRootDir),
+    params.skipManifestValidation,
   );
 
   // 7. Start watch mode if watch option is given

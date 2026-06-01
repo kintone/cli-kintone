@@ -61,8 +61,7 @@ export const upload = async (
       ? [
           `    Sandbox: ${summary.sandbox.sandbox}`,
           `    Allowed hosts: ${summary.sandbox.allowedHosts}`,
-          `    Permissions (js_api): ${summary.sandbox.permissionsJsApi}`,
-          `    Permissions (rest_api): ${summary.sandbox.permissionsRestApi}`,
+          `    Permissions: ${summary.sandbox.permissions}`,
         ]
       : []),
   ];

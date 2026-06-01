@@ -2,10 +2,12 @@ import type { DriverInterface } from "../driver";
 import type { ContentsZip } from "../contents";
 import type { ValidationResult } from "./validate";
 
-export type ManifestPermissions = {
-  js_api?: string[];
-  rest_api?: string[];
+export type ManifestPermission = {
+  permission: string;
+  scope?: string;
 };
+
+export type ManifestPermissions = ManifestPermission[];
 
 export interface ManifestStaticInterface {
   /**

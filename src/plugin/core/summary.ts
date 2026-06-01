@@ -1,10 +1,12 @@
-import type { ManifestInterface } from "./manifest/interface";
+import type {
+  ManifestInterface,
+  ManifestPermissions,
+} from "./manifest/interface";
 
 export type SandboxSummary = {
   sandbox: string;
   allowedHosts: string;
-  permissionsJsApi: string;
-  permissionsRestApi: string;
+  permissions: string;
 };
 
 export type PluginSummary = {
@@ -22,7 +24,7 @@ const NONE = "(none)";
 // `(not set)` for absent fields (including children whose parent declares them
 // optionally and they are omitted); `(none)` only for an explicitly declared
 // empty array. This mirrors the schema in @kintone/plugin-manifest-validator,
-// where `permissions.js_api` / `permissions.rest_api` are optional arrays.
+// where `allowed_hosts` / `permissions` are optional arrays.
 const formatList = (list: string[] | undefined): string => {
   if (list === undefined) {
     return NOT_SET;
@@ -32,6 +34,16 @@ const formatList = (list: string[] | undefined): string => {
   }
   return list.join(", ");
 };
+
+// Each permission renders as `permission[:scope]`; the list is comma-joined.
+const formatPermissions = (
+  permissions: ManifestPermissions | undefined,
+): string =>
+  formatList(
+    permissions?.map(({ permission, scope }) =>
+      scope === undefined ? permission : `${permission}:${scope}`,
+    ),
+  );
 
 const buildSandboxSummary = (
   manifest: Pick<ManifestInterface, "sandbox" | "allowedHosts" | "permissions">,
@@ -48,8 +60,7 @@ const buildSandboxSummary = (
     sandbox:
       manifest.sandbox === undefined ? NOT_SET : String(manifest.sandbox),
     allowedHosts: formatList(manifest.allowedHosts),
-    permissionsJsApi: formatList(manifest.permissions?.js_api),
-    permissionsRestApi: formatList(manifest.permissions?.rest_api),
+    permissions: formatPermissions(manifest.permissions),
   };
 };
 

@@ -5,10 +5,11 @@
   "type": "APP",
   "sandbox": true,
   "allowed_hosts": ["https://example.com", "wss://example.com/ws/*"],
-  "permissions": {
-    "js_api": ["app:read", "network:connect"],
-    "rest_api": ["app_record:read"]
-  },
+  "permissions": [
+    { "permission": "app:read" },
+    { "permission": "network:connect" },
+    { "permission": "app_record:read", "scope": "self" }
+  ],
   "desktop": {
     "js": ["js/desktop.js"],
     "css": ["css/51-modern-default.css", "css/desktop.css"]

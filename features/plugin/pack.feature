@@ -37,8 +37,7 @@ Feature: plugin pack
       """
       sandbox: true
       allowed_hosts: https://example\.com, wss://example\.com/ws/\*
-      permissions\.js_api: app:read, network:connect
-      permissions\.rest_api: app_record:read
+      permissions: app:read, network:connect, app_record:read:self
       """
 
   Scenario: Plugin info --format json surfaces sandbox-related keys with snake_case names
@@ -51,5 +50,5 @@ Feature: plugin pack
     And The output message should match with the pattern: "\"sandbox\": true"
     And The output message should match with the pattern: "\"allowed_hosts\": \["
     And The output message should match with the pattern: "\"permissions\":"
-    And The output message should match with the pattern: "\"js_api\":"
-    And The output message should match with the pattern: "\"rest_api\":"
+    And The output message should match with the pattern: "\"permission\": \"app:read\""
+    And The output message should match with the pattern: "\"scope\": \"self\""

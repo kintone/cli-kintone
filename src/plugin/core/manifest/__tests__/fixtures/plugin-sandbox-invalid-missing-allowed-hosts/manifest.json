@@ -7,8 +7,8 @@
   },
   "icon": "image/icon.png",
   "sandbox": true,
-  "permissions": {
-    "js_api": ["app:read"],
-    "rest_api": ["app_record:read"]
-  }
+  "permissions": [
+    { "permission": "app:read" },
+    { "permission": "app_record:read" }
+  ]
 }

@@ -58,17 +58,17 @@ describe("buildPluginSummary", () => {
         withSandboxFields({
           sandbox: true,
           allowedHosts: ["https://example.com", "wss://example.com/ws/*"],
-          permissions: {
-            js_api: ["app:read", "network:connect"],
-            rest_api: ["app_record:read"],
-          },
+          permissions: [
+            { permission: "app:read" },
+            { permission: "network:connect" },
+            { permission: "app_record:read", scope: "self" },
+          ],
         }),
       );
       expect(summary.sandbox).toEqual({
         sandbox: "true",
         allowedHosts: "https://example.com, wss://example.com/ws/*",
-        permissionsJsApi: "app:read, network:connect",
-        permissionsRestApi: "app_record:read",
+        permissions: "app:read, network:connect, app_record:read:self",
       });
     });
 
@@ -84,38 +84,24 @@ describe("buildPluginSummary", () => {
       expect(summary.sandbox).toEqual({
         sandbox: "true",
         allowedHosts: "(not set)",
-        permissionsJsApi: "(not set)",
-        permissionsRestApi: "(not set)",
+        permissions: "(not set)",
       });
     });
 
-    it("uses (none) for explicitly empty arrays and (not set) for omitted children", () => {
+    it("uses (none) for explicitly empty arrays and (not set) for omitted fields", () => {
       const summary = buildPluginSummary(
         "plugin-id",
         withSandboxFields({
           sandbox: true,
           allowedHosts: [],
-          permissions: { js_api: [] },
+          permissions: [],
         }),
       );
       expect(summary.sandbox).toEqual({
         sandbox: "true",
         allowedHosts: "(none)",
-        permissionsJsApi: "(none)",
-        permissionsRestApi: "(not set)",
+        permissions: "(none)",
       });
-    });
-
-    it("uses (not set) for both permission children when permissions is declared empty", () => {
-      const summary = buildPluginSummary(
-        "plugin-id",
-        withSandboxFields({
-          sandbox: true,
-          permissions: {},
-        }),
-      );
-      expect(summary.sandbox?.permissionsJsApi).toBe("(not set)");
-      expect(summary.sandbox?.permissionsRestApi).toBe("(not set)");
     });
 
     it("returns sandbox: (not set) when only siblings are defined", () => {
@@ -130,8 +116,7 @@ describe("buildPluginSummary", () => {
       expect(summary.sandbox).toEqual({
         sandbox: "(not set)",
         allowedHosts: "https://example.com",
-        permissionsJsApi: "(not set)",
-        permissionsRestApi: "(not set)",
+        permissions: "(not set)",
       });
     });
 

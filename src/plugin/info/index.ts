@@ -51,8 +51,7 @@ export const run = async (pluginFilePath: string, format: OutputFormat) => {
         const s = summary.sandbox;
         console.log("sandbox:", s.sandbox);
         console.log("allowed_hosts:", s.allowedHosts);
-        console.log("permissions.js_api:", s.permissionsJsApi);
-        console.log("permissions.rest_api:", s.permissionsRestApi);
+        console.log("permissions:", s.permissions);
       }
       break;
     }

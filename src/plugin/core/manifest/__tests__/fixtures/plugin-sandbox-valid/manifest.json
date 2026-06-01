@@ -13,8 +13,10 @@
     "https://example.com/api/*",
     "*"
   ],
-  "permissions": {
-    "js_api": ["app:read", "network:connect"],
-    "rest_api": ["app_record:read", "file:write"]
-  }
+  "permissions": [
+    { "permission": "app:read" },
+    { "permission": "network:connect" },
+    { "permission": "app_record:read", "scope": "self" },
+    { "permission": "file:write" }
+  ]
 }

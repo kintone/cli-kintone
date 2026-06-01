@@ -16,11 +16,11 @@ cli-kintone recognizes three optional fields in `manifest.json` (Manifest v1) th
 
 ## Fields
 
-| Field           | Type                                         | Description                                                                                                                                                                                                                                                                                                                                                       |
-| --------------- | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sandbox`       | `boolean`                                    | Whether the plugin is sandbox-aware.                                                                                                                                                                                                                                                                                                                              |
-| `allowed_hosts` | `string[]`                                   | List of allowed network endpoints. Each entry is either a URI with a scheme (e.g. `https://example.com`, `wss://example.com/ws/*`) or the bare wildcard `"*"`. cli-kintone only checks the structural form; domain-specific rules (IP literal rejection, trailing-slash-only rejection, cybozu domain exclusion, etc.) are enforced by kintone itself at runtime. |
-| `permissions`   | `{ js_api?: string[]; rest_api?: string[] }` | API permissions the plugin requests. `js_api` is for JS API / JS API Event; `rest_api` is for REST API.                                                                                                                                                                                                                                                           |
+| Field           | Type                                       | Description                                                                                                                                                                                                                                                                                                                                                       |
+| --------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sandbox`       | `boolean`                                  | Whether the plugin is sandbox-aware.                                                                                                                                                                                                                                                                                                                              |
+| `allowed_hosts` | `string[]`                                 | List of allowed network endpoints. Each entry is either a URI with a scheme (e.g. `https://example.com`, `wss://example.com/ws/*`) or the bare wildcard `"*"`. cli-kintone only checks the structural form; domain-specific rules (IP literal rejection, trailing-slash-only rejection, cybozu domain exclusion, etc.) are enforced by kintone itself at runtime. |
+| `permissions`   | `{ permission: string; scope?: string }[]` | API permissions the plugin requests. Each entry has a required `permission` and an optional `scope`. The `permission` / `scope` vocabulary is still under design and is not constrained by the schema yet.                                                                                                                                                        |
 
 When `sandbox` is set to `true`, both `allowed_hosts` and `permissions` are required. When `sandbox` is absent or set to `false`, `allowed_hosts` and `permissions` remain optional.
 
@@ -35,10 +35,11 @@ When `sandbox` is set to `true`, both `allowed_hosts` and `permissions` are requ
   "icon": "image/icon.png",
   "sandbox": true,
   "allowed_hosts": ["https://example.com", "wss://example.com/ws/*"],
-  "permissions": {
-    "js_api": ["app:read", "network:connect"],
-    "rest_api": ["app_record:read"]
-  }
+  "permissions": [
+    { "permission": "app:read" },
+    { "permission": "network:connect" },
+    { "permission": "app_record:read", "scope": "self" }
+  ]
 }
 ```
 
@@ -50,9 +51,9 @@ Validates the three fields against the manifest schema before packaging. Validat
 
 ### `plugin info`
 
-When any of `sandbox` / `allowed_hosts` / `permissions` is defined in the manifest, `plugin info` prints all four sandbox-related lines (`sandbox`, `allowed_hosts`, `permissions.js_api`, `permissions.rest_api`). Sandbox-unaware plugins (none of the three fields defined) omit the block entirely.
+When any of `sandbox` / `allowed_hosts` / `permissions` is defined in the manifest, `plugin info` prints all three sandbox-related lines (`sandbox`, `allowed_hosts`, `permissions`). Sandbox-unaware plugins (none of the three fields defined) omit the block entirely. Each permission is rendered as `permission[:scope]`, and the entries are joined with commas.
 
-- `(not set)` — the field is absent from the manifest. For `permissions.js_api` / `permissions.rest_api`, this also applies when `permissions` is declared but the child key is omitted.
+- `(not set)` — the field is absent from the manifest.
 - `(none)` — the field is declared as an explicitly empty array.
 
 Example plain output:
@@ -60,15 +61,14 @@ Example plain output:
 ```text
 sandbox: true
 allowed_hosts: https://example.com, wss://example.com/ws/*
-permissions.js_api: app:read, network:connect
-permissions.rest_api: app_record:read
+permissions: app:read, network:connect, app_record:read:self
 ```
 
 In JSON format, keys that are absent from the manifest are omitted from the output. Sandbox-related keys mirror the manifest naming (`sandbox`, `allowed_hosts`, `permissions`) rather than the camelCase accessor names used by the library internals.
 
 ### `plugin upload`
 
-When any of `sandbox` / `allowed_hosts` / `permissions` is defined in the manifest, the installation summary prints all four sandbox-related lines together (`Sandbox`, `Allowed hosts`, `Permissions (js_api)`, `Permissions (rest_api)`). Sandbox-unaware plugins show no additional lines. The same `(not set)` / `(none)` placeholders as `plugin info` are used. Example:
+When any of `sandbox` / `allowed_hosts` / `permissions` is defined in the manifest, the installation summary prints all three sandbox-related lines together (`Sandbox`, `Allowed hosts`, `Permissions`). Sandbox-unaware plugins show no additional lines. The same `(not set)` / `(none)` placeholders as `plugin info` are used. Example:
 
 ```text
   Installation Summary:
@@ -77,6 +77,5 @@ When any of `sandbox` / `allowed_hosts` / `permissions` is defined in the manife
     Target version: 1
     Sandbox: true
     Allowed hosts: https://example.com, wss://example.com/ws/*
-    Permissions (js_api): app:read, network:connect
-    Permissions (rest_api): app_record:read
+    Permissions: app:read, network:connect, app_record:read:self
 ```

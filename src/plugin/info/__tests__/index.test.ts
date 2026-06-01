@@ -37,17 +37,17 @@ describe("buildJsonInfo", () => {
       ...baseManifest,
       sandbox: true,
       allowedHosts: ["https://example.com"],
-      permissions: {
-        js_api: ["app:read"],
-        rest_api: ["app_record:read"],
-      },
+      permissions: [
+        { permission: "app:read" },
+        { permission: "app_record:read", scope: "self" },
+      ],
     });
     expect(info.sandbox).toBe(true);
     expect(info.allowed_hosts).toEqual(["https://example.com"]);
-    expect(info.permissions).toEqual({
-      js_api: ["app:read"],
-      rest_api: ["app_record:read"],
-    });
+    expect(info.permissions).toEqual([
+      { permission: "app:read" },
+      { permission: "app_record:read", scope: "self" },
+    ]);
   });
 
   it("drops absent sandbox keys when serialized as JSON (undefined → omitted)", () => {

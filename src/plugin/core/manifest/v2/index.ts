@@ -49,7 +49,7 @@ export class ManifestV2 implements ManifestInterface {
   }
 
   // Manifest v2 does not define a sandbox field; always absent by design.
-  get sandbox(): boolean | undefined {
+  get sandbox(): undefined {
     return undefined;
   }
 

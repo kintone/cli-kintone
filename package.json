@@ -101,7 +101,7 @@
   },
   "dependencies": {
     "@inquirer/prompts": "7.10.1",
-    "@kintone/plugin-manifest-validator": "11.2.0",
+    "@kintone/plugin-manifest-validator": "11.3.0",
     "@kintone/rest-api-client": "6.2.0",
     "chalk": "4.1.2",
     "chokidar": "4.0.3",

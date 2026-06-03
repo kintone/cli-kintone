@@ -11,3 +11,5 @@ minimumReleaseAgeExclude:
   - undici@7.18.2
   # Renovate security update: yauzl@3.2.1
   - yauzl@3.2.1
+  # First-party package for permissions restructure
+  - "@kintone/plugin-manifest-validator@11.3.0"

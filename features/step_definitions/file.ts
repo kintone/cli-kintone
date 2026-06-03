@@ -14,6 +14,10 @@ const assetsRootPath = path.resolve(__dirname, "..", "assets");
  */
 const assetMap: Record<string, string | undefined> = {
   plugin_project: path.resolve(assetsRootPath, "plugin_project"),
+  plugin_project_sandbox: path.resolve(
+    assetsRootPath,
+    "plugin_project_sandbox",
+  ),
   "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip": path.resolve(
     assetsRootPath,
     "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip",

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { ManifestInterface } from "../../core/manifest/interface";
-import { buildJsonInfo } from "../index";
+import { buildPluginInfoJson } from "../index";
 
 const baseManifest: ManifestInterface = {
   validate: async () => ({ valid: true, warnings: [] }),
@@ -17,9 +17,9 @@ const baseManifest: ManifestInterface = {
   json: {},
 };
 
-describe("buildJsonInfo", () => {
+describe("buildPluginInfoJson", () => {
   it("returns identity / description / homepage from the manifest", () => {
-    const info = buildJsonInfo("plugin-id", baseManifest);
+    const info = buildPluginInfoJson("plugin-id", baseManifest);
     expect(info).toEqual({
       id: "plugin-id",
       name: "Sample Plugin",
@@ -33,7 +33,7 @@ describe("buildJsonInfo", () => {
   });
 
   it("emits sandbox-related keys with snake_case names", () => {
-    const info = buildJsonInfo("plugin-id", {
+    const info = buildPluginInfoJson("plugin-id", {
       ...baseManifest,
       sandbox: true,
       allowedHosts: ["https://example.com"],
@@ -51,7 +51,7 @@ describe("buildJsonInfo", () => {
   });
 
   it("drops absent sandbox keys when serialized as JSON (undefined → omitted)", () => {
-    const info = buildJsonInfo("plugin-id", baseManifest);
+    const info = buildPluginInfoJson("plugin-id", baseManifest);
     const serialized = JSON.parse(JSON.stringify(info));
     expect(serialized).not.toHaveProperty("sandbox");
     expect(serialized).not.toHaveProperty("allowed_hosts");
@@ -64,7 +64,7 @@ describe("buildJsonInfo", () => {
   });
 
   it("preserves sandbox: false (not stripped) when serialized", () => {
-    const info = buildJsonInfo("plugin-id", {
+    const info = buildPluginInfoJson("plugin-id", {
       ...baseManifest,
       sandbox: false,
     });

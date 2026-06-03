@@ -19,7 +19,7 @@ export type PluginInfoJson = {
   permissions: ManifestPermissions | undefined;
 };
 
-export const buildJsonInfo = (
+export const buildPluginInfoJson = (
   id: string,
   manifest: ManifestInterface,
 ): PluginInfoJson => ({
@@ -56,7 +56,7 @@ export const run = async (pluginFilePath: string, format: OutputFormat) => {
       break;
     }
     case "json": {
-      console.log(JSON.stringify(buildJsonInfo(id, manifest), null, 2));
+      console.log(JSON.stringify(buildPluginInfoJson(id, manifest), null, 2));
       break;
     }
   }

@@ -19,3 +19,36 @@ Feature: plugin pack
     When I run the command with args "plugin pack --input ./src/manifest.json --private-key ./src/private.ppk --output ./dist/plugin.zip"
     Then I should get the exit code is zero
     And I have a file at "./dist/plugin.zip"
+
+  Scenario: Pack a plugin with sandbox, allowed_hosts and permissions
+    Given An asset with key "plugin_project_sandbox" is available as "src"
+    When I run the command with args "plugin pack --input ./src/manifest.json --private-key ./src/private.ppk"
+    Then I should get the exit code is zero
+    And I have a file at "plugin.zip"
+
+  Scenario: Plugin info surfaces sandbox, allowed_hosts and permissions
+    Given An asset with key "plugin_project_sandbox" is available as "src"
+    When I run the command with args "plugin pack --input ./src/manifest.json --private-key ./src/private.ppk"
+    Then I should get the exit code is zero
+    And I have a file at "plugin.zip"
+    When I run the command with args "plugin info --input ./plugin.zip"
+    Then I should get the exit code is zero
+    And The output message should match with the pattern:
+      """
+      sandbox: true
+      allowed_hosts: https://example\.com, wss://example\.com/ws/\*
+      permissions: app:read, network:connect, app_record:read:self
+      """
+
+  Scenario: Plugin info --format json surfaces sandbox-related keys with snake_case names
+    Given An asset with key "plugin_project_sandbox" is available as "src"
+    When I run the command with args "plugin pack --input ./src/manifest.json --private-key ./src/private.ppk"
+    Then I should get the exit code is zero
+    And I have a file at "plugin.zip"
+    When I run the command with args "plugin info --input ./plugin.zip --format json"
+    Then I should get the exit code is zero
+    And The output message should match with the pattern: "\"sandbox\": true"
+    And The output message should match with the pattern: "\"allowed_hosts\": \["
+    And The output message should match with the pattern: "\"permissions\":"
+    And The output message should match with the pattern: "\"permission\": \"app:read\""
+    And The output message should match with the pattern: "\"scope\": \"self\""

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/kintone/js-sdk/%40kintone/plugin-manifest-validator%4011.3.0/packages/plugin-manifest-validator/manifest-schema.json",
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "sandbox": true,
+  "allowed_hosts": ["https://example.com", "wss://example.com/ws/*"],
+  "permissions": [
+    { "permission": "app:read" },
+    { "permission": "network:connect" },
+    { "permission": "app_record:read", "scope": "self" }
+  ],
+  "desktop": {
+    "js": ["js/desktop.js"],
+    "css": ["css/51-modern-default.css", "css/desktop.css"]
+  },
+  "icon": "image/icon.png",
+  "config": {
+    "html": "html/config.html",
+    "js": ["js/config.js"],
+    "css": ["css/51-modern-default.css", "css/config.css"],
+    "required_params": ["message"]
+  },
+  "name": {
+    "en": "hello-kintone-sandbox"
+  },
+  "description": {
+    "en": "Sandbox-enabled plugin sample."
+  },
+  "homepage_url": {
+    "en": "https://example.com/en/"
+  },
+  "mobile": {
+    "js": ["js/mobile.js"],
+    "css": ["css/mobile.css"]
+  }
+}

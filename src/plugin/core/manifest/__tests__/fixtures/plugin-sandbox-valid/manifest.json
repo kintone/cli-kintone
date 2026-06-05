@@ -1,0 +1,22 @@
+{
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "name": {
+    "en": "sandbox sample"
+  },
+  "icon": "image/icon.png",
+  "sandbox": true,
+  "allowed_hosts": [
+    "https://example.com",
+    "wss://example.com",
+    "https://example.com/api/*",
+    "*"
+  ],
+  "permissions": [
+    { "permission": "app:read" },
+    { "permission": "network:connect" },
+    { "permission": "app_record:read", "scope": "self" },
+    { "permission": "file:write" }
+  ]
+}

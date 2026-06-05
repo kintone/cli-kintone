@@ -44,14 +44,13 @@ describe("sourceListV2", () => {
         required_params: ["Param1", "Param2"],
       },
       allowed_hosts: ["https://example.com"],
-      permissions: {
-        js_api: [
-          "rest_api:execute",
-          "kintone.app.getId",
-          "kintone.plugin.app.getConfig",
-        ],
-        rest_api: ["app_record:read", "/k/v1/record.json:put"],
-      },
+      permissions: [
+        { permission: "rest_api:execute" },
+        { permission: "kintone.app.getId" },
+        { permission: "kintone.plugin.app.getConfig" },
+        { permission: "app_record:read" },
+        { permission: "/k/v1/record.json:put" },
+      ],
     };
   });
   it("should return distinct local files from the manifest", () => {

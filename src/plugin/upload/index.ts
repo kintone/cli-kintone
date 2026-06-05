@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import { confirm } from "@inquirer/prompts";
 import { PluginZip } from "../core";
+import { buildPluginSummary } from "../core/summary";
 import {
   buildRestAPIClient,
   type RestAPIClientOptions,
@@ -48,14 +49,23 @@ export const upload = async (
   const isSameVersion = installedPlugin?.version === pluginManifest.version;
 
   // Show installation summary
-  const installationSummary = `
-  Installation Summary:
-    Destination: ${restApiClientOptions.baseUrl}
-    File Path: ${pluginFilePath}
-    Plugin ID: ${pluginId}
-    Plugin Name: ${pluginManifest.name}
-    Current version: ${installedPlugin?.version ?? "(not installed)"}
-    Target version: ${pluginManifest.version}${isSameVersion ? " (reinstall)" : ""}`;
+  const summary = buildPluginSummary(pluginId, pluginManifest);
+  const lines = [
+    `    Destination: ${restApiClientOptions.baseUrl}`,
+    `    File Path: ${pluginFilePath}`,
+    `    Plugin ID: ${summary.id}`,
+    `    Plugin Name: ${summary.name}`,
+    `    Current version: ${installedPlugin?.version ?? "(not installed)"}`,
+    `    Target version: ${summary.version}${isSameVersion ? " (reinstall)" : ""}`,
+    ...(summary.sandbox !== null
+      ? [
+          `    Sandbox: ${summary.sandbox.sandbox}`,
+          `    Allowed hosts: ${summary.sandbox.allowedHosts}`,
+          `    Permissions: ${summary.sandbox.permissions}`,
+        ]
+      : []),
+  ];
+  const installationSummary = `\n  Installation Summary:\n${lines.join("\n")}`;
   logger.info(installationSummary);
 
   // Get confirmation from user if required

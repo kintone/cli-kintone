@@ -2,6 +2,13 @@ import type { DriverInterface } from "../driver";
 import type { ContentsZip } from "../contents";
 import type { ValidationResult } from "./validate";
 
+export type ManifestPermission = {
+  permission: string;
+  scope?: string;
+};
+
+export type ManifestPermissions = ManifestPermission[];
+
 export interface ManifestStaticInterface {
   /**
    * Parse JSON object to Manifest
@@ -43,6 +50,11 @@ export interface ManifestInterface {
   get version(): number | string;
   get description(): string | undefined;
   get homepageUrl(): string | undefined;
+  // Sandbox-related accessors return raw manifest values. Normalization
+  // (dedup, canonicalization, etc.) belongs to the validator layer.
+  get sandbox(): boolean | undefined;
+  get allowedHosts(): string[] | undefined;
+  get permissions(): ManifestPermissions | undefined;
 
   /**
    * Returns JSON object represents Manifest raw object.

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.0](https://github.com/kintone/cli-kintone/compare/v1.19.3...v1.20.0) (2026-06-08)
+
+
+### Features
+
+* **plugin:** support sandbox manifest fields (sandbox / allowed_hosts / permissions) ([#1447](https://github.com/kintone/cli-kintone/issues/1447)) ([7a892c9](https://github.com/kintone/cli-kintone/commit/7a892c9001cfd041e3dc503d64f8c97fd9bccc4c))
+
 ## [1.19.3](https://github.com/kintone/cli-kintone/compare/v1.19.2...v1.19.3) (2026-05-25)
 
 

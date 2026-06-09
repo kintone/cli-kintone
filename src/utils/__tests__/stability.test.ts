@@ -4,7 +4,9 @@ import { emitDeprecationWarning, emitExperimentalWarning } from "../stability";
 
 describe("stability", () => {
   const mockDate = new Date(0);
-  const spy = vi.spyOn(global, "Date").mockImplementation(() => mockDate);
+  const spy = vi.spyOn(global, "Date").mockImplementation(function () {
+    return mockDate;
+  } as unknown as typeof Date);
 
   afterAll(() => {
     spy.mockReset();

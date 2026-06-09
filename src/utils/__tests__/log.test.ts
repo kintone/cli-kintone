@@ -4,7 +4,9 @@ import { StandardLogger } from "../log";
 
 describe("StandardLogger", () => {
   const mockDate = new Date(0);
-  const spy = vi.spyOn(global, "Date").mockImplementation(() => mockDate);
+  const spy = vi.spyOn(global, "Date").mockImplementation(function () {
+    return mockDate;
+  } as unknown as typeof Date);
   const patternTest = [
     ["TRACE", "trace"],
     ["DEBUG", "debug"],

@@ -20,9 +20,9 @@
     "update-translation-progress": "ts-node scripts/update-translation-progress.ts"
   },
   "dependencies": {
-    "@docusaurus/core": "3.9.2",
-    "@docusaurus/preset-classic": "3.9.2",
-    "@docusaurus/theme-common": "3.9.2",
+    "@docusaurus/core": "3.10.1",
+    "@docusaurus/preset-classic": "3.10.1",
+    "@docusaurus/theme-common": "3.10.1",
     "@mdx-js/react": "3.1.1",
     "clsx": "2.1.1",
     "docusaurus-plugin-sass": "0.2.6",
@@ -32,11 +32,11 @@
     "sass": "1.97.3"
   },
   "devDependencies": {
-    "@docusaurus/eslint-plugin": "3.9.2",
-    "@docusaurus/module-type-aliases": "3.9.2",
-    "@docusaurus/plugin-content-docs": "3.9.2",
-    "@docusaurus/tsconfig": "3.9.2",
-    "@docusaurus/types": "3.9.2",
+    "@docusaurus/eslint-plugin": "3.10.1",
+    "@docusaurus/module-type-aliases": "3.10.1",
+    "@docusaurus/plugin-content-docs": "3.10.1",
+    "@docusaurus/tsconfig": "3.10.1",
+    "@docusaurus/types": "3.10.1",
     "@eslint/eslintrc": "3.3.5",
     "@octokit/rest": "22.0.1",
     "@types/node": "18.19.130",

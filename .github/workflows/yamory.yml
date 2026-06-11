@@ -10,7 +10,7 @@ jobs:
     name: Yamory
     runs-on: ubuntu-latest
     steps:
-      - uses: Kesin11/actions-timeline@54d513e0b5ff1158f1cf8321108d666a5a6c1fca # v2
+      - uses: Kesin11/actions-timeline@44c9c178ffb2fb1d9859614a3ffa79ccfb77565e # v3
 
       - uses: actions/checkout@v5
 

@@ -5,7 +5,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "cli-kintone",
-  tagline: "The CLI tool for importing and exporting Kintone records.",
+  tagline: "The command line interface for Kintone",
   favicon: "img/cli-kintone_logo.svg",
 
   // Set the production url of your site here

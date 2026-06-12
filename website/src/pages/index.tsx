@@ -18,7 +18,7 @@ const HomepageHeader = () => {
         </Heading>
         <p className="hero__subtitle">
           <Translate id="homepage.tagline" description="The homepage tagline">
-            The CLI tool for importing and exporting Kintone records.
+            The command line interface for Kintone
           </Translate>
         </p>
         <div className={styles.buttons}>
@@ -42,13 +42,12 @@ const Home = (): JSX.Element => {
     <Layout
       title={translate({
         id: "homepage.title",
-        message:
-          "cli-kintone; The CLI tool for importing and exporting Kintone records.",
+        message: "cli-kintone - The command line interface for Kintone",
         description: "The homepage title",
       })}
       description={translate({
         id: "homepage.description",
-        message: "The CLI tool for importing and exporting Kintone records.",
+        message: "The command line interface for Kintone",
         description: "The homepage meta description",
       })}
     >

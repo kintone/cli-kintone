@@ -4,11 +4,13 @@ import { emitDeprecationWarning, emitExperimentalWarning } from "../stability";
 
 describe("stability", () => {
   const mockDate = new Date(0);
-  const spy = vi.spyOn(global, "Date").mockImplementation(() => mockDate);
+  beforeAll(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(mockDate);
+  });
 
   afterAll(() => {
-    spy.mockReset();
-    spy.mockRestore();
+    vi.useRealTimers();
   });
 
   describe("emitExperimentalWarning", () => {

@@ -32,7 +32,9 @@ describe("plugin upload command", () => {
     const apiClientMock = await createApiClientMock(
       "https://example.kintone.com",
     );
-    KintoneRestAPIClientMock.mockImplementationOnce(() => apiClientMock);
+    KintoneRestAPIClientMock.mockImplementationOnce(function () {
+      return apiClientMock;
+    });
 
     apiClientMock.file.uploadFile = vi
       .fn()
@@ -71,7 +73,9 @@ describe("plugin upload command", () => {
     const apiClientMock = await createApiClientMock(
       "https://example.kintone.com",
     );
-    KintoneRestAPIClientMock.mockImplementationOnce(() => apiClientMock);
+    KintoneRestAPIClientMock.mockImplementationOnce(function () {
+      return apiClientMock;
+    });
 
     apiClientMock.file.uploadFile = vi
       .fn()

@@ -15,42 +15,37 @@ vi.spyOn(fs, "readFileSync").mockReturnValue("dummy");
 
 vi.mock("https", () => {
   return {
-    Agent: vi
-      .fn()
-      .mockImplementation(
-        (opts?: { pfx?: Buffer | string; passphrase?: string }) => {
-          const agentInstance: {
-            pfx?: Buffer | string;
-            passphrase?: string;
-          } = {};
-          if (opts?.pfx) {
-            agentInstance.pfx = opts.pfx;
-          }
-          if (opts?.passphrase) {
-            agentInstance.passphrase = opts.passphrase;
-          }
-          return agentInstance;
-        },
-      ),
+    Agent: vi.fn().mockImplementation(function (opts?: {
+      pfx?: Buffer | string;
+      passphrase?: string;
+    }) {
+      const agentInstance: {
+        pfx?: Buffer | string;
+        passphrase?: string;
+      } = {};
+      if (opts?.pfx) {
+        agentInstance.pfx = opts.pfx;
+      }
+      if (opts?.passphrase) {
+        agentInstance.passphrase = opts.passphrase;
+      }
+      return agentInstance;
+    }),
   };
 });
 
 vi.mock("https-proxy-agent", () => {
   return {
-    HttpsProxyAgent: vi
-      .fn()
-      .mockImplementation(
-        (
-          proxy: URL | string,
-          opts?: { pfx?: Buffer | string; passphrase?: string },
-        ) => {
-          if (!opts || !opts?.pfx) {
-            return { proxy };
-          }
+    HttpsProxyAgent: vi.fn().mockImplementation(function (
+      proxy: URL | string,
+      opts?: { pfx?: Buffer | string; passphrase?: string },
+    ) {
+      if (!opts || !opts?.pfx) {
+        return { proxy };
+      }
 
-          return { proxy, opts };
-        },
-      ),
+      return { proxy, opts };
+    }),
   };
 });
 

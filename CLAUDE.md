@@ -32,7 +32,7 @@ Unit tests live next to source as `__tests__/` directories using vitest.
 ## Toolchain
 
 - Node `>=20` (`mise.toml` pins Node 24 for development)
-- Package manager: **pnpm** (`packageManager: pnpm@10.30.3`).
+- Package manager: **pnpm** — version pinned by `packageManager` in `package.json` (`mise.toml` also pins a pnpm version for development)
 - Bundler: `@vercel/ncc` for single-file build, `pkg` (Node SEA) for native executables
 - Linter / formatter: ESLint (`eslint.config.mjs`) + Prettier (`*.{json,md,yml,yaml}`)
 - Tests: vitest (unit) + Cucumber (E2E, `features/`)

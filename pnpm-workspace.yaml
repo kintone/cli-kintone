@@ -13,3 +13,5 @@ minimumReleaseAgeExclude:
   - yauzl@3.2.1
   # First-party package for permissions restructure
   - "@kintone/plugin-manifest-validator@11.3.0"
+  # Renovate security update: ws@8.20.1
+  - ws@8.20.1

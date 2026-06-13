@@ -84,7 +84,7 @@
     "@yao-pkg/pkg": "6.20.0",
     "ajv": "8.20.0",
     "allure-commandline": "2.42.1",
-    "allure-cucumberjs": "2.15.1",
+    "allure-cucumberjs": "3.10.0",
     "allure-js-commons": "3.10.0",
     "allure-vitest": "3.9.0",
     "cross-env": "10.1.0",

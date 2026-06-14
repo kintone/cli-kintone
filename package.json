@@ -114,7 +114,7 @@
     "yauzl": "3.2.1",
     "yazl": "3.3.1"
   },
-  "packageManager": "pnpm@10.30.3",
+  "packageManager": "pnpm@10.34.3",
   "pnpm": {
     "overrides": {
       "braces": ">=3.0.3",

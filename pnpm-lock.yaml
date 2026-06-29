@@ -102,8 +102,8 @@ importers:
         specifier: 3.10.2
         version: 3.10.2
       allure-vitest:
-        specifier: 3.10.1
-        version: 3.10.1(@vitest/runner@4.1.9)(vitest@4.1.9(@types/node@18.19.130)(vite@7.3.0(@types/node@18.19.130)(jiti@1.21.7)(sass@1.97.3)(terser@5.44.0)(yaml@2.8.1)))
+        specifier: 3.10.2
+        version: 3.10.2(@vitest/runner@4.1.9)(vitest@4.1.9(@types/node@18.19.130)(vite@7.3.0(@types/node@18.19.130)(jiti@1.21.7)(sass@1.97.3)(terser@5.44.0)(yaml@2.8.1)))
       cross-env:
         specifier: 10.1.0
         version: 10.1.0
@@ -2942,14 +2942,6 @@ packages:
   allure-js-commons@2.15.1:
     resolution: {integrity: sha512-5V/VINplbu0APnfSZOkYpKOzucO36Q2EtTD1kqjWjl7n6tj7Hh+IHCZsH3Vpk/LXRDfj9RuXugBBvwYKV5YMJw==}
 
-  allure-js-commons@3.10.1:
-    resolution: {integrity: sha512-GhItH/LUPUioQcr9igrQJyI0ha0w3XdF8b932YjI/x3LzbC5SM7tgpAfdC2TLEoGa2yeIYsMUqNMTBZYUgC/gw==}
-    peerDependencies:
-      allure-playwright: 3.10.1
-    peerDependenciesMeta:
-      allure-playwright:
-        optional: true
-
   allure-js-commons@3.10.2:
     resolution: {integrity: sha512-5nAjUF1iNPSQMwKtEsadclSta8C3L705/k/pIzGb9M6P9krgfRaCyaEHt8pkLlCP9NFj5xk3grjtnAhiLeT+Kg==}
     peerDependencies:
@@ -2958,8 +2950,8 @@ packages:
       allure-playwright:
         optional: true
 
-  allure-vitest@3.10.1:
-    resolution: {integrity: sha512-2610jkABDlAJiAHR/uMzF2DCTYereeofLEEmBnGGfhOujqFYOI/Oi57IsDADpT5AaJQVUPghU3d6orG9icDqTw==}
+  allure-vitest@3.10.2:
+    resolution: {integrity: sha512-if4B7Z1Bm3V/YfbzvEr3SkFClDUS5jHEYdNFhPPlxUOc5EwLYT8PyLlx/ROXrGTYBdqm5hCJTWWaMUYMNKYWsA==}
     peerDependencies:
       '@vitest/runner': '>=1.3.0'
       vitest: '>=1.3.0'
@@ -11702,18 +11694,14 @@ snapshots:
       properties: 1.2.1
       strip-ansi: 5.2.0
 
-  allure-js-commons@3.10.1:
-    dependencies:
-      md5: 2.3.0
-
   allure-js-commons@3.10.2:
     dependencies:
       md5: 2.3.0
 
-  allure-vitest@3.10.1(@vitest/runner@4.1.9)(vitest@4.1.9(@types/node@18.19.130)(vite@7.3.0(@types/node@18.19.130)(jiti@1.21.7)(sass@1.97.3)(terser@5.44.0)(yaml@2.8.1))):
+  allure-vitest@3.10.2(@vitest/runner@4.1.9)(vitest@4.1.9(@types/node@18.19.130)(vite@7.3.0(@types/node@18.19.130)(jiti@1.21.7)(sass@1.97.3)(terser@5.44.0)(yaml@2.8.1))):
     dependencies:
       '@vitest/runner': 4.1.9
-      allure-js-commons: 3.10.1
+      allure-js-commons: 3.10.2
       vitest: 4.1.9(@types/node@18.19.130)(vite@7.3.0(@types/node@18.19.130)(jiti@1.21.7)(sass@1.97.3)(terser@5.44.0)(yaml@2.8.1))
     transitivePeerDependencies:
       - allure-playwright

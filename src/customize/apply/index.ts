@@ -275,7 +275,8 @@ const getLocalFiles = (
     ...manifest.mobile.css,
   ]
     .filter((file) => !isUrlString(file))
-    .map((file) => path.resolve(manifestDir, file));
+    .map((file) => path.resolve(manifestDir, file))
+    .filter((file, index, self) => self.indexOf(file) === index);
 };
 
 export const runApply = async (params: ApplyParams) => {
@@ -307,7 +308,14 @@ export const runApply = async (params: ApplyParams) => {
 
   const apiClient = buildRestAPIClient(restApiClientOptions);
 
-  await apply(apiClient, appId, manifest, manifestDir, boundMessage);
+  try {
+    await apply(apiClient, appId, manifest, manifestDir, boundMessage);
+  } catch (error) {
+    if (!watch) {
+      throw error;
+    }
+    logger.error(error);
+  }
 
   if (watch) {
     const watchOptions =

@@ -25,6 +25,8 @@ export interface ManifestStaticInterface {
 }
 
 export interface ManifestInterface {
+  manifestFileName: string;
+
   // TODO: Validating file existence and file size are better to be done in contents validation.
   /**
    * Validate Manifest

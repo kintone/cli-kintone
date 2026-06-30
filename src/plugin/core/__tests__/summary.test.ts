@@ -3,6 +3,7 @@ import type { ManifestInterface } from "../manifest/interface";
 import { buildPluginSummary } from "../summary";
 
 const baseManifest: ManifestInterface = {
+  manifestFileName: "manifest.json",
   validate: async () => ({ valid: true, warnings: [] }),
   sourceList: () => [],
   generateContentsZip: async () => ({}) as never,

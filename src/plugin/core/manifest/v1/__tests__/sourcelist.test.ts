@@ -55,6 +55,20 @@ describe("sourcelist", () => {
       "image/icon.png",
     ]);
   });
+  it("should use the given manifest filename", () => {
+    expect(sourceList(manifest, "manifest.local.json")).toStrictEqual([
+      "js/desktop.js",
+      "js/lib.js",
+      "css/desktop.css",
+      "css/lib.css",
+      "js/mobile.js",
+      "js/config.js",
+      "css/config.css",
+      "html/config.html",
+      "manifest.local.json",
+      "image/icon.png",
+    ]);
+  });
   it("should make the file list unique", () => {
     manifest.desktop.js.push("js/desktop.js");
     manifest.desktop.css.push("css/desktop.css");

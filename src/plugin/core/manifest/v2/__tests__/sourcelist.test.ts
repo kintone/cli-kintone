@@ -65,4 +65,16 @@ describe("sourceListV2", () => {
       "css/config.css",
     ]);
   });
+  it("should use the given manifest filename", () => {
+    expect(sourceListV2(manifest, "manifest.local.json")).toStrictEqual([
+      "manifest.local.json",
+      "image/icon.png",
+      "js/customize.js",
+      "css/customize.css",
+      "html/customize.html",
+      "html/config.html",
+      "js/config.js",
+      "css/config.css",
+    ]);
+  });
 });

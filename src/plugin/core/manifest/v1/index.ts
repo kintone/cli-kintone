@@ -1,3 +1,4 @@
+import path from "path";
 import { sourceList } from "./sourcelist";
 import type {
   ManifestInterface,
@@ -12,6 +13,7 @@ import { logger } from "../../../../utils/log";
 
 export class ManifestV1 implements ManifestInterface {
   manifest: ManifestV1JsonObject;
+  manifestFileName = "manifest.json";
 
   constructor(manifest: ManifestV1JsonObject) {
     this.manifest = manifest;
@@ -27,7 +29,9 @@ export class ManifestV1 implements ManifestInterface {
   ): Promise<ManifestV1> {
     const _driver = driver ?? new LocalFSDriver();
     const manifestJson = await _driver.readFile(jsonFilePath, "utf-8");
-    return this.parseJson(manifestJson);
+    const manifest = this.parseJson(manifestJson);
+    manifest.manifestFileName = path.basename(jsonFilePath);
+    return manifest;
   }
 
   get manifestVersion(): 1 {
@@ -73,7 +77,7 @@ export class ManifestV1 implements ManifestInterface {
   }
 
   sourceList(): string[] {
-    return sourceList(this.manifest);
+    return sourceList(this.manifest, this.manifestFileName);
   }
 
   async generateContentsZip(driver: DriverInterface): Promise<ContentsZip> {

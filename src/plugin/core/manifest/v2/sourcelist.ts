@@ -3,9 +3,12 @@ import type { ManifestV2JsonObject } from "./index";
 /**
  * Create contents file list from manifest.json
  */
-export const sourceListV2 = (manifest: ManifestV2JsonObject): string[] => {
+export const sourceListV2 = (
+  manifest: ManifestV2JsonObject,
+  manifestFileName = "manifest.json",
+): string[] => {
   const list: string[] = [];
-  list.push("manifest.json", manifest.icon);
+  list.push(manifestFileName, manifest.icon);
 
   const filesInComponents =
     manifest.components

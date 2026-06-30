@@ -52,6 +52,31 @@ describe("ContentsZip", () => {
     });
   });
 
+  describe("should bundle custom manifest filename as manifest.json in zip", () => {
+    it("manifest v1", async () => {
+      const pluginDir = path.join(fixturesDir, "plugin-manifest-v1");
+
+      const customName = "manifest.local.json";
+      fs.copyFileSync(
+        path.join(pluginDir, "manifest.json"),
+        path.join(pluginDir, customName),
+      );
+      try {
+        const manifestJSONPath = path.join(pluginDir, customName);
+        const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
+
+        const contentsZip = await ContentsZip.buildFromManifest(
+          manifest,
+          new LocalFSDriver(pluginDir),
+        );
+        const files = await contentsZip.fileList();
+        expect(files).toStrictEqual(["manifest.json", "image/icon.png"]);
+      } finally {
+        fs.unlinkSync(path.join(pluginDir, customName));
+      }
+    });
+  });
+
   describe("invalid contents.zip", () => {
     const invalidMaxFileSizeContentsZipPath = path.join(
       __dirname,

@@ -3,7 +3,10 @@ import type { ManifestV1JsonObject } from "./index";
 /**
  * Create contents file list from manifest.json
  */
-export const sourceList = (manifest: ManifestV1JsonObject): string[] => {
+export const sourceList = (
+  manifest: ManifestV1JsonObject,
+  manifestFileName = "manifest.json",
+): string[] => {
   const list = ([] as string[]).concat(
     manifest.desktop?.js?.filter((s) => !isURL(s)) ?? [],
     manifest.desktop?.css?.filter((s) => !isURL(s)) ?? [],
@@ -12,7 +15,7 @@ export const sourceList = (manifest: ManifestV1JsonObject): string[] => {
     manifest.config?.js?.filter((s) => !isURL(s)) ?? [],
     manifest.config?.css?.filter((s) => !isURL(s)) ?? [],
     manifest.config?.html ?? [],
-    ["manifest.json", manifest.icon],
+    [manifestFileName, manifest.icon],
   );
 
   // Make the file list unique

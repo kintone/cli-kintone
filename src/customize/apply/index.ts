@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
+import os from "os";
 import { confirm } from "@inquirer/prompts";
+import * as chokidar from "chokidar";
 import { type KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { logger } from "../../utils/log";
 import { isRetryableKintoneError, retry } from "../../utils/retry";
@@ -15,6 +17,7 @@ export type ApplyParams = RestAPIClientOptions & {
   appId: string;
   inputPath: string;
   yes: boolean;
+  watch?: boolean;
 };
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -252,26 +255,46 @@ const createUpdatedManifest = (
   };
 };
 
+const loadManifest = (inputPath: string): CustomizeManifest => {
+  const manifest: CustomizeManifest = JSON.parse(
+    fs.readFileSync(inputPath, "utf8"),
+  );
+  // support an old format for customize-manifest.json that doesn't have mobile.css
+  manifest.mobile.css = manifest.mobile.css || [];
+  return manifest;
+};
+
+const getLocalFiles = (
+  manifest: CustomizeManifest,
+  manifestDir: string,
+): string[] => {
+  return [
+    ...manifest.desktop.js,
+    ...manifest.desktop.css,
+    ...manifest.mobile.js,
+    ...manifest.mobile.css,
+  ]
+    .filter((file) => !isUrlString(file))
+    .map((file) => path.resolve(manifestDir, file))
+    .filter((file, index, self) => self.indexOf(file) === index);
+};
+
 export const runApply = async (params: ApplyParams) => {
-  const { appId, inputPath, yes, ...restApiClientOptions } = params;
+  const { appId, inputPath, yes, watch, ...restApiClientOptions } = params;
   const boundMessage = getBoundMessage("en");
 
   logger.debug(`Starting apply for app ${appId}`);
   logger.debug(`Input path: ${inputPath}`);
 
-  const manifestDir = path.dirname(path.resolve(inputPath));
+  const resolvedInputPath = path.resolve(inputPath);
+  const manifestDir = path.dirname(resolvedInputPath);
   logger.debug(`Manifest directory: ${manifestDir}`);
 
-  const manifest: CustomizeManifest = JSON.parse(
-    fs.readFileSync(inputPath, "utf8"),
-  );
+  const manifest = loadManifest(resolvedInputPath);
   logger.debug(`Manifest loaded: scope=${manifest.scope}`);
 
-  // support an old format for customize-manifest.json that doesn't have mobile.css
-  manifest.mobile.css = manifest.mobile.css || [];
-
   // Confirmation prompt before applying
-  if (!yes) {
+  if (!yes && !watch) {
     logger.debug("Prompting for confirmation...");
     const shouldApply = await confirm({
       message: `Apply customization to app ${appId}?`,
@@ -285,5 +308,59 @@ export const runApply = async (params: ApplyParams) => {
 
   const apiClient = buildRestAPIClient(restApiClientOptions);
 
-  await apply(apiClient, appId, manifest, manifestDir, boundMessage);
+  try {
+    await apply(apiClient, appId, manifest, manifestDir, boundMessage);
+  } catch (error) {
+    if (!watch) {
+      throw error;
+    }
+    logger.error(error);
+  }
+
+  if (watch) {
+    const watchOptions =
+      os.platform() === "win32"
+        ? {
+            awaitWriteFinish: {
+              stabilityThreshold: 1000,
+              pollInterval: 250,
+            },
+          }
+        : {};
+    let watchedFiles = getLocalFiles(manifest, manifestDir);
+    const watcher = chokidar.watch(
+      [resolvedInputPath, ...watchedFiles],
+      watchOptions,
+    );
+    logger.info(boundMessage("M_Watching"));
+
+    watcher.on("change", async () => {
+      try {
+        const updatedManifest = loadManifest(resolvedInputPath);
+        const newLocalFiles = getLocalFiles(updatedManifest, manifestDir);
+
+        const removed = watchedFiles.filter((f) => !newLocalFiles.includes(f));
+        const added = newLocalFiles.filter((f) => !watchedFiles.includes(f));
+        if (removed.length > 0) {
+          watcher.unwatch(removed);
+        }
+        if (added.length > 0) {
+          watcher.add(added);
+        }
+        watchedFiles = newLocalFiles;
+
+        await apply(
+          apiClient,
+          appId,
+          updatedManifest,
+          manifestDir,
+          boundMessage,
+        );
+        logger.info(boundMessage("M_Watching"));
+      } catch (error) {
+        logger.error(error);
+        logger.info(boundMessage("M_Watching"));
+      }
+    });
+  }
 };

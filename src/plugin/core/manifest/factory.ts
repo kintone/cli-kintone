@@ -1,3 +1,4 @@
+import path from "path";
 import type { DriverInterface } from "../driver";
 import { LocalFSDriver } from "../driver";
 import type { ManifestInterface, ManifestStaticInterface } from "./interface";
@@ -44,7 +45,9 @@ export class ManifestFactory {
   ): Promise<ManifestInterface> {
     const _driver = driver ?? new LocalFSDriver();
     const manifestJson = await _driver.readFile(jsonFilePath, "utf-8");
-    return this.parseJson(manifestJson);
+    const manifest = this.parseJson(manifestJson);
+    manifest.manifestFileName = path.basename(jsonFilePath);
+    return manifest;
   }
 }
 const _ = ManifestFactory satisfies ManifestStaticInterface;

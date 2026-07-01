@@ -1,3 +1,4 @@
+import path from "path";
 import type {
   ManifestInterface,
   ManifestPermissions,
@@ -10,6 +11,7 @@ import { ContentsZip } from "../../contents";
 
 export class ManifestV2 implements ManifestInterface {
   manifest: ManifestV2JsonObject;
+  manifestFileName = "manifest.json";
 
   constructor(manifest: ManifestV2JsonObject) {
     this.manifest = manifest;
@@ -25,7 +27,9 @@ export class ManifestV2 implements ManifestInterface {
   ): Promise<ManifestV2> {
     const _driver = driver ?? new LocalFSDriver();
     const manifestJson = await _driver.readFile(jsonFilePath, "utf-8");
-    return this.parseJson(manifestJson);
+    const manifest = this.parseJson(manifestJson);
+    manifest.manifestFileName = path.basename(jsonFilePath);
+    return manifest;
   }
 
   get manifestVersion(): 2 {
@@ -74,7 +78,7 @@ export class ManifestV2 implements ManifestInterface {
   }
 
   sourceList(): string[] {
-    return sourceListV2(this.manifest);
+    return sourceListV2(this.manifest, this.manifestFileName);
   }
 
   async generateContentsZip(driver: DriverInterface): Promise<ContentsZip> {

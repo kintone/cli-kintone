@@ -17,7 +17,8 @@ export const buildContentsZip = async (
 
   for (const src of manifest.sourceList()) {
     const data = await driver.readFile(src);
-    zipFile.addBuffer(data, src);
+    const entryName = src === manifest.manifestFileName ? "manifest.json" : src;
+    zipFile.addBuffer(data, entryName);
   }
   zipFile.end(undefined, ((finalSize: number) => {
     size = finalSize;

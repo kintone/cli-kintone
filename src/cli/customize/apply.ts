@@ -29,6 +29,11 @@ const builder = (args: yargs.Argv) =>
       describe: "Skip confirmation prompts",
       type: "boolean",
       default: false,
+    })
+    .option("watch", {
+      describe: "Watch for file changes and re-apply",
+      type: "boolean",
+      default: false,
     });
 
 type Args = yargs.Arguments<
@@ -41,6 +46,7 @@ const handler = async (args: Args) => {
       appId: args.app,
       inputPath: args.input,
       yes: args.yes,
+      watch: args.watch,
       baseUrl: args["base-url"],
       username: args.username,
       password: args.password,

@@ -47,7 +47,7 @@ export interface ManifestInterface {
   generateContentsZip(driver: DriverInterface): Promise<ContentsZip>;
 
   // Accessor
-  get manifestVersion(): 1 | 2;
+  get manifestVersion(): 1;
   get name(): string;
   get version(): number | string;
   get description(): string | undefined;

@@ -39,10 +39,6 @@ export const pack = async (params: Params) => {
 
   // 2. Load manifest.json
   const manifest = await ManifestFactory.loadJsonFile(manifestJsonFilePath);
-  if (manifest.manifestVersion === 2) {
-    logger.warn("Welcome to manifest v2 mode :)");
-  }
-
   // 3. Validate manifest.json
   const result = await manifest.validate(new LocalFSDriver(sourceRootDir));
 

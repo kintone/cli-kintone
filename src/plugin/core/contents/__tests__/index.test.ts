@@ -23,33 +23,6 @@ describe("ContentsZip", () => {
       expect(contentsZip).toBeInstanceOf(ContentsZip);
       expect(contentsZip.buffer).toBeInstanceOf(Buffer);
     });
-
-    it("manifest v2", async () => {
-      const pluginDir = path.join(fixturesDir, "plugin-manifest-v2");
-
-      const manifestJSONPath = path.join(pluginDir, "manifest.json");
-      const manifest = await ManifestFactory.loadJsonFile(manifestJSONPath);
-
-      const contentsZip = await ContentsZip.buildFromManifest(
-        manifest,
-        new LocalFSDriver(pluginDir),
-      );
-
-      const expectedFiles = [
-        "manifest.json",
-        "image/icon.png",
-        "js/customize.js",
-        "css/customize.css",
-        "html/customize.html",
-        "html/config.html",
-        "js/config.js",
-        "css/config.css",
-      ];
-      const files = await contentsZip.fileList();
-      expect(files).toStrictEqual(expectedFiles);
-      expect(contentsZip).toBeInstanceOf(ContentsZip);
-      expect(contentsZip.buffer).toBeInstanceOf(Buffer);
-    });
   });
 
   describe("should bundle custom manifest filename as manifest.json in zip", () => {

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.0](https://github.com/kintone/cli-kintone/compare/v1.20.0...v1.21.0) (2026-07-06)
+
+
+### Features
+
+* **customize:** add --watch option to customize apply command ([#1522](https://github.com/kintone/cli-kintone/issues/1522)) ([3d68fda](https://github.com/kintone/cli-kintone/commit/3d68fda7cb7fb959992a72d7e8c4c608465b900e))
+
+
+### Bug Fixes
+
+* **plugin:** use actual manifest filename from --input instead of hardcoded manifest.json ([#1523](https://github.com/kintone/cli-kintone/issues/1523)) ([fc9292d](https://github.com/kintone/cli-kintone/commit/fc9292d349ae9ca907a8fbc39686b8c5a711c142))
+
 ## [1.20.0](https://github.com/kintone/cli-kintone/compare/v1.19.3...v1.20.0) (2026-06-08)
 
 

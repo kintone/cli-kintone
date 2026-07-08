@@ -15,3 +15,5 @@ minimumReleaseAgeExclude:
   - "@kintone/plugin-manifest-validator@11.3.0"
   # Renovate security update: ws@8.21.0
   - ws@8.21.0
+  # First-party package
+  - "@kintone/rest-api-client@6.2.1"

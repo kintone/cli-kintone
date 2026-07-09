@@ -51,17 +51,6 @@ describe("validate", () => {
       dir: "plugin-sandbox-invalid-missing-allowed-hosts",
       expected: false,
     },
-    // TODO : Validation for v2 is not yet implemented. see src/plugin/core/manifest/v2/index.ts
-    // {
-    //   name: "`valid-locales-v2`",
-    //   dir: "plugin-locales/v2/valid-locales",
-    //   expected: true,
-    // },
-    // {
-    //   name: "`invalid-locales-v2`",
-    //   dir: "plugin-locales/v2/invalid-locales",
-    //   expected: false,
-    // },
   ];
 
   it.each(cases)("$name", async ({ dir, expected }) => {

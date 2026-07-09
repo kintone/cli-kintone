@@ -3,7 +3,6 @@ import type { DriverInterface } from "../driver";
 import { LocalFSDriver } from "../driver";
 import type { ManifestInterface, ManifestStaticInterface } from "./interface";
 import { ManifestV1 } from "./v1";
-import { ManifestV2 } from "./v2";
 
 /**
  * Factory to instantiate Manifest
@@ -29,14 +28,11 @@ export class ManifestFactory {
       throw new Error("manifest_version must be number");
     }
 
-    switch (json.manifest_version) {
-      case 1:
-        return new ManifestV1(json as any);
-      case 2:
-        return new ManifestV2(json as any);
-      default:
-        throw new Error("manifest_version must be 1 or 2");
+    if (json.manifest_version !== 1) {
+      throw new Error("manifest_version must be 1");
     }
+
+    return new ManifestV1(json as any);
   }
 
   public static async loadJsonFile(

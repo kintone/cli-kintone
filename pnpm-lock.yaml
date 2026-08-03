@@ -14,7 +14,7 @@ overrides:
   js-yaml@^4: '>=4.3.0'
   shell-quote: '>=1.9.0'
   websocket-driver: '>=0.7.5'
-  fast-uri: '>=3.1.4'
+  fast-uri: '>=3.1.5'
   immutable: '>=5.1.9'
   svgo: '>=3.3.4'
 

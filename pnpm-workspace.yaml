@@ -17,3 +17,5 @@ minimumReleaseAgeExclude:
   - ws@8.21.0
   # First-party package
   - "@kintone/rest-api-client@6.2.1"
+  # Renovate security update: fast-uri@4.1.2
+  - fast-uri@4.1.2

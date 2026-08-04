@@ -126,7 +126,7 @@
       "js-yaml@^4": ">=4.3.1",
       "shell-quote": ">=1.9.0",
       "websocket-driver": ">=0.7.5",
-      "fast-uri": ">=3.1.5",
+      "fast-uri": ">=4.1.2",
       "immutable": ">=5.1.9",
       "svgo": ">=3.3.4"
     }

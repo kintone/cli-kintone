@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.1](https://github.com/kintone/cli-kintone/compare/v1.21.0...v1.21.1) (2026-08-19)
+
+
+### Bug Fixes
+
+* **deps:** address security vulnerabilities in transitive dependencies ([#1551](https://github.com/kintone/cli-kintone/issues/1551)) ([e59f11a](https://github.com/kintone/cli-kintone/commit/e59f11aceee8c5e79727e309f8db603c41e51a77))
+* **deps:** update dependency @kintone/rest-api-client to v6.2.1 ([#1535](https://github.com/kintone/cli-kintone/issues/1535)) ([6efbc43](https://github.com/kintone/cli-kintone/commit/6efbc437e72962c05a176ecf699c41deccf5df11))
+
 ## [1.21.0](https://github.com/kintone/cli-kintone/compare/v1.20.0...v1.21.0) (2026-07-06)
 
 

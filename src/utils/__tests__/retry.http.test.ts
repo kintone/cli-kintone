@@ -82,19 +82,24 @@ describe("isRetryableKintoneError (HTTP level)", () => {
     expect(isRetryableKintoneError(error)).toBe(false);
   });
 
-  it("treats a non-JSON error body from an intermediary as not retryable, without throwing on parse", async () => {
+  it("treats a 502 with a non-JSON (HTML) body from an intermediary as not retryable", async () => {
     server.setHandler((_req: CapturedRequest) => ({
       status: 502,
-      body: undefined,
+      body: "<html><body>Bad Gateway</body></html>",
       headers: { "Content-Type": "text/html" },
     }));
 
     const error = await getAllRecords().catch((e) => e);
 
-    // Whatever shape this ends up being (KintoneRestAPIError or not), the
-    // important invariant is that classifying it never throws and never
-    // reports it as retryable when it isn't a recognized kintone error.
-    expect(() => isRetryableKintoneError(error)).not.toThrow();
+    // A body the client can't parse as a kintone error response means it
+    // never becomes a KintoneRestAPIError -- it stays a plain Error, with
+    // no `status`/`code` for isRetryableKintoneError to key on. That's a
+    // real, user-facing consequence: cli-kintone does NOT retry a 502 from
+    // an intermediary (proxy/load balancer), only 5xx responses that
+    // kintone itself produced as JSON. If this ever flips to true, retries
+    // would silently start happening for a whole new class of errors.
+    expect(error).not.toBeInstanceOf(KintoneRestAPIError);
+    expect(isRetryableKintoneError(error)).toBe(false);
   });
 
   it("does not classify a connection-level failure as a retryable KintoneRestAPIError", async () => {

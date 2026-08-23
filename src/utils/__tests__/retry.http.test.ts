@@ -83,9 +83,13 @@ describe("isRetryableKintoneError (HTTP level)", () => {
   });
 
   it("treats a 502 with a non-JSON (HTML) body from an intermediary as not retryable", async () => {
+    // Deliberately uses `rawBody`, not `body`: `body` always goes through
+    // JSON.stringify, which would turn this HTML into a quoted JSON string
+    // literal -- technically valid JSON, and not what a real intermediary
+    // (proxy/load balancer) sends on a 502. `rawBody` sends the bytes as-is.
     server.setHandler((_req: CapturedRequest) => ({
       status: 502,
-      body: "<html><body>Bad Gateway</body></html>",
+      rawBody: "<html><body>Bad Gateway</body></html>",
       headers: { "Content-Type": "text/html" },
     }));
 

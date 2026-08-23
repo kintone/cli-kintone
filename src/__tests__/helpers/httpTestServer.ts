@@ -25,6 +25,19 @@ export type HttpTestServerResponse =
       headers?: Record<string, string>;
     }
   | {
+      /**
+       * Sends this string/Buffer exactly as-is, without JSON.stringify.
+       * Use this for a response that is deliberately NOT valid JSON (e.g. an
+       * HTML error page from an intermediary) -- `body` always gets
+       * JSON.stringify'd, so it can only ever produce valid JSON (even a
+       * plain string becomes a valid JSON string literal), which is the
+       * wrong tool for that case.
+       */
+      status: number;
+      rawBody: string | Buffer;
+      headers?: Record<string, string>;
+    }
+  | {
       /** Destroys the socket without writing a response, to simulate a transport-level failure (e.g. connection reset). */
       destroySocket: true;
     };
@@ -40,6 +53,32 @@ const defaultHandler: HttpTestServerHandler = () => {
 };
 
 /**
+ * Merges `overrides` onto `defaults`, treating header names as
+ * case-insensitive (HTTP header names are). A plain `{...defaults,
+ * ...overrides}` spread would leave both `Content-Type` (the default) and a
+ * test-supplied `content-type` on the wire, with Node deciding which one
+ * wins -- this makes the override always win regardless of casing.
+ */
+const mergeHeaders = (
+  defaults: Record<string, string>,
+  overrides?: Record<string, string>,
+): Record<string, string> => {
+  if (!overrides) {
+    return { ...defaults };
+  }
+  const overrideKeysLower = new Set(
+    Object.keys(overrides).map((k) => k.toLowerCase()),
+  );
+  const merged: Record<string, string> = {};
+  for (const [key, value] of Object.entries(defaults)) {
+    if (!overrideKeysLower.has(key.toLowerCase())) {
+      merged[key] = value;
+    }
+  }
+  return { ...merged, ...overrides };
+};
+
+/**
  * A real HTTP server (node:http) listening on an ephemeral loopback port,
  * for characterization tests that exercise `@kintone/rest-api-client` end
  * to end -- through a real socket rather than an in-process interceptor --
@@ -49,6 +88,13 @@ const defaultHandler: HttpTestServerHandler = () => {
  * Usage: start once per test file (in beforeAll), setHandler per test to
  * script the response, and inspect `requests` to assert what the client
  * actually sent over the wire.
+ *
+ * Binds and reports "localhost", not "127.0.0.1", deliberately:
+ * KintoneRestAPIClient's own baseUrl validation only allows a plain http://
+ * baseUrl when the hostname is exactly "localhost" (any other hostname,
+ * `127.0.0.1` included, must be https). Using "localhost" for both the bind
+ * address and baseUrl keeps them consistent regardless of which address
+ * family "localhost" resolves to.
  */
 export class HttpTestServer {
   private readonly server: http.Server;
@@ -70,6 +116,16 @@ export class HttpTestServer {
   private onRequest(req: http.IncomingMessage, res: http.ServerResponse) {
     const chunks: Buffer[] = [];
     req.on("data", (chunk: Buffer) => chunks.push(chunk));
+    // Without this, a client that aborts mid-request (e.g. the
+    // destroySocket path exercised from the *other* end, or a client-side
+    // timeout) raises an unhandled 'error' on the request stream, which
+    // crashes the whole test process instead of just failing the assertion.
+    req.on("error", () => {
+      /* client aborted the request; nothing to respond to */
+    });
+    res.on("error", () => {
+      /* client went away before the response was fully written */
+    });
     req.on("end", () => {
       this.handleRequest(req, res, chunks).catch((e: unknown) => {
         res.destroy(e instanceof Error ? e : new Error(String(e)));
@@ -114,13 +170,17 @@ export class HttpTestServer {
         res.destroy();
         return;
       }
-      res.writeHead(result.status, {
-        "Content-Type": "application/json",
-        ...result.headers,
-      });
-      res.end(
-        result.body !== undefined ? JSON.stringify(result.body) : undefined,
+      res.writeHead(
+        result.status,
+        mergeHeaders({ "Content-Type": "application/json" }, result.headers),
       );
+      if ("rawBody" in result) {
+        res.end(result.rawBody);
+      } else {
+        res.end(
+          result.body !== undefined ? JSON.stringify(result.body) : undefined,
+        );
+      }
     } catch (e) {
       res.writeHead(500, { "Content-Type": "application/json" });
       res.end(
@@ -154,73 +214,14 @@ export class HttpTestServer {
   }
 
   async close(): Promise<void> {
+    // This test server is exercised by both axios (keepAlive: false, so
+    // idle sockets close themselves) and, after the planned migration,
+    // fetch/undici (keep-alive by default). Without closeAllConnections(),
+    // close() would wait out the server's keepAliveTimeout (5s default) on
+    // every idle connection once that migration lands.
+    this.server.closeAllConnections();
     await new Promise<void>((resolve, reject) => {
       this.server.close((err) => (err ? reject(err) : resolve()));
     });
   }
 }
-
-export type MultipartPart = {
-  name: string;
-  filename?: string;
-  contentType?: string;
-  data: Buffer;
-};
-
-/**
- * Minimal multipart/form-data parser for assertions -- not a general-purpose
- * decoder. The boundary is random per request (form-data generates it), so
- * tests must extract fields from the parsed parts rather than snapshotting
- * the raw body.
- */
-export const parseMultipartFormData = (
-  req: CapturedRequest,
-): MultipartPart[] => {
-  const contentType = req.headers["content-type"] ?? "";
-  const boundaryMatch = /boundary=(?:"([^"]+)"|([^;]+))/.exec(contentType);
-  if (!boundaryMatch) {
-    throw new Error(`Content-Type has no multipart boundary: ${contentType}`);
-  }
-  const boundaryMarker = Buffer.from(
-    `--${boundaryMatch[1] ?? boundaryMatch[2]}`,
-  );
-  const buffer = req.rawBodyBuffer;
-
-  const parts: MultipartPart[] = [];
-  let boundaryStart = buffer.indexOf(boundaryMarker);
-  while (boundaryStart !== -1) {
-    const partStart = boundaryStart + boundaryMarker.length;
-    const nextBoundaryStart = buffer.indexOf(boundaryMarker, partStart);
-    if (nextBoundaryStart === -1) {
-      break;
-    }
-
-    // The segment between this boundary and the next is "\r\n<headers>\r\n\r\n<body>\r\n".
-    let segment = buffer.subarray(partStart, nextBoundaryStart);
-    if (segment.subarray(0, 2).toString("ascii") === "\r\n") {
-      segment = segment.subarray(2);
-    }
-    if (segment.subarray(-2).toString("ascii") === "\r\n") {
-      segment = segment.subarray(0, -2);
-    }
-
-    const headerEnd = segment.indexOf("\r\n\r\n");
-    if (headerEnd !== -1) {
-      const headerText = segment.subarray(0, headerEnd).toString("utf-8");
-      const data = segment.subarray(headerEnd + 4);
-      const dispositionMatch = /name="([^"]*)"(?:;\s*filename="([^"]*)")?/.exec(
-        headerText,
-      );
-      const contentTypeMatch = /Content-Type:\s*([^\r\n]+)/i.exec(headerText);
-      parts.push({
-        name: dispositionMatch?.[1] ?? "",
-        filename: dispositionMatch?.[2],
-        contentType: contentTypeMatch?.[1],
-        data,
-      });
-    }
-
-    boundaryStart = nextBoundaryStart;
-  }
-  return parts;
-};

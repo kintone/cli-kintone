@@ -24,6 +24,12 @@ export class ConnectProxyServer {
       res.end("This proxy only supports CONNECT.");
     });
     this.server.on("connect", (req: http.IncomingMessage, socket: Socket) => {
+      // This proxy always destroys the tunnel socket itself, but the client
+      // may also tear its end down concurrently -- without this, that races
+      // into an unhandled 'error' that crashes the test process.
+      socket.on("error", () => {
+        /* client side of the tunnel went away; nothing to do */
+      });
       this._connects.push({ target: req.url ?? "", headers: req.headers });
       socket.destroy();
     });
@@ -51,6 +57,7 @@ export class ConnectProxyServer {
   }
 
   async close(): Promise<void> {
+    this.server.closeAllConnections();
     await new Promise<void>((resolve, reject) => {
       this.server.close((err) => (err ? reject(err) : resolve()));
     });

@@ -117,5 +117,13 @@ describe("deleteAllRecords (HTTP level)", () => {
 
     expect(error).toBeInstanceOf(DeleteAllRecordsError);
     expect(error.detail).toBe("No records are deleted.");
+
+    // Confirms the failure actually came from the scripted 500 response and
+    // not from an unexpected request path hitting the handler's throw
+    // (which HttpTestServer turns into its own 500 with a different body
+    // shape) -- those two failure modes would otherwise be indistinguishable
+    // from the assertions above alone.
+    expect(server.requests).toHaveLength(2);
+    expect(server.requests[1].path).toBe("/k/v1/bulkRequest.json");
   });
 });

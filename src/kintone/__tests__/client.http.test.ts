@@ -8,12 +8,12 @@ import { ConnectProxyServer } from "../../__tests__/helpers/connectProxyServer";
 import * as packageJson from "../../../package.json";
 
 /**
- * Characterization test for buildRestAPIClient: unlike api.test.ts (which
- * mocks the KintoneRestAPIClient constructor to assert what arguments
- * cli-kintone passes it), this drives a real request through the built
- * client to confirm those arguments actually take effect on the wire --
- * specifically the custom User-Agent, which api.test.ts can only assert
- * was passed as a constructor option.
+ * Characterization test for buildRestAPIClient: unlike
+ * src/__tests__/api.test.ts (which mocks the KintoneRestAPIClient
+ * constructor to assert what arguments cli-kintone passes it), this drives
+ * a real request through the built client to confirm those arguments
+ * actually take effect on the wire -- specifically the custom User-Agent,
+ * which api.test.ts can only assert was passed as a constructor option.
  */
 describe("buildRestAPIClient (HTTP level)", () => {
   let server: HttpTestServer;

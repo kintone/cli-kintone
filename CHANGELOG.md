@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.3](https://github.com/kintone/cli-kintone/compare/v1.21.1...v1.14.3) (2026-08-19)
+
+
+### Features
+
+* add plugin init command (Experimental) ([#1201](https://github.com/kintone/cli-kintone/issues/1201)) ([fa6f918](https://github.com/kintone/cli-kintone/commit/fa6f9185a9992153791a0c3032ba540ae6c813e3))
+* add plugin upload command (Experimental) ([#1193](https://github.com/kintone/cli-kintone/issues/1193)) ([9de6f6f](https://github.com/kintone/cli-kintone/commit/9de6f6f4cd0b9fff3fe45d3981178a2a945698f4))
+* customize upload ([#1308](https://github.com/kintone/cli-kintone/issues/1308)) ([b434cd2](https://github.com/kintone/cli-kintone/commit/b434cd2471b72a32bc0b435acd4b50f79366c834))
+* **customize:** add --watch option to customize apply command ([#1522](https://github.com/kintone/cli-kintone/issues/1522)) ([3d68fda](https://github.com/kintone/cli-kintone/commit/3d68fda7cb7fb959992a72d7e8c4c608465b900e))
+* official release of plugin and customize commands ([#1322](https://github.com/kintone/cli-kintone/issues/1322)) ([28ada81](https://github.com/kintone/cli-kintone/commit/28ada8195d063f9438e75dc860d720cb1bf9157a))
+* **plugin-packer:** add ms language support ([#1340](https://github.com/kintone/cli-kintone/issues/1340)) ([21c9ef3](https://github.com/kintone/cli-kintone/commit/21c9ef3309adb82828b67a7eb1d84c839e27a47d))
+* **plugin:** support sandbox manifest fields (sandbox / allowed_hosts / permissions) ([#1447](https://github.com/kintone/cli-kintone/issues/1447)) ([7a892c9](https://github.com/kintone/cli-kintone/commit/7a892c9001cfd041e3dc503d64f8c97fd9bccc4c))
+* retry API request on 5xx errors ([#1013](https://github.com/kintone/cli-kintone/issues/1013)) ([f3d19ae](https://github.com/kintone/cli-kintone/commit/f3d19ae207c7711ee4b5e26486754507ee0c9fa6))
+* Support three new locales ([#996](https://github.com/kintone/cli-kintone/issues/996)) ([709bc6c](https://github.com/kintone/cli-kintone/commit/709bc6cc11c0627b76a2f55d27cf2e9d3ecacb33))
+
+
+### Bug Fixes
+
+* adjustment server-side-upsert ([#1134](https://github.com/kintone/cli-kintone/issues/1134)) ([f50e99b](https://github.com/kintone/cli-kintone/commit/f50e99b557c3f790032e1807317e35df23475e7c))
+* **ci:** keep working tree clean when Takumi Guard configures registry ([#1466](https://github.com/kintone/cli-kintone/issues/1466)) ([b155d91](https://github.com/kintone/cli-kintone/commit/b155d91fb77c0f778d5224b479fc46fca7c721b0))
+* **deps:** address security vulnerabilities in transitive dependencies ([#1551](https://github.com/kintone/cli-kintone/issues/1551)) ([e59f11a](https://github.com/kintone/cli-kintone/commit/e59f11aceee8c5e79727e309f8db603c41e51a77))
+* **deps:** replace node-rsa to node crypto ([#1380](https://github.com/kintone/cli-kintone/issues/1380)) ([1952af7](https://github.com/kintone/cli-kintone/commit/1952af7da4b7cc32783ec99b1cb40b509a1a92b9))
+* **deps:** update dependency @kintone/rest-api-client to v6.2.0 ([1aacaac](https://github.com/kintone/cli-kintone/commit/1aacaac267e34d8bc08e199a7d7997332fd2bebd))
+* **deps:** update dependency @kintone/rest-api-client to v6.2.1 ([#1535](https://github.com/kintone/cli-kintone/issues/1535)) ([6efbc43](https://github.com/kintone/cli-kintone/commit/6efbc437e72962c05a176ecf699c41deccf5df11))
+* fix check of auth options required ([#1346](https://github.com/kintone/cli-kintone/issues/1346)) ([c78a44b](https://github.com/kintone/cli-kintone/commit/c78a44bde3386a50e602e7b85466e431a005099c))
+* fix dependencies versions ([#1415](https://github.com/kintone/cli-kintone/issues/1415)) ([993df64](https://github.com/kintone/cli-kintone/commit/993df64188ccaee2c16f7f06fc30693a858a89fa))
+* fix update of customize commands ([#1330](https://github.com/kintone/cli-kintone/issues/1330)) ([2d60e94](https://github.com/kintone/cli-kintone/commit/2d60e94f4c12c62281387d357f4b55aa05b57e49))
+* obsolete experimental-use-server-side-upsert option ([#1125](https://github.com/kintone/cli-kintone/issues/1125)) ([4fb2770](https://github.com/kintone/cli-kintone/commit/4fb27702f6c3f6624c49febc8ea2ead89d1f6994))
+* plugin-init prompts required non-empty name and desc ([#1261](https://github.com/kintone/cli-kintone/issues/1261)) ([033139a](https://github.com/kintone/cli-kintone/commit/033139a80c82dc07520d404f9e6d27f32d52d90d))
+* **plugin:** use actual manifest filename from --input instead of hardcoded manifest.json ([#1523](https://github.com/kintone/cli-kintone/issues/1523)) ([fc9292d](https://github.com/kintone/cli-kintone/commit/fc9292d349ae9ca907a8fbc39686b8c5a711c142))
+* retry transient kintone API errors ([#1464](https://github.com/kintone/cli-kintone/issues/1464)) ([a224c0d](https://github.com/kintone/cli-kintone/commit/a224c0dd455c15a58a6a38eba74f8e87a6e17a1a))
+* run `keygen` on `plugin init` ([#1262](https://github.com/kintone/cli-kintone/issues/1262)) ([13b5870](https://github.com/kintone/cli-kintone/commit/13b5870f9535844e40ae0d47ad052bcc92f62df4))
+* uncaught error caused by missing await ([#1292](https://github.com/kintone/cli-kintone/issues/1292)) ([a56f8a9](https://github.com/kintone/cli-kintone/commit/a56f8a9175a2c739830b79bbe82c6be3de5f8329))
+* update interface of `plugin pack` ([#1197](https://github.com/kintone/cli-kintone/issues/1197)) ([9734e19](https://github.com/kintone/cli-kintone/commit/9734e19062c8d1991d49f7b901994739d21b66db))
+* update rest-api-client ([#1063](https://github.com/kintone/cli-kintone/issues/1063)) ([#1068](https://github.com/kintone/cli-kintone/issues/1068)) ([ae68509](https://github.com/kintone/cli-kintone/commit/ae68509bc9e22b048fa54f48d7b78206db12026d))
+* update rest-api-client version ([#1413](https://github.com/kintone/cli-kintone/issues/1413)) ([f9eb957](https://github.com/kintone/cli-kintone/commit/f9eb957e6c7151200b9b3195e2a5f6e0f8af7b23))
+
+
+### Documentation
+
+* add Japanese localization ([#1272](https://github.com/kintone/cli-kintone/issues/1272)) ([9cf78f3](https://github.com/kintone/cli-kintone/commit/9cf78f35aa6b77e2a0a85e02b872a0b2ccc9bf54))
+* add Migration Guide ([#1259](https://github.com/kintone/cli-kintone/issues/1259)) ([ff8f8cf](https://github.com/kintone/cli-kintone/commit/ff8f8cff261550b97ae3b147584235db37a6cc00))
+* add migration guide from customize-uploader ([#1311](https://github.com/kintone/cli-kintone/issues/1311)) ([a271dea](https://github.com/kintone/cli-kintone/commit/a271dea031bc3eef8441f855e78af2aa048bb9cc))
+* add release blog for v1.14.2 ([#1137](https://github.com/kintone/cli-kintone/issues/1137)) ([6bff613](https://github.com/kintone/cli-kintone/commit/6bff6136cf13984094759e52de1b21f9c90ee8d0))
+* add release note for v1.19.0 ([#1345](https://github.com/kintone/cli-kintone/issues/1345)) ([1d87c09](https://github.com/kintone/cli-kintone/commit/1d87c09e9035ef6955ef11ec7350b8c86c0c060b))
+* add test report link ([#1026](https://github.com/kintone/cli-kintone/issues/1026)) ([9a752ff](https://github.com/kintone/cli-kintone/commit/9a752ff61a1135d8c6ea6ac43a66a4fc01764f1c))
+* add v1.18.0 release blog ([#1337](https://github.com/kintone/cli-kintone/issues/1337)) ([e048623](https://github.com/kintone/cli-kintone/commit/e0486236bf0a71ec67935da08f38b53bfdfba319))
+* fix broken community banner ([#1366](https://github.com/kintone/cli-kintone/issues/1366)) ([6fe5570](https://github.com/kintone/cli-kintone/commit/6fe557078a59cd0b2066512574e61448805f6f64))
+* refine Migration Guide ([#1289](https://github.com/kintone/cli-kintone/issues/1289)) ([289f4ff](https://github.com/kintone/cli-kintone/commit/289f4ff0254646015ae402636ffadd4f2b7be326))
+* remove  `experimental-use-server-side-upsert` option ([#1136](https://github.com/kintone/cli-kintone/issues/1136)) ([85ee8f2](https://github.com/kintone/cli-kintone/commit/85ee8f2f54b70d774c3c6584a2c09e776ee23450))
+* update Migration Guide ([#1290](https://github.com/kintone/cli-kintone/issues/1290)) ([9e1c60f](https://github.com/kintone/cli-kintone/commit/9e1c60f79093e580749d6a434277de57a72c6b6a))
+
+
+### Miscellaneous Chores
+
+* bump minimum Node.js version to v20 ([#1184](https://github.com/kintone/cli-kintone/issues/1184)) ([866358c](https://github.com/kintone/cli-kintone/commit/866358cebb2d9810121b7d08ac046a45ebdf2f5f))
+
 ## [1.21.1](https://github.com/kintone/cli-kintone/compare/v1.21.0...v1.21.1) (2026-08-19)
 
 

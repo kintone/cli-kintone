@@ -34,7 +34,7 @@ export const apply = async (
   logger.debug(`Manifest directory: ${manifestDir}`);
 
   // State to track progress across retries
-  let uploadedManifest: ReturnType<typeof createUpdatedManifest> | null = null;
+  let uploadedManifest: UpdateAppCustomizeParams | null = null;
   let updated = false;
 
   await retry(
@@ -236,14 +236,16 @@ const getUploadFilesResult = async (
   };
 };
 
+type UpdateAppCustomizeParams = Parameters<
+  KintoneRestAPIClient["app"]["updateAppCustomize"]
+>[0];
+
 const createUpdatedManifest = (
   appId: string,
   manifest: CustomizeManifest,
   uploadFilesResult: Awaited<ReturnType<typeof getUploadFilesResult>>,
-) => {
-  const updated: Parameters<
-    KintoneRestAPIClient["app"]["updateAppCustomize"]
-  >[0] = {
+): UpdateAppCustomizeParams => {
+  const updated: UpdateAppCustomizeParams = {
     app: appId,
     scope: manifest.scope,
     desktop: {
@@ -256,7 +258,8 @@ const createUpdatedManifest = (
     },
   };
 
-  // キーの有無だけで判定する。空配列は「全消去」を意味する指定なので、そのまま送る
+  // Look only at whether the property is there; an empty array is a valid request
+  // that clears the setting, so send it as it is
   if (manifest.permissions !== undefined) {
     updated.permissions = manifest.permissions;
   }
@@ -267,7 +270,7 @@ const createUpdatedManifest = (
   return updated;
 };
 
-const loadManifest = (inputPath: string): CustomizeManifest => {
+export const loadManifest = (inputPath: string): CustomizeManifest => {
   const manifest: CustomizeManifest = JSON.parse(
     fs.readFileSync(inputPath, "utf8"),
   );

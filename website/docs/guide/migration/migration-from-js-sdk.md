@@ -363,9 +363,11 @@ cli-kintone customize apply --input customize-manifest.json --app 123 --base-url
 
 ### Manifest File Specification
 
-cli-kintone's manifest file reads every manifest that customize-uploader accepts.
-The reverse does not hold: `permissions` and `allowed_hosts` are specific to cli-kintone,
-and customize-uploader ignores them.
+cli-kintone reads every manifest that customize-uploader accepts.
+The opposite is not true: `permissions` and `allowed_hosts` are specific to cli-kintone.
+customize-uploader forwards every manifest property to the Update Customization API as it is,
+so a manifest that has `permissions` fails with customize-uploader unless the app has the Secure Option turned on.
+Leave both properties out of a manifest that customize-uploader also reads.
 
 ```json
 {

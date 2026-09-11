@@ -363,8 +363,11 @@ cli-kintone customize apply --input customize-manifest.json --app 123 --base-url
 
 ### マニフェストファイルの仕様
 
-cli-kintoneのマニフェストファイルは、customize-uploaderのマニフェストファイルをそのまま読み込めます。
-逆は成り立ちません。`permissions` と `allowed_hosts` は cli-kintone 固有で、customize-uploader は無視します。
+cli-kintone は、customize-uploader のマニフェストファイルをそのまま読み込めます。
+`permissions` と `allowed_hosts` は cli-kintone 固有のため、その逆はできません。
+customize-uploader はマニフェストのプロパティをそのままカスタマイズの更新 API へ渡すので、
+`permissions` を書いたマニフェストは、セキュアオプションが無効なアプリでは customize-uploader でエラーになります。
+customize-uploader と共用するマニフェストには、どちらも書かないでください。
 
 ```json
 {

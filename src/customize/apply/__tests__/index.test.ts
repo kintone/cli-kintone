@@ -2,7 +2,7 @@ import assert from "assert";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { CustomizeManifest } from "../../core";
 import { getBoundMessage } from "../../core";
-import { apply } from "../index";
+import { apply, loadManifest } from "../index";
 
 type MockLog = {
   method: string;
@@ -59,6 +59,23 @@ const createMockApiClient = (): KintoneRestAPIClient & { logs: MockLog[] } => {
 };
 
 describe("index", () => {
+  describe("loadManifest", () => {
+    const legacyManifestPath =
+      "src/customize/__tests__/fixtures/customize-manifest-legacy.json";
+
+    it("should fill in mobile.css for an old manifest", () => {
+      assert.deepStrictEqual(loadManifest(legacyManifestPath).mobile.css, []);
+    });
+
+    it("should leave secure option settings absent instead of filling them in", () => {
+      // Filling them in with empty arrays would make an apply from a manifest
+      // that has neither property clear the settings on the app
+      const manifest = loadManifest(legacyManifestPath);
+      assert.strictEqual(manifest.permissions, undefined);
+      assert.strictEqual(manifest.allowed_hosts, undefined);
+    });
+  });
+
   describe("apply", () => {
     let apiClient: ReturnType<typeof createMockApiClient>;
     let manifest: CustomizeManifest;
@@ -84,6 +101,11 @@ describe("index", () => {
         },
       };
     });
+
+    const updateRequestBody = () =>
+      apiClient.logs.find(
+        (log) => log.path === "/k/v1/preview/app/customize.json",
+      )?.body;
 
     it("should succeed the applying", async () => {
       try {
@@ -111,16 +133,10 @@ describe("index", () => {
       );
     });
 
-    const updateRequestBody = (
-      client: ReturnType<typeof createMockApiClient>,
-    ) =>
-      client.logs.find((log) => log.path === "/k/v1/preview/app/customize.json")
-        ?.body;
-
     it("should not send secure option settings when the manifest has none", async () => {
       await apply(apiClient, appId, manifest, manifestDir, boundMessage);
 
-      const body = updateRequestBody(apiClient);
+      const body = updateRequestBody();
       assert.ok(body !== undefined);
       assert.ok(!("permissions" in body));
       assert.ok(!("allowedHosts" in body));
@@ -128,15 +144,28 @@ describe("index", () => {
 
     it("should send secure option settings when the manifest has them", async () => {
       manifest.permissions = [{ permission: "kintone:app_record:read" }];
-      manifest.allowed_hosts = ["https://www.example.com/*"];
+      manifest.allowed_hosts = ["https://www.example.com"];
 
       await apply(apiClient, appId, manifest, manifestDir, boundMessage);
 
-      const body = updateRequestBody(apiClient);
+      const body = updateRequestBody();
       assert.deepStrictEqual(body?.permissions, [
         { permission: "kintone:app_record:read" },
       ]);
-      assert.deepStrictEqual(body?.allowedHosts, ["https://www.example.com/*"]);
+      assert.deepStrictEqual(body?.allowedHosts, ["https://www.example.com"]);
+    });
+
+    it("should send only the property that the manifest has", async () => {
+      manifest.permissions = [{ permission: "kintone:app_record:read" }];
+
+      await apply(apiClient, appId, manifest, manifestDir, boundMessage);
+
+      const body = updateRequestBody();
+      assert.ok(body !== undefined);
+      assert.deepStrictEqual(body.permissions, [
+        { permission: "kintone:app_record:read" },
+      ]);
+      assert.ok(!("allowedHosts" in body));
     });
 
     it("should send empty arrays to clear secure option settings", async () => {
@@ -145,7 +174,7 @@ describe("index", () => {
 
       await apply(apiClient, appId, manifest, manifestDir, boundMessage);
 
-      const body = updateRequestBody(apiClient);
+      const body = updateRequestBody();
       assert.deepStrictEqual(body?.permissions, []);
       assert.deepStrictEqual(body?.allowedHosts, []);
     });

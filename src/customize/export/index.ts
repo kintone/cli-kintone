@@ -18,7 +18,7 @@ export type ExportParams = RestAPIClientOptions & {
   yes: boolean;
 };
 
-// SDK の戻り値から導出する。ローカルに再定義すると SDK の変更に追従できない
+// Derive from the SDK return type; a local redefinition would not follow SDK changes
 type GetAppCustomizeResp = Awaited<
   ReturnType<KintoneRestAPIClient["app"]["getAppCustomize"]>
 >;
@@ -100,9 +100,14 @@ const writeManifestFile = async (
     },
   };
 
-  // 空のときに書き出すと、Secure Option を使っていないアプリの manifest にも項目が増える
+  // Skip empty settings, so that a manifest of an app without the Secure Option
+  // does not gain the properties
   if (resp.permissions !== undefined && resp.permissions.length > 0) {
-    customizeJson.permissions = resp.permissions;
+    // Project onto CustomizeManifest's own shape, so that a new field on the API
+    // response does not silently change the manifest file
+    customizeJson.permissions = resp.permissions.map(({ permission }) => ({
+      permission,
+    }));
   }
   if (resp.allowedHosts !== undefined && resp.allowedHosts.length > 0) {
     customizeJson.allowed_hosts = resp.allowedHosts;

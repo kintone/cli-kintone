@@ -206,7 +206,7 @@ describe("export", () => {
       filesToTestContent.map(assertDownloadFile);
     });
 
-    it("should not write secure option settings when the response has none", async () => {
+    it("should not write sandbox settings when the response has none", async () => {
       await exportCustomizeSetting(apiClient, appId, testOutputPath, m);
 
       const manifest = readExportedManifest();
@@ -214,7 +214,7 @@ describe("export", () => {
       assert.ok(!("allowed_hosts" in manifest));
     });
 
-    it("should write secure option settings when the response has them", async () => {
+    it("should write sandbox settings when the response has them", async () => {
       const response = readResponseFixture();
       response.permissions = [{ permission: "kintone:app_record:read" }];
       response.allowedHosts = ["https://www.example.com"];
@@ -254,7 +254,7 @@ describe("export", () => {
       ]);
     });
 
-    it("should not write secure option settings when the response has empty arrays", async () => {
+    it("should not write sandbox settings when the response has empty arrays", async () => {
       const response = readResponseFixture();
       response.permissions = [];
       response.allowedHosts = [];

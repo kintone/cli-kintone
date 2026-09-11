@@ -67,7 +67,7 @@ describe("index", () => {
       assert.deepStrictEqual(loadManifest(legacyManifestPath).mobile.css, []);
     });
 
-    it("should leave secure option settings absent instead of filling them in", () => {
+    it("should leave sandbox settings absent instead of filling them in", () => {
       // Filling them in with empty arrays would make an apply from a manifest
       // that has neither property clear the settings on the app
       const manifest = loadManifest(legacyManifestPath);
@@ -133,7 +133,7 @@ describe("index", () => {
       );
     });
 
-    it("should not send secure option settings when the manifest has none", async () => {
+    it("should not send sandbox settings when the manifest has none", async () => {
       await apply(apiClient, appId, manifest, manifestDir, boundMessage);
 
       const body = updateRequestBody();
@@ -142,7 +142,7 @@ describe("index", () => {
       assert.ok(!("allowedHosts" in body));
     });
 
-    it("should send secure option settings when the manifest has them", async () => {
+    it("should send sandbox settings when the manifest has them", async () => {
       manifest.permissions = [{ permission: "kintone:app_record:read" }];
       manifest.allowed_hosts = ["https://www.example.com"];
 
@@ -168,7 +168,7 @@ describe("index", () => {
       assert.ok(!("allowedHosts" in body));
     });
 
-    it("should send empty arrays to clear secure option settings", async () => {
+    it("should send empty arrays to clear sandbox settings", async () => {
       manifest.permissions = [];
       manifest.allowed_hosts = [];
 

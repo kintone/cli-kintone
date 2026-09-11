@@ -100,8 +100,8 @@ const writeManifestFile = async (
     },
   };
 
-  // Skip empty settings, so that a manifest of an app without the Secure Option
-  // does not gain the properties
+  // Skip empty settings, so that a manifest of an app that does not use the
+  // sandbox settings does not gain the properties
   if (resp.permissions !== undefined && resp.permissions.length > 0) {
     // Project onto CustomizeManifest's own shape, so that a new field on the API
     // response does not silently change the manifest file

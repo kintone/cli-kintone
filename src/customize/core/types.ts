@@ -19,7 +19,7 @@ export interface CustomizeManifest {
     js: string[];
     css: string[];
   };
-  // Secure Option settings. Unlike `scope` / `desktop` / `mobile`, leaving these
+  // Sandbox settings. Unlike `scope` / `desktop` / `mobile`, leaving these
   // out keeps the current settings on the app instead of clearing them.
   permissions?: CustomizePermission[];
   allowed_hosts?: string[];

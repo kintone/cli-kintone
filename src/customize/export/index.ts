@@ -18,31 +18,11 @@ export type ExportParams = RestAPIClientOptions & {
   yes: boolean;
 };
 
-interface UploadedFile {
-  type: "FILE";
-  file: {
-    fileKey: string;
-    name: string;
-  };
-}
-
-interface CDNFile {
-  type: "URL";
-  url: string;
-}
-type CustomizeFile = UploadedFile | CDNFile;
-
-interface GetAppCustomizeResp {
-  scope: "ALL" | "ADMIN" | "NONE";
-  desktop: {
-    js: CustomizeFile[];
-    css: CustomizeFile[];
-  };
-  mobile: {
-    js: CustomizeFile[];
-    css: CustomizeFile[];
-  };
-}
+// SDK の戻り値から導出する。ローカルに再定義すると SDK の変更に追従できない
+type GetAppCustomizeResp = Awaited<
+  ReturnType<KintoneRestAPIClient["app"]["getAppCustomize"]>
+>;
+type CustomizeFile = GetAppCustomizeResp["desktop"]["js"][number];
 
 export const exportCustomizeSetting = async (
   apiClient: KintoneRestAPIClient,
@@ -119,6 +99,14 @@ const writeManifestFile = async (
       css: mobileCss.map(toNameOrUrl("mobile/css")),
     },
   };
+
+  // 空のときに書き出すと、Secure Option を使っていないアプリの manifest にも項目が増える
+  if (resp.permissions !== undefined && resp.permissions.length > 0) {
+    customizeJson.permissions = resp.permissions;
+  }
+  if (resp.allowedHosts !== undefined && resp.allowedHosts.length > 0) {
+    customizeJson.allowed_hosts = resp.allowedHosts;
+  }
 
   logger.debug(`Creating directory: ${destDir}`);
   await fs.mkdir(destDir, { recursive: true });

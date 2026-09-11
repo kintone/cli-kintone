@@ -363,7 +363,9 @@ cli-kintone customize apply --input customize-manifest.json --app 123 --base-url
 
 ### Manifest File Specification
 
-cli-kintone's manifest file supports the same format as customize-uploader.
+cli-kintone's manifest file reads every manifest that customize-uploader accepts.
+The reverse does not hold: `permissions` and `allowed_hosts` are specific to cli-kintone,
+and customize-uploader ignores them.
 
 ```json
 {

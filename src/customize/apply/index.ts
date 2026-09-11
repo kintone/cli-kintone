@@ -241,7 +241,9 @@ const createUpdatedManifest = (
   manifest: CustomizeManifest,
   uploadFilesResult: Awaited<ReturnType<typeof getUploadFilesResult>>,
 ) => {
-  return {
+  const updated: Parameters<
+    KintoneRestAPIClient["app"]["updateAppCustomize"]
+  >[0] = {
     app: appId,
     scope: manifest.scope,
     desktop: {
@@ -253,6 +255,16 @@ const createUpdatedManifest = (
       css: uploadFilesResult.mobile.css,
     },
   };
+
+  // キーの有無だけで判定する。空配列は「全消去」を意味する指定なので、そのまま送る
+  if (manifest.permissions !== undefined) {
+    updated.permissions = manifest.permissions;
+  }
+  if (manifest.allowed_hosts !== undefined) {
+    updated.allowedHosts = manifest.allowed_hosts;
+  }
+
+  return updated;
 };
 
 const loadManifest = (inputPath: string): CustomizeManifest => {

@@ -50,3 +50,4 @@ The generated manifest file contains:
 
 - URLs for CDN resources (preserved as-is)
 - Relative paths for downloaded files (e.g., `desktop/js/app.js`)
+- Secure Option settings (`permissions` and `allowed_hosts`), written only when the app has any

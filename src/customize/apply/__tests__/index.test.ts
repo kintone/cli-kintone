@@ -110,5 +110,44 @@ describe("index", () => {
         ],
       );
     });
+
+    const updateRequestBody = (
+      client: ReturnType<typeof createMockApiClient>,
+    ) =>
+      client.logs.find((log) => log.path === "/k/v1/preview/app/customize.json")
+        ?.body;
+
+    it("should not send secure option settings when the manifest has none", async () => {
+      await apply(apiClient, appId, manifest, manifestDir, boundMessage);
+
+      const body = updateRequestBody(apiClient);
+      assert.ok(body !== undefined);
+      assert.ok(!("permissions" in body));
+      assert.ok(!("allowedHosts" in body));
+    });
+
+    it("should send secure option settings when the manifest has them", async () => {
+      manifest.permissions = [{ permission: "kintone:app_record:read" }];
+      manifest.allowed_hosts = ["https://www.example.com/*"];
+
+      await apply(apiClient, appId, manifest, manifestDir, boundMessage);
+
+      const body = updateRequestBody(apiClient);
+      assert.deepStrictEqual(body?.permissions, [
+        { permission: "kintone:app_record:read" },
+      ]);
+      assert.deepStrictEqual(body?.allowedHosts, ["https://www.example.com/*"]);
+    });
+
+    it("should send empty arrays to clear secure option settings", async () => {
+      manifest.permissions = [];
+      manifest.allowed_hosts = [];
+
+      await apply(apiClient, appId, manifest, manifestDir, boundMessage);
+
+      const body = updateRequestBody(apiClient);
+      assert.deepStrictEqual(body?.permissions, []);
+      assert.deepStrictEqual(body?.allowedHosts, []);
+    });
   });
 });

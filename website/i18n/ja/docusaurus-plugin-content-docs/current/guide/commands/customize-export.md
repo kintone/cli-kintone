@@ -50,3 +50,4 @@ cli-kintone customize export \
 
 - CDNリソースのURL（そのまま保持）
 - ダウンロードされたファイルの相対パス（例：`desktop/js/app.js`）
+- セキュアオプションの設定（`permissions` と `allowed_hosts`）。アプリに設定がある場合だけ書き出されます

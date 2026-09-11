@@ -189,5 +189,67 @@ describe("export", () => {
       assertManifestContent(contents);
       filesToTestContent.map(assertDownloadFile);
     });
+
+    it("should not write secure option settings when the response has none", async () => {
+      await exportCustomizeSetting(apiClient, appId, testOutputPath, m);
+
+      const manifest = JSON.parse(
+        fs.readFileSync(`${testDestDir}/customize-manifest.json`).toString(),
+      );
+      assert.ok(!("permissions" in manifest));
+      assert.ok(!("allowed_hosts" in manifest));
+    });
+
+    it("should write secure option settings when the response has them", async () => {
+      const response = JSON.parse(
+        fs
+          .readFileSync(
+            "src/customize/__tests__/fixtures/get-appcustomize-response.json",
+          )
+          .toString(),
+      );
+      response.permissions = [{ permission: "kintone:app_record:read" }];
+      response.allowedHosts = ["https://www.example.com/*"];
+      const client = createMockApiClient(
+        response,
+        new TextEncoder().encode(uploadFileBody).buffer as ArrayBuffer,
+      );
+
+      await exportCustomizeSetting(client, appId, testOutputPath, m);
+
+      const manifest = JSON.parse(
+        fs.readFileSync(`${testDestDir}/customize-manifest.json`).toString(),
+      );
+      assert.deepStrictEqual(manifest.permissions, [
+        { permission: "kintone:app_record:read" },
+      ]);
+      assert.deepStrictEqual(manifest.allowed_hosts, [
+        "https://www.example.com/*",
+      ]);
+    });
+
+    it("should not write secure option settings when the response has empty arrays", async () => {
+      const response = JSON.parse(
+        fs
+          .readFileSync(
+            "src/customize/__tests__/fixtures/get-appcustomize-response.json",
+          )
+          .toString(),
+      );
+      response.permissions = [];
+      response.allowedHosts = [];
+      const client = createMockApiClient(
+        response,
+        new TextEncoder().encode(uploadFileBody).buffer as ArrayBuffer,
+      );
+
+      await exportCustomizeSetting(client, appId, testOutputPath, m);
+
+      const manifest = JSON.parse(
+        fs.readFileSync(`${testDestDir}/customize-manifest.json`).toString(),
+      );
+      assert.ok(!("permissions" in manifest));
+      assert.ok(!("allowed_hosts" in manifest));
+    });
   });
 });

@@ -50,7 +50,3 @@ The generated manifest file contains:
 
 - URLs for CDN resources (preserved as-is)
 - Relative paths for downloaded files (e.g., `desktop/js/app.js`)
-- Secure Option settings (`permissions` and `allowed_hosts`), written only when the app has any
-
-Because empty Secure Option settings are not written out, applying an exported manifest to another app
-leaves that app's Secure Option settings as they are.

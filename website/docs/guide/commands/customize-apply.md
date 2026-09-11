@@ -35,4 +35,3 @@ See [Options](/guide/options) page for common options.
 
 - File paths in the manifest are resolved relative to the manifest file location.
 - Both local files and URLs (e.g., CDN) can be specified in the manifest.
-- `permissions` and `allowed_hosts` are sent only when the manifest has them. See [Manifest File](./customize-init.md#manifest-file) for how they behave.

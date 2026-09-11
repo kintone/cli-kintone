@@ -42,8 +42,8 @@ cli-kintone customize init --output customize-manifest.json
 
 :::
 
-セキュアオプションは、カスタマイズをサンドボックスで動かすアプリ設定です。
-有効にすると、カスタマイズはアプリが宣言した権限と通信先だけを使えます。
+セキュアオプションは、カスタマイズをサンドボックスで動かす機能です。
+カスタマイズは、アプリが宣言した権限と通信先だけを使えます。
 
 `permissions` と `allowed_hosts` の記述を省略すると、アプリ側の設定を変更しません。
 空の配列を指定すると設定を削除します。
@@ -54,9 +54,7 @@ cli-kintone customize init --output customize-manifest.json
 `permission` には `kintone:app_record:read` のように名前空間付きの識別子を指定します。
 指定できる権限と通信先の形式は、プラグインと同じです。
 
-どちらもアプリでセキュアオプションが有効である必要があります。
-マニフェストに記述があってアプリで無効の場合、`customize apply` は失敗します。
-先にアプリの設定画面でセキュアオプションを有効にしてください。
+kintone 環境でセキュアオプションを利用できない場合、どちらかの記述があると `customize apply` は失敗します。
 
 ### 例
 

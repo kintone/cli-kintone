@@ -42,8 +42,8 @@ The permission vocabulary and the validation rules may change without notice.
 
 :::
 
-The Secure Option is an app setting that runs the customization in a sandbox.
-Once it is on, the customization can use only the permissions and the hosts that the app declares.
+The Secure Option runs the customization in a sandbox,
+where it can use only the permissions and the hosts that the app declares.
 
 Leaving `permissions` or `allowed_hosts` out of the manifest keeps the current settings on the app,
 and an empty array clears them.
@@ -55,9 +55,8 @@ such as `https://example.com` or `https://*.cybozu.com`.
 Each `permission` is a namespaced identifier such as `kintone:app_record:read`.
 The available permissions and host formats are the same as the ones for plugins.
 
-Both properties require the app to have the Secure Option turned on.
-`customize apply` fails if the manifest has them and the app does not.
-Turn the Secure Option on from the app settings screen first.
+`customize apply` fails if the manifest has either property while the Secure Option is not
+available on the kintone environment.
 
 ### Example
 

@@ -8,7 +8,7 @@
     "name": "Cybozu, Inc.",
     "url": "https://cybozu.co.jp"
   },
-  "description": "cli-kintone; The CLI tool for importing and exporting Kintone records.",
+  "description": "The command line interface for Kintone",
   "bin": {
     "cli-kintone": "cli.js"
   },

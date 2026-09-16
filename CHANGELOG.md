@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.3](https://github.com/kintone/cli-kintone/compare/v1.21.2...v1.21.3) (2026-09-10)
+
+
+### Bug Fixes
+
+* **deps:** pin svgo below v4 past the removeScripts advisories ([#1594](https://github.com/kintone/cli-kintone/issues/1594)) ([1b8f9af](https://github.com/kintone/cli-kintone/commit/1b8f9afb6ffeba35fdba961d833d9ea7c43558b4))
+
 ## [1.21.2](https://github.com/kintone/cli-kintone/compare/v1.21.1...v1.21.2) (2026-09-07)
 
 

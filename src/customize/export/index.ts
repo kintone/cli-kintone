@@ -18,31 +18,11 @@ export type ExportParams = RestAPIClientOptions & {
   yes: boolean;
 };
 
-interface UploadedFile {
-  type: "FILE";
-  file: {
-    fileKey: string;
-    name: string;
-  };
-}
-
-interface CDNFile {
-  type: "URL";
-  url: string;
-}
-type CustomizeFile = UploadedFile | CDNFile;
-
-interface GetAppCustomizeResp {
-  scope: "ALL" | "ADMIN" | "NONE";
-  desktop: {
-    js: CustomizeFile[];
-    css: CustomizeFile[];
-  };
-  mobile: {
-    js: CustomizeFile[];
-    css: CustomizeFile[];
-  };
-}
+// Derive from the SDK return type; a local redefinition would not follow SDK changes
+type GetAppCustomizeResp = Awaited<
+  ReturnType<KintoneRestAPIClient["app"]["getAppCustomize"]>
+>;
+type CustomizeFile = GetAppCustomizeResp["desktop"]["js"][number];
 
 export const exportCustomizeSetting = async (
   apiClient: KintoneRestAPIClient,
@@ -119,6 +99,19 @@ const writeManifestFile = async (
       css: mobileCss.map(toNameOrUrl("mobile/css")),
     },
   };
+
+  // Skip empty settings, so that a manifest of an app that does not use the
+  // sandbox settings does not gain the properties
+  if (resp.permissions !== undefined && resp.permissions.length > 0) {
+    // Project onto CustomizeManifest's own shape, so that a new field on the API
+    // response does not silently change the manifest file
+    customizeJson.permissions = resp.permissions.map(({ permission }) => ({
+      permission,
+    }));
+  }
+  if (resp.allowedHosts !== undefined && resp.allowedHosts.length > 0) {
+    customizeJson.allowed_hosts = resp.allowedHosts;
+  }
 
   logger.debug(`Creating directory: ${destDir}`);
   await fs.mkdir(destDir, { recursive: true });

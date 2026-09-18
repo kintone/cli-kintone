@@ -1,98 +1,24 @@
 ---
-title: プラグインサンドボックス
+title: サンドボックス
 unlisted: true
 ---
 
-# プラグインサンドボックス
+# サンドボックス
 
-:::experimental[プラグインサンドボックス対応]
+:::experimental[サンドボックス対応]
 
 この機能は開発中であり、まだ公開インターフェースの一部ではありません。
 フィールド名・バリデーション規則・コマンド出力は予告なく変更される可能性があります。
 
 :::
 
-cli-kintone は `manifest.json` (Manifest v1) のオプショナルフィールドとして
-`sandbox` / `allowed_hosts` / `permissions` の 3 つを認識します。これらが
-指定されていると、`plugin pack` がバリデーションを行い、`plugin info` が出力に
-反映し、`plugin upload` が Installation Summary に含めます。
+kintone は、プラグインや JavaScript / CSS カスタマイズをサンドボックスで実行できます。サンドボックスで動くコードは、そのコードに対して宣言された権限と通信先だけを使えます。それ以外は kintone が遮断します。
 
-## フィールド
+どちらの宣言もマニフェストファイルに書き、cli-kintone はそこから読み取ります。2 つのマニフェストは別のファイルで、扱うコマンドも異なるため、ページを分けています。
 
-| フィールド      | 型                                         | 説明                                                                                                                                                                                                                                                                                                                                |
-| --------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sandbox`       | `boolean`                                  | このプラグインがサンドボックスに対応しているかを示すフラグ。                                                                                                                                                                                                                                                                        |
-| `allowed_hosts` | `string[]`                                 | プラグインがアクセスできる通信先の一覧。各エントリはスキーム付きの URI（例: `https://example.com`, `wss://example.com/ws/*`）またはワイルドカード `"*"`。cli-kintone は構造的な形式のみを検証し、IP アドレスの拒否・末尾スラッシュのみの拒否・サイボウズドメインの除外などのドメイン固有ルールは実行時に kintone 本体が判定します。 |
-| `permissions`   | `{ permission: string; scope?: string }[]` | プラグインが要求する API 権限の配列。各エントリは必須の `permission` と任意の `scope` を持ちます。`permission` / `scope` の語彙は仕様検討中で、スキーマ上の制約はまだ設けていません。                                                                                                                                               |
+| ページ                                                 | マニフェスト              | コマンド                                                |
+| ------------------------------------------------------ | ------------------------- | ------------------------------------------------------- |
+| [プラグインサンドボックス](./plugin-sandbox.md)        | `manifest.json`           | `plugin pack`、`plugin info`、`plugin upload`           |
+| [カスタマイズのサンドボックス](./customize-sandbox.md) | `customize-manifest.json` | `customize init`、`customize export`、`customize apply` |
 
-`sandbox` が `true` の場合、`allowed_hosts` と `permissions` は必須です。
-`sandbox` が未指定または `false` の場合、`allowed_hosts` と `permissions` は
-任意のままです。
-
-## マニフェスト例
-
-```json
-{
-  "manifest_version": 1,
-  "version": 1,
-  "type": "APP",
-  "name": { "en": "sandbox-sample" },
-  "icon": "image/icon.png",
-  "sandbox": true,
-  "allowed_hosts": ["https://example.com", "wss://example.com/ws/*"],
-  "permissions": [
-    { "permission": "app:read" },
-    { "permission": "network:connect" },
-    { "permission": "app_record:read", "scope": "self" }
-  ]
-}
-```
-
-## コマンドごとの挙動
-
-### `plugin pack`
-
-パッケージング前に 3 フィールドをマニフェストスキーマで検証します。バリデーション
-エラーがあるとパッケージングを中断し、非ゼロ終了コードを返します。エラーが
-無ければ通常どおりプラグイン zip を生成します。
-
-### `plugin info`
-
-`sandbox` / `allowed_hosts` / `permissions` のいずれかがマニフェストに
-定義されている場合、`plugin info` はサンドボックス関連 3 行
-（`sandbox`、`allowed_hosts`、`permissions`）
-をまとめて出力します。どれも未定義のサンドボックス非対応プラグインでは
-ブロックごと省略されます。各権限は `permission[:scope]` 形式で表示され、
-エントリはカンマ区切りで連結されます。
-
-- `(not set)` — 当該フィールドがマニフェストに存在しない。
-- `(none)` — 当該フィールドが空配列として明示されている。
-
-plain 出力例:
-
-```text
-sandbox: true
-allowed_hosts: https://example.com, wss://example.com/ws/*
-permissions: app:read, network:connect, app_record:read:self
-```
-
-JSON 形式では、マニフェストに存在しないキーは出力から省略されます。サンドボックス関連のキーは、ライブラリ内部で用いる camelCase のアクセサ名ではなくマニフェストのキー名（`sandbox`、`allowed_hosts`、`permissions`）をそのまま使います。
-
-### `plugin upload`
-
-`sandbox` / `allowed_hosts` / `permissions` のいずれかがマニフェストに
-定義されている場合、Installation Summary にはサンドボックス関連 3 行
-（`Sandbox`、`Allowed hosts`、`Permissions`）
-がまとめて出力されます。どれも未定義のサンドボックス非対応プラグインでは
-追加行は出ません。`(not set)` / `(none)` のプレースホルダは `plugin info` と
-同じ意味で使われます。出力例:
-
-```text
-  Installation Summary:
-    Destination: https://example.cybozu.com
-    ...
-    Target version: 1
-    Sandbox: true
-    Allowed hosts: https://example.com, wss://example.com/ws/*
-    Permissions: app:read, network:connect, app_record:read:self
-```
+2 つのマニフェストは、設定の書き方が異なります。プラグインのマニフェストは `sandbox` フラグを持ち、各権限に `scope` を指定できますが、カスタマイズのマニフェストはどちらも持ちません。宣言そのものも共有しません。同じアプリのプラグインとカスタマイズは、それぞれ自分の分を宣言します。

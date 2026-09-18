@@ -1,0 +1,13 @@
+{
+  "scope": "ALL",
+  "desktop": {
+    "js": [],
+    "css": []
+  },
+  "mobile": {
+    "js": [],
+    "css": []
+  },
+  "allowedHosts": ["https://example.com"],
+  "permission": [{ "permission": "kintone:app_record:read" }]
+}

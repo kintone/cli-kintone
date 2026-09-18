@@ -4,3 +4,5 @@ export type { Lang } from "./lang";
 export { getDefaultLang } from "./lang";
 export { isUrlString } from "./util";
 export type { CustomizeManifest, CustomizePermission } from "./types";
+export { findUnknownProperties, findSandboxPropertyProblems } from "./manifest";
+export { ManifestValidationError } from "./error";

@@ -68,6 +68,10 @@ These are two different requests, so a manifest that should keep the current per
 
 `customize apply` fails when the manifest has either property and the kintone environment does not support these settings.
 
+`customize apply` warns about each property of the manifest that it does not recognize, and then ignores it. A misspelled `permissions` or `allowed_hosts` reaches the app as nothing at all, so the warning is the only sign that the setting was not sent.
+
+A manifest whose `permissions` or `allowed_hosts` has a type other than the one above fails before any file is uploaded.
+
 ## Using the same manifest with customize-uploader
 
 cli-kintone reads every manifest that [customize-uploader](../migration/migration-from-js-sdk.md) accepts. The opposite is not true: these two properties are specific to cli-kintone.

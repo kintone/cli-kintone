@@ -2,6 +2,7 @@ import assert from "assert";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { CustomizeManifest } from "../../core";
 import { getBoundMessage } from "../../core";
+import { logger } from "../../../utils/log";
 import { apply, loadManifest } from "../index";
 
 type MockLog = {
@@ -62,17 +63,57 @@ describe("index", () => {
   describe("loadManifest", () => {
     const legacyManifestPath =
       "src/customize/__tests__/fixtures/customize-manifest-legacy.json";
+    const unknownPropertyManifestPath =
+      "src/customize/__tests__/fixtures/customize-manifest-unknown-property.json";
+    const invalidSandboxManifestPath =
+      "src/customize/__tests__/fixtures/customize-manifest-invalid-sandbox.json";
+    const m = getBoundMessage("en");
 
     it("should fill in mobile.css for an old manifest", () => {
-      assert.deepStrictEqual(loadManifest(legacyManifestPath).mobile.css, []);
+      assert.deepStrictEqual(
+        loadManifest(legacyManifestPath, m).mobile.css,
+        [],
+      );
     });
 
     it("should leave sandbox settings absent instead of filling them in", () => {
       // Filling them in with empty arrays would make an apply from a manifest
       // that has neither property clear the settings on the app
-      const manifest = loadManifest(legacyManifestPath);
+      const manifest = loadManifest(legacyManifestPath, m);
       assert.strictEqual(manifest.permissions, undefined);
       assert.strictEqual(manifest.allowed_hosts, undefined);
+    });
+
+    it("should not warn for a manifest whose properties are all known", () => {
+      const loggerWarnMock = vi.spyOn(logger, "warn");
+
+      loadManifest(legacyManifestPath, m);
+
+      expect(loggerWarnMock).not.toHaveBeenCalled();
+    });
+
+    it("should warn which properties are unknown", () => {
+      // A misspelled property is indistinguishable from leaving it out, so the
+      // manifest loads and the setting on the app stays as it is
+      const loggerWarnMock = vi.spyOn(logger, "warn");
+
+      const manifest = loadManifest(unknownPropertyManifestPath, m);
+
+      expect(loggerWarnMock).toHaveBeenCalledTimes(1);
+      expect(loggerWarnMock).toHaveBeenCalledWith(
+        `${m("W_UnknownProperty")} allowedHosts, permission`,
+      );
+      assert.strictEqual(manifest.permissions, undefined);
+      assert.strictEqual(manifest.allowed_hosts, undefined);
+    });
+
+    it("should reject sandbox settings of the wrong shape before anything is uploaded", () => {
+      assert.throws(
+        () => loadManifest(invalidSandboxManifestPath, m),
+        (error: Error) =>
+          error.toString().includes("permissions[0] must be an object") &&
+          error.toString().includes("allowed_hosts[0] must be a string"),
+      );
     });
   });
 

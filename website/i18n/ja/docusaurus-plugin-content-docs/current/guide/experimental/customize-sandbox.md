@@ -71,9 +71,3 @@ kintone 環境がこれらの設定に対応していない場合、どちらか
 `customize apply` は、cli-kintone が知らないプロパティを警告して無視します。`permissions` や `allowed_hosts` の綴りを誤るとアプリ側へ何も送られないため、警告だけが気付く手掛かりになります。
 
 `permissions` や `allowed_hosts` の型が上記と違うマニフェストは、ファイルを 1 つもアップロードしないまま失敗します。
-
-## customize-uploader と同じマニフェストを使う
-
-cli-kintone は [customize-uploader](../migration/migration-from-js-sdk.md) のマニフェストをそのまま読み込めます。この 2 つのプロパティは cli-kintone 固有のため、その逆はできません。
-
-customize-uploader はマニフェストのプロパティをそのままカスタマイズの更新 API へ渡します。そのため `permissions` を書いたマニフェストは、これらの設定に対応していない環境では customize-uploader でエラーになります。customize-uploader と共用するマニフェストには、どちらも書かないでください。

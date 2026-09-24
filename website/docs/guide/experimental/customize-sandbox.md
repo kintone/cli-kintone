@@ -49,13 +49,11 @@ Each entry of `allowed_hosts` needs a scheme and must not contain a path, such a
 
 ### `customize init`
 
-Generates neither property. A manifest produced by `customize init` leaves both settings on the app untouched when it is applied.
+Generates neither property, so applying the manifest it produces leaves both settings on the app as they are.
 
 ### `customize export`
 
-Writes each property only when the app has values for it. A manifest for an app that uses neither gains nothing.
-
-This means an exported manifest does not clear these settings on another app. Applying it to a second app leaves that app's permissions and allowed hosts as they are.
+Writes each property only when the app has values for it, so a manifest for an app that uses neither gains nothing. Applying such a manifest to a second app leaves that app's permissions and allowed hosts as they are.
 
 ### `customize apply`
 
@@ -64,8 +62,6 @@ Sends each property only when the manifest has it.
 - The property is absent — the setting on the app is left unchanged.
 - The property is an empty array — the setting on the app is cleared.
 
-`customize apply` fails when the manifest has either property and the kintone environment does not support these settings.
+A manifest whose `permissions` or `allowed_hosts` has a type other than the one above fails before any file is uploaded. One that carries either property on a kintone environment without support for these settings fails on the request.
 
-`customize apply` warns about each property of the manifest that it does not recognize, and then ignores it.
-
-A manifest whose `permissions` or `allowed_hosts` has a type other than the one above fails before any file is uploaded.
+`customize apply` warns about each property it does not recognize, and then ignores it.

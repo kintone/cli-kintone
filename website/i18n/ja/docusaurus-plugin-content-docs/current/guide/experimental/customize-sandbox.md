@@ -18,12 +18,12 @@ cli-kintone は `customize-manifest.json` のオプショナルなプロパテ�
 
 ## プロパティ
 
-| プロパティ      | 型                         | 説明                           |
-| --------------- | -------------------------- | ------------------------------ |
-| `permissions`   | `{ permission: string }[]` | カスタマイズに許可する権限。   |
-| `allowed_hosts` | `string[]`                 | カスタマイズに許可する通信先。 |
+| プロパティ      | 型                                         | 説明                           |
+| --------------- | ------------------------------------------ | ------------------------------ |
+| `permissions`   | `{ permission: string, scope?: string }[]` | カスタマイズに許可する権限。   |
+| `allowed_hosts` | `string[]`                                 | カスタマイズに許可する通信先。 |
 
-`permission` には `kintone:app_record:read` のように名前空間付きの識別子を指定します。プラグインのマニフェストと違い、各エントリは `scope` を取らず、マニフェストに `sandbox` フラグもありません。
+`permission` には `kintone:app_record:read` のように名前空間付きの識別子を指定します。各エントリはプラグインのマニフェストと同じ形なので、権限の記述をプラグインとカスタマイズの間で移せます。カスタマイズでは kintone が `scope` を無視し、`customize export` も書き戻しません。マニフェストに `sandbox` フラグはありません。
 
 `allowed_hosts` の各エントリにはスキームが必要で、パスは含められません（例: `https://example.com`、`https://*.example.com`）。ワイルドカードのエントリと個別の通信先は併記できます。
 

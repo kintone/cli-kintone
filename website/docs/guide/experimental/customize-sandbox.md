@@ -18,12 +18,12 @@ cli-kintone recognizes two optional properties in `customize-manifest.json` that
 
 ## Properties
 
-| Property        | Type                       | Description                                             |
-| --------------- | -------------------------- | ------------------------------------------------------- |
-| `permissions`   | `{ permission: string }[]` | Permissions the customization is allowed to use.        |
-| `allowed_hosts` | `string[]`                 | Hosts the customization is allowed to communicate with. |
+| Property        | Type                                       | Description                                             |
+| --------------- | ------------------------------------------ | ------------------------------------------------------- |
+| `permissions`   | `{ permission: string, scope?: string }[]` | Permissions the customization is allowed to use.        |
+| `allowed_hosts` | `string[]`                                 | Hosts the customization is allowed to communicate with. |
 
-Each `permission` is a namespaced identifier such as `kintone:app_record:read`. Unlike a plugin manifest, an entry takes no `scope`, and there is no `sandbox` flag on the manifest.
+Each `permission` is a namespaced identifier such as `kintone:app_record:read`. An entry takes the same shape as a plugin manifest's, so a set of permissions can be moved between the two. kintone ignores `scope` for a customization, and `customize export` does not write it back. There is no `sandbox` flag on the manifest.
 
 Each entry of `allowed_hosts` needs a scheme and must not contain a path, such as `https://example.com` or `https://*.example.com`. A wildcard entry and a specific host can both be listed.
 

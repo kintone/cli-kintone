@@ -45,6 +45,10 @@ export const findSandboxPropertyProblems = (
           problems.push(
             `permissions[${index}] must be an object with a permission property of type string`,
           );
+          return;
+        }
+        if (entry.scope !== undefined && typeof entry.scope !== "string") {
+          problems.push(`permissions[${index}].scope must be a string`);
         }
       });
     }

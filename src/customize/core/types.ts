@@ -1,12 +1,12 @@
+import type { ManifestPermission } from "../../plugin/core/manifest/interface";
+
 /**
  * An element of the `permissions` property of the customize manifest file.
  *
- * The plugin manifest counterpart is `ManifestPermission`
- * (`src/plugin/core/manifest/interface.ts`), whose element also carries `scope`.
+ * It has the same shape as the plugin manifest's element, so that one manifest
+ * of permissions can be moved between a plugin and a customization.
  */
-export interface CustomizePermission {
-  permission: string;
-}
+export type CustomizePermission = ManifestPermission;
 
 export interface CustomizeManifest {
   app?: string; // Optional for backward compatibility

@@ -112,6 +112,7 @@ describe("index", () => {
         () => loadManifest(invalidSandboxManifestPath, m),
         (error: Error) =>
           error.toString().includes("permissions[0] must be an object") &&
+          error.toString().includes("permissions[1].scope must be a string") &&
           error.toString().includes("allowed_hosts[0] must be a string"),
       );
     });
@@ -207,6 +208,21 @@ describe("index", () => {
         { permission: "kintone:app_record:read" },
       ]);
       assert.ok(!("allowedHosts" in body));
+    });
+
+    it("should send a permission with the scope a plugin manifest may carry", async () => {
+      // kintone ignores scope for a customization; passing it on keeps one set of
+      // permissions usable for both a plugin and a customization
+      manifest.permissions = [
+        { permission: "kintone:app_record:read", scope: "self" },
+      ];
+
+      await apply(apiClient, appId, manifest, manifestDir, boundMessage);
+
+      const body = updateRequestBody();
+      assert.deepStrictEqual(body?.permissions, [
+        { permission: "kintone:app_record:read", scope: "self" },
+      ]);
     });
 
     it("should send empty arrays to clear sandbox settings", async () => {

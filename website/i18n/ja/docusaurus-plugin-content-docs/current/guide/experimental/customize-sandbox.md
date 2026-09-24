@@ -64,10 +64,8 @@ cli-kintone は `customize-manifest.json` のオプショナルなプロパテ�
 - プロパティが無い場合 — アプリ側の設定を変更しません。
 - プロパティが空の配列の場合 — アプリ側の設定を削除します。
 
-この 2 つは別のリクエストです。現在の権限を保ちたいマニフェストは、`customize export` が書き出した値を繰り返すのではなく、プロパティを省略します。
-
 kintone 環境がこれらの設定に対応していない場合、どちらかのプロパティがあると `customize apply` は失敗します。
 
-`customize apply` は、cli-kintone が知らないプロパティを警告して無視します。`permissions` や `allowed_hosts` の綴りを誤るとアプリ側へ何も送られないため、警告だけが気付く手掛かりになります。
+`customize apply` は、cli-kintone が知らないプロパティを警告して無視します。
 
 `permissions` や `allowed_hosts` の型が上記と違うマニフェストは、ファイルを 1 つもアップロードしないまま失敗します。

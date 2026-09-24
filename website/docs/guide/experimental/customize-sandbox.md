@@ -64,10 +64,8 @@ Sends each property only when the manifest has it.
 - The property is absent — the setting on the app is left unchanged.
 - The property is an empty array — the setting on the app is cleared.
 
-These are two different requests, so a manifest that should keep the current permissions leaves the property out rather than repeating what `customize export` wrote.
-
 `customize apply` fails when the manifest has either property and the kintone environment does not support these settings.
 
-`customize apply` warns about each property of the manifest that it does not recognize, and then ignores it. A misspelled `permissions` or `allowed_hosts` reaches the app as nothing at all, so the warning is the only sign that the setting was not sent.
+`customize apply` warns about each property of the manifest that it does not recognize, and then ignores it.
 
 A manifest whose `permissions` or `allowed_hosts` has a type other than the one above fails before any file is uploaded.

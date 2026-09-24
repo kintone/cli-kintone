@@ -25,7 +25,7 @@ cli-kintone は `customize-manifest.json` のオプショナルなプロパテ�
 
 `permission` には `kintone:app_record:read` のように名前空間付きの識別子を指定します。プラグインのマニフェストと違い、各エントリは `scope` を取らず、マニフェストに `sandbox` フラグもありません。
 
-`allowed_hosts` の各エントリにはスキームが必要で、パスは含められません（例: `https://example.com`、`https://*.cybozu.com`）。ワイルドカードのエントリと個別の通信先は併記できます。
+`allowed_hosts` の各エントリにはスキームが必要で、パスは含められません（例: `https://example.com`、`https://*.example.com`）。ワイルドカードのエントリと個別の通信先は併記できます。
 
 ## マニフェストの例
 
@@ -41,7 +41,7 @@ cli-kintone は `customize-manifest.json` のオプショナルなプロパテ�
     "css": []
   },
   "permissions": [{ "permission": "kintone:app_record:read" }],
-  "allowed_hosts": ["https://example.com", "https://*.cybozu.com"]
+  "allowed_hosts": ["https://example.com", "https://*.example.com"]
 }
 ```
 

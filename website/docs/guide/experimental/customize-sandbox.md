@@ -25,7 +25,7 @@ cli-kintone recognizes two optional properties in `customize-manifest.json` that
 
 Each `permission` is a namespaced identifier such as `kintone:app_record:read`. Unlike a plugin manifest, an entry takes no `scope`, and there is no `sandbox` flag on the manifest.
 
-Each entry of `allowed_hosts` needs a scheme and must not contain a path, such as `https://example.com` or `https://*.cybozu.com`. A wildcard entry and a specific host can both be listed.
+Each entry of `allowed_hosts` needs a scheme and must not contain a path, such as `https://example.com` or `https://*.example.com`. A wildcard entry and a specific host can both be listed.
 
 ## Example manifest
 
@@ -41,7 +41,7 @@ Each entry of `allowed_hosts` needs a scheme and must not contain a path, such a
     "css": []
   },
   "permissions": [{ "permission": "kintone:app_record:read" }],
-  "allowed_hosts": ["https://example.com", "https://*.cybozu.com"]
+  "allowed_hosts": ["https://example.com", "https://*.example.com"]
 }
 ```
 

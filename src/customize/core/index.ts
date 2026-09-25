@@ -3,4 +3,6 @@ export type { BoundMessage } from "./messages";
 export type { Lang } from "./lang";
 export { getDefaultLang } from "./lang";
 export { isUrlString } from "./util";
-export type { CustomizeManifest } from "./types";
+export type { CustomizeManifest, CustomizePermission } from "./types";
+export { validateCustomizeManifest } from "./manifest";
+export { ManifestValidationError } from "./error";

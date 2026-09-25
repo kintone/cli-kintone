@@ -1,0 +1,16 @@
+{
+  "scope": "ALL",
+  "desktop": {
+    "js": [],
+    "css": []
+  },
+  "mobile": {
+    "js": [],
+    "css": []
+  },
+  "permissions": [
+    "kintone:app_record:read",
+    { "permission": "kintone:app_record:write", "scope": 1 }
+  ],
+  "allowed_hosts": [{ "host": "https://example.com" }]
+}

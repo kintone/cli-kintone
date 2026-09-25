@@ -86,27 +86,40 @@ describe("export", () => {
     const appId = "1";
     const m = getBoundMessage("en");
 
-    beforeEach(() => {
-      const getAppCustomizeResponse = JSON.parse(
+    const readResponseFixture = () =>
+      JSON.parse(
         fs
           .readFileSync(
             "src/customize/__tests__/fixtures/get-appcustomize-response.json",
           )
           .toString(),
       );
-      const downloadFileResponse = new TextEncoder().encode(uploadFileBody)
-        .buffer as ArrayBuffer;
-      apiClient = createMockApiClient(
-        getAppCustomizeResponse,
-        downloadFileResponse,
+
+    const createClientWithResponse = (
+      response: Record<string, unknown> = readResponseFixture(),
+    ) =>
+      createMockApiClient(
+        response,
+        new TextEncoder().encode(uploadFileBody).buffer as ArrayBuffer,
       );
+
+    const readExportedManifest = () =>
+      JSON.parse(
+        fs.readFileSync(`${testDestDir}/customize-manifest.json`).toString(),
+      );
+
+    beforeEach(() => {
+      apiClient = createClientWithResponse();
     });
 
     afterEach(() => {
       rimrafSync(`${testDestDir}`);
     });
 
-    const assertManifestContent = (buffer: Buffer) => {
+    const assertManifestContent = (
+      buffer: Buffer,
+      secureOption: Record<string, unknown> = {},
+    ) => {
       // Manifest should contain paths relative to manifest file location
       const appCustomize = {
         scope: "ALL",
@@ -137,7 +150,10 @@ describe("export", () => {
           ],
         },
       };
-      assert.deepStrictEqual(JSON.parse(buffer.toString()), appCustomize);
+      assert.deepStrictEqual(JSON.parse(buffer.toString()), {
+        ...appCustomize,
+        ...secureOption,
+      });
     };
 
     const assertDownloadFile = (path: string) => {
@@ -188,6 +204,71 @@ describe("export", () => {
       const contents = fs.readFileSync(manifestFile);
       assertManifestContent(contents);
       filesToTestContent.map(assertDownloadFile);
+    });
+
+    it("should not write sandbox settings when the response has none", async () => {
+      await exportCustomizeSetting(apiClient, appId, testOutputPath, m);
+
+      const manifest = readExportedManifest();
+      assert.ok(!("permissions" in manifest));
+      assert.ok(!("allowed_hosts" in manifest));
+    });
+
+    it("should write sandbox settings when the response has them", async () => {
+      const response = readResponseFixture();
+      response.permissions = [{ permission: "kintone:app_record:read" }];
+      response.allowedHosts = ["https://www.example.com"];
+
+      await exportCustomizeSetting(
+        createClientWithResponse(response),
+        appId,
+        testOutputPath,
+        m,
+      );
+
+      assertManifestContent(
+        fs.readFileSync(`${testDestDir}/customize-manifest.json`),
+        {
+          permissions: [{ permission: "kintone:app_record:read" }],
+          allowed_hosts: ["https://www.example.com"],
+        },
+      );
+    });
+
+    it("should write only the permission property of each permission", async () => {
+      const response = readResponseFixture();
+      // A field that the API may add later must not reach the manifest file
+      response.permissions = [
+        { permission: "kintone:app_record:read", scope: "self" },
+      ];
+
+      await exportCustomizeSetting(
+        createClientWithResponse(response),
+        appId,
+        testOutputPath,
+        m,
+      );
+
+      assert.deepStrictEqual(readExportedManifest().permissions, [
+        { permission: "kintone:app_record:read" },
+      ]);
+    });
+
+    it("should not write sandbox settings when the response has empty arrays", async () => {
+      const response = readResponseFixture();
+      response.permissions = [];
+      response.allowedHosts = [];
+
+      await exportCustomizeSetting(
+        createClientWithResponse(response),
+        appId,
+        testOutputPath,
+        m,
+      );
+
+      const manifest = readExportedManifest();
+      assert.ok(!("permissions" in manifest));
+      assert.ok(!("allowed_hosts" in manifest));
     });
   });
 });

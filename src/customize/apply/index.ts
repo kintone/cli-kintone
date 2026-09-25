@@ -11,11 +11,10 @@ import {
   type RestAPIClientOptions,
 } from "../../kintone/client";
 import {
-  findSandboxPropertyProblems,
-  findUnknownProperties,
   getBoundMessage,
   isUrlString,
   ManifestValidationError,
+  validateCustomizeManifest,
 } from "../core";
 import type { BoundMessage, CustomizeManifest } from "../core";
 
@@ -284,14 +283,10 @@ export const loadManifest = (
     fs.readFileSync(inputPath, "utf8"),
   );
 
-  const unknownProperties = findUnknownProperties(manifest);
-  if (unknownProperties.length > 0) {
-    logger.warn(`${m("W_UnknownProperty")} ${unknownProperties.join(", ")}`);
-  }
-
-  const problems = findSandboxPropertyProblems(manifest);
-  if (problems.length > 0) {
-    throw new ManifestValidationError(problems);
+  const result = validateCustomizeManifest(manifest, m);
+  result.warnings.forEach((warning) => logger.warn(warning));
+  if (!result.valid) {
+    throw new ManifestValidationError(result.errors);
   }
 
   // support an old format for customize-manifest.json that doesn't have mobile.css

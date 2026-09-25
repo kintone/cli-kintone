@@ -21,4 +21,4 @@ kintone は、プラグインや JavaScript / CSS カスタマイズをサンド
 | [プラグインサンドボックス](./plugin-sandbox.md)        | `manifest.json`           | `plugin pack`、`plugin info`、`plugin upload`           |
 | [カスタマイズのサンドボックス](./customize-sandbox.md) | `customize-manifest.json` | `customize init`、`customize export`、`customize apply` |
 
-2 つのマニフェストは、設定の書き方が異なります。プラグインのマニフェストは `sandbox` フラグを持ち、各権限に `scope` を指定できますが、カスタマイズのマニフェストはどちらも持ちません。宣言そのものも共有しません。同じアプリのプラグインとカスタマイズは、それぞれ自分の分を宣言します。
+2 つのマニフェストは、設定の書き方が異なります。プラグインのマニフェストは `sandbox` フラグを持ちますが、カスタマイズのマニフェストは持ちません。カスタマイズのマニフェストも各権限に `scope` を指定できますが、kintone は無視します。宣言そのものも共有しません。同じアプリのプラグインとカスタマイズは、それぞれ自分の分を宣言します。

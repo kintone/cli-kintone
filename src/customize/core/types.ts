@@ -1,12 +1,13 @@
-import type { ManifestPermission } from "../../plugin/core/manifest/interface";
-
 /**
  * An element of the `permissions` property of the customize manifest file.
  *
- * It has the same shape as the plugin manifest's element, so that one manifest
- * of permissions can be moved between a plugin and a customization.
+ * `scope` is accepted so that a plugin manifest's entry can be copied as it is,
+ * but kintone ignores it for a customization.
  */
-export type CustomizePermission = ManifestPermission;
+export type CustomizePermission = {
+  permission: string;
+  scope?: string;
+};
 
 export interface CustomizeManifest {
   app?: string; // Optional for backward compatibility

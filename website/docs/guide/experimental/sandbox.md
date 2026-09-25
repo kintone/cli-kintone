@@ -21,4 +21,4 @@ Both declarations live in a manifest file, and cli-kintone reads them from there
 | [Plugin sandbox](./plugin-sandbox.md)           | `manifest.json`           | `plugin pack`, `plugin info`, `plugin upload`           |
 | [Customization sandbox](./customize-sandbox.md) | `customize-manifest.json` | `customize init`, `customize export`, `customize apply` |
 
-The two manifests spell the settings differently. A plugin manifest carries a `sandbox` flag and allows a `scope` on each permission; a customize manifest has neither. The declarations themselves are not shared: a plugin and a customization on the same app each declare their own.
+The two manifests spell the settings differently. A plugin manifest carries a `sandbox` flag; a customize manifest does not. A customize manifest accepts a `scope` on each permission, but kintone ignores it. The declarations themselves are not shared: a plugin and a customization on the same app each declare their own.

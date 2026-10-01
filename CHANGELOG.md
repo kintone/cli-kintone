@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.4](https://github.com/kintone/cli-kintone/compare/v1.21.3...v1.21.4) (2026-10-01)
+
+
+### Bug Fixes
+
+* **deps:** pin fast-uri, undici and brace-expansion past their advisories ([#1597](https://github.com/kintone/cli-kintone/issues/1597)) ([6c29026](https://github.com/kintone/cli-kintone/commit/6c29026d0869ed4dad7663624323d8f07244330d))
+
 ## [1.21.3](https://github.com/kintone/cli-kintone/compare/v1.21.2...v1.21.3) (2026-09-10)
 
 

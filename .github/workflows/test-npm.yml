@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: "pnpm"
@@ -43,7 +43,7 @@ jobs:
         node-version: [20, 22, 24]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
       - uses: actions/download-artifact@v6
@@ -61,7 +61,7 @@ jobs:
         node-version: [20, 22, 24]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
       - uses: actions/download-artifact@v6

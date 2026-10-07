@@ -5,6 +5,10 @@ export const messages = {
     en: "Please specify manifest file",
     ja: "マニフェストファイルを指定してください",
   },
+  W_UnknownProperty: {
+    en: "The following properties of customize-manifest.json are unknown:",
+    ja: "customize-manifest.json の次のプロパティが不明です:",
+  },
   Q_BaseUrl: {
     en: "Input your kintone's base URL (https://example.cybozu.com):",
     ja: "kintoneのベースURLを入力してください (https://example.cybozu.com):",

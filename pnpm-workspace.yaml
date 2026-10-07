@@ -14,7 +14,7 @@ minimumReleaseAgeExclude:
   # Renovate security update: ws@8.21.0
   - ws@8.21.0
   # First-party package
-  - "@kintone/rest-api-client@6.2.1"
+  - "@kintone/rest-api-client@6.3.0"
 
 overrides:
   braces: ">=3.0.3"

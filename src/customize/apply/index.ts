@@ -10,7 +10,12 @@ import {
   buildRestAPIClient,
   type RestAPIClientOptions,
 } from "../../kintone/client";
-import { getBoundMessage, isUrlString } from "../core";
+import {
+  getBoundMessage,
+  isUrlString,
+  ManifestValidationError,
+  validateCustomizeManifest,
+} from "../core";
 import type { BoundMessage, CustomizeManifest } from "../core";
 
 export type ApplyParams = RestAPIClientOptions & {
@@ -34,7 +39,7 @@ export const apply = async (
   logger.debug(`Manifest directory: ${manifestDir}`);
 
   // State to track progress across retries
-  let uploadedManifest: ReturnType<typeof createUpdatedManifest> | null = null;
+  let uploadedManifest: UpdateAppCustomizeParams | null = null;
   let updated = false;
 
   await retry(
@@ -236,12 +241,16 @@ const getUploadFilesResult = async (
   };
 };
 
+type UpdateAppCustomizeParams = Parameters<
+  KintoneRestAPIClient["app"]["updateAppCustomize"]
+>[0];
+
 const createUpdatedManifest = (
   appId: string,
   manifest: CustomizeManifest,
   uploadFilesResult: Awaited<ReturnType<typeof getUploadFilesResult>>,
-) => {
-  return {
+): UpdateAppCustomizeParams => {
+  const updated: UpdateAppCustomizeParams = {
     app: appId,
     scope: manifest.scope,
     desktop: {
@@ -253,12 +262,33 @@ const createUpdatedManifest = (
       css: uploadFilesResult.mobile.css,
     },
   };
+
+  // Look only at whether the property is there; an empty array is a valid request
+  // that clears the setting, so send it as it is
+  if (manifest.permissions !== undefined) {
+    updated.permissions = manifest.permissions;
+  }
+  if (manifest.allowed_hosts !== undefined) {
+    updated.allowedHosts = manifest.allowed_hosts;
+  }
+
+  return updated;
 };
 
-const loadManifest = (inputPath: string): CustomizeManifest => {
+export const loadManifest = (
+  inputPath: string,
+  m: BoundMessage,
+): CustomizeManifest => {
   const manifest: CustomizeManifest = JSON.parse(
     fs.readFileSync(inputPath, "utf8"),
   );
+
+  const result = validateCustomizeManifest(manifest, m);
+  result.warnings.forEach((warning) => logger.warn(warning));
+  if (!result.valid) {
+    throw new ManifestValidationError(result.errors);
+  }
+
   // support an old format for customize-manifest.json that doesn't have mobile.css
   manifest.mobile.css = manifest.mobile.css || [];
   return manifest;
@@ -290,7 +320,7 @@ export const runApply = async (params: ApplyParams) => {
   const manifestDir = path.dirname(resolvedInputPath);
   logger.debug(`Manifest directory: ${manifestDir}`);
 
-  const manifest = loadManifest(resolvedInputPath);
+  const manifest = loadManifest(resolvedInputPath, boundMessage);
   logger.debug(`Manifest loaded: scope=${manifest.scope}`);
 
   // Confirmation prompt before applying
@@ -336,7 +366,7 @@ export const runApply = async (params: ApplyParams) => {
 
     watcher.on("change", async () => {
       try {
-        const updatedManifest = loadManifest(resolvedInputPath);
+        const updatedManifest = loadManifest(resolvedInputPath, boundMessage);
         const newLocalFiles = getLocalFiles(updatedManifest, manifestDir);
 
         const removed = watchedFiles.filter((f) => !newLocalFiles.includes(f));

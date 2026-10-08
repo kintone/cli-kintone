@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.0](https://github.com/kintone/cli-kintone/compare/v1.21.4...v1.22.0) (2026-10-07)
+
+
+### Features
+
+* **customize:** support sandbox settings in the customize manifest ([#1596](https://github.com/kintone/cli-kintone/issues/1596)) ([d414387](https://github.com/kintone/cli-kintone/commit/d41438783f7edc1dfc203352e2cebe0bdf69c49c))
+
 ## [1.21.4](https://github.com/kintone/cli-kintone/compare/v1.21.3...v1.21.4) (2026-10-01)
 
 

@@ -10,6 +10,7 @@ export default defineConfig({
       "src/__tests__/setup.ts",
       "src/plugin/packer/__tests__/helpers/**",
       "src/plugin/init/utils/__tests__/helpers/**",
+      "src/__tests__/helpers/**",
       "**/fixtures/**",
       "src/plugin/init/__e2e__/**",
     ],

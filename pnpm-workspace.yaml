@@ -27,7 +27,7 @@ overrides:
   brace-expansion@^2: ">=2.1.6 <3"
   brace-expansion@^5: ">=5.0.11 <6"
   js-yaml@^4: ">=4.3.2"
-  shell-quote: ">=1.9.0"
+  shell-quote: ">=1.11.0"
   websocket-driver: ">=0.7.5"
   # ajv still declares `fast-uri: ^3.0.1` as of 8.20.0, so v4 is only reached
   # through this override. Keep the upper bound so the next major is not picked

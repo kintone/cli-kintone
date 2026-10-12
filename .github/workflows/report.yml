@@ -9,7 +9,7 @@ jobs:
     if: ${{ ! startsWith(github.ref, 'refs/heads/renovate/') && !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/'))  }}
     steps:
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: zulu
           java-version: 21

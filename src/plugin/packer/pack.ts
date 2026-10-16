@@ -1,10 +1,10 @@
 import path from "path";
 import fs from "fs/promises";
-import os from "os";
 import * as chokidar from "chokidar";
 import { logger } from "../../utils/log";
 import { ManifestFactory, PluginZip, PrivateKey, LocalFSDriver } from "../core";
 import { isFile } from "../../utils/file";
+import { buildWatchOptions } from "../../utils/watch";
 
 type Params = {
   input: string;
@@ -77,23 +77,11 @@ export const pack = async (params: Params) => {
 
   // 7. Start watch mode if watch option is given
   if (params.watch) {
-    // change events are fired before changed files are flushed on Windows,
-    // which generate an invalid plugin zip.
-    // in order to fix this, we use awaitWriteFinish option only on Windows.
-    const watchOptions =
-      os.platform() === "win32"
-        ? {
-            awaitWriteFinish: {
-              stabilityThreshold: 1000,
-              pollInterval: 250,
-            },
-          }
-        : {};
     const watchTargets = [
       manifestJsonFilePath,
       ...manifest.sourceList().map((src) => path.resolve(sourceRootDir, src)),
     ];
-    const watcher = chokidar.watch(watchTargets, watchOptions);
+    const watcher = chokidar.watch(watchTargets, buildWatchOptions());
     watcher.on("change", () => {
       pack({
         ...params,

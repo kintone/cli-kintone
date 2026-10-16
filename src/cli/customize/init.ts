@@ -1,7 +1,7 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 import { logger } from "../../utils/log";
-import { RunError } from "../../record/error";
+import { RunError } from "../../utils/error";
 import { runInit } from "../../customize/init";
 
 const command = "init";

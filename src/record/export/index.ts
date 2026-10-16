@@ -9,7 +9,7 @@ import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
 import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
 import { Transform } from "stream";
-import { RunError } from "../error";
+import { RunError } from "../../utils/error";
 
 export type ExportFileEncoding = "utf8" | "sjis";
 

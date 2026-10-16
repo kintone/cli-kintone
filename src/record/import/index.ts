@@ -9,7 +9,7 @@ import { noop as defaultTransformer } from "./schema/transformers/noop";
 import { userSelected } from "./schema/transformers/userSelected";
 import { logger } from "../../utils/log";
 import { LocalRecordRepositoryFromStream } from "./repositories/localRecordRepositoryFromStream";
-import { RunError } from "../error";
+import { RunError } from "../../utils/error";
 import { isMismatchEncoding } from "../../utils/encoding";
 import { emitDeprecationWarning } from "../../utils/stability";
 

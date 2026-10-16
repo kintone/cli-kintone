@@ -10,7 +10,7 @@ import type { SupportedImportEncoding } from "../../utils/file";
 import { readFile } from "../../utils/file";
 import { isMismatchEncoding } from "../../utils/encoding";
 import { parseRecords } from "./parsers";
-import { RunError } from "../error";
+import { RunError } from "../../utils/error";
 
 export type Options = {
   app: string;

@@ -3,7 +3,7 @@ import {
   KintoneAllRecordsError,
   KintoneRestAPIError,
 } from "@kintone/rest-api-client";
-import { CliKintoneError } from "../error";
+import { CliKintoneError, RunError } from "../error";
 
 const CHUNK_SIZE = 100;
 
@@ -52,6 +52,27 @@ describe("CliKintoneError", () => {
 
     expect(runError.toString()).toBe(
       "Error occurred\nPlease specify --guest-space-id option to access an App in Guest Spaces.\n",
+    );
+  });
+});
+
+describe("RunError", () => {
+  it("should output only the cause. (inner: CliKintoneError)", () => {
+    const runError = new RunError(
+      new CliKintoneErrorForTest("This is a root cause."),
+    );
+    expect(runError.toString()).toBe("Error occurred\nThis is a root cause.\n");
+  });
+
+  it("should output only the cause. (inner: Error)", () => {
+    const runError = new RunError(new Error("This is a root cause."));
+    expect(runError.toString()).toBe("Error: This is a root cause.\n");
+  });
+
+  it("should output only the cause. (inner: KintoneRestAPIError)", () => {
+    const runError = new RunError(buildKintoneRestAPIError());
+    expect(runError.toString()).toBe(
+      "[500] [some code] some error message (some id)\n",
     );
   });
 });

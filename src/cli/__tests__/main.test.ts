@@ -1,26 +1,7 @@
 import { vi } from "vitest";
-import childProcess from "child_process";
-import { promisify } from "util";
-import path from "path";
-
-const projectRoot = path.resolve(__dirname, "../../../");
-const exec = promisify(childProcess.exec);
-const packageJson = require(path.resolve(projectRoot, "package.json"));
-const mainFilePath = path.resolve(projectRoot, packageJson.bin["cli-kintone"]);
+import { checkRejectArg } from "./cliHelper";
 
 vi.setConfig({ testTimeout: 30000 });
-
-const checkRejectArg = ({
-  arg,
-  errorMessage,
-}: {
-  arg: string;
-  errorMessage: string | RegExp;
-}) => {
-  return expect(
-    exec(`cross-env LC_ALL='en_US' node ${mainFilePath} ${arg}`),
-  ).rejects.toThrow(errorMessage);
-};
 
 describe("main", () => {
   it("should throw error when no commands are passed", () => {

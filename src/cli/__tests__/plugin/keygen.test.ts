@@ -1,55 +1,11 @@
 import { vi } from "vitest";
-import childProcess from "child_process";
 import { realpathSync } from "fs";
 import fs from "fs/promises";
 import os from "os";
 import path from "path";
-import { promisify } from "util";
-
-const projectRoot = path.resolve(__dirname, "../../../../");
-const execFile = promisify(childProcess.execFile);
-const packageJson = require(path.resolve(projectRoot, "package.json"));
-const mainFilePath = path.resolve(projectRoot, packageJson.bin["cli-kintone"]);
+import { runCli } from "../cliHelper";
 
 vi.setConfig({ testTimeout: 30000 });
-
-type CliResult = {
-  exitCode: number;
-  stdout: string;
-  stderr: string;
-};
-
-const isExecFileError = (
-  error: unknown,
-): error is { code: number; stdout: string; stderr: string } =>
-  typeof error === "object" &&
-  error !== null &&
-  "code" in error &&
-  typeof error.code === "number" &&
-  "stdout" in error &&
-  "stderr" in error;
-
-// Each line of stderr starts with "[<timestamp>] ", which changes on every run.
-const removeTimestamps = (stderr: string): string =>
-  stderr.replace(/^\[[^\]]+\] /gm, "");
-
-const runCli = async (args: string[], cwd: string): Promise<CliResult> => {
-  try {
-    const { stdout, stderr } = await execFile("node", [mainFilePath, ...args], {
-      cwd,
-    });
-    return { exitCode: 0, stdout, stderr: removeTimestamps(stderr) };
-  } catch (error) {
-    if (!isExecFileError(error)) {
-      throw error;
-    }
-    return {
-      exitCode: error.code,
-      stdout: error.stdout,
-      stderr: removeTimestamps(error.stderr),
-    };
-  }
-};
 
 describe("plugin keygen", () => {
   let workDir: string;

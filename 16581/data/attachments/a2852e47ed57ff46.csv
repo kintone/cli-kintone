@@ -1,0 +1,4 @@
+Record_number,Text,Number
+$RECORD_NUMBERS[0],Alice,30
+$RECORD_NUMBERS[1],Bob,40
+\d+,Jenny,50

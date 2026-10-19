@@ -56,7 +56,7 @@ describe("keygen", () => {
     await expect(keygen(outputPath)).rejects.toSatisfy((thrownError) => {
       expect(thrownError).toBeInstanceOf(PrivateKeyFileExistsError);
       expect(thrownError).toMatchObject({
-        cause: new Error(`File ${outputPath} already exists.`),
+        message: `File ${outputPath} already exists.`,
       });
       return true;
     });

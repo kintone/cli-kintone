@@ -5,7 +5,7 @@ describe("PrivateKeyFileExistsError", () => {
     const error = new PrivateKeyFileExistsError("/path/to/private.ppk");
 
     expect(error.toString()).toBe(
-      "Error: File /path/to/private.ppk already exists.\n",
+      "File /path/to/private.ppk already exists.\n",
     );
   });
 });

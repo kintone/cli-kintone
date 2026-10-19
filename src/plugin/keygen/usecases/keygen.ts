@@ -1,27 +1,14 @@
-import path from "path";
 import { PrivateKey } from "../../core";
 import { logger } from "../../../utils/log";
 import type { PrivateKeyRepository } from "./interface";
-import { PrivateKeyFileExistsError } from "./keygen/error";
 
 export const keygen: (
   privateKeyDestination: PrivateKeyRepository,
-  output: string | undefined,
-) => Promise<void> = async (privateKeyDestination, output) => {
+) => Promise<void> = async (privateKeyDestination) => {
   const privateKey = PrivateKey.generateKey();
-  const id = privateKey.uuid();
-  logger.debug(`plugin id: ${id}`);
+  logger.debug(`plugin id: ${privateKey.uuid()}`);
 
-  const outputFilePath = path.resolve(output ? output : `./${id}.ppk`);
-
-  if (await privateKeyDestination.exists(outputFilePath)) {
-    throw new PrivateKeyFileExistsError(outputFilePath);
-  }
-
+  const outputFilePath = await privateKeyDestination.save(privateKey);
   logger.debug(`output: ${outputFilePath}`);
-  await privateKeyDestination.save(
-    outputFilePath,
-    privateKey.exportPrivateKey(),
-  );
   logger.info(`New private key generated: ${outputFilePath}`);
 };

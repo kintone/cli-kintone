@@ -1,13 +1,23 @@
+import type { PrivateKey } from "../../core";
 import type { PrivateKeyRepository } from "../usecases/interface";
+import { PrivateKeyFileExistsError } from "../usecases/keygen/error";
 
 export class LocalPrivateKeyRepositoryMock implements PrivateKeyRepository {
   readonly files = new Map<string, string>();
 
-  async exists(filePath: string) {
-    return this.files.has(filePath);
+  private readonly output: string | undefined;
+
+  constructor(output?: string) {
+    this.output = output;
   }
 
-  async save(filePath: string, privateKey: string) {
-    this.files.set(filePath, privateKey);
+  async save(privateKey: PrivateKey) {
+    const filePath = this.output ?? `${privateKey.uuid()}.ppk`;
+    if (this.files.has(filePath)) {
+      throw new PrivateKeyFileExistsError(filePath);
+    }
+
+    this.files.set(filePath, privateKey.exportPrivateKey());
+    return filePath;
   }
 }

@@ -9,7 +9,7 @@ export type Options = {
 
 export const run: (options: Options) => Promise<void> = async (options) => {
   try {
-    await keygen(new LocalPrivateKeyRepository(), options.output);
+    await keygen(new LocalPrivateKeyRepository(options.output));
   } catch (e) {
     logger.error(new RunError(e));
     // eslint-disable-next-line n/no-process-exit

@@ -46,6 +46,12 @@ describe("CliKintoneError", () => {
     );
   });
 
+  it("toStringCause should output nothing when there is no cause", () => {
+    const error = new CliKintoneErrorForTest(undefined);
+
+    expect(error.toString()).toBe("Error occurred\n");
+  });
+
   it("toStringCause should output the correct sentence. (inner: KintoneRestAPIError with GAIA_IL23)", () => {
     const kintoneRestAPIError = buildKintoneRestAPIError("GAIA_IL23");
     const runError = new CliKintoneErrorForTest(kintoneRestAPIError);

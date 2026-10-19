@@ -22,7 +22,9 @@ export abstract class CliKintoneError extends Error {
   }
 
   protected _toStringCause(): string {
-    if (this.cause instanceof CliKintoneError) {
+    if (this.cause === undefined) {
+      return "";
+    } else if (this.cause instanceof CliKintoneError) {
       return this.cause.toString();
     } else if (this.cause instanceof KintoneAllRecordsError) {
       return this._toStringKintoneAllRecordsError(this.cause);

@@ -36,7 +36,7 @@ describe("keygen", () => {
       (thrownError) => {
         expect(thrownError).toBeInstanceOf(PrivateKeyFileExistsError);
         expect(thrownError).toMatchObject({
-          message: `File ${outputPath} already exists.`,
+          cause: `File ${outputPath} already exists.`,
         });
         return true;
       },

@@ -12,10 +12,10 @@ export const run: (options: Options) => Promise<void> = async (options) => {
   try {
     await keygen(new LocalPrivateKeyRepository(), options.output);
   } catch (e) {
-    // Keeps the CLI output "Error: <message>" for this failure; RunError prints the message without the "Error: " prefix.
+    // Keeps the CLI output "Error: <cause>" for this failure; RunError prints the heading and the cause without the "Error: " prefix.
     logger.error(
       e instanceof PrivateKeyFileExistsError
-        ? `Error: ${e.message}`
+        ? `Error: ${e.cause}`
         : new RunError(e),
     );
     // eslint-disable-next-line n/no-process-exit

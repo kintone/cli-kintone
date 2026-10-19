@@ -127,7 +127,7 @@ describe("plugin keygen", () => {
     expect(result).toStrictEqual({
       exitCode: 1,
       stdout: "",
-      stderr: `ERROR: Error: File ${outputPath} already exists.\n`,
+      stderr: `ERROR: Failed to generate a private key.\nERROR: File ${outputPath} already exists.\n`,
     });
     await expect(fs.readFile(outputPath, "utf8")).resolves.toBe(
       "existing content",

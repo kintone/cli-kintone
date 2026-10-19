@@ -1,8 +1,6 @@
 import { CliKintoneError } from "../../../../utils/error";
 
 export class PrivateKeyFileExistsError extends CliKintoneError {
-  declare readonly cause: string;
-
   constructor(filePath: string) {
     const message = "Failed to generate a private key.";
     super(message, `File ${filePath} already exists.`);

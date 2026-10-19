@@ -1,11 +1,11 @@
 import fs from "fs/promises";
 import path from "path";
 import type { PrivateKey } from "../../core";
-import type { PrivateKeyRepository } from "../usecases/interface";
+import type { LocalPrivateKeyRepository } from "../usecases/interface";
 import { PrivateKeyFileExistsError } from "../usecases/keygen/error";
 import { isFile } from "../../../utils/file";
 
-export class LocalPrivateKeyRepository implements PrivateKeyRepository {
+export class LocalPrivateKeyRepositoryFromFile implements LocalPrivateKeyRepository {
   private readonly output: string | undefined;
 
   constructor(output: string | undefined) {

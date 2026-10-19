@@ -1,5 +1,5 @@
 import type { PrivateKey } from "../../core";
 
-export type PrivateKeyRepository = {
+export type LocalPrivateKeyRepository = {
   readonly save: (privateKey: PrivateKey) => Promise<string>;
 };

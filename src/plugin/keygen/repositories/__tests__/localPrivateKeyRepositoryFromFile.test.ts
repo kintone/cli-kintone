@@ -4,9 +4,9 @@ import os from "os";
 import path from "path";
 import { PrivateKey } from "../../../core";
 import { PrivateKeyFileExistsError } from "../../usecases/keygen/error";
-import { LocalPrivateKeyRepository } from "../localPrivateKeyRepository";
+import { LocalPrivateKeyRepositoryFromFile } from "../localPrivateKeyRepositoryFromFile";
 
-describe("LocalPrivateKeyRepository", () => {
+describe("LocalPrivateKeyRepositoryFromFile", () => {
   let workDir: string;
 
   beforeEach(async () => {
@@ -24,9 +24,9 @@ describe("LocalPrivateKeyRepository", () => {
     const outputPath = path.join(workDir, "private.ppk");
     const privateKey = PrivateKey.generateKey();
 
-    const savedPath = await new LocalPrivateKeyRepository(outputPath).save(
-      privateKey,
-    );
+    const savedPath = await new LocalPrivateKeyRepositoryFromFile(
+      outputPath,
+    ).save(privateKey);
 
     expect(savedPath).toBe(outputPath);
     await expect(fs.readFile(outputPath, "utf8")).resolves.toBe(
@@ -38,9 +38,9 @@ describe("LocalPrivateKeyRepository", () => {
     vi.spyOn(process, "cwd").mockReturnValue(workDir);
     const privateKey = PrivateKey.generateKey();
 
-    const savedPath = await new LocalPrivateKeyRepository(undefined).save(
-      privateKey,
-    );
+    const savedPath = await new LocalPrivateKeyRepositoryFromFile(
+      undefined,
+    ).save(privateKey);
 
     expect(savedPath).toBe(path.join(workDir, `${privateKey.uuid()}.ppk`));
     await expect(fs.readFile(savedPath, "utf8")).resolves.toBe(
@@ -51,7 +51,7 @@ describe("LocalPrivateKeyRepository", () => {
   it("should create the parent directories of the output", async () => {
     const outputPath = path.join(workDir, "nested", "dir", "private.ppk");
 
-    await new LocalPrivateKeyRepository(outputPath).save(
+    await new LocalPrivateKeyRepositoryFromFile(outputPath).save(
       PrivateKey.generateKey(),
     );
 
@@ -65,7 +65,9 @@ describe("LocalPrivateKeyRepository", () => {
     await fs.writeFile(outputPath, "existing content", "utf8");
 
     await expect(
-      new LocalPrivateKeyRepository(outputPath).save(PrivateKey.generateKey()),
+      new LocalPrivateKeyRepositoryFromFile(outputPath).save(
+        PrivateKey.generateKey(),
+      ),
     ).rejects.toSatisfy((thrownError) => {
       expect(thrownError).toBeInstanceOf(PrivateKeyFileExistsError);
       expect(thrownError).toMatchObject({

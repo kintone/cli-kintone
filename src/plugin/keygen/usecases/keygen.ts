@@ -1,9 +1,9 @@
 import { PrivateKey } from "../../core";
 import { logger } from "../../../utils/log";
-import type { PrivateKeyRepository } from "./interface";
+import type { LocalPrivateKeyRepository } from "./interface";
 
 export const keygen: (
-  privateKeyDestination: PrivateKeyRepository,
+  privateKeyDestination: LocalPrivateKeyRepository,
 ) => Promise<void> = async (privateKeyDestination) => {
   const privateKey = PrivateKey.generateKey();
   logger.debug(`plugin id: ${privateKey.uuid()}`);

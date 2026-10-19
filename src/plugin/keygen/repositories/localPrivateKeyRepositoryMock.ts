@@ -1,8 +1,8 @@
 import type { PrivateKey } from "../../core";
-import type { PrivateKeyRepository } from "../usecases/interface";
+import type { LocalPrivateKeyRepository } from "../usecases/interface";
 import { PrivateKeyFileExistsError } from "../usecases/keygen/error";
 
-export class LocalPrivateKeyRepositoryMock implements PrivateKeyRepository {
+export class LocalPrivateKeyRepositoryMock implements LocalPrivateKeyRepository {
   readonly files = new Map<string, string>();
 
   private readonly output: string | undefined;

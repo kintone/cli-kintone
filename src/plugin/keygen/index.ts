@@ -1,5 +1,6 @@
 import { keygen } from "./usecases/keygen";
 import { PrivateKeyFileExistsError } from "./usecases/keygen/error";
+import { LocalPrivateKeyRepository } from "./repositories/localPrivateKeyRepository";
 import { logger } from "../../utils/log";
 import { RunError } from "../../utils/error";
 
@@ -9,7 +10,7 @@ export type Options = {
 
 export const run: (options: Options) => Promise<void> = async (options) => {
   try {
-    await keygen(options.output);
+    await keygen(new LocalPrivateKeyRepository(), options.output);
   } catch (e) {
     // Keeps the CLI output "Error: <message>" for this failure; RunError prints the message without the "Error: " prefix.
     logger.error(

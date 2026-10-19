@@ -1,67 +1,46 @@
-import { vi } from "vitest";
-import fs from "fs/promises";
-import os from "os";
 import path from "path";
 import { PrivateKey } from "../../../../core";
+import { LocalPrivateKeyRepositoryMock } from "../../../repositories/localPrivateKeyRepositoryMock";
 import { keygen } from "../../keygen";
 import { PrivateKeyFileExistsError } from "../../keygen/error";
 
 describe("keygen", () => {
-  let workDir: string;
+  it("should save the private key to the specified path", async () => {
+    const repositoryMock = new LocalPrivateKeyRepositoryMock();
+    const outputPath = path.resolve("private.ppk");
 
-  beforeEach(async () => {
-    workDir = await fs.mkdtemp(
-      path.join(os.tmpdir(), "cli-kintone-plugin-keygen-"),
+    await keygen(repositoryMock, "private.ppk");
+
+    expect([...repositoryMock.files.keys()]).toStrictEqual([outputPath]);
+    const key = repositoryMock.files.get(outputPath) ?? "";
+    expect(() => PrivateKey.importKey(key)).not.toThrow();
+  });
+
+  it("should save the private key to <plugin_id>.ppk in the cwd when the output is omitted", async () => {
+    const repositoryMock = new LocalPrivateKeyRepositoryMock();
+
+    await keygen(repositoryMock, undefined);
+
+    const [[outputPath, key]] = [...repositoryMock.files.entries()];
+    expect(outputPath).toBe(
+      path.resolve(`${PrivateKey.importKey(key).uuid()}.ppk`),
     );
-  });
-
-  afterEach(async () => {
-    vi.restoreAllMocks();
-    await fs.rm(workDir, { recursive: true, force: true });
-  });
-
-  it("should write the private key to the specified path", async () => {
-    const outputPath = path.join(workDir, "private.ppk");
-
-    await keygen(outputPath);
-
-    const key = await fs.readFile(outputPath, "utf8");
-    expect(() => PrivateKey.importKey(key)).not.toThrow();
-  });
-
-  it("should write the private key to <plugin_id>.ppk in the cwd when the output is omitted", async () => {
-    vi.spyOn(process, "cwd").mockReturnValue(workDir);
-
-    await keygen(undefined);
-
-    const files = await fs.readdir(workDir);
-    expect(files).toHaveLength(1);
-    const key = await fs.readFile(path.join(workDir, files[0]), "utf8");
-    expect(files[0]).toBe(`${PrivateKey.importKey(key).uuid()}.ppk`);
-  });
-
-  it("should create the parent directories of the output", async () => {
-    const outputPath = path.join(workDir, "nested", "dir", "private.ppk");
-
-    await keygen(outputPath);
-
-    const key = await fs.readFile(outputPath, "utf8");
-    expect(() => PrivateKey.importKey(key)).not.toThrow();
   });
 
   it("should throw PrivateKeyFileExistsError without overwriting when the output already exists", async () => {
-    const outputPath = path.join(workDir, "private.ppk");
-    await fs.writeFile(outputPath, "existing content", "utf8");
+    const repositoryMock = new LocalPrivateKeyRepositoryMock();
+    const outputPath = path.resolve("private.ppk");
+    repositoryMock.files.set(outputPath, "existing content");
 
-    await expect(keygen(outputPath)).rejects.toSatisfy((thrownError) => {
-      expect(thrownError).toBeInstanceOf(PrivateKeyFileExistsError);
-      expect(thrownError).toMatchObject({
-        message: `File ${outputPath} already exists.`,
-      });
-      return true;
-    });
-    await expect(fs.readFile(outputPath, "utf8")).resolves.toBe(
-      "existing content",
+    await expect(keygen(repositoryMock, outputPath)).rejects.toSatisfy(
+      (thrownError) => {
+        expect(thrownError).toBeInstanceOf(PrivateKeyFileExistsError);
+        expect(thrownError).toMatchObject({
+          message: `File ${outputPath} already exists.`,
+        });
+        return true;
+      },
     );
+    expect(repositoryMock.files.get(outputPath)).toBe("existing content");
   });
 });

@@ -31,7 +31,7 @@ const sandboxManifestPath = path.resolve(
 );
 const invalidContentsZipPath = path.resolve(
   projectRoot,
-  "src/plugin/packer/__tests__/fixtures/invalid-maxFileSize-contents.zip",
+  "src/plugin/pack/__tests__/fixtures/invalid-maxFileSize-contents.zip",
 );
 
 const buildPluginWithSandbox = async (outputPath: string) => {

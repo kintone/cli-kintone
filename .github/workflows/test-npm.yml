@@ -12,6 +12,7 @@ jobs:
     name: Prepare npm package
     permissions:
       contents: read
+      id-token: write # Required for Takumi Guard bot authentication (OIDC)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

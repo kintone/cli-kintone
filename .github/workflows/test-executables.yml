@@ -11,6 +11,7 @@ jobs:
     name: Build executables
     permissions:
       contents: read
+      id-token: write # Required for Takumi Guard bot authentication (OIDC)
     # ubuntu上でビルドしたmacOS向けの実行ファイルが正常に動作しないため、
     # macOSランナー上でビルドする
     # ref. https://github.com/yao-pkg/pkg/issues/183

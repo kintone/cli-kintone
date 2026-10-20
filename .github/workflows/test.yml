@@ -12,6 +12,7 @@ jobs:
     name: Unit test - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
     permissions:
       contents: read
+      id-token: write # Required for Takumi Guard bot authentication (OIDC)
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -71,6 +72,7 @@ jobs:
     name: E2E test - Node.js ${{ matrix.os }} ${{ matrix.node-version }}
     permissions:
       contents: read
+      id-token: write # Required for Takumi Guard bot authentication (OIDC)
     runs-on: ${{ matrix.os }}
     concurrency:
       group: test-e2e-workflow-concurrency-group

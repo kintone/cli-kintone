@@ -8,11 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ ! startsWith(github.ref, 'refs/heads/renovate/') && !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/'))  }}
     steps:
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: zulu
-          java-version: 21
       - name: Download allure results
         id: download-allure-results
         uses: actions/download-artifact@v6

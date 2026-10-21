@@ -39,7 +39,6 @@ type Args = yargs.Arguments<
 const handler = async (args: Args) => {
   try {
     const params: Params = {
-      ...args,
       pluginFilePath: args.input,
       force: args.yes,
       watch: args.watch,

@@ -3,7 +3,7 @@ import type { CommandModule } from "yargs";
 import type { OutputFormat } from "../../plugin/info/";
 import { run } from "../../plugin/info/";
 import { logger } from "../../utils/log";
-import { RunError } from "../../record/error";
+import { RunError } from "../../utils/error";
 
 const command = "info";
 

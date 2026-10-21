@@ -84,3 +84,9 @@ export abstract class CliKintoneError extends Error {
     return errorMessage;
   }
 }
+
+export class RunError extends CliKintoneError {
+  constructor(error: unknown) {
+    super("", error);
+  }
+}

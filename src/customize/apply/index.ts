@@ -1,11 +1,11 @@
 import fs from "fs";
 import path from "path";
-import os from "os";
 import { confirm } from "@inquirer/prompts";
 import * as chokidar from "chokidar";
 import { type KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { logger } from "../../utils/log";
 import { isRetryableKintoneError, retry } from "../../utils/retry";
+import { buildWatchOptions } from "../../utils/watch";
 import {
   buildRestAPIClient,
   type RestAPIClientOptions,
@@ -348,19 +348,10 @@ export const runApply = async (params: ApplyParams) => {
   }
 
   if (watch) {
-    const watchOptions =
-      os.platform() === "win32"
-        ? {
-            awaitWriteFinish: {
-              stabilityThreshold: 1000,
-              pollInterval: 250,
-            },
-          }
-        : {};
     let watchedFiles = getLocalFiles(manifest, manifestDir);
     const watcher = chokidar.watch(
       [resolvedInputPath, ...watchedFiles],
-      watchOptions,
+      buildWatchOptions(),
     );
     logger.info(boundMessage("M_Watching"));
 

@@ -71,7 +71,8 @@ export const runCliWithDefaultAnswers = (
   new Promise((resolve, reject) => {
     const child = childProcess.spawn("node", [mainFilePath, ...args], {
       cwd,
-      env,
+      // The prompts draw ✔ instead of √ only when TERM tells that the terminal supports Unicode, which a Windows runner does not.
+      env: { ...(env ?? process.env), TERM: "xterm-256color" },
     });
     let stdout = "";
     let stderr = "";

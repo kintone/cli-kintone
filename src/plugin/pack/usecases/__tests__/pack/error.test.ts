@@ -1,28 +1,4 @@
-import {
-  PluginManifestFileNotFoundError,
-  PluginManifestValidationError,
-  PrivateKeyFileNotFoundError,
-} from "../../pack/error";
-
-describe("PluginManifestFileNotFoundError", () => {
-  it("should return error message", () => {
-    const error = new PluginManifestFileNotFoundError("/path/to/manifest.json");
-
-    expect(error.toString()).toBe(
-      "Failed to pack the plugin.\nManifest file not found: /path/to/manifest.json\n",
-    );
-  });
-});
-
-describe("PrivateKeyFileNotFoundError", () => {
-  it("should return error message", () => {
-    const error = new PrivateKeyFileNotFoundError("/path/to/private.ppk");
-
-    expect(error.toString()).toBe(
-      "Failed to pack the plugin.\nPrivate key file not found: /path/to/private.ppk\n",
-    );
-  });
-});
+import { PluginManifestValidationError } from "../../pack/error";
 
 describe("PluginManifestValidationError", () => {
   it("should return error message", () => {

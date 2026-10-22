@@ -43,7 +43,6 @@ describe("initPlugin", () => {
 
   const options = {
     name: "my-plugin",
-    lang: "en",
     template: "javascript",
   } as const;
 
@@ -52,10 +51,7 @@ describe("initPlugin", () => {
 
     await initPlugin(options, steps);
 
-    expect(steps.runPrompt).toHaveBeenCalledWith(
-      expect.any(Function),
-      "my-plugin",
-    );
+    expect(steps.runPrompt).toHaveBeenCalledExactlyOnceWith("my-plugin");
     expect(steps.setupTemplate).toHaveBeenCalledExactlyOnceWith({
       outputDir: projectName,
       templateName: "javascript",
@@ -68,9 +64,8 @@ describe("initPlugin", () => {
     });
     expect(steps.installDependencies).toHaveBeenCalledExactlyOnceWith(
       projectName,
-      "en",
     );
-    expect(steps.runKeygen).toHaveBeenCalledExactlyOnceWith(projectName, "en");
+    expect(steps.runKeygen).toHaveBeenCalledExactlyOnceWith(projectName);
     expect(steps.setupTemplate).toHaveBeenCalledBefore(
       steps.installDependencies,
     );

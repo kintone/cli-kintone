@@ -30,11 +30,7 @@ const buildErrorOutput = (e: unknown) => {
 export const run: (argv: Options) => Promise<void> = async (argv) => {
   try {
     await initPlugin(
-      {
-        name: argv.name,
-        lang: "en",
-        template: argv.template,
-      },
+      { name: argv.name, template: argv.template },
       { runPrompt, setupTemplate, installDependencies, runKeygen },
     );
   } catch (e) {

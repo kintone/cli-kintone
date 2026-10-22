@@ -1,6 +1,5 @@
 import chalk from "chalk";
-import type { Lang } from "../utils/lang";
-import { getBoundMessage } from "../utils/messages";
+import { getMessage } from "../utils/messages";
 import type { setupTemplate } from "../utils/template";
 import type { runPrompt } from "../utils/qa";
 import { logger } from "../../../utils/log";
@@ -17,40 +16,35 @@ import {
 const getSuccessCreatedPluginMessage = (
   packageName: string,
   outputDir: string,
-  lang: Lang,
-) => {
-  const m = getBoundMessage(lang);
-  return `
+) => `
 
 Success! Created ${packageName} at ${outputDir}
 
 ${chalk.cyan("npm start")}
 
-  ${m("npmStart")}
+  ${getMessage("npmStart")}
 
 ${chalk.cyan("npm run build")}
 
-  ${m("npmBuild")}
+  ${getMessage("npmBuild")}
 
 ${chalk.cyan("npm run lint")}
 
-  ${m("npmLint")}
+  ${getMessage("npmLint")}
 
-${m("nextAction")}
+${getMessage("nextAction")}
 
   cd ${outputDir}
   npm start
 
-${m("lastMessage")}
-${m("developerSite")}
+${getMessage("lastMessage")}
+
 
       `;
-};
 
 type InitPluginOptions = {
   /** project name passed by CLI argument (undefined if not specified) */
   name?: string;
-  lang: Lang;
   template: string;
 };
 
@@ -68,17 +62,16 @@ export const initPlugin = async (
   options: InitPluginOptions,
   steps: InitPluginSteps,
 ): Promise<void> => {
-  const m = getBoundMessage(options.lang);
   logger.info(`
 
-  ${m("introduction")}
+  ${getMessage("introduction")}
 
   `);
 
-  const answers = await steps.runPrompt(m, options.name);
+  const answers = await steps.runPrompt(options.name);
 
   const packageName = path.basename(answers.projectName);
-  logger.info(m("settingUpTemplate"));
+  logger.info(getMessage("settingUpTemplate"));
   logger.debug(`template: ${options.template}`);
 
   // Verify output directory does not exist
@@ -100,15 +93,11 @@ export const initPlugin = async (
         name: packageName,
       },
     });
-    logger.info(m("templateSetupCompleted"));
-    steps.installDependencies(answers.projectName, options.lang);
-    steps.runKeygen(answers.projectName, options.lang);
+    logger.info(getMessage("templateSetupCompleted"));
+    steps.installDependencies(answers.projectName);
+    steps.runKeygen(answers.projectName);
     logger.info(
-      getSuccessCreatedPluginMessage(
-        packageName,
-        answers.projectName,
-        options.lang,
-      ),
+      getSuccessCreatedPluginMessage(packageName, answers.projectName),
     );
   } catch (error) {
     await fs.promises

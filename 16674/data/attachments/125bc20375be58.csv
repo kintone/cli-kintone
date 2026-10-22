@@ -1,6 +1,0 @@
-*,Text_0,Number_0,Table,(Table.Text),(Table.Number)
-*,,,\d+,Alice_1,100
-,,,\d+,Alice_2,200
-*,,,\d+,Bob,300
-*,,,\d+,Jenny,400
-*,,,\d+,Michael,500

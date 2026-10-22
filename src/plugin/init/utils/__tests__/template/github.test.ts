@@ -1,4 +1,3 @@
-/* eslint-disable n/no-unsupported-features/node-builtins */
 import { vi, type Mock } from "vitest";
 import assert from "assert";
 import {

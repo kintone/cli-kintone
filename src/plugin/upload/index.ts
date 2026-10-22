@@ -5,10 +5,6 @@ import {
   type RestAPIClientOptions,
 } from "../../kintone/client";
 import { upload } from "./usecases/upload";
-import {
-  PluginFileNotFoundError,
-  PluginUploadRequestError,
-} from "./usecases/upload/error";
 import { LocalPluginRepositoryFromZipFile } from "./repositories/localPluginRepositoryFromZipFile";
 import { isFile } from "../../utils/file";
 import { logger } from "../../utils/log";
@@ -18,17 +14,6 @@ export type Options = RestAPIClientOptions & {
   input: string;
   yes: boolean;
   watch: boolean;
-};
-
-// Keeps the CLI output of these failures; RunError prints the heading before the cause.
-const buildErrorOutput = (e: unknown) => {
-  if (e instanceof PluginFileNotFoundError) {
-    return `Error: ${e.cause}`;
-  }
-  if (e instanceof PluginUploadRequestError) {
-    return new RunError(e.cause);
-  }
-  return new RunError(e);
 };
 
 export const run: (options: Options) => Promise<void> = async (options) => {
@@ -44,7 +29,7 @@ export const run: (options: Options) => Promise<void> = async (options) => {
     try {
       // The file is checked before the API client validates the connection options, so a missing file is reported first.
       if (!(await isFile(filePath))) {
-        throw new PluginFileNotFoundError(filePath);
+        throw new Error(`Plugin file not found: ${filePath}`);
       }
       const apiClient = buildRestAPIClient(restApiClientOptions);
       await upload(
@@ -54,7 +39,7 @@ export const run: (options: Options) => Promise<void> = async (options) => {
         (message) => confirm({ message, default: false }),
       );
     } catch (e) {
-      logger.error(buildErrorOutput(e));
+      logger.error(new RunError(e));
       // eslint-disable-next-line n/no-process-exit
       process.exit(1);
     }

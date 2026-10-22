@@ -2,7 +2,6 @@ import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { buildPluginSummary } from "../../core/summary";
 import { logger } from "../../../utils/log";
 import type { LocalPlugin, LocalPluginRepository } from "./interface";
-import { PluginUploadRequestError } from "./upload/error";
 
 export type Confirm = (message: string) => Promise<boolean>;
 
@@ -10,14 +9,6 @@ export type UploadOptions = {
   baseUrl: string;
   yes: boolean;
   watch: boolean;
-};
-
-const requestKintone = async <T>(request: () => Promise<T>): Promise<T> => {
-  try {
-    return await request();
-  } catch (e) {
-    throw new PluginUploadRequestError(e);
-  }
 };
 
 const buildInstallationSummary = (
@@ -53,9 +44,9 @@ export const upload: (
 ) => Promise<void> = async (apiClient, pluginSource, options, confirm) => {
   const plugin = await pluginSource.read();
 
-  const { plugins: installedPlugins } = await requestKintone(() =>
-    apiClient.plugin.getPlugins({ ids: [plugin.id] }),
-  );
+  const { plugins: installedPlugins } = await apiClient.plugin.getPlugins({
+    ids: [plugin.id],
+  });
   const installedPlugin = installedPlugins.find((p) => p.id === plugin.id);
 
   logger.info(
@@ -70,18 +61,14 @@ export const upload: (
     }
   }
 
-  const { fileKey } = await requestKintone(() =>
-    apiClient.file.uploadFile({
-      file: { name: plugin.filePath, data: plugin.buffer },
-    }),
-  );
+  const { fileKey } = await apiClient.file.uploadFile({
+    file: { name: plugin.filePath, data: plugin.buffer },
+  });
 
   if (installedPlugin !== undefined) {
-    await requestKintone(() =>
-      apiClient.plugin.updatePlugin({ id: plugin.id, fileKey }),
-    );
+    await apiClient.plugin.updatePlugin({ id: plugin.id, fileKey });
   } else {
-    await requestKintone(() => apiClient.plugin.installPlugin({ fileKey }));
+    await apiClient.plugin.installPlugin({ fileKey });
   }
 
   logger.info("Plugin is installed successfully.");

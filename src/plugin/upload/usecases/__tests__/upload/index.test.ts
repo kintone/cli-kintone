@@ -5,7 +5,6 @@ import { logger } from "../../../../../utils/log";
 import { LocalPluginRepositoryMock } from "../../../repositories/localPluginRepositoryMock";
 import type { LocalPlugin } from "../../interface";
 import { upload } from "../../upload";
-import { PluginUploadRequestError } from "../../upload/error";
 
 const pluginId = "pebpcljifhnnddaohkbfehcjmaadchja";
 const fileKey = "dummy-file-key";
@@ -222,7 +221,7 @@ describe("upload", () => {
     );
   });
 
-  it("should throw PluginUploadRequestError when getting the installed plugins fails", async () => {
+  it("should pass through the error when getting the installed plugins fails", async () => {
     const cause = new Error("getPlugins failed");
     apiClient.plugin.getPlugins = vi.fn().mockRejectedValue(cause);
 
@@ -233,13 +232,11 @@ describe("upload", () => {
         options,
         confirm,
       ),
-    ).rejects.toSatisfy(
-      (e) => e instanceof PluginUploadRequestError && e.cause === cause,
-    );
+    ).rejects.toBe(cause);
     expect(apiClient.file.uploadFile).not.toHaveBeenCalled();
   });
 
-  it("should throw PluginUploadRequestError and not install the plugin when uploading the file fails", async () => {
+  it("should pass through the error and not install the plugin when uploading the file fails", async () => {
     const cause = new Error("uploadFile failed");
     apiClient.file.uploadFile = vi.fn().mockRejectedValue(cause);
     const infoSpy = vi.spyOn(logger, "info");
@@ -251,9 +248,7 @@ describe("upload", () => {
         options,
         confirm,
       ),
-    ).rejects.toSatisfy(
-      (e) => e instanceof PluginUploadRequestError && e.cause === cause,
-    );
+    ).rejects.toBe(cause);
     expect(apiClient.plugin.installPlugin).not.toHaveBeenCalled();
     expect(apiClient.plugin.updatePlugin).not.toHaveBeenCalled();
     expect(infoSpy).not.toHaveBeenCalledWith(
@@ -261,7 +256,7 @@ describe("upload", () => {
     );
   });
 
-  it("should throw PluginUploadRequestError when installing the plugin fails", async () => {
+  it("should pass through the error when installing the plugin fails", async () => {
     const cause = new Error("installPlugin failed");
     apiClient.plugin.installPlugin = vi.fn().mockRejectedValue(cause);
 
@@ -272,12 +267,10 @@ describe("upload", () => {
         options,
         confirm,
       ),
-    ).rejects.toSatisfy(
-      (e) => e instanceof PluginUploadRequestError && e.cause === cause,
-    );
+    ).rejects.toBe(cause);
   });
 
-  it("should throw PluginUploadRequestError when updating the plugin fails", async () => {
+  it("should pass through the error when updating the plugin fails", async () => {
     installedAs("0.9.0");
     const cause = new Error("updatePlugin failed");
     apiClient.plugin.updatePlugin = vi.fn().mockRejectedValue(cause);
@@ -289,9 +282,7 @@ describe("upload", () => {
         options,
         confirm,
       ),
-    ).rejects.toSatisfy(
-      (e) => e instanceof PluginUploadRequestError && e.cause === cause,
-    );
+    ).rejects.toBe(cause);
   });
 
   it("should pass through the error of the repository", async () => {

@@ -3,10 +3,9 @@ import {
   PluginDirectoryExistsError,
   PluginProjectCreationError,
 } from "./usecases/init/error";
+import { LocalPluginProjectRepositoryFromTemplate } from "./repositories/localPluginProjectRepositoryFromTemplate";
+import { getMessage } from "./utils/messages";
 import { runPrompt } from "./utils/qa";
-import { setupTemplate } from "./utils/template";
-import { installDependencies } from "./utils/deps";
-import { runKeygen } from "./utils/keygen";
 import { logger } from "../../utils/log";
 import { RunError } from "../../utils/error";
 
@@ -29,10 +28,17 @@ const buildErrorOutput = (e: unknown) => {
 
 export const run: (argv: Options) => Promise<void> = async (argv) => {
   try {
-    await initPlugin(
-      { name: argv.name, template: argv.template },
-      { runPrompt, setupTemplate, installDependencies, runKeygen },
-    );
+    logger.info(`
+
+  ${getMessage("introduction")}
+
+  `);
+    const answers = await runPrompt(argv.name);
+    const project = new LocalPluginProjectRepositoryFromTemplate({
+      directory: answers.projectName,
+      templateName: argv.template,
+    });
+    await initPlugin(answers, project);
   } catch (e) {
     logger.error(buildErrorOutput(e));
     // eslint-disable-next-line n/no-process-exit

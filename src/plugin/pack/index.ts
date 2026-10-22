@@ -1,10 +1,6 @@
 import path from "path";
 import { pack } from "./usecases/pack";
-import {
-  PluginManifestFileNotFoundError,
-  PluginManifestValidationError,
-  PrivateKeyFileNotFoundError,
-} from "./usecases/pack/error";
+import { PluginManifestValidationError } from "./usecases/pack/error";
 import { LocalPluginProjectRepositoryFromFiles } from "./repositories/localPluginProjectRepositoryFromFiles";
 import { LocalPluginZipRepositoryFromFile } from "./repositories/localPluginZipRepositoryFromFile";
 import { logger } from "../../utils/log";
@@ -17,14 +13,8 @@ export type Options = {
   watch: boolean;
 };
 
-// Keeps the CLI output of these failures; RunError prints the heading and the cause without the "Error: " prefix.
+// Keeps the CLI output of an invalid manifest; RunError prints the heading and the cause without the "Error: " prefix.
 const buildErrorOutput = (e: unknown) => {
-  if (
-    e instanceof PluginManifestFileNotFoundError ||
-    e instanceof PrivateKeyFileNotFoundError
-  ) {
-    return `Error: ${e.cause}`;
-  }
   if (e instanceof PluginManifestValidationError) {
     return `${e.message}\n${e.cause}\nError: Invalid manifest.json`;
   }

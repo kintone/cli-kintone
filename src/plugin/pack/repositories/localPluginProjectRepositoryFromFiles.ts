@@ -7,10 +7,6 @@ import type {
   LocalPluginProject,
   LocalPluginProjectRepository,
 } from "../usecases/interface";
-import {
-  PluginManifestFileNotFoundError,
-  PrivateKeyFileNotFoundError,
-} from "../usecases/pack/error";
 import { isFile } from "../../../utils/file";
 import { logger } from "../../../utils/log";
 import { buildWatchOptions } from "../../../utils/watch";
@@ -31,10 +27,10 @@ export class LocalPluginProjectRepositoryFromFiles implements LocalPluginProject
   async read(): Promise<LocalPluginProject> {
     // Both files are checked before either is parsed, so a missing file is reported before a broken one.
     if (!(await isFile(this.manifestPath))) {
-      throw new PluginManifestFileNotFoundError(this.manifestPath);
+      throw new Error(`Manifest file not found: ${this.manifestPath}`);
     }
     if (!(await isFile(this.privateKeyPath))) {
-      throw new PrivateKeyFileNotFoundError(this.privateKeyPath);
+      throw new Error(`Private key file not found: ${this.privateKeyPath}`);
     }
 
     const manifest = await ManifestFactory.loadJsonFile(

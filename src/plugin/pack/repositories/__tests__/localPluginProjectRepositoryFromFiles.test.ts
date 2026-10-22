@@ -5,10 +5,6 @@ import os from "os";
 import path from "path";
 import { PrivateKey } from "../../../core";
 import { buildWatchOptions } from "../../../../utils/watch";
-import {
-  PluginManifestFileNotFoundError,
-  PrivateKeyFileNotFoundError,
-} from "../../usecases/pack/error";
 import { LocalPluginProjectRepositoryFromFiles } from "../localPluginProjectRepositoryFromFiles";
 
 const { on } = vi.hoisted(() => ({ on: vi.fn() }));
@@ -54,7 +50,7 @@ describe("LocalPluginProjectRepositoryFromFiles", () => {
       );
     });
 
-    it("should throw PluginManifestFileNotFoundError when the manifest does not exist", async () => {
+    it("should throw an error when the manifest does not exist", async () => {
       const missingManifestPath = path.join(workDir, "manifest.json");
 
       await expect(
@@ -62,16 +58,10 @@ describe("LocalPluginProjectRepositoryFromFiles", () => {
           manifestPath: missingManifestPath,
           privateKeyPath: path.join(workDir, "none.ppk"),
         }).read(),
-      ).rejects.toSatisfy((thrownError) => {
-        expect(thrownError).toBeInstanceOf(PluginManifestFileNotFoundError);
-        expect(thrownError).toMatchObject({
-          cause: `Manifest file not found: ${missingManifestPath}`,
-        });
-        return true;
-      });
+      ).rejects.toThrow(`Manifest file not found: ${missingManifestPath}`);
     });
 
-    it("should throw PrivateKeyFileNotFoundError before parsing the manifest when the private key does not exist", async () => {
+    it("should throw an error before parsing the manifest when the private key does not exist", async () => {
       const brokenManifestPath = path.join(workDir, "manifest.json");
       await fs.writeFile(brokenManifestPath, "{bad", "utf8");
       const missingPrivateKeyPath = path.join(workDir, "none.ppk");
@@ -81,13 +71,7 @@ describe("LocalPluginProjectRepositoryFromFiles", () => {
           manifestPath: brokenManifestPath,
           privateKeyPath: missingPrivateKeyPath,
         }).read(),
-      ).rejects.toSatisfy((thrownError) => {
-        expect(thrownError).toBeInstanceOf(PrivateKeyFileNotFoundError);
-        expect(thrownError).toMatchObject({
-          cause: `Private key file not found: ${missingPrivateKeyPath}`,
-        });
-        return true;
-      });
+      ).rejects.toThrow(`Private key file not found: ${missingPrivateKeyPath}`);
     });
 
     it("should resolve relative paths against the cwd", async () => {

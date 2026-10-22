@@ -35,10 +35,12 @@ const removeTimestamps = (stderr: string): string =>
 export const runCli = async (
   args: string[],
   cwd: string,
+  env?: NodeJS.ProcessEnv,
 ): Promise<CliResult> => {
   try {
     const { stdout, stderr } = await execFile("node", [mainFilePath, ...args], {
       cwd,
+      env,
     });
     return { exitCode: 0, stdout, stderr: removeTimestamps(stderr) };
   } catch (error) {

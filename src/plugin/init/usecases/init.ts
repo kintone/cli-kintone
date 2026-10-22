@@ -1,14 +1,18 @@
 import chalk from "chalk";
 import type { Lang } from "../utils/lang";
-import { getBoundMessage, getMessage } from "../utils/messages";
-import { setupTemplate } from "../utils/template";
-import { runPrompt } from "../utils/qa";
+import { getBoundMessage } from "../utils/messages";
+import type { setupTemplate } from "../utils/template";
+import type { runPrompt } from "../utils/qa";
 import { logger } from "../../../utils/log";
 import path from "path";
 import fs from "fs";
-import { installDependencies } from "../utils/deps";
-import { runKeygen } from "../utils/keygen";
+import type { installDependencies } from "../utils/deps";
+import type { runKeygen } from "../utils/keygen";
 import { isDirectory } from "../../../utils/file";
+import {
+  PluginDirectoryExistsError,
+  PluginProjectCreationError,
+} from "./init/error";
 
 const getSuccessCreatedPluginMessage = (
   packageName: string,
@@ -50,10 +54,20 @@ type InitPluginOptions = {
   template: string;
 };
 
+export interface InitPluginSteps {
+  readonly runPrompt: typeof runPrompt;
+  readonly setupTemplate: typeof setupTemplate;
+  readonly installDependencies: typeof installDependencies;
+  readonly runKeygen: typeof runKeygen;
+}
+
 /**
  * Run create-kintone-plugin script
  */
-export const initPlugin = async (options: InitPluginOptions) => {
+export const initPlugin = async (
+  options: InitPluginOptions,
+  steps: InitPluginSteps,
+): Promise<void> => {
   const m = getBoundMessage(options.lang);
   logger.info(`
 
@@ -61,7 +75,7 @@ export const initPlugin = async (options: InitPluginOptions) => {
 
   `);
 
-  const answers = await runPrompt(m, options.name);
+  const answers = await steps.runPrompt(m, options.name);
 
   const packageName = path.basename(answers.projectName);
   logger.info(m("settingUpTemplate"));
@@ -70,15 +84,11 @@ export const initPlugin = async (options: InitPluginOptions) => {
   // Verify output directory does not exist
   const directoryExists = await isDirectory(answers.projectName);
   if (directoryExists) {
-    logger.error(
-      `${answers.projectName} ${getMessage(options.lang, "Error_alreadyExists")}`,
-    );
-    // eslint-disable-next-line n/no-process-exit
-    process.exit(1);
+    throw new PluginDirectoryExistsError(answers.projectName);
   }
 
   try {
-    await setupTemplate({
+    await steps.setupTemplate({
       outputDir: answers.projectName,
       templateName: options.template,
       manifestPatch: {
@@ -91,8 +101,8 @@ export const initPlugin = async (options: InitPluginOptions) => {
       },
     });
     logger.info(m("templateSetupCompleted"));
-    installDependencies(answers.projectName, options.lang);
-    runKeygen(answers.projectName, options.lang);
+    steps.installDependencies(answers.projectName, options.lang);
+    steps.runKeygen(answers.projectName, options.lang);
     logger.info(
       getSuccessCreatedPluginMessage(
         packageName,
@@ -101,19 +111,13 @@ export const initPlugin = async (options: InitPluginOptions) => {
       ),
     );
   } catch (error) {
-    try {
-      await fs.promises.rm(answers.projectName, {
-        recursive: true,
-        force: true,
+    await fs.promises
+      .rm(answers.projectName, { recursive: true, force: true })
+      .catch((removeError: unknown) => {
+        logger.debug(
+          `failed to remove ${answers.projectName}: ${String(removeError)}`,
+        );
       });
-      if (error instanceof Error) {
-        logger.error(m("Error_cannotCreatePlugin") + error.message);
-      } else {
-        logger.error(m("Error_cannotCreatePlugin") + String(error));
-      }
-    } finally {
-      // eslint-disable-next-line n/no-process-exit
-      process.exit(1);
-    }
+    throw new PluginProjectCreationError(error);
   }
 };

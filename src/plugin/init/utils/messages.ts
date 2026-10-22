@@ -169,14 +169,6 @@ kintoneプラグインのプロジェクトを作成するために、いくつ�
   https://cybozu.dev/ja/
 `,
   },
-  Error_alreadyExists: {
-    en: "already exists. Choose a different directory",
-    ja: "はすでに存在しています。削除するか、別のディレクトリを指定してください",
-  },
-  Error_cannotCreatePlugin: {
-    en: "Could not create a plug-in project. Error:",
-    ja: "プラグインの作成に失敗しました。 エラー:",
-  },
 };
 
 /**

@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Download allure results
         id: download-allure-results
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           pattern: allure_results_*
           merge-multiple: true

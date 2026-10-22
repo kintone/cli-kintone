@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
@@ -29,7 +29,7 @@ jobs:
       - run: pnpm build
       - run: pnpm pack
       - run: mv kintone-cli-*.tgz kintone-cli.tgz
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         with:
           name: kintone-cli.tgz
           path: kintone-cli.tgz
@@ -46,7 +46,7 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v8
         with:
           name: kintone-cli.tgz
       - run: npm install -g kintone-cli.tgz
@@ -64,7 +64,7 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v8
         with:
           name: kintone-cli.tgz
       - run: npx kintone-cli.tgz --version

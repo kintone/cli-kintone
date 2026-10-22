@@ -17,23 +17,25 @@ const buildInstallationSummary = (
   installedVersion: string | undefined,
 ): string => {
   const summary = buildPluginSummary(plugin.id, plugin.manifest);
-  const isSameVersion = installedVersion === plugin.manifest.version;
+  const reinstall =
+    installedVersion === plugin.manifest.version ? " (reinstall)" : "";
   const lines = [
-    `    Destination: ${baseUrl}`,
-    `    File Path: ${plugin.filePath}`,
-    `    Plugin ID: ${summary.id}`,
-    `    Plugin Name: ${summary.name}`,
-    `    Current version: ${installedVersion ?? "(not installed)"}`,
-    `    Target version: ${summary.version}${isSameVersion ? " (reinstall)" : ""}`,
-    ...(summary.sandbox !== null
-      ? [
-          `    Sandbox: ${summary.sandbox.sandbox}`,
-          `    Allowed hosts: ${summary.sandbox.allowedHosts}`,
-          `    Permissions: ${summary.sandbox.permissions}`,
-        ]
-      : []),
+    `Destination: ${baseUrl}`,
+    `File Path: ${plugin.filePath}`,
+    `Plugin ID: ${summary.id}`,
+    `Plugin Name: ${summary.name}`,
+    `Current version: ${installedVersion ?? "(not installed)"}`,
+    `Target version: ${summary.version}${reinstall}`,
   ];
-  return `\n  Installation Summary:\n${lines.join("\n")}`;
+  if (summary.sandbox !== null) {
+    const { sandbox, allowedHosts, permissions } = summary.sandbox;
+    lines.push(
+      `Sandbox: ${sandbox}`,
+      `Allowed hosts: ${allowedHosts}`,
+      `Permissions: ${permissions}`,
+    );
+  }
+  return `\n  Installation Summary:\n${lines.map((line) => `    ${line}`).join("\n")}`;
 };
 
 export const upload: (

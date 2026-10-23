@@ -1,8 +1,6 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { logger } from "../../utils/log";
-import { RunError } from "../../utils/error";
-import { keygen } from "../../plugin/keygen";
+import { run } from "../../plugin/keygen";
 
 const command = "keygen";
 
@@ -21,15 +19,7 @@ type Args = yargs.Arguments<
   ReturnType<typeof builder> extends yargs.Argv<infer U> ? U : never
 >;
 
-const handler = async (args: Args) => {
-  try {
-    await keygen(args.output);
-  } catch (error) {
-    logger.error(new RunError(error));
-    // eslint-disable-next-line n/no-process-exit
-    process.exit(1);
-  }
-};
+const handler = (args: Args) => run({ output: args.output });
 
 export const keygenCommand: CommandModule<{}, Args> = {
   command,

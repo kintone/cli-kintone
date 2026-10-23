@@ -23,7 +23,7 @@ overrides:
   browserslist: ">=4.28.7 <5"
   # Upper bound keeps undici on the v7 line, which @yao-pkg/pkg-fetch@3.6.5
   # declares (`^7.28.0`). Drop `<8` once every consumer supports v8.
-  undici: ">=7.29.1 <8"
+  undici: ">=7.29.1 <9"
   ws: ">=8.22.0"
   brace-expansion@^1: ">=1.1.20 <2"
   brace-expansion@^2: ">=2.1.6 <3"

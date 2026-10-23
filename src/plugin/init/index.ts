@@ -1,4 +1,9 @@
 import { initPlugin } from "./usecases/init";
+import { LocalPluginProjectRepositoryFromTemplate } from "./repositories/localPluginProjectRepositoryFromTemplate";
+import { getMessage } from "./utils/messages";
+import { runPrompt } from "./utils/qa";
+import { logger } from "../../utils/log";
+import { RunError } from "../../utils/error";
 
 type Options = {
   name: string | undefined;
@@ -6,9 +11,21 @@ type Options = {
 };
 
 export const run: (argv: Options) => Promise<void> = async (argv) => {
-  await initPlugin({
-    name: argv.name,
-    lang: "en",
-    template: argv.template,
-  });
+  try {
+    logger.info(`
+
+  ${getMessage("introduction")}
+
+  `);
+    const answers = await runPrompt(argv.name);
+    const project = new LocalPluginProjectRepositoryFromTemplate({
+      directory: answers.projectName,
+      templateName: argv.template,
+    });
+    await initPlugin(answers, project);
+  } catch (e) {
+    logger.error(new RunError(e));
+    // eslint-disable-next-line n/no-process-exit
+    process.exit(1);
+  }
 };

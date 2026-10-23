@@ -72,7 +72,7 @@
   "devDependencies": {
     "@actions/core": "1.11.1",
     "@cucumber/cucumber": "11.3.0",
-    "@cybozu/eslint-config": "25.0.1",
+    "@cybozu/eslint-config": "26.0.1",
     "@cybozu/license-manager": "1.4.2",
     "@octokit/rest": "22.0.1",
     "@types/node": "18.19.130",
@@ -88,7 +88,7 @@
     "allure-js-commons": "3.13.0",
     "allure-vitest": "3.11.1",
     "cross-env": "10.1.0",
-    "eslint": "9.39.5",
+    "eslint": "10.12.0",
     "mkdirp": "3.0.1",
     "npm-run-all": "4.1.5",
     "prettier": "3.8.5",

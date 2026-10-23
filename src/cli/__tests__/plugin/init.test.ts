@@ -51,6 +51,7 @@ describe("plugin init", () => {
         "INFO:     ",
         "INFO:   ",
         "INFO: Starting to set up template...",
+        "ERROR: Could not create a plug-in project.",
         "ERROR: my-plugin already exists. Choose a different directory",
         "",
       ].join("\n"),

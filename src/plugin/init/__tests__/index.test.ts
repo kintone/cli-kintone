@@ -1,9 +1,11 @@
 import { vi } from "vitest";
+import type { MockInstance } from "vitest";
 import fs from "fs/promises";
 import os from "os";
 import path from "path";
 import { run } from "..";
 import { logger } from "../../../utils/log";
+import type { Logger } from "../../../utils/log";
 import { runPrompt } from "../utils/qa";
 import { setupTemplate } from "../utils/template";
 import { installDependencies } from "../utils/deps";
@@ -15,6 +17,10 @@ vi.mock("../utils/deps");
 vi.mock("../utils/keygen");
 
 class ProcessExitError extends Error {}
+
+// The logger prints an error through its toString().
+const printedErrors = (errorSpy: MockInstance<Logger["error"]>) =>
+  errorSpy.mock.calls.map(([message]) => String(message));
 
 describe("run", () => {
   let workDir: string;
@@ -53,9 +59,9 @@ describe("run", () => {
       run({ name: projectName, template: "javascript" }),
     ).rejects.toThrow(ProcessExitError);
 
-    expect(errorSpy).toHaveBeenCalledExactlyOnceWith(
-      `${projectName} already exists. Choose a different directory`,
-    );
+    expect(printedErrors(errorSpy)).toStrictEqual([
+      `Could not create a plug-in project.\n${projectName} already exists. Choose a different directory\n`,
+    ]);
     expect(process.exit).toHaveBeenCalledExactlyOnceWith(1);
     expect(setupTemplate).not.toHaveBeenCalled();
     await expect(fs.readFile(existingFilePath, "utf8")).resolves.toBe(
@@ -74,9 +80,9 @@ describe("run", () => {
       run({ name: projectName, template: "javascript" }),
     ).rejects.toThrow(ProcessExitError);
 
-    expect(errorSpy).toHaveBeenCalledExactlyOnceWith(
-      "Could not create a plug-in project. Error:Template not found",
-    );
+    expect(printedErrors(errorSpy)).toStrictEqual([
+      "Could not create a plug-in project.\nError: Template not found\n",
+    ]);
     expect(process.exit).toHaveBeenCalledExactlyOnceWith(1);
     expect(installDependencies).not.toHaveBeenCalled();
     await expect(fs.stat(projectName)).rejects.toThrow("ENOENT");
@@ -92,9 +98,9 @@ describe("run", () => {
       run({ name: projectName, template: "javascript" }),
     ).rejects.toThrow(ProcessExitError);
 
-    expect(errorSpy).toHaveBeenCalledExactlyOnceWith(
-      "Could not create a plug-in project. Error:Installing dependencies were failed",
-    );
+    expect(printedErrors(errorSpy)).toStrictEqual([
+      "Could not create a plug-in project.\nError: Installing dependencies were failed\n",
+    ]);
     expect(process.exit).toHaveBeenCalledExactlyOnceWith(1);
     expect(runKeygen).not.toHaveBeenCalled();
     await expect(fs.stat(projectName)).rejects.toThrow("ENOENT");
@@ -110,9 +116,9 @@ describe("run", () => {
       run({ name: projectName, template: "javascript" }),
     ).rejects.toThrow(ProcessExitError);
 
-    expect(errorSpy).toHaveBeenCalledExactlyOnceWith(
-      "Could not create a plug-in project. Error:Generating private key failed",
-    );
+    expect(printedErrors(errorSpy)).toStrictEqual([
+      "Could not create a plug-in project.\nError: Generating private key failed\n",
+    ]);
     expect(process.exit).toHaveBeenCalledExactlyOnceWith(1);
     await expect(fs.stat(projectName)).rejects.toThrow("ENOENT");
   });
@@ -125,9 +131,9 @@ describe("run", () => {
       run({ name: projectName, template: "javascript" }),
     ).rejects.toThrow(ProcessExitError);
 
-    expect(errorSpy).toHaveBeenCalledExactlyOnceWith(
-      "Could not create a plug-in project. Error:unexpected failure",
-    );
+    expect(printedErrors(errorSpy)).toStrictEqual([
+      "Could not create a plug-in project.\nunexpected failure\n",
+    ]);
     expect(process.exit).toHaveBeenCalledExactlyOnceWith(1);
   });
 });

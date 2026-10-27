@@ -126,6 +126,8 @@ jobs:
     if: ${{ !cancelled() && (needs.test-e2e.outputs.artifact-id != '' || needs.test-unit.outputs.artifact-id != '') }}
     needs: [test-unit, test-e2e]
     uses: ./.github/workflows/report.yml
+    secrets:
+      TAKUMI_GUARD_BOT_ID: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
 
   actions-timeline:
     needs: [test-unit, test-e2e]

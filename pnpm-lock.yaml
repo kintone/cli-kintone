@@ -31,8 +31,8 @@ importers:
         specifier: 11.3.0
         version: 11.3.0
       '@kintone/rest-api-client':
-        specifier: 6.3.0
-        version: 6.3.0
+        specifier: 6.4.0
+        version: 6.4.0
       chalk:
         specifier: 4.1.2
         version: 4.1.2
@@ -2094,8 +2094,8 @@ packages:
     resolution: {integrity: sha512-ntx3hNnwNsC82GFvIZAcMhyXwelqVaF7bipCq7k7UGVHM6cOgLoC9er9w68RcaH/p9nfUfRVw1cAVP5zS+ADyQ==}
     engines: {node: '>=20'}
 
-  '@kintone/rest-api-client@6.3.0':
-    resolution: {integrity: sha512-KzGblg44Eegqzyvd9AihuwtA5HtXKMeUSDcTZaokCXSNtxU8nYen6qMlkXMZW9C2NE+yBOYmz05elqyCN62etg==}
+  '@kintone/rest-api-client@6.4.0':
+    resolution: {integrity: sha512-ckUAJx4YOUhJRZByQHbPMSc4wkFkJhCq3anOwMHTsB6Ytr8XPJhRGM0TUgJyHk7w4RevfNKvt1/KsB0tpbpYMA==}
     engines: {node: '>=20'}
 
   '@leichtgewicht/ip-codec@2.0.5':
@@ -10752,7 +10752,7 @@ snapshots:
       ajv-formats: 3.0.1(ajv@8.20.0)
       bytes: 3.1.2
 
-  '@kintone/rest-api-client@6.3.0':
+  '@kintone/rest-api-client@6.4.0':
     dependencies:
       axios: 1.20.0
       form-data: 4.0.6

@@ -1,12 +1,5 @@
 import { vi } from "vitest";
-import childProcess from "child_process";
-import { promisify } from "util";
-import path from "path";
-
-const projectRoot = path.resolve(__dirname, "../../../");
-const exec = promisify(childProcess.exec);
-const packageJson = require(path.resolve(projectRoot, "package.json"));
-const mainFilePath = path.resolve(projectRoot, packageJson.bin["cli-kintone"]);
+import { checkRejectArg } from "./cliHelper";
 
 vi.setConfig({ testTimeout: 30000 });
 
@@ -21,23 +14,10 @@ const envWithoutAuth = (() => {
   return rest as NodeJS.ProcessEnv;
 })();
 
-const checkRejectArg = ({
-  arg,
-  errorMessage,
-}: {
-  arg: string;
-  errorMessage: string | RegExp;
-}) => {
-  return expect(
-    exec(`cross-env LC_ALL='en_US' node ${mainFilePath} ${arg}`, {
-      env: envWithoutAuth,
-    }),
-  ).rejects.toThrow(errorMessage);
-};
-
 describe("record import", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
+      env: envWithoutAuth,
       arg: "record import --base-url https://example.com --app 1 --file-path /tmp/test.csv",
       errorMessage: /Authentication required \(login or API token\)/,
     });
@@ -47,6 +27,7 @@ describe("record import", () => {
 describe("record export", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
+      env: envWithoutAuth,
       arg: "record export --base-url https://example.com --app 1",
       errorMessage: /Authentication required \(login or API token\)/,
     });
@@ -56,6 +37,7 @@ describe("record export", () => {
 describe("record delete", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
+      env: envWithoutAuth,
       arg: "record delete --base-url https://example.com --app 1 --yes",
       errorMessage: /Authentication required \(API token\)/,
     });
@@ -63,6 +45,7 @@ describe("record delete", () => {
 
   it("should reject --username with auth required error", () => {
     return checkRejectArg({
+      env: envWithoutAuth,
       arg: "record delete --base-url https://example.com --app 1 --yes --username user",
       errorMessage: /Authentication required \(API token\)/,
     });
@@ -72,6 +55,7 @@ describe("record delete", () => {
 describe("plugin upload", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
+      env: envWithoutAuth,
       arg: "plugin upload --base-url https://example.com --input /tmp/plugin.zip",
       errorMessage: /Authentication required \(login\)/,
     });
@@ -79,6 +63,7 @@ describe("plugin upload", () => {
 
   it("should reject --api-token with auth required error", () => {
     return checkRejectArg({
+      env: envWithoutAuth,
       arg: "plugin upload --base-url https://example.com --input /tmp/plugin.zip --api-token xxx",
       errorMessage: /Authentication required \(login\)/,
     });
@@ -88,6 +73,7 @@ describe("plugin upload", () => {
 describe("customize apply", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
+      env: envWithoutAuth,
       arg: "customize apply --base-url https://example.com --app 1 --input /tmp/manifest.json",
       errorMessage: /Authentication required \(login\)/,
     });
@@ -97,6 +83,7 @@ describe("customize apply", () => {
 describe("customize export", () => {
   it("should reject when no auth is provided", () => {
     return checkRejectArg({
+      env: envWithoutAuth,
       arg: "customize export --base-url https://example.com --app 1",
       errorMessage: /Authentication required \(login\)/,
     });

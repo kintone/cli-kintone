@@ -1,63 +1,26 @@
-import fs from "fs/promises";
-import { PluginZip } from "../core";
-import type {
-  ManifestInterface,
-  ManifestPermissions,
-} from "../core/manifest/interface";
-import { buildPluginSummary } from "../core/summary";
+import { info } from "./usecases/info";
+import type { OutputFormat } from "./usecases/info";
+import { LocalPluginRepositoryFromZipFile } from "./repositories/localPluginRepositoryFromZipFile";
+import { logger } from "../../utils/log";
+import { RunError } from "../../utils/error";
 
-export type OutputFormat = "plain" | "json";
+export type { OutputFormat };
 
-export type PluginInfoJson = {
-  id: string;
-  name: string;
-  version: number | string;
-  description: string | undefined;
-  homepage: string | undefined;
-  sandbox: boolean | undefined;
-  allowed_hosts: string[] | undefined;
-  permissions: ManifestPermissions | undefined;
+export type Options = {
+  input: string;
+  format: OutputFormat;
 };
 
-export const buildPluginInfoJson = (
-  id: string,
-  manifest: ManifestInterface,
-): PluginInfoJson => ({
-  id,
-  name: manifest.name,
-  version: manifest.version,
-  description: manifest.description,
-  homepage: manifest.homepageUrl,
-  sandbox: manifest.sandbox,
-  allowed_hosts: manifest.allowedHosts,
-  permissions: manifest.permissions,
-});
-
-export const run = async (pluginFilePath: string, format: OutputFormat) => {
-  const buffer = await fs.readFile(pluginFilePath);
-  const pluginZip = await PluginZip.fromBuffer(buffer);
-  const id = await pluginZip.getPluginID();
-  const manifest = await pluginZip.manifest();
-
-  switch (format) {
-    case "plain": {
-      const summary = buildPluginSummary(id, manifest);
-      console.log("id:", summary.id);
-      console.log("name:", summary.name);
-      console.log("version:", summary.version);
-      console.log("description:", summary.description);
-      console.log("homepage:", summary.homepage);
-      if (summary.sandbox !== null) {
-        const s = summary.sandbox;
-        console.log("sandbox:", s.sandbox);
-        console.log("allowed_hosts:", s.allowedHosts);
-        console.log("permissions:", s.permissions);
-      }
-      break;
-    }
-    case "json": {
-      console.log(JSON.stringify(buildPluginInfoJson(id, manifest), null, 2));
-      break;
-    }
+export const run: (options: Options) => Promise<void> = async (options) => {
+  try {
+    const output = await info(
+      new LocalPluginRepositoryFromZipFile(options.input),
+      options.format,
+    );
+    console.log(output);
+  } catch (e) {
+    logger.error(new RunError(e));
+    // eslint-disable-next-line n/no-process-exit
+    process.exit(1);
   }
 };

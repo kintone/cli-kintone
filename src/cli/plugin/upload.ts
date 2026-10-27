@@ -39,8 +39,6 @@ const handler = async (args: Args) => {
     password: args.password,
     basicAuthUsername: args["basic-auth-username"],
     basicAuthPassword: args["basic-auth-password"],
-    // The option is hidden for this command, but it still changes the endpoint of the file upload.
-    guestSpaceId: args["guest-space-id"],
     pfxFilePath: args["pfx-file-path"],
     pfxFilePassword: args["pfx-file-password"],
     httpsProxy: args.proxy,

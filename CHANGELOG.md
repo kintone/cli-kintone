@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.2](https://github.com/kintone/cli-kintone/compare/v1.22.1...v1.22.2) (2026-10-22)
+
+
+### Miscellaneous Chores
+
+* **deps:** update dependency allure-js-commons to v3.13.0 ([#1622](https://github.com/kintone/cli-kintone/issues/1622)) ([8a802f6](https://github.com/kintone/cli-kintone/commit/8a802f6df2ffed46a6daa77f469d35610f1e9c07))
+
 ## [1.22.1](https://github.com/kintone/cli-kintone/compare/v1.22.0...v1.22.1) (2026-10-09)
 
 

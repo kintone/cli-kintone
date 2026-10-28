@@ -1,11 +1,7 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { logger } from "../../utils/log";
-import { RunError } from "../../utils/error";
 import { buildConnectionOptions } from "../connectionOptions";
-import type { Params } from "../../plugin/upload";
-import { upload } from "../../plugin/upload";
-import type { RestAPIClientOptions } from "../../kintone/client";
+import { run } from "../../plugin/upload";
 
 const command = "upload";
 
@@ -37,28 +33,19 @@ type Args = yargs.Arguments<
 >;
 
 const handler = async (args: Args) => {
-  try {
-    const params: Params = {
-      pluginFilePath: args.input,
-      force: args.yes,
-      watch: args.watch,
-    };
-    const apiClientOptions: RestAPIClientOptions = {
-      baseUrl: args["base-url"],
-      username: args.username,
-      password: args.password,
-      basicAuthUsername: args["basic-auth-username"],
-      basicAuthPassword: args["basic-auth-password"],
-      pfxFilePath: args["pfx-file-path"],
-      pfxFilePassword: args["pfx-file-password"],
-      httpsProxy: args.proxy,
-    };
-    await upload({ ...params, ...apiClientOptions });
-  } catch (error) {
-    logger.error(new RunError(error));
-    // eslint-disable-next-line n/no-process-exit
-    process.exit(1);
-  }
+  await run({
+    baseUrl: args["base-url"],
+    username: args.username,
+    password: args.password,
+    basicAuthUsername: args["basic-auth-username"],
+    basicAuthPassword: args["basic-auth-password"],
+    pfxFilePath: args["pfx-file-path"],
+    pfxFilePassword: args["pfx-file-password"],
+    httpsProxy: args.proxy,
+    input: args.input,
+    yes: args.yes,
+    watch: args.watch,
+  });
 };
 
 export const uploadCommand: CommandModule<{}, Args> = {

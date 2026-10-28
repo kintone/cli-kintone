@@ -4,7 +4,6 @@ import * as prompt from "../qa/prompt";
 import type { LangAnswers, SupportLang } from "../qa/prompt";
 import { validateForDescription, validateForName } from "../qa/validator";
 import { runPrompt } from "../qa";
-import { getBoundMessage } from "../messages";
 
 const MOCK_ANSWERS: LangAnswers = {
   name: "pass",
@@ -13,7 +12,7 @@ const MOCK_ANSWERS: LangAnswers = {
 };
 
 const mockPromptForLang = (supportedLangs: SupportLang[]) => {
-  vi.spyOn(prompt, "promptForLang").mockImplementation(async (_m, options) => {
+  vi.spyOn(prompt, "promptForLang").mockImplementation(async (options) => {
     if (options.required || supportedLangs.includes(options.supportLang)) {
       return MOCK_ANSWERS;
     }
@@ -40,7 +39,7 @@ describe("qa", () => {
     describe("optional lang parameters", () => {
       it("should be set ja parameters in supportJa is true", async () => {
         mockPromptForLang(["Ja"]);
-        const result = await runPrompt(getBoundMessage("ja"), "foo/bar/dist");
+        const result = await runPrompt("foo/bar/dist");
         assert.notEqual(result.name.ja, undefined);
         assert.notEqual(result.description?.ja, undefined);
         assert.notEqual(result.homepage_url, undefined);
@@ -48,13 +47,13 @@ describe("qa", () => {
       });
       it("should not be set ja parameters in supportJa is false", async () => {
         mockPromptForLang(["Zh", "Es"]);
-        const result = await runPrompt(getBoundMessage("en"), "foo/bar/dist");
+        const result = await runPrompt("foo/bar/dist");
         assert.equal(result.name.ja, undefined);
         assert.equal(result.description?.ja, undefined);
       });
       it("should be set zh parameters in supportZh is true", async () => {
         mockPromptForLang(["Zh"]);
-        const result = await runPrompt(getBoundMessage("ja"), "foo/bar/dist");
+        const result = await runPrompt("foo/bar/dist");
         assert.notEqual(result.name.zh, undefined);
         assert.notEqual(result.description?.zh, undefined);
         assert.notEqual(result.homepage_url, undefined);
@@ -62,13 +61,13 @@ describe("qa", () => {
       });
       it("should not be set zh parameters in supportZh is false", async () => {
         mockPromptForLang(["Ja", "Es"]);
-        const result = await runPrompt(getBoundMessage("en"), "foo/bar/dist");
+        const result = await runPrompt("foo/bar/dist");
         assert.equal(result.name.zh, undefined);
         assert.equal(result.description?.zh, undefined);
       });
       it("should be set es parameters in supportEs is true", async () => {
         mockPromptForLang(["Es"]);
-        const result = await runPrompt(getBoundMessage("ja"), "foo/bar/dist");
+        const result = await runPrompt("foo/bar/dist");
         assert.notEqual(result.name.es, undefined);
         assert.notEqual(result.description?.es, undefined);
         assert.notEqual(result.homepage_url, undefined);
@@ -76,7 +75,7 @@ describe("qa", () => {
       });
       it("should not be set es parameters in supportEs is false", async () => {
         mockPromptForLang(["Ja", "Zh"]);
-        const result = await runPrompt(getBoundMessage("en"), "foo/bar/dist");
+        const result = await runPrompt("foo/bar/dist");
         assert.equal(result.name.es, undefined);
         assert.equal(result.description?.es, undefined);
       });

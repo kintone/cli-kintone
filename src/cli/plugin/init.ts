@@ -1,8 +1,6 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
 
-import { logger } from "../../utils/log";
-import { RunError } from "../../utils/error";
 import { run } from "../../plugin/init";
 
 const command = "init";
@@ -30,20 +28,14 @@ type Args = yargs.Arguments<
 >;
 
 const handler = async (args: Args) => {
-  try {
-    const flags = {
-      name: args.name,
-      template: args.template,
-    };
-    if (process.env.NODE_ENV === "test") {
-      console.log(JSON.stringify({ flags: flags }));
-    } else {
-      await run(flags);
-    }
-  } catch (error) {
-    logger.error(new RunError(error));
-    // eslint-disable-next-line n/no-process-exit
-    process.exit(1);
+  const flags = {
+    name: args.name,
+    template: args.template,
+  };
+  if (process.env.NODE_ENV === "test") {
+    console.log(JSON.stringify({ flags: flags }));
+  } else {
+    await run(flags);
   }
 };
 

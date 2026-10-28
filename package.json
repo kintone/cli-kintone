@@ -1,6 +1,6 @@
 {
   "name": "@kintone/cli",
-  "version": "1.22.2",
+  "version": "1.22.3",
   "publishConfig": {
     "access": "public"
   },
@@ -86,7 +86,7 @@
     "allure-commandline": "2.46.1",
     "allure-cucumberjs": "2.15.1",
     "allure-js-commons": "3.13.0",
-    "allure-vitest": "3.11.1",
+    "allure-vitest": "3.13.0",
     "cross-env": "10.1.0",
     "eslint": "9.39.5",
     "mkdirp": "3.0.1",
@@ -101,11 +101,11 @@
   "dependencies": {
     "@inquirer/prompts": "7.10.1",
     "@kintone/plugin-manifest-validator": "11.3.0",
-    "@kintone/rest-api-client": "6.3.0",
+    "@kintone/rest-api-client": "6.4.0",
     "chalk": "4.1.2",
     "chokidar": "4.0.3",
     "csv-parse": "7.0.3",
-    "csv-stringify": "6.5.2",
+    "csv-stringify": "6.9.0",
     "https-proxy-agent": "7.0.6",
     "iconv-lite": "0.7.3",
     "tar": "7.5.22",
@@ -113,5 +113,5 @@
     "yauzl": "3.4.0",
     "yazl": "3.3.1"
   },
-  "packageManager": "pnpm@10.30.3"
+  "packageManager": "pnpm@10.34.7"
 }

@@ -2,15 +2,41 @@ name: Generate Report
 
 on:
   workflow_call:
+    secrets:
+      TAKUMI_GUARD_BOT_ID:
+        required: false
 
 jobs:
   generate-report:
     runs-on: ubuntu-latest
     if: ${{ ! startsWith(github.ref, 'refs/heads/renovate/') && !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/'))  }}
     steps:
+      # Checkout first, because it cleans the workspace.
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - uses: flatt-security/setup-takumi-guard-npm@9a5d797c2085b6326d3a2985c08e3a114b9b88c1 # v1.1.1
+        with:
+          bot-id: ${{ !github.event.pull_request.head.repo.fork && secrets.TAKUMI_GUARD_BOT_ID || '' }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Allure CLI (allure-commandline) runs on Java.
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
       - name: Download allure results
         id: download-allure-results
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           pattern: allure_results_*
           merge-multiple: true
@@ -24,21 +50,56 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
+      # Keeps the layout of the GitHub Pages: a report for each run number, index.html that redirects to the latest one, and last-history for the trend.
       - name: Build test report
         id: allure-report
-        if: always()
-        uses: simple-elf/allure-report-action@385367cde61ac68c2568a117f7579f7f148dc459 # v1.15
-        with:
-          gh_pages: gh-pages
-          allure_history: allure-history
-          allure_results: allure-results
-          allure_report: allure-report
-          keep_reports: 10
+        env:
+          KEEP_REPORTS: 10
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          set -euo pipefail
+          pages_url="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
+
+          mkdir -p allure-history allure-results
+          if [ -d gh-pages ]; then
+            cp -r gh-pages/. allure-history
+            rm -rf allure-history/.git
+          fi
+
+          # Removes the oldest reports, so that $KEEP_REPORTS reports remain with this run.
+          find allure-history -mindepth 1 -maxdepth 1 -type d -regextype posix-extended -regex '.*/[0-9]+' -printf '%f\n' \
+            | sort -n \
+            | head -n -"$((KEEP_REPORTS - 1))" \
+            | xargs -r -I{} rm -rf "allure-history/{}"
+
+          cat > allure-history/index.html <<EOF
+          <!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; URL=${pages_url}/${RUN_NUMBER}/index.html">
+          <meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+          EOF
+
+          jq -n \
+            --arg url "$pages_url" \
+            --arg run_number "$RUN_NUMBER" \
+            --arg run_id "$GITHUB_RUN_ID" \
+            --arg build_url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            '{name: "GitHub Actions", type: "github", reportName: "Allure Report with history", url: $url, reportUrl: "\($url)/\($run_number)", buildUrl: $build_url, buildName: "GitHub Actions Run #\($run_id)", buildOrder: $run_number}' \
+            > allure-results/executor.json
+
+          if [ -d gh-pages/last-history ]; then
+            mkdir -p allure-results/history
+            cp -r gh-pages/last-history/. allure-results/history
+          fi
+
+          pnpm exec allure generate --clean allure-results -o allure-report
+
+          cp -r allure-report/. "allure-history/${RUN_NUMBER}"
+          rm -rf allure-history/last-history
+          cp -r allure-report/history allure-history/last-history
 
       - name: Publish test report
         id: deploy-allure-report-page
         if: steps.allure-report.outcome == 'success' # make sure the allure report is generated successfully
-        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages

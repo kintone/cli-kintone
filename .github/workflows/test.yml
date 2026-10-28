@@ -16,16 +16,16 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20, 22, 24]
+        node-version: [22, 24]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - run: git config --global core.autocrlf false
       - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
@@ -44,7 +44,7 @@ jobs:
       - name: Upload allure results
         id: upload-allure-results
         if: ${{ env.platform == 'ubuntu' && !cancelled() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: allure_results_unit_${{ env.platform }}_node${{ matrix.node-version }}
           path: allure-results
@@ -84,8 +84,8 @@ jobs:
         os: ${{ fromJSON(needs.get-running-os-for-test-e2e.outputs.os) }}
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
-      - uses: actions/setup-node@v6
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
@@ -111,7 +111,7 @@ jobs:
       - name: Upload allure results
         id: upload-allure-results
         if: ${{ env.platform == 'ubuntu' && !cancelled() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: allure_results_e2e_${{ env.platform }}
           path: allure-results
@@ -126,10 +126,12 @@ jobs:
     if: ${{ !cancelled() && (needs.test-e2e.outputs.artifact-id != '' || needs.test-unit.outputs.artifact-id != '') }}
     needs: [test-unit, test-e2e]
     uses: ./.github/workflows/report.yml
+    secrets:
+      TAKUMI_GUARD_BOT_ID: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
 
   actions-timeline:
     needs: [test-unit, test-e2e]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
-      - uses: Kesin11/actions-timeline@54d513e0b5ff1158f1cf8321108d666a5a6c1fca # v2
+      - uses: Kesin11/actions-timeline@57fc93f20c6da7fbc14063c6d24a2a5627c799ad # v3.2.0

@@ -51,6 +51,17 @@ Feature: plugin upload
     Then I should get the exit code is zero
     And The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" should not be installed
 
+  # Plugins are installed regardless of guest spaces, so the hidden --guest-space-id is ignored.
+  @serial(plugin_chjjmgadianhfiopehkbjlfkfioglafk)
+  Scenario: Ignore the hidden --guest-space-id
+    Given The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" is not installed
+    And An asset with key "plugin_chjjmgadianhfiopehkbjlfkfioglafk_v1.zip" is available as "plugin.zip"
+    And Load username and password of user "kintone_admin" as env vars: "USERNAME" and "PASSWORD"
+    When I run the command with args "plugin upload --input ./plugin.zip --yes --base-url $$TEST_KINTONE_BASE_URL --username $USERNAME --password $PASSWORD --guest-space-id 999999999"
+    Then I should get the exit code is zero
+    And The output error message should match with the pattern: "Plugin is installed successfully\."
+    And The plugin with id "chjjmgadianhfiopehkbjlfkfioglafk" should be installed
+
   Scenario: Plugin file does not exist
     Given Load username and password of user "kintone_admin" as env vars: "USERNAME" and "PASSWORD"
     When I run the command with args "plugin upload --input ./none.zip --yes --base-url $$TEST_KINTONE_BASE_URL --username $USERNAME --password $PASSWORD"

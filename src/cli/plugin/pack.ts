@@ -1,8 +1,6 @@
 import type yargs from "yargs";
 import type { CommandModule } from "yargs";
-import { pack } from "../../plugin/packer/";
-import { logger } from "../../utils/log";
-import { RunError } from "../../utils/error";
+import { run } from "../../plugin/pack/";
 
 const command = "pack";
 
@@ -42,22 +40,16 @@ type Args = yargs.Arguments<
 >;
 
 const handler = async (args: Args) => {
-  try {
-    const params = {
-      input: args.input,
-      output: args.output,
-      ppkFilePath: args["private-key"],
-      watch: args.watch,
-    };
-    if (process.env.NODE_ENV === "test") {
-      console.log(JSON.stringify(params));
-    } else {
-      await pack(params);
-    }
-  } catch (error) {
-    logger.error(new RunError(error));
-    // eslint-disable-next-line n/no-process-exit
-    process.exit(1);
+  const options = {
+    input: args.input,
+    output: args.output,
+    privateKeyPath: args["private-key"],
+    watch: args.watch ?? false,
+  };
+  if (process.env.NODE_ENV === "test") {
+    console.log(JSON.stringify(options));
+  } else {
+    await run(options);
   }
 };
 

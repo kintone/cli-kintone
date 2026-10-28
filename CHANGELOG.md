@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.3](https://github.com/kintone/cli-kintone/compare/v1.22.2...v1.22.3) (2026-10-27)
+
+
+### Bug Fixes
+
+* **deps:** pin body-parser past its advisory [security] ([#1643](https://github.com/kintone/cli-kintone/issues/1643)) ([c9558ca](https://github.com/kintone/cli-kintone/commit/c9558ca0b6c0ed0d20fad96c17275bb797f1d50a))
+* **plugin:** ignore --guest-space-id and KINTONE_GUEST_SPACE_ID in plugin upload ([#1626](https://github.com/kintone/cli-kintone/issues/1626)) ([d8ea5f7](https://github.com/kintone/cli-kintone/commit/d8ea5f7e520402f1dc5048fafd7d361202ef997a))
+
 ## [1.22.2](https://github.com/kintone/cli-kintone/compare/v1.22.1...v1.22.2) (2026-10-22)
 
 

@@ -72,19 +72,6 @@ export const isFile = async (filePath: string): Promise<boolean> => {
 };
 
 /**
- * Check if the given path is a directory.
- * Wrapping fs.stat() to reduce error handling code.
- * @param dirPath
- */
-export const isDirectory = async (dirPath: string): Promise<boolean> => {
-  try {
-    return (await fs.promises.stat(dirPath)).isDirectory();
-  } catch (_) {
-    return false;
-  }
-};
-
-/**
  * Check if anything exists at the given path, including a broken symbolic link.
  * Wrapping fs.lstat() to reduce error handling code.
  * @param targetPath

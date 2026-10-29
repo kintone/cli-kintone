@@ -14,7 +14,7 @@ import { logger } from "../../../utils/log";
 export class LocalPluginProjectRepositoryFromTemplate implements LocalPluginProjectRepository {
   private readonly directory: string;
   private readonly templateName: string;
-  // The top of the directories that create() made, which is the parent of the directory when the parent did not exist.
+  // The topmost directory that create() made, which is an ancestor of the directory when the ancestors did not exist.
   private createdPath: string | undefined;
 
   constructor(options: { directory: string; templateName: string }) {

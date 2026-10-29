@@ -185,10 +185,14 @@ describe("LocalPluginProjectRepositoryFromTemplate", () => {
       const rmSpy = vi.spyOn(fs, "rm").mockRejectedValue(new Error("EBUSY"));
 
       await expect(repository.remove()).resolves.toBeUndefined();
-      expect(rmSpy).toHaveBeenCalledExactlyOnceWith(directory, {
-        recursive: true,
-        force: true,
-      });
+      // fs.mkdir returns the created path with the \\?\ prefix on Windows.
+      expect(rmSpy).toHaveBeenCalledExactlyOnceWith(
+        path.toNamespacedPath(directory),
+        {
+          recursive: true,
+          force: true,
+        },
+      );
     });
   });
 });

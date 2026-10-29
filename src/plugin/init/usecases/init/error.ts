@@ -1,15 +1,15 @@
 import { CliKintoneError } from "../../../../utils/error";
 
-export class PluginDirectoryExistsError extends CliKintoneError {
+export class PluginProjectPathExistsError extends CliKintoneError {
   constructor(directory: string) {
     super(
       "Could not create a plug-in project.",
       `${directory} already exists. Choose a different directory`,
     );
 
-    this.name = "PluginDirectoryExistsError";
+    this.name = "PluginProjectPathExistsError";
 
-    Object.setPrototypeOf(this, PluginDirectoryExistsError.prototype);
+    Object.setPrototypeOf(this, PluginProjectPathExistsError.prototype);
   }
 }
 

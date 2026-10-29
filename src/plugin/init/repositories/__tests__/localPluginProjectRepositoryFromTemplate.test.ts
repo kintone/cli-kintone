@@ -1,9 +1,10 @@
 import { vi } from "vitest";
 import fs from "fs/promises";
+import type { Stats } from "fs";
 import os from "os";
 import path from "path";
 import { LocalPluginProjectRepositoryFromTemplate } from "../localPluginProjectRepositoryFromTemplate";
-import { PluginDirectoryExistsError } from "../../usecases/init/error";
+import { PluginProjectPathExistsError } from "../../usecases/init/error";
 import { setupTemplate } from "../../utils/template";
 import { installDependencies } from "../../utils/deps";
 import { runKeygen } from "../../utils/keygen";
@@ -43,6 +44,9 @@ describe("LocalPluginProjectRepositoryFromTemplate", () => {
     it("should set up the template in the directory with the settings", async () => {
       await repository.create(settings);
 
+      await expect(fs.stat(directory)).resolves.toSatisfy((stats: Stats) =>
+        stats.isDirectory(),
+      );
       expect(setupTemplate).toHaveBeenCalledExactlyOnceWith({
         outputDir: directory,
         templateName: "javascript",
@@ -51,14 +55,14 @@ describe("LocalPluginProjectRepositoryFromTemplate", () => {
       });
     });
 
-    it("should throw PluginDirectoryExistsError without changing the directory when it already exists", async () => {
+    it("should throw PluginProjectPathExistsError without changing the directory when it already exists", async () => {
       const existingFilePath = path.join(directory, "existing.txt");
       await fs.mkdir(directory);
       await fs.writeFile(existingFilePath, "existing content", "utf8");
 
       await expect(repository.create(settings)).rejects.toSatisfy(
         (thrownError) => {
-          expect(thrownError).toBeInstanceOf(PluginDirectoryExistsError);
+          expect(thrownError).toBeInstanceOf(PluginProjectPathExistsError);
           expect(thrownError).toMatchObject({
             cause: `${directory} already exists. Choose a different directory`,
           });
@@ -69,6 +73,39 @@ describe("LocalPluginProjectRepositoryFromTemplate", () => {
       await expect(fs.readFile(existingFilePath, "utf8")).resolves.toBe(
         "existing content",
       );
+    });
+
+    it("should throw PluginProjectPathExistsError without changing the file when a file exists at the path", async () => {
+      await fs.writeFile(directory, "existing content", "utf8");
+
+      await expect(repository.create(settings)).rejects.toBeInstanceOf(
+        PluginProjectPathExistsError,
+      );
+      expect(setupTemplate).not.toHaveBeenCalled();
+      await expect(fs.readFile(directory, "utf8")).resolves.toBe(
+        "existing content",
+      );
+    });
+
+    it("should throw PluginProjectPathExistsError when the path reaches an existing directory through a missing directory", async () => {
+      await fs.mkdir(directory);
+      const pathThroughMissingDirectory = [
+        workDir,
+        "missing",
+        "..",
+        "my-plugin",
+      ].join(path.sep);
+      const repositoryThroughMissingDirectory =
+        new LocalPluginProjectRepositoryFromTemplate({
+          directory: pathThroughMissingDirectory,
+          templateName: "javascript",
+        });
+
+      await expect(
+        repositoryThroughMissingDirectory.create(settings),
+      ).rejects.toBeInstanceOf(PluginProjectPathExistsError);
+      expect(setupTemplate).not.toHaveBeenCalled();
+      await expect(fs.readdir(workDir)).resolves.toStrictEqual(["my-plugin"]);
     });
 
     it("should pass the error of setting up the template through", async () => {
@@ -96,16 +133,55 @@ describe("LocalPluginProjectRepositoryFromTemplate", () => {
   });
 
   describe("remove", () => {
-    it("should remove the directory", async () => {
-      await fs.mkdir(directory);
+    it("should remove the directory that create made", async () => {
+      await repository.create(settings);
       await fs.writeFile(path.join(directory, "manifest.json"), "{}", "utf8");
 
       await repository.remove();
 
-      await expect(fs.stat(directory)).rejects.toThrow("ENOENT");
+      await expect(fs.readdir(workDir)).resolves.toStrictEqual([]);
+    });
+
+    it("should remove the parent directories that create made", async () => {
+      const nestedRepository = new LocalPluginProjectRepositoryFromTemplate({
+        directory: path.join(workDir, "plugins", "my-plugin"),
+        templateName: "javascript",
+      });
+      await nestedRepository.create(settings);
+
+      await nestedRepository.remove();
+
+      await expect(fs.readdir(workDir)).resolves.toStrictEqual([]);
+    });
+
+    it("should remove the directory that create made when the path goes through a missing directory", async () => {
+      const repositoryThroughMissingDirectory =
+        new LocalPluginProjectRepositoryFromTemplate({
+          directory: [workDir, "missing", "..", "my-plugin"].join(path.sep),
+          templateName: "javascript",
+        });
+      await repositoryThroughMissingDirectory.create(settings);
+
+      await repositoryThroughMissingDirectory.remove();
+
+      await expect(fs.readdir(workDir)).resolves.toStrictEqual([]);
+    });
+
+    it("should not remove the file that existed at the path before create", async () => {
+      await fs.writeFile(directory, "existing content", "utf8");
+      await expect(repository.create(settings)).rejects.toBeInstanceOf(
+        PluginProjectPathExistsError,
+      );
+
+      await repository.remove();
+
+      await expect(fs.readFile(directory, "utf8")).resolves.toBe(
+        "existing content",
+      );
     });
 
     it("should not throw when removing the directory fails", async () => {
+      await repository.create(settings);
       const rmSpy = vi.spyOn(fs, "rm").mockRejectedValue(new Error("EBUSY"));
 
       await expect(repository.remove()).resolves.toBeUndefined();

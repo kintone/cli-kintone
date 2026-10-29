@@ -83,3 +83,17 @@ export const isDirectory = async (dirPath: string): Promise<boolean> => {
     return false;
   }
 };
+
+/**
+ * Check if anything exists at the given path, including a broken symbolic link.
+ * Wrapping fs.lstat() to reduce error handling code.
+ * @param targetPath
+ */
+export const exists = async (targetPath: string): Promise<boolean> => {
+  try {
+    await fs.promises.lstat(targetPath);
+    return true;
+  } catch (_) {
+    return false;
+  }
+};

@@ -37,7 +37,7 @@ describe("run", () => {
       name: { en: "my-plugin" },
     });
     vi.mocked(setupTemplate).mockImplementation(async ({ outputDir }) => {
-      await fs.mkdir(outputDir);
+      await fs.writeFile(path.join(outputDir, "manifest.json"), "{}", "utf8");
     });
     vi.spyOn(process, "exit").mockImplementation(() => {
       throw new ProcessExitError();
@@ -71,7 +71,7 @@ describe("run", () => {
 
   it("should exit with 1 after removing the directory when setting up the template fails", async () => {
     vi.mocked(setupTemplate).mockImplementation(async ({ outputDir }) => {
-      await fs.mkdir(outputDir);
+      await fs.writeFile(path.join(outputDir, "manifest.json"), "{}", "utf8");
       throw new Error("Template not found");
     });
     const errorSpy = vi.spyOn(logger, "error");

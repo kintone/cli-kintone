@@ -7,10 +7,13 @@ export type PluginProjectSettings = {
 };
 
 export type LocalPluginProjectRepository = {
-  /** Throws PluginDirectoryExistsError without creating anything when the directory exists. */
+  /** Throws PluginProjectPathExistsError without creating anything when anything, such as a directory or a file, exists at the path. */
   readonly create: (settings: PluginProjectSettings) => Promise<void>;
   readonly installDependencies: () => Promise<void>;
   readonly generatePrivateKey: () => Promise<void>;
-  /** Logs a failure at the debug level instead of throwing it, so that the error that caused the removal is reported. */
+  /**
+   * Removes only what create made, so that nothing that existed before is removed.
+   * Logs a failure at the debug level instead of throwing it, so that the error that caused the removal is reported.
+   */
   readonly remove: () => Promise<void>;
 };

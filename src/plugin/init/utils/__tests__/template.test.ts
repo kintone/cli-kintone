@@ -1,6 +1,6 @@
 import { vi, type Mock } from "vitest";
 import assert from "assert";
-import { mkdtemp, writeFile, readFile, rm } from "fs/promises";
+import { mkdir, mkdtemp, writeFile, readFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
 import { setupTemplate } from "../template";
@@ -68,6 +68,7 @@ describe("template", () => {
       });
 
       const pluginDir = join(tempDir, "my-plugin");
+      await mkdir(pluginDir);
 
       // downloadAndExtractFromUrlが成功し、ダミーファイルを作成
       downloadAndExtractFromUrl.mockImplementation(
@@ -147,6 +148,7 @@ describe("template", () => {
       });
 
       const pluginDir = join(tempDir, "ts-plugin");
+      await mkdir(pluginDir);
 
       downloadAndExtractFromUrl.mockImplementation(
         async ({ outputDir }: { outputDir: string }) => {

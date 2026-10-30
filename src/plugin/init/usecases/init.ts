@@ -5,7 +5,7 @@ import type { Answers } from "../utils/qa";
 import { logger } from "../../../utils/log";
 import type { LocalPluginProjectRepository } from "./interface";
 import {
-  PluginDirectoryExistsError,
+  PluginProjectPathExistsError,
   PluginProjectCreationError,
 } from "./init/error";
 
@@ -62,8 +62,8 @@ export const initPlugin = async (
       getSuccessCreatedPluginMessage(packageName, answers.projectName),
     );
   } catch (error) {
-    // Nothing was created when the directory already exists.
-    if (error instanceof PluginDirectoryExistsError) {
+    // Nothing was created when something already exists at the path.
+    if (error instanceof PluginProjectPathExistsError) {
       throw error;
     }
     await project.remove();

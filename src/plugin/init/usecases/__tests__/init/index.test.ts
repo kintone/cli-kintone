@@ -3,7 +3,7 @@ import { logger } from "../../../../../utils/log";
 import { LocalPluginProjectRepositoryMock } from "../../../repositories/localPluginProjectRepositoryMock";
 import { initPlugin } from "../../init";
 import {
-  PluginDirectoryExistsError,
+  PluginProjectPathExistsError,
   PluginProjectCreationError,
 } from "../../init/error";
 
@@ -50,14 +50,14 @@ describe("initPlugin", () => {
     );
   });
 
-  it("should pass PluginDirectoryExistsError through without removing the directory", async () => {
+  it("should pass PluginProjectPathExistsError through without removing the directory", async () => {
     project = new LocalPluginProjectRepositoryMock({
       directory: answers.projectName,
       exists: true,
     });
 
     await expect(initPlugin(answers, project)).rejects.toThrow(
-      PluginDirectoryExistsError,
+      PluginProjectPathExistsError,
     );
     expect(project.steps).toStrictEqual([]);
   });

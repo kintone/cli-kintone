@@ -1,11 +1,11 @@
 import {
-  PluginDirectoryExistsError,
+  PluginProjectPathExistsError,
   PluginProjectCreationError,
 } from "../../init/error";
 
-describe("PluginDirectoryExistsError", () => {
+describe("PluginProjectPathExistsError", () => {
   it("should return error message", () => {
-    const error = new PluginDirectoryExistsError("my-plugin");
+    const error = new PluginProjectPathExistsError("my-plugin");
 
     expect(error.toString()).toBe(
       "Could not create a plug-in project.\nmy-plugin already exists. Choose a different directory\n",

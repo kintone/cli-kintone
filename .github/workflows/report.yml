@@ -12,13 +12,13 @@ jobs:
     if: ${{ ! startsWith(github.ref, 'refs/heads/renovate/') && !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/'))  }}
     steps:
       # Checkout first, because it cleans the workspace.
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: 24.22.2
           cache: "pnpm"
 
       - uses: flatt-security/setup-takumi-guard-npm@9a5d797c2085b6326d3a2985c08e3a114b9b88c1 # v1.1.1
@@ -29,14 +29,14 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # Allure CLI (allure-commandline) runs on Java.
-      - uses: actions/setup-java@v6
+      - uses: actions/setup-java@v6.1.0
         with:
           distribution: temurin
-          java-version: 21
+          java-version: 21.0.13+9.0.LTS
 
       - name: Download allure results
         id: download-allure-results
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v8.0.2
         with:
           pattern: allure_results_*
           merge-multiple: true
@@ -44,7 +44,7 @@ jobs:
 
       - name: Load test report history
         id: allure-history
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         continue-on-error: true # in case run without branch for GitHub page source
         with:
           ref: gh-pages

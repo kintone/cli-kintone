@@ -80,7 +80,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        node-version: [24]
+        node-version: [26]
         os: ${{ fromJSON(needs.get-running-os-for-test-e2e.outputs.os) }}
     steps:
       - uses: actions/checkout@v7

@@ -2,7 +2,7 @@ import type {
   LocalPluginProjectRepository,
   PluginProjectSettings,
 } from "../usecases/interface";
-import { PluginDirectoryExistsError } from "../usecases/init/error";
+import { PluginProjectPathExistsError } from "../usecases/init/error";
 
 type Step = "create" | "installDependencies" | "generatePrivateKey" | "remove";
 
@@ -20,7 +20,7 @@ export class LocalPluginProjectRepositoryMock implements LocalPluginProjectRepos
 
   async create(settings: PluginProjectSettings) {
     if (this.exists) {
-      throw new PluginDirectoryExistsError(this.directory);
+      throw new PluginProjectPathExistsError(this.directory);
     }
 
     this.steps.push("create");

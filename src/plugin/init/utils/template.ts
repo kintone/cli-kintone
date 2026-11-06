@@ -8,16 +8,14 @@ import {
   type PackageJsonPatch,
 } from "./template/pacakge-json";
 import { logger } from "../../../utils/log";
-import { mkdir } from "fs/promises";
 
 export const setupTemplate = async (opts: {
   templateName: string;
+  /** Must exist before the call. */
   outputDir: string;
   manifestPatch: ManifestPatch;
   packageJsonPatch: PackageJsonPatch;
 }) => {
-  // Create output directory
-  await mkdir(opts.outputDir, { recursive: true });
   logger.debug(`downloading template: ${opts.templateName}`);
 
   // Resolve template source from GitHub (includes existence check)

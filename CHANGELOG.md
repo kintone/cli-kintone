@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.5](https://github.com/kintone/cli-kintone/compare/v1.22.4...v1.22.5) (2026-11-06)
+
+
+### Bug Fixes
+
+* **plugin:** stop plugin init from deleting an existing file at the --name path ([#1652](https://github.com/kintone/cli-kintone/issues/1652)) ([9a4d675](https://github.com/kintone/cli-kintone/commit/9a4d67566a475b3a3b8a81fbb0a48a641fffc17c))
+
+
+### Miscellaneous Chores
+
+* support Node.js v26 and build the executables with it ([#1656](https://github.com/kintone/cli-kintone/issues/1656)) ([692462a](https://github.com/kintone/cli-kintone/commit/692462a82d2b4179d1ebcf292367b1e73e8d9b70))
+
 ## [1.22.4](https://github.com/kintone/cli-kintone/compare/v1.22.3...v1.22.4) (2026-11-02)
 
 

@@ -102,6 +102,8 @@ bin
 
 The executables bundle the Node.js version written in `.node-version`.
 The version must be a full version such as `26.1.0`; otherwise, the build fails.
+Renovate updates it within the same major version.
+When you update it manually within the same major version, title the pull request `fix(deps): update Node.js bundled in the executables to v<version>` so that the update appears in CHANGELOG.
 
 ### Testing
 

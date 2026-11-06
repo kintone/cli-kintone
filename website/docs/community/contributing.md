@@ -100,6 +100,9 @@ bin
 └── cli-kintone-win-x64.exe
 ```
 
+The executables bundle the Node.js version written in `.node-version`.
+The version must be a full version such as `26.1.0`; otherwise, the build fails.
+
 ### Testing
 
 We have two kinds of tests, unit tests and E2E tests.

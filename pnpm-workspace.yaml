@@ -43,4 +43,4 @@ overrides:
   # Upper bound keeps svgo on the v3 line, which both consumers declare:
   # @svgr/plugin-svgo@8.1.0 and postcss-svgo@6.0.3 depend on `svgo: ^3`.
   # Drop `<4` once they support v4, or if the v3 line stops receiving backports.
-  svgo: ">=3.3.5 <4"
+  svgo: ">=3.3.5 <5"

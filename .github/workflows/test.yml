@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22, 24]
+        node-version: [22, 24, 26]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
@@ -82,7 +82,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        node-version: [24]
+        node-version: [26]
         os: ${{ fromJSON(needs.get-running-os-for-test-e2e.outputs.os) }}
     steps:
       - uses: actions/checkout@v7

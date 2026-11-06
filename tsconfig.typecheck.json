@@ -8,6 +8,7 @@
   "include": [
     "src/**/*",
     "features/**/*",
+    "scripts/bundled-node/**/*",
     "package.json",
     "e2e-credentials-schema.json"
   ],

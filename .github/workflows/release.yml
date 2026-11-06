@@ -66,6 +66,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - run: pnpm build:artifacts
+      # Run before uploading the executables: a rerun of this job fails at the upload if the assets already exist
+      - name: Add the bundled Node.js version to the release notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ needs.release.outputs.tag_name }}
+        run: |
+          set -euo pipefail
+          NOTES_FILE="${RUNNER_TEMP}/release-notes.md"
+          gh release view "${TAG_NAME}" --json body --jq .body > "${NOTES_FILE}"
+          pnpm exec zx ./scripts/update-release-notes.ts "${NOTES_FILE}"
+          gh release edit "${TAG_NAME}" --notes-file "${NOTES_FILE}"
       - name: Upload executables
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

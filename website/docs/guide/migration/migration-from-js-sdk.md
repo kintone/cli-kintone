@@ -343,13 +343,12 @@ cli-kintone customize export --app 123 --output customize-manifest.json --base-u
 
 ### customize apply (vs @kintone/customize-uploader)
 
-| Option              | js-sdk                                                    | cli-kintone                                                                      |
-| ------------------- | --------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| App ID              | Specified via `app` property in manifest file             | `--app <id>`, `-a` (required)<br/>The `app` property in manifest file is ignored |
-| Input file          | Manifest file specified as argument                       | `--input <file>`, `-i` (required)                                                |
-| Confirmation prompt | None                                                      | Prompts for confirmation before applying<br/>Can be skipped with `--yes` option  |
-| Authentication      | Username/password, OAuth                                  | Username/password only<br/>API token and OAuth authentication not supported      |
-| Watch mode          | `--watch` option to watch for file changes and auto-apply | Not supported                                                                    |
+| Option              | js-sdk                                        | cli-kintone                                                                      |
+| ------------------- | --------------------------------------------- | -------------------------------------------------------------------------------- |
+| App ID              | Specified via `app` property in manifest file | `--app <id>`, `-a` (required)<br/>The `app` property in manifest file is ignored |
+| Input file          | Manifest file specified as argument           | `--input <file>`, `-i` (required)                                                |
+| Confirmation prompt | None                                          | Prompts for confirmation before applying<br/>Can be skipped with `--yes` option  |
+| Authentication      | Username/password, OAuth                      | Username/password only<br/>API token and OAuth authentication not supported      |
 
 **Examples:**
 

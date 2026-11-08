@@ -25,11 +25,12 @@ cli-kintone customize apply \
 
 See [Options](/guide/options) page for common options.
 
-| Option    | Required | Description               |
-| --------- | -------- | ------------------------- |
-| `--app`   | Yes      | The ID of the app         |
-| `--input` | Yes      | Path to the manifest file |
-| `--yes`   |          | Skip confirmation         |
+| Option          | Required | Description               |
+| --------------- | -------- | ------------------------- |
+| `--app`         | Yes      | The ID of the app         |
+| `--input`, `-i` | Yes      | Path to the manifest file |
+| `--yes`, `-y`   |          | Skip confirmation         |
+| `--watch`       |          | Run in watch mode         |
 
 ## Notes
 

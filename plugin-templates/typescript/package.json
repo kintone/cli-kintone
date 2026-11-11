@@ -13,8 +13,8 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@kintone/rest-api-client": "6.4.0",
-    "core-js": "3.50.0"
+    "@kintone/rest-api-client": "6.5.0",
+    "core-js": "3.51.0"
   },
   "devDependencies": {
     "@babel/core": "7.29.7",
@@ -22,7 +22,7 @@
     "@babel/preset-react": "7.29.7",
     "@babel/preset-typescript": "7.29.7",
     "@cybozu/eslint-config": "25.0.1",
-    "@kintone/cli": "1.22.1",
+    "@kintone/cli": "1.22.2",
     "@kintone/dts-gen": "9.0.9",
     "@kintone/webpack-plugin-kintone-plugin": "9.0.5",
     "ajv": "8.20.0",
@@ -32,7 +32,7 @@
     "npm-run-all": "4.1.5",
     "prettier": "3.8.5",
     "typescript": "5.9.3",
-    "webpack": "5.112.1",
+    "webpack": "5.112.2",
     "webpack-cli": "7.2.3"
   }
 }

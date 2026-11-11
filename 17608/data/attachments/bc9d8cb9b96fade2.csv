@@ -1,0 +1,6 @@
+*,Text_0,Table,(Table.Text),(Table.Number)
+*,Lisa,\d+,Lisa Pink,10
+*,Rose,\d+,Rose Roseanne,20
+*,Bob,\d+,Bob Dylan,30
+*,Jenny,\d+,Jenny_1,40
+,Jenny,\d+,Jenny_2,50

@@ -67,6 +67,20 @@
       minimumReleaseAge: null,
     },
     {
+      description: "Update the Node.js bundled in the executables with `fix` so that it appears in CHANGELOG and triggers a release",
+      matchManagers: ["nodenv"],
+      matchDepNames: ["node"],
+      semanticCommitType: "fix",
+      commitMessageTopic: "Node.js bundled in the executables",
+    },
+    {
+      description: "Major updates of the bundled Node.js also change the supported Node.js versions, so we update it manually",
+      matchManagers: ["nodenv"],
+      matchDepNames: ["node"],
+      matchUpdateTypes: ["major"],
+      enabled: false,
+    },
+    {
       // Third party actions should be pinned with digest
       matchDepTypes: ["action"],
       matchPackageNames: ["!actions/{/,}**", "!cybozu/{/,}**"],

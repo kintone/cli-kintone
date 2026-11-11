@@ -4,7 +4,11 @@ export default defineConfig({
   test: {
     globals: true,
     clearMocks: true,
-    include: ["src/**/*.test.ts", "features/**/*.test.ts"],
+    include: [
+      "src/**/*.test.ts",
+      "features/**/*.test.ts",
+      "scripts/**/*.test.ts",
+    ],
     exclude: [
       "node_modules",
       "src/__tests__/setup.ts",

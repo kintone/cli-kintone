@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.6](https://github.com/kintone/cli-kintone/compare/v1.22.5...v1.22.6) (2026-11-12)
+
+
+### Bug Fixes
+
+* **deps:** bump node-forge past its advisories [security] ([#1677](https://github.com/kintone/cli-kintone/issues/1677)) ([b9d39c6](https://github.com/kintone/cli-kintone/commit/b9d39c6ee3b4a99f059617ab570da03ec388d7f8))
+* **deps:** update Node.js bundled in the executables to v26.13.1 ([#1678](https://github.com/kintone/cli-kintone/issues/1678)) ([3012bc8](https://github.com/kintone/cli-kintone/commit/3012bc83f567add390eb3b439e7e1542d276fa86))
+* pin the Node.js version bundled in the executables to v26.13.0 ([#1666](https://github.com/kintone/cli-kintone/issues/1666)) ([7bcd92f](https://github.com/kintone/cli-kintone/commit/7bcd92f87a4d49b0e536728a1a13b0f5322784a7))
+
 ## [1.22.5](https://github.com/kintone/cli-kintone/compare/v1.22.4...v1.22.5) (2026-11-10)
 
 

@@ -98,8 +98,8 @@ importers:
         specifier: 0.45.0
         version: 0.45.0
       '@yao-pkg/pkg':
-        specifier: 6.24.0
-        version: 6.24.0
+        specifier: 6.25.0
+        version: 6.25.0
       ajv:
         specifier: 8.20.0
         version: 8.20.0
@@ -2288,8 +2288,8 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@roberts_lando/vfs@0.3.3':
-    resolution: {integrity: sha512-YjkxVSLw5WMZQoARaryRAjcxA+GbBzWMJdwYZX5oLUt9cC/gew9as4Dn7tcLzPp7BPoR221VpTZ+78TRPawnjg==}
+  '@roberts_lando/vfs@0.4.0':
+    resolution: {integrity: sha512-8gk53fJyCgTHEqJcMnwcuSyJA12w42uP2LWBL8Zfnzu7s/A7how1HBN+xbU5d6Hwqa5al16++TcnZ1lIYd+ImQ==}
     engines: {node: '>= 22'}
 
   '@rollup/rollup-android-arm-eabi@4.62.2':
@@ -3031,8 +3031,8 @@ packages:
     resolution: {integrity: sha512-uEeU5druVgHffruTAXzW6nf0wHfREWlCq5LBtQ4hCdLBDbwTteuym5NrxREur3EgNcqFRenEi6Rivwo723PkHg==}
     hasBin: true
 
-  '@yao-pkg/pkg@6.24.0':
-    resolution: {integrity: sha512-SMwFLic12noHLbqxhhQVClVX6YZlQtzwwez6dq7Xj64rXX6OFgZTTQbPgw4wgec5IoUN+6rCRKgyW/cnVPOwkA==}
+  '@yao-pkg/pkg@6.25.0':
+    resolution: {integrity: sha512-32lat6kncPb9YqNTkri4Lz6KEISpKs2jT925XZuU8bwlhA/PI1hJ/jO5yk2LjBPHf9vUmwdSMscxmOuu9XC0dA==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
@@ -10969,7 +10969,7 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@roberts_lando/vfs@0.3.3': {}
+  '@roberts_lando/vfs@0.4.0': {}
 
   '@rollup/rollup-android-arm-eabi@4.62.2':
     optional: true
@@ -11739,13 +11739,13 @@ snapshots:
       - bare-buffer
       - react-native-b4a
 
-  '@yao-pkg/pkg@6.24.0':
+  '@yao-pkg/pkg@6.25.0':
     dependencies:
       '@babel/generator': 7.28.5
       '@babel/parser': 7.28.5
       '@babel/traverse': 7.28.5
       '@babel/types': 7.28.5
-      '@roberts_lando/vfs': 0.3.3
+      '@roberts_lando/vfs': 0.4.0
       '@yao-pkg/pkg-fetch': 3.6.7
       esbuild: 0.28.1
       into-stream: 9.1.0

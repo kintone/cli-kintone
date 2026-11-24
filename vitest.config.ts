@@ -14,6 +14,7 @@ export default defineConfig({
       "src/__tests__/setup.ts",
       "src/plugin/pack/__tests__/helpers/**",
       "src/plugin/init/utils/__tests__/helpers/**",
+      "src/__tests__/helpers/**",
       "**/fixtures/**",
     ],
     setupFiles: ["./src/__tests__/setup.ts"],

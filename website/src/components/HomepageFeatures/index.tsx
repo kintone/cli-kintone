@@ -25,15 +25,15 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: (
-      <Translate id="homepage.features.attachmentSupport.title">
-        Attachment field support
+      <Translate id="homepage.features.allInOne.title">
+        All-in-one Kintone CLI
       </Translate>
     ),
-    Svg: require("@site/static/img/undraw_add_files_re_v09g.svg").default,
+    Svg: require("@site/static/img/undraw_data_at_work.svg").default,
     description: (
-      <Translate id="homepage.features.attachmentSupport.description">
-        The cli-kintone supports Attachment fields. You can download or upload
-        files among with Kintone records.
+      <Translate id="homepage.features.allInOne.description">
+        Manage records, develop plugins, and apply JavaScript/CSS customization
+        — all from a single tool.
       </Translate>
     ),
   },

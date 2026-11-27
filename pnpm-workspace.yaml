@@ -39,7 +39,7 @@ overrides:
   # through this override. Keep the upper bound so the next major is not picked
   # up unnoticed; drop it once ajv declares v4 or later.
   fast-uri: ">=4.1.4 <5"
-  immutable: ">=5.1.9"
+  immutable: ">=5.1.10"
   # Upper bound keeps svgo on the v3 line, which both consumers declare:
   # @svgr/plugin-svgo@8.1.0 and postcss-svgo@6.0.3 depend on `svgo: ^3`.
   # Drop `<4` once they support v4, or if the v3 line stops receiving backports.
